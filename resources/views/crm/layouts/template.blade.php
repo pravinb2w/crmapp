@@ -149,18 +149,62 @@
         <!-- /End-bar -->
 
 
-        <!-- bundle -->
-        <script src="assets/js/vendor.min.js"></script>
-        <script src="assets/js/app.min.js"></script>
+        @include('crm.layouts.script')
+        @yield('add_on_script')
 
-        <!-- Apex js -->
-        <script src="assets/js/vendor/apexcharts.min.js"></script>
-
-        <!-- Todo js -->
-        <script src="assets/js/ui/component.todo.js"></script>
-
-        <!-- demo app -->
-        <script src="assets/js/pages/demo.dashboard-crm.js"></script>
-        <!-- end demo js-->
+        <div class="modal fade show" id="Mymodal" tabindex="-1" aria-labelledby="myLargeModalLabel" aria-modal="true" role="dialog">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="myLargeModalLabel">Add User Form</h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form class="form-horizontal modal-body">
+                            <div class="row mb-3">
+                                <label for="inputname3" class="col-3 col-form-label">First Name</label>
+                                <div class="col-9">
+                                    <input type="text" name="first_name" class="form-control" id="inputname3" placeholder="Name">
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <label for="last_name" class="col-3 col-form-label">Last Name</label>
+                                <div class="col-9">
+                                    <input type="text" name="last_name" class="form-control" id="last_name" placeholder="Last Name">
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <label for="email" class="col-3 col-form-label">Email</label>
+                                <div class="col-9">
+                                    <input type="email" name="email" class="form-control" id="email" placeholder="Email">
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <label for="mobile_number" class="col-3 col-form-label">Mobile Number</label>
+                                <div class="col-9">
+                                    <input type="text" class="form-control" id="mobile_number" placeholder="Email">
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <label for="profile_image" class="col-3 col-form-label">Profile Image</label>
+                                <div class="col-3">
+                                    <input type="file" class="form-control" id="profile_image" >
+                                </div>
+                                <div class="col-6 text-center">
+                                    <img class="img-fluid avatar-xl rounded-circle" src="{{ asset('assets/images/users/avatar-6.jpg') }}" alt="Profile Image">
+                                </div>
+                            </div>
+                            
+                            <div class=" row">
+                                <div class="col-12 text-end">
+                                    <button type="submit" class="btn btn-info">Update</button>
+                                    <button type="button" class="btn btn-dark" data-bs-dismiss="modal" aria-label="Close"> Cancel</button>
+                                </div>
+                            </div>
+                        </form> 
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div>
     </body>
 </html>

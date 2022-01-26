@@ -19,4 +19,8 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/dashboard', [App\Http\Controllers\HomeController::class, 'index'])->name('dashboard');
+Route::get('/account', [App\Http\Controllers\AccountController::class, 'index'])->name('account');
+Route::get('/account/change-password',[App\Http\Controllers\AccountController::class, 'index'])->name('change_password');
+
+Route::get('/settings/users', [App\Http\Controllers\UserController::class, 'index'])->name('users');

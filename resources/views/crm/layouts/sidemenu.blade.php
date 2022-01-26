@@ -25,7 +25,7 @@
         <ul class="side-nav">
 
             <li class="side-nav-item">
-                <a href="javascript:void(0)" class="side-nav-link">
+                <a href="{{ route('dashboard') }}" class="side-nav-link">
                     <i class="uil-home-alt"></i>
                     <span> Dashboard </span>
                 </a>
@@ -40,7 +40,7 @@
                 <div class="collapse" id="sidebarEcommerce">
                     <ul class="side-nav-second-level">
                         <li>
-                            <a href="javascipt:void(0)">Configuration</a>
+                            <a href="{{ route('account') }}">Configuration</a>
                         </li>
                         <li>
                             <a href="javascript:void(0)">Pages</a>
@@ -165,49 +165,9 @@
             <li class="side-nav-title side-nav-item">Setup</li>
 
             <li class="side-nav-item">
-                <a data-bs-toggle="collapse" href="#sidebarPages" aria-expanded="false" aria-controls="sidebarPages" class="side-nav-link">
-                    <i class="mdi mdi-cog-outline"></i>
+                <a href="{{ route('users') }}" class="side-nav-link">
+                    <i class="mdi mdi-cog"></i>
                     <span> Settings </span>
-                    <span class="menu-arrow"></span>
-                </a>
-                <div class="collapse" id="sidebarPages">
-                    <ul class="side-nav-second-level">
-                        <li>
-                            <a href="javascript: void(0);">Users</a>
-                        </li>
-                        <li>
-                            <a href="javascript: void(0);">Roles</a>
-                        </li>
-                        <li>
-                            <a href="javascript: void(0);">Teams</a>
-                        </li>
-                        <li>
-                            <a href="javascript: void(0);">Organization</a>
-                        </li>
-                        <li>
-                            <a href="javascript: void(0);">Country</a>
-                        </li>
-                        <li>
-                            <a href="javascript: void(0);">Lead Source</a>
-                        </li>
-                        
-                        <li>
-                            <a href="javascript: void(0);">Lead Type</a>
-                        </li>
-                        <li>
-                            <a href="javascript: void(0);">Deal Stages</a>
-                        </li>
-                        <li>
-                            <a href="javascript: void(0);">Permission</a>
-                        </li>
-                    </ul>
-                </div>
-            </li>
-
-            <li class="side-nav-item">
-                <a href="javascript:void(0);" class="side-nav-link">
-                    <i class="uil-globe"></i>
-                    <span> Landing </span>
                 </a>
             </li>
 
@@ -218,7 +178,7 @@
             <a href="javascript: void(0);" class="float-end close-btn text-white">
                 <i class="mdi mdi-close"></i>
             </a>
-            <img src="assets/images/help-icon.svg" height="90" alt="Helper Icon Image" />
+            <img src="{{ asset('assets/images/help-icon.svg') }}" height="90" alt="Helper Icon Image" />
             <h5 class="mt-3">Unlimited Access</h5>
             <p class="mb-3">Upgrade to plan to get access to unlimited reports</p>
             <a href="javascript: void(0);" class="btn btn-outline-light btn-sm">Upgrade</a>

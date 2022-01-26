@@ -10,35 +10,6 @@
                 </form>
             </div>
         </li>
-        <li class="dropdown notification-list topbar-dropdown">
-            <a class="nav-link dropdown-toggle arrow-none" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
-                <img src="{{ asset('assets/images/flags/us.jpg') }}" alt="user-image" class="me-0 me-sm-1" height="12"> 
-                <span class="align-middle d-none d-sm-inline-block">English</span> <i class="mdi mdi-chevron-down d-none d-sm-inline-block align-middle"></i>
-            </a>
-            <div class="dropdown-menu dropdown-menu-end dropdown-menu-animated topbar-dropdown-menu">
-
-                <!-- item-->
-                <a href="javascript:void(0);" class="dropdown-item notify-item">
-                    <img src="{{ asset('assets/images/flags/germany.jpg') }}" alt="user-image" class="me-1" height="12"> <span class="align-middle">German</span>
-                </a>
-
-                <!-- item-->
-                <a href="javascript:void(0);" class="dropdown-item notify-item">
-                    <img src="{{ asset('assets/images/flags/italy.jpg') }}" alt="user-image" class="me-1" height="12"> <span class="align-middle">Italian</span>
-                </a>
-
-                <!-- item-->
-                <a href="javascript:void(0);" class="dropdown-item notify-item">
-                    <img src="{{ asset('assets/images/flags/spain.jpg') }}" alt="user-image" class="me-1" height="12"> <span class="align-middle">Spanish</span>
-                </a>
-
-                <!-- item-->
-                <a href="javascript:void(0);" class="dropdown-item notify-item">
-                    <img src="{{ asset('assets/images/flags/russia.jpg') }}" alt="user-image" class="me-1" height="12"> <span class="align-middle">Russian</span>
-                </a>
-
-            </div>
-        </li>
 
         <li class="dropdown notification-list">
             <a class="nav-link dropdown-toggle arrow-none" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
@@ -131,59 +102,51 @@
 
         <li class="dropdown notification-list d-none d-sm-inline-block">
             <a class="nav-link dropdown-toggle arrow-none" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
-                <i class="dripicons-view-apps noti-icon"></i>
+                <i class="mdi mdi-notebook-plus-outline noti-icon"></i>
             </a>
-            <div class="dropdown-menu dropdown-menu-end dropdown-menu-animated dropdown-lg p-0">
-
-                <div class="p-2">
-                    <div class="row g-0">
-                        <div class="col">
-                            <a class="dropdown-icon-item" href="#">
-                                <img src="{{ asset('assets/images/brands/slack.png') }}" alt="slack">
-                                <span>Slack</span>
-                            </a>
-                        </div>
-                        <div class="col">
-                            <a class="dropdown-icon-item" href="#">
-                                <img src="{{ asset('assets/images/brands/github.png') }}" alt="Github">
-                                <span>GitHub</span>
-                            </a>
-                        </div>
-                        <div class="col">
-                            <a class="dropdown-icon-item" href="#">
-                                <img src="{{ asset('assets/images/brands/dribbble.png') }}" alt="dribbble">
-                                <span>Dribbble</span>
-                            </a>
-                        </div>
-                    </div>
-
-                    <div class="row g-0">
-                        <div class="col">
-                            <a class="dropdown-icon-item" href="#">
-                                <img src="assets/images/brands/bitbucket.png" alt="bitbucket">
-                                <span>Bitbucket</span>
-                            </a>
-                        </div>
-                        <div class="col">
-                            <a class="dropdown-icon-item" href="#">
-                                <img src="assets/images/brands/dropbox.png" alt="dropbox">
-                                <span>Dropbox</span>
-                            </a>
-                        </div>
-                        <div class="col">
-                            <a class="dropdown-icon-item" href="#">
-                                <img src="assets/images/brands/g-suite.png" alt="G Suite">
-                                <span>G Suite</span>
-                            </a>
-                        </div>
-                    </div> <!-- end row-->
-                </div>
-
+            <div class="dropdown-menu dropdown-menu-end dropdown-menu-animated dropdown-md p-0">
+                <!-- item-->
+                <a href="javascript:void(0);" class="dropdown-item notify-item">
+                    <i class="dripicons-plus"></i>
+                    <span class="align-middle">Add Enquiry</span>
+                </a>
+                <a href="javascript:void(0);" class="dropdown-item notify-item">
+                    <i class="dripicons-plus"></i>
+                    <span class="align-middle">Add Deals</span>
+                </a>
+                <a href="javascript:void(0);" class="dropdown-item notify-item">
+                    <i class="dripicons-plus"></i>
+                    <span class="align-middle">Add Leads</span>
+                </a>
+                <a href="javascript:void(0);" class="dropdown-item notify-item">
+                    <i class="dripicons-plus"></i>
+                    <span class="align-middle">Add Activity</span>
+                </a>
+                <a href="javascript:void(0);" class="dropdown-item notify-item">
+                    <i class="dripicons-plus"></i>
+                    <span class="align-middle">Add Tasks</span>
+                </a>
+                <a href="javascript:void(0);" class="dropdown-item notify-item">
+                    <i class="dripicons-plus"></i>
+                    <span class="align-middle">Add Notes</span>
+                </a>
+                <a href="javascript:void(0);" class="dropdown-item notify-item">
+                    <i class="dripicons-plus"></i>
+                    <span class="align-middle">Add Product</span>
+                </a>
+                <a href="javascript:void(0);" class="dropdown-item notify-item">
+                    <i class="dripicons-plus"></i>
+                    <span class="align-middle">Add Organization</span>
+                </a>
+                <a href="javascript:void(0);" class="dropdown-item notify-item">
+                    <i class="dripicons-plus"></i>
+                    <span class="align-middle">Add Contact</span>
+                </a>
             </div>
         </li>
-
+        
         <li class="notification-list">
-            <a class="nav-link end-bar-toggle" href="javascript: void(0);">
+            <a class="nav-link" href="{{ route('account') }}">
                 <i class="dripicons-gear noti-icon"></i>
             </a>
         </li>
@@ -195,7 +158,7 @@
                     <img src="{{ asset('assets/images/users/avatar-1.jpg') }}" alt="user-image" class="rounded-circle">
                 </span>
                 <span>
-                    <span class="account-user-name">Dominic Keller</span>
+                    <span class="account-user-name">{{ Auth::user()->name }}</span>
                     <span class="account-position">Founder</span>
                 </span>
             </a>
@@ -206,34 +169,24 @@
                 </div>
 
                 <!-- item-->
-                <a href="javascript:void(0);" class="dropdown-item notify-item">
-                    <i class="mdi mdi-account-circle me-1"></i>
+                <a href="{{ route('account') }}" class="dropdown-item notify-item">
+                    <i class="mdi mdi-account-edit me-1"></i>
                     <span>My Account</span>
                 </a>
-
-                <!-- item-->
-                <a href="javascript:void(0);" class="dropdown-item notify-item">
-                    <i class="mdi mdi-account-edit me-1"></i>
-                    <span>Settings</span>
+                <a href="{{ route('change_password') }}" class="dropdown-item notify-item">
+                    <i class="uil-shield me-1"></i>
+                    <span>Change Password</span>
                 </a>
-
                 <!-- item-->
-                <a href="javascript:void(0);" class="dropdown-item notify-item">
-                    <i class="mdi mdi-lifebuoy me-1"></i>
-                    <span>Support</span>
-                </a>
-
-                <!-- item-->
-                <a href="javascript:void(0);" class="dropdown-item notify-item">
-                    <i class="mdi mdi-lock-outline me-1"></i>
-                    <span>Lock Screen</span>
-                </a>
-
-                <!-- item-->
-                <a href="javascript:void(0);" class="dropdown-item notify-item">
+                <a class="dropdown-item notify-item" href="{{ route('logout') }}"
+                                       onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
                     <i class="mdi mdi-logout me-1"></i>
                     <span>Logout</span>
                 </a>
+                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                    @csrf
+                </form>
             </div>
         </li>
 
