@@ -283,7 +283,7 @@
                 <!-- item-->
                 <a href="javascript:void(0);" class="dropdown-item notify-item">
                     <div class="d-flex">
-                        <img class="d-flex me-2 rounded-circle" src="assets/images/users/avatar-2.jpg" alt="Generic placeholder image" height="32">
+                        <img class="d-flex me-2 rounded-circle" src="{{ asset('assets/images/users/avatar-2.jpg') }}" alt="Generic placeholder image" height="32">
                         <div class="w-100">
                             <h5 class="m-0 font-14">Erwin Brown</h5>
                             <span class="font-12 mb-0">UI Designer</span>
@@ -294,7 +294,7 @@
                 <!-- item-->
                 <a href="javascript:void(0);" class="dropdown-item notify-item">
                     <div class="d-flex">
-                        <img class="d-flex me-2 rounded-circle" src="assets/images/users/avatar-5.jpg" alt="Generic placeholder image" height="32">
+                        <img class="d-flex me-2 rounded-circle" src="{{ asset('assets/images/users/avatar-5.jpg') }}" alt="Generic placeholder image" height="32">
                         <div class="w-100">
                             <h5 class="m-0 font-14">Jacob Deo</h5>
                             <span class="font-12 mb-0">Developer</span>
