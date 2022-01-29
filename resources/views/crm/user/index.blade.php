@@ -23,31 +23,7 @@
     <div class="row">
         <div class="col-lg-2">
             <div>
-                {{-- <ul class="list-group hover">
-                    <li class="list-group-item active"> Users</li>
-                    <li class="list-group-item">Roles </li>
-                    <li class="list-group-item">Teams</li>
-                    <li class="list-group-item">Organizations</li>
-                    <li class="list-group-item">Country</li>
-                    <li class="list-group-item">Lead Source</li>
-                    <li class="list-group-item">Lead Type</li>
-                    <li class="list-group-item">Deal Stages</li>
-                    <li class="list-group-item">Permission</li>
-                </ul> --}}
-                <div class="list-group">
-                    <a href="#" class="list-group-item list-group-item-action active">
-                      Users
-                    </a>
-                    <a href="#" class="list-group-item list-group-item-action">Roles</a>
-                    <a href="#" class="list-group-item list-group-item-action">Teams</a>
-                    <a href="#" class="list-group-item list-group-item-action">Organizations</a>
-                    <a href="#" class="list-group-item list-group-item-action">Country</a>
-                    <a href="#" class="list-group-item list-group-item-action">Lead Source</a>
-                    <a href="#" class="list-group-item list-group-item-action">Lead Type</a>
-                    <a href="#" class="list-group-item list-group-item-action">Deal Stages</a>
-                    <a href="#" class="list-group-item list-group-item-action">Permission</a>
-                    <a href="#" class="list-group-item list-group-item-action">Page Type</a>
-                  </div>
+                @include('crm.layouts.setup_menu')             
             </div>
         </div>
         <div class="col-lg-10">

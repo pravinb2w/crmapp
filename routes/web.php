@@ -23,4 +23,13 @@ Route::get('/dashboard', [App\Http\Controllers\HomeController::class, 'index'])-
 Route::get('/account', [App\Http\Controllers\AccountController::class, 'index'])->name('account');
 Route::get('/account/change-password',[App\Http\Controllers\AccountController::class, 'index'])->name('change_password');
 
-Route::get('/settings/users', [App\Http\Controllers\UserController::class, 'index'])->name('users');
+
+Route::prefix('settings')->group(function () {
+    Route::get('/users', [App\Http\Controllers\UserController::class, 'index'])->name('users');
+    Route::post('/users/add', [App\Http\Controllers\UserController::class, 'index'])->name('users.add');
+    Route::get('/roles', [App\Http\Controllers\RoleController::class, 'index'])->name('roles');
+    Route::post('/roles/add', [App\Http\Controllers\RoleController::class, 'add_edit'])->name('roles.add');
+    Route::post('/roles/save', [App\Http\Controllers\RoleController::class, 'save'])->name('roles.save');
+    Route::post('/roles/list', [App\Http\Controllers\RoleController::class, 'ajax_list'])->name('roles.list');
+    Route::post('/roles/delete', [App\Http\Controllers\RoleController::class, 'delete'])->name('roles.delete');
+});

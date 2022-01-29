@@ -51,7 +51,8 @@
                                 Change Password
                             </a>
                         </li>
-                    </ul> <!-- end nav-->
+                    </ul> 
+                    <!-- end nav-->
                     <div class="tab-content">
                         <div class="tab-pane show active" id="horizontal-form-profile">
                             <form class="form-horizontal">
