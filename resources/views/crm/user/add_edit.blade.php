@@ -9,7 +9,7 @@
                 <div class="col-12" id="error">
                 </div>
             </div>
-            <form class="form-horizontal modal-body" id="role-form" method="POST" action="{{ route('roles.save') }}" autocomplete="off">
+            <form class="form-horizontal modal-body" id="role-form" method="POST" action="{{ route('users.save') }}" autocomplete="off">
                 @csrf
                 <input type="hidden" name="id" value="{{ $id ?? '' }}">
                 

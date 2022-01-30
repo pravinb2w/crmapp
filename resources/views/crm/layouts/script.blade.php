@@ -64,11 +64,15 @@
     function set_add_url(page_type) {
         if(page_type=='roles') {
             return ajax_url = '{{ route("roles.add") }}';
+        } else if(page_type=='users') {
+            return ajax_url = '{{ route("users.add") }}';
         }
     }
     function set_delete_url(page_type) {
         if(page_type=='roles') {
             return ajax_url = '{{ route("roles.delete") }}';
+        } if(page_type=='users') {
+            return ajax_url = '{{ route("users.delete") }}';
         }
     }
 </script>

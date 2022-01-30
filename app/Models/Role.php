@@ -37,4 +37,5 @@ class Role extends Model
                         ->orWhere( 'description', 'like', "%{$search}%" );
                 }); 
     }
+
 }

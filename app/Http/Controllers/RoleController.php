@@ -6,7 +6,7 @@ use App\Models\Role;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
-
+use DB;
 
 class RoleController extends Controller
 {
@@ -32,10 +32,17 @@ class RoleController extends Controller
         $approve_status     = $request->input( 'approve_status' );
        
         $total_list         = Role::count();
-        $list               = Role::Latests()
+        // DB::enableQueryLog();
+        if( $order != 'id') {
+            $list               = Role::orderBy($order, $dir)
                                 ->search( $search )
                                 ->get();
-       
+        } else {
+            $list               = Role::Latests()
+                                ->search( $search )
+                                ->get();
+        }
+        // $query = DB::getQueryLog();
         if( empty( $request->input( 'search.value' ) ) ) {
             $total_filtered = Role::count();
         } else {
