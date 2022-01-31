@@ -58,6 +58,9 @@
             data: formData,
             contentType: false,
             processData: false,
+            beforeSend: function() {
+                $('.loader').show();
+            },
             success: (response) => {
                 get_settings_tab('profile');
             },

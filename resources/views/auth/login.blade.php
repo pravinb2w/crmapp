@@ -51,7 +51,11 @@
                                     </div>
 
                                     <div class="mb-3">
-                                        <a href="pages-recoverpw.html" class="text-muted float-end"><small>Forgot your password?</small></a>
+                                        @if (Route::has('password.request'))
+                                            <a class="text-muted float-end" href="{{ route('password.request') }}">
+                                                <small> {{ __('Forgot Your Password?') }} </small>
+                                            </a>
+                                        @endif
                                         <label for="password" class="form-label">Password</label>
                                         <div class="input-group input-group-merge">
                                             <input id="password" type="password" value="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">

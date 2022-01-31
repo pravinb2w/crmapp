@@ -83,5 +83,62 @@ class UserController extends Controller
 
     }
 
-    
+    public function add_edit(Request $request) {
+        if (! $request->ajax()) {
+            return response('Forbidden.', 403);
+        }
+        $id = $request->id;
+        $modal_title = 'Add Roles';
+        if( isset( $id ) && !empty($id) ) {
+            $info = Role::find($id);
+            $modal_title = 'Update Roles';
+        }
+        $params = ['modal_title' => $modal_title, 'id' => $id ?? '', 'info' => $info ?? ''];
+        return view('crm.roles.add_edit', $params);
+        echo json_encode(['view' => $view]);
+        return true;
+    }
+
+    public function save(Request $request)
+    {
+        $id = $request->id;
+        if( isset( $id ) && !empty($id) ) {
+            $role_validator   = [
+                'role'      => [ 'required', 'string', 'max:255', 'unique:roles,role,'.$id ],
+            ];
+        } else {
+            $role_validator   = [
+                'role'      => [ 'required', 'string', 'max:255', 'unique:roles,role' ],
+            ];
+        }
+        //Validate the product
+        $validator                     = Validator::make( $request->all(), $role_validator );
+        
+        if ($validator->passes()) {
+
+            $ins['status'] = isset($request->status) ? 1 : 0;
+            $ins['role'] = $request->role;
+            $ins['description'] = $request->description;
+            
+            if( isset($id) && !empty($id) ) {
+                Role::whereId($id)->update($ins);
+                $success = 'Updated role';
+            } else {
+                $ins['added_by'] = Auth::id();
+                Role::create($ins);
+                $success = 'Added new roles';
+            }
+            return response()->json(['error'=>[$success], 'status' => '0']);
+        }
+        return response()->json(['error'=>$validator->errors()->all(), 'status' => '1']);
+    }
+
+    public function delete(Request $request)
+    {
+        $id = $request->id;
+        $role = Role::find($id);
+        $role->delete();
+        $delete_msg = 'Deleted successfully';
+        return response()->json(['error'=>[$delete_msg], 'status' => '0']);
+    }
 }
