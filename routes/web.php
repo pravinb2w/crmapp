@@ -19,7 +19,7 @@ Route::get('/', function () {
 });
 
 Auth::routes();
-Route::middleware([SetViewVariable::class])->group(function(){
+Route::middleware([SetViewVariable::class, 'auth'])->group(function(){
 
     Route::get('/dashboard', [App\Http\Controllers\HomeController::class, 'index'])->name('dashboard');
     Route::get('/account', [App\Http\Controllers\AccountController::class, 'index'])->name('account');
@@ -31,7 +31,7 @@ Route::middleware([SetViewVariable::class])->group(function(){
     Route::prefix('settings')->group(function () {
         //users route
         Route::get('/users', [App\Http\Controllers\UserController::class, 'index'])->name('users');
-        Route::post('/users/add', [App\Http\Controllers\UserController::class, 'index'])->name('users.add');
+        Route::post('/users/add', [App\Http\Controllers\UserController::class, 'add_edit'])->name('users.add');
         Route::post('/users/save', [App\Http\Controllers\UserController::class, 'save'])->name('users.save');
         Route::post('/users/list', [App\Http\Controllers\UserController::class, 'ajax_list'])->name('users.list');
         Route::post('/users/delete', [App\Http\Controllers\UserController::class, 'delete'])->name('users.delete');
@@ -41,5 +41,11 @@ Route::middleware([SetViewVariable::class])->group(function(){
         Route::post('/roles/save', [App\Http\Controllers\RoleController::class, 'save'])->name('roles.save');
         Route::post('/roles/list', [App\Http\Controllers\RoleController::class, 'ajax_list'])->name('roles.list');
         Route::post('/roles/delete', [App\Http\Controllers\RoleController::class, 'delete'])->name('roles.delete');
+         //subscriptions route
+        Route::get('/subscriptions', [App\Http\Controllers\SubscriptionController::class, 'index'])->name('subscriptions');
+        Route::post('/subscriptions/add', [App\Http\Controllers\SubscriptionController::class, 'add_edit'])->name('subscriptions.add');
+        Route::post('/subscriptions/save', [App\Http\Controllers\SubscriptionController::class, 'save'])->name('subscriptions.save');
+        Route::post('/subscriptions/list', [App\Http\Controllers\SubscriptionController::class, 'ajax_list'])->name('subscriptions.list');
+        Route::post('/subscriptions/delete', [App\Http\Controllers\SubscriptionController::class, 'delete'])->name('subscriptions.delete');
     });
 });

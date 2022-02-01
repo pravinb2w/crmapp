@@ -156,8 +156,11 @@
                 aria-expanded="false">
                 <span class="account-user-avatar"> 
                     {{-- <img src="{{ asset('assets/images/users/avatar-1.jpg') }}" alt="user-image" class="rounded-circle"> --}}
+                    @if($cm_profile_image)
                     <img src="{{ asset('storage/'.$cm_profile_image) }}" alt="user-image" class="rounded-circle">
-
+                    @else
+                    <img src="{{ asset('assets/images/users/avatar-1.jpg') }}" alt="user-image" class="rounded-circle">
+                    @endif
                 </span>
                 <span>
                     <span class="account-user-name">{{ Auth::user()->name }}</span>

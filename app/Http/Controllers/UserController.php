@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Role;
+use App\Models\CompanySettings;
+
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use DB;
@@ -88,15 +91,16 @@ class UserController extends Controller
             return response('Forbidden.', 403);
         }
         $id = $request->id;
-        $modal_title = 'Add Roles';
+        $modal_title = 'Add User';
+        $company = CompanySettings::all();
+        $roles = Role::all();
         if( isset( $id ) && !empty($id) ) {
-            $info = Role::find($id);
-            $modal_title = 'Update Roles';
+            $info = User::find($id);
+            $modal_title = 'Update User';
         }
-        $params = ['modal_title' => $modal_title, 'id' => $id ?? '', 'info' => $info ?? ''];
-        return view('crm.roles.add_edit', $params);
-        echo json_encode(['view' => $view]);
-        return true;
+        $params = ['modal_title' => $modal_title, 'id' => $id ?? '', 'info' => $info ?? '', 'company' => $company, 'roles' => $roles];
+        return view('crm.user.add_edit', $params);
+       
     }
 
     public function save(Request $request)

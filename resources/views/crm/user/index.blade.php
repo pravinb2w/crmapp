@@ -78,7 +78,9 @@
     <script src="{{ asset('assets/js/vendor/dataTables.checkboxes.min.js') }}"></script>
     {{-- <script src="{{ asset('assets/js/pages/demo.products.js') }}"></script> --}}
     <script>
-        $(document).ready(function(){"use strict";$("#products-datatable").DataTable()
+        $(document).ready(function(){
+            "use strict";
+            $("#products-datatable").DataTable()
     });
     </script>
 @endsection

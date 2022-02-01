@@ -24,6 +24,8 @@
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
+        
+
         $.ajax({
             url: ajax_url,
             method:'POST',
@@ -34,6 +36,8 @@
                 $('#Mymodal').modal('show');
             }
         })
+        return false;
+
     }
 
     function common_soft_delete(page_type, id) {
@@ -66,13 +70,17 @@
             return ajax_url = '{{ route("roles.add") }}';
         } else if(page_type=='users') {
             return ajax_url = '{{ route("users.add") }}';
+        } else if(page_type=='subscriptions') {
+            return ajax_url = '{{ route("subscriptions.add") }}';
         }
     }
     function set_delete_url(page_type) {
         if(page_type=='roles') {
             return ajax_url = '{{ route("roles.delete") }}';
-        } if(page_type=='users') {
+        } else if(page_type=='users') {
             return ajax_url = '{{ route("users.delete") }}';
+        } else if(page_type=='subscriptions') {
+            return ajax_url = '{{ route("subscriptions.delete") }}';
         }
     }
 </script>

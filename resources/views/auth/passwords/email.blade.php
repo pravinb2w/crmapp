@@ -8,7 +8,6 @@
         <meta content="Coderthemes" name="author" />
         <!-- App favicon -->
         <link rel="shortcut icon" href="{{ asset('assets/images/favicon.ico') }}">
-
         <!-- App css -->
         <link href="{{ asset('assets/css/icons.min.css') }}" rel="stylesheet" type="text/css" />
         <link href="{{ asset('assets/css/app.min.css') }}" rel="stylesheet" type="text/css" id="light-style" />
@@ -37,7 +36,8 @@
                                     <p class="text-muted mb-4">Enter your email address and we'll send you an email with instructions to reset your password.</p>
                                 </div>
 
-                                <form method="POST" action="{{ route('password.email') }}">
+                                <form method="POST" action="{{ route('password.email') }}" autocomplete="off">
+                                    @csrf
                                     <div class="mb-3">
                                         <label for="emailaddress" class="form-label">Email address</label>
                                         <input class="form-control" name="email" value="{{ old('email') }}" @error('email') is-invalid @enderror required autocomplete="email" autofocus type="email" id="emailaddress" required="" placeholder="Enter your email">

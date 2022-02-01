@@ -1,4 +1,4 @@
-<div class="modal-dialog modal-md">
+<div class="modal-dialog modal-lg">
     <div class="modal-content">
         <div class="modal-header">
             <h4 class="modal-title" id="myLargeModalLabel">{{ $modal_title }}</h4>
@@ -14,18 +14,52 @@
                 <input type="hidden" name="id" value="{{ $id ?? '' }}">
                 
                 <div class="row mb-3">
-                    <label for="role" class="col-3 col-form-label">Role <span class="text-danger">*</span></label>
+                    <label for="name" class="col-3 col-form-label">First Name <span class="text-danger">*</span></label>
                     <div class="col-9">
-                        <input type="text" name="role" class="form-control" id="role" placeholder="Name" value="{{ $info->role ?? '' }}" required>
+                        <input type="text" name="name" class="form-control" id="name" placeholder="Name" value="{{ $info->name ?? '' }}" required>
                     </div>
                 </div>
                 <div class="row mb-3">
-                    <label for="description" class="col-3 col-form-label">description</label>
+                    <label for="last_name" class="col-3 col-form-label">Last Name <span class="text-danger">*</span></label>
                     <div class="col-9">
-                        <textarea  class="form-control" name="description" id="description" cols="30" rows="3" >{{ $info->description ?? '' }}</textarea>
+                        <input type="text" name="last_name" class="form-control" id="last_name" placeholder="Last Name" value="{{ $info->last_name ?? '' }}" required>
                     </div>
                 </div>
-               <div class="row mb-3">
+                <div class="row mb-3">
+                    <label for="email" class="col-3 col-form-label"> Email<span class="text-danger">*</span></label>
+                    <div class="col-9">
+                        <input type="text" name="email" class="form-control" id="email" placeholder="Email" value="{{ $info->email ?? '' }}" required>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <label for="mobile_no" class="col-3 col-form-label">Mobile Number <span class="text-danger">*</span></label>
+                    <div class="col-9">
+                        <input type="text" name="mobile_no" class="form-control" id="mobile_no" placeholder="Mobile Number" value="{{ $info->mobile_no ?? '' }}" required>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <label for="mobile_no" class="col-3 col-form-label">Company<span class="text-danger">*</span></label>
+                    <div class="col-9">
+                        <div class="input-group bootstrap-touchspin bootstrap-touchspin-injected">
+                            <select name="company_id" id="company_id" class="form-control"></select>
+                            <span class="input-group-btn input-group-append">
+                                <button class="btn btn-primary bootstrap-touchspin-up" type="button">+</button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <label for="mobile_no" class="col-3 col-form-label">Role<span class="text-danger">*</span></label>
+                    <div class="col-9">
+                        <div class="input-group bootstrap-touchspin bootstrap-touchspin-injected">
+                            <select name="role_id" id="role_id" class="form-control"></select>
+                            <span class="input-group-btn input-group-append">
+                                <button class="btn btn-primary bootstrap-touchspin-up" type="button">+</button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-3">
                     <label for="description" class="col-3 col-form-label">Status</label>
                     <!-- Success Switch-->
                     <div class="col-9">

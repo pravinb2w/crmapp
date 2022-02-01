@@ -12,7 +12,7 @@
                     <ol class="breadcrumb m-0">
                         <li class="breadcrumb-item"><a href="javascript: void(0);">CRM</a></li>
                         <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
-                        <li class="breadcrumb-item active">Roles</li>
+                        <li class="breadcrumb-item active">Subscriptions</li>
                     </ol>
                 </div>
                 <h4 class="page-title">Settings </h4>
@@ -42,7 +42,7 @@
                         </div><!-- end col-->
                     </div>
                     <div class="table-responsive">
-                        <table class="table table-centered w-100 dt-responsive nowrap" id="roles-datatable">
+                        <table class="table table-centered w-100 dt-responsive nowrap" id="subscriptions-datatable">
                             <thead class="table-light">
                                 <tr>
                                     <th class="all" style="width: 20px;">
@@ -51,8 +51,9 @@
                                             <label class="form-check-label" for="customCheck1">&nbsp;</label>
                                         </div>
                                     </th>
-                                    <th class="all">Role</th>
-                                    <th>Added By</th>
+                                    <th class="all">Subscription</th>
+                                    <th>Period</th>
+                                    <th>Amount</th>
                                     <th>Status</th>
                                     <th style="width: 80px;">Action</th>
                                 </tr>
@@ -80,20 +81,21 @@
     <script>
         $(document).ready(function(){"use strict";
         
-        const roletable = $('#roles-datatable').DataTable( {
+        const roletable = $('#subscriptions-datatable').DataTable( {
             
             "processing"    : true,
             "serverSide"    : true,
             "ajax"          : {
-                "url"       : "<?= route( 'roles.list' ); ?>",
+                "url"       : "<?= route( 'subscriptions.list' ); ?>",
                 "dataType"  : "json",
                 "type"      : "POST",
                 "data"      : { "_token" : "<?=csrf_token();?>" }
             },
             "columns"       : [
                 {"data" : "id"},
-                {"data" : "role"},
-                {"data" : "addedBy"},
+                {"data" : "subscription_name"},
+                {"data" : "subscription_period"},
+                {"data" : "amount"},
                 {"data" : "status" },
                 {"data" : "action" },
             ],
