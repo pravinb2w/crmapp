@@ -42,7 +42,7 @@
                         </div><!-- end col-->
                     </div>
                     <div class="table-responsive">
-                        <table class="table table-centered w-100 dt-responsive nowrap" id="subscriptions-datatable">
+                        <table class="table table-centered w-100 dt-responsive nowrap" id="csubscriptions-datatable">
                             <thead class="table-light">
                                 <tr>
                                     <th class="all" style="width: 20px;">
@@ -81,7 +81,7 @@
     <script>
         $(document).ready(function(){"use strict";
         
-        const roletable = $('#subscriptions-datatable').DataTable( {
+        const roletable = $('#csubscriptions-datatable').DataTable( {
             
             "processing"    : true,
             "serverSide"    : true,
@@ -102,8 +102,6 @@
             
         } );
     });
-
-    
 
     function ReloadDataTableModal(id) {
         var roletable = $('#'+id).DataTable();

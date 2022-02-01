@@ -28,12 +28,22 @@
                     <div class="col-sm-4">
                         <label for="subscription_period" class="col-form-label">Subscription Period <span class="text-danger">*</span></label>
                         <div class="input-group bootstrap-touchspin bootstrap-touchspin-injected">
-                            <input type="number" name="subscription_period" class="form-control" id="subscription_period" placeholder="Subscription Period" value="{{ $info->subscription_name ?? '' }}" required>
+                            @php
+                                $duration = '';
+                            @endphp
+                            @if( isset( $info->subscription_period ) && !empty($info->subscription_period)) 
+                                @php
+                                    $period = explode("-",$info->subscription_period);
+                                    $subscription_period = $period[0];
+                                    $duration = end($period);
+                                @endphp
+                            @endif
+                            <input type="number" name="subscription_period" class="form-control" id="subscription_period" placeholder="Subscription Period" value="{{ $subscription_period ?? '' }}" required>
                             <span class="input-group-append">
                                 <select name="duration" id="duration" class="form-control">
-                                    <option value="Y">Year</option>
-                                    <option value="M">Month</option>
-                                    <option value="D">Day</option>
+                                    <option value="Y" @if($duration == 'Y') selected @endif>Year</option>
+                                    <option value="M" @if($duration == 'M') selected @endif>Month</option>
+                                    <option value="D" @if($duration == 'D') selected @endif>Day</option>
                                 </select>
                             </span>
                         </div>
@@ -50,37 +60,37 @@
                     <div class="col-sm-3">
                         <label for="no_of_clients" class="col-form-label">Client <small class="text-muted"> (nos)  </small></label>
                         <div class="">
-                            <input type="number" name="no_of_clients" class="form-control" id="no_of_clients" placeholder="0" value="{{ $info->no_of_clients ?? '' }}" required>
+                            <input type="number" name="no_of_clients" class="form-control" id="no_of_clients" placeholder="0" value="{{ $info->no_of_clients ?? '' }}" >
                         </div>
                     </div>
                     <div class="col-sm-3">
                         <label for="no_of_employees" class="col-form-label">Employees <small class="text-muted"> (nos)  </small></label>
                         <div class="">
-                            <input type="number" name="no_of_employees" class="form-control" id="no_of_employees" placeholder="0" value="{{ $info->no_of_employees ?? '' }}" required>
+                            <input type="number" name="no_of_employees" class="form-control" id="no_of_employees" placeholder="0" value="{{ $info->no_of_employees ?? '' }}" >
                         </div>
                     </div>
                     <div class="col-sm-3">
                         <label for="no_of_leads" class="col-form-label">Leads <small class="text-muted"> (nos)  </small></label>
                         <div class="">
-                            <input type="number" name="no_of_leads" class="form-control" id="no_of_leads" placeholder="0" value="{{ $info->no_of_leads ?? '' }}" required>
+                            <input type="number" name="no_of_leads" class="form-control" id="no_of_leads" placeholder="0" value="{{ $info->no_of_leads ?? '' }}" >
                         </div>
                     </div>
                     <div class="col-sm-3">
                         <label for="no_of_deals" class="col-form-label">Deals <small class="text-muted"> (nos)  </small></label>
                         <div class="">
-                            <input type="number" name="no_of_deals" class="form-control" id="no_of_deals" placeholder="0" value="{{ $info->no_of_deals ?? '' }}" required>
+                            <input type="number" name="no_of_deals" class="form-control" id="no_of_deals" placeholder="0" value="{{ $info->no_of_deals ?? '' }}" >
                         </div>
                     </div>
                     <div class="col-sm-3">
                         <label for="no_of_pages" class="col-form-label">Pages <small class="text-muted"> (nos)  </small></label>
                         <div class="">
-                            <input type="number" name="no_of_pages" class="form-control" id="no_of_pages" placeholder="0" value="{{ $info->no_of_pages ?? '' }}" required>
+                            <input type="number" name="no_of_pages" class="form-control" id="no_of_pages" placeholder="0" value="{{ $info->no_of_pages ?? '' }}" >
                         </div>
                     </div>
                     <div class="col-sm-3">
                         <label for="no_of_email_templates" class="col-form-label">Email Template <small class="text-muted"> (nos)  </small></label>
                         <div class="">
-                            <input type="number" name="no_of_email_templates" class="form-control" id="no_of_email_templates" placeholder="0" value="{{ $info->no_of_email_templates ?? '' }}" required>
+                            <input type="number" name="no_of_email_templates" class="form-control" id="no_of_email_templates" placeholder="0" value="{{ $info->no_of_email_templates ?? '' }}" >
                         </div>
                     </div>
                 </div>
@@ -89,49 +99,49 @@
                     <div class="col-4">
                         <label for="role" class="col-form-label">Bulk Import </label>
                         <span class="custom-check">
-                            <input type="checkbox" name="bulk_import" id="bulk_import" data-switch="warning"/>
+                            <input type="checkbox" name="bulk_import" id="bulk_import" @if( isset($info->bulk_import) && !empty($info->bulk_import) ) checked @endif data-switch="warning"/>
                             <label for="bulk_import" data-on-label="Yes" data-off-label="No"></label>
                         </span>
                     </div>
                     <div class="col-4">
                         <label for="role" class="col-form-label">Database Backup </label>
                         <span class="custom-check">
-                            <input type="checkbox" name="database_backup" id="database_backup" data-switch="warning"/>
+                            <input type="checkbox" name="database_backup" id="database_backup"  @if( isset($info->database_backup) && !empty($info->database_backup)) checked @endif  data-switch="warning"/>
                             <label for="database_backup" data-on-label="Yes" data-off-label="No"></label>
                         </span>
                     </div>
                     <div class="col-4">
                         <label for="role" class="col-form-label"> Work Automation </label>
                         <span class="custom-check">
-                            <input type="checkbox" name="work_automation" id="work_automation" data-switch="warning"/>
+                            <input type="checkbox" name="work_automation" id="work_automation"  @if( isset($info->work_automation) && !empty($info->work_automation) ) checked @endif  data-switch="warning"/>
                             <label for="work_automation" data-on-label="Yes" data-off-label="No"></label>
                         </span>
                     </div>
                     <div class="col-4">
                         <label for="role" class="col-form-label"> Telegram Bot </label>
                         <span class="custom-check">
-                            <input type="checkbox" name="telegram_bot" id="telegram_bot" data-switch="warning"/>
+                            <input type="checkbox" name="telegram_bot" id="telegram_bot" @if( isset($info->telegram_bot) && !empty($info->telegram_bot) ) checked @endif  data-switch="warning"/>
                             <label for="telegram_bot" data-on-label="Yes" data-off-label="No"></label>
                         </span>
                     </div>
                     <div class="col-4">
                         <label for="role" class="col-form-label">Sms Integration </label>
                         <span class="custom-check">
-                            <input type="checkbox" name="sms_integration" id="sms_integration" data-switch="warning"/>
+                            <input type="checkbox" name="sms_integration" id="sms_integration" @if( isset($info->sms_integration) && ($info->sms_integration) ) checked @endif  data-switch="warning"/>
                             <label for="sms_integration" data-on-label="Yes" data-off-label="No"></label>
                         </span>
                     </div>
                     <div class="col-4">
                         <label for="role" class="col-form-label"> Payment Gateway </label>
                         <span class="custom-check">
-                            <input type="checkbox" name="payment_gateway" id="payment_gateway" data-switch="warning"/>
+                            <input type="checkbox" name="payment_gateway" id="payment_gateway" @if( isset($info->payment_gateway) && ($info->payment_gateway))checked @endif  data-switch="warning"/>
                             <label for="payment_gateway" data-on-label="Yes" data-off-label="No"></label>
                         </span>
                     </div>
                     <div class="col-4">
                         <label for="role" class="col-form-label"> Business Whatsapp </label>
                         <span class="custom-check">
-                            <input type="checkbox" name="business_whatsapp" id="business_whatsapp" data-switch="warning"/>
+                            <input type="checkbox" name="business_whatsapp" id="business_whatsapp" @if( isset($info->business_whatsapp) && !empty($info->business_whatsapp) ) checked @endif  data-switch="warning"/>
                             <label for="business_whatsapp" data-on-label="Yes" data-off-label="No"></label>
                         </span>
                     </div>
@@ -181,7 +191,7 @@
                             setTimeout(function(){
                                 $('#Mymodal').modal('hide');
                             },100);
-                            ReloadDataTableModal('roles-datatable');
+                            ReloadDataTableModal('subscriptions-datatable');
                         }
                     }            
                 });

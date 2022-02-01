@@ -58,7 +58,7 @@ class SubscriptionController extends Controller
                 if( $subscriptions->status == '1' ) {
                     $subscriptions_status                     = '<div class="badge bg-success"> Active </div>';
                 }
-                $action = '<a href="javascript:void(0);" class="action-icon"> <i class="mdi mdi-eye"></i></a>
+                $action = '<a href="javascript:void(0);" class="action-icon" onclick="return get_subscription_view('.$subscriptions->id.')"> <i class="mdi mdi-eye"></i></a>
                 <a href="javascript:void(0);" class="action-icon" onclick="return get_add_modal(\'subscriptions\', '.$subscriptions->id.')"> <i class="mdi mdi-square-edit-outline"></i></a>
                 <a href="javascript:void(0);" class="action-icon" onclick="return common_soft_delete(\'subscriptions\', '.$subscriptions->id.')"> <i class="mdi mdi-delete"></i></a>';
 
@@ -159,5 +159,18 @@ class SubscriptionController extends Controller
         $role->delete();
         $delete_msg = 'Deleted successfully';
         return response()->json(['error'=>[$delete_msg], 'status' => '0']);
+    }
+
+    public function view(Request $request) {
+        if (! $request->ajax()) {
+            return response('Forbidden.', 403);
+        }
+        $id = $request->id;
+        $modal_title = 'Subscription Info';
+        $info = Subscription::find($id);
+        $params = ['modal_title' => $modal_title, 'id' => $id ?? '', 'info' => $info ?? ''];
+        return view('crm.subscription.view', $params);
+        echo json_encode(['view' => $view]);
+        return true;
     }
 }
