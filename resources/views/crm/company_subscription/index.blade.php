@@ -12,7 +12,7 @@
                     <ol class="breadcrumb m-0">
                         <li class="breadcrumb-item"><a href="javascript: void(0);">CRM</a></li>
                         <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
-                        <li class="breadcrumb-item active">Subscriptions</li>
+                        <li class="breadcrumb-item active">Company Subscriptions</li>
                     </ol>
                 </div>
                 <h4 class="page-title">Settings </h4>
@@ -52,8 +52,7 @@
                                         </div>
                                     </th>
                                     <th class="all">Subscription</th>
-                                    <th>Period</th>
-                                    <th>Amount</th>
+                                    <th>Company</th>
                                     <th>Status</th>
                                     <th style="width: 80px;">Action</th>
                                 </tr>
@@ -86,7 +85,7 @@
             "processing"    : true,
             "serverSide"    : true,
             "ajax"          : {
-                "url"       : "<?= route( 'subscriptions.list' ); ?>",
+                "url"       : "<?= route( 'company-subscriptions.list' ); ?>",
                 "dataType"  : "json",
                 "type"      : "POST",
                 "data"      : { "_token" : "<?=csrf_token();?>" }
@@ -94,8 +93,7 @@
             "columns"       : [
                 {"data" : "id"},
                 {"data" : "subscription_name"},
-                {"data" : "subscription_period"},
-                {"data" : "amount"},
+                {"data" : "company_name"},
                 {"data" : "status" },
                 {"data" : "action" },
             ],
@@ -115,7 +113,7 @@
             }
         });
         $.ajax({
-            url: '{{ route("subscriptions.view") }}',
+            url: '{{ route("company-subscriptions.view") }}',
             method:'POST',
             data: {id:id},
             // dataType:'json',

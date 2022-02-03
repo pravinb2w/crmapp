@@ -9,31 +9,41 @@
                 <div class="col-12" id="error">
                 </div>
             </div>
-            <form class="form-horizontal modal-body" id="role-form" method="POST" action="{{ route('roles.save') }}" autocomplete="off">
+            <form class="form-horizontal modal-body" id="csubscription-form" method="POST" action="{{ route('roles.save') }}" autocomplete="off">
                 @csrf
                 <input type="hidden" name="id" value="{{ $id ?? '' }}">
                 
                 <div class="row mb-3">
-                    <label for="role" class="col-3 col-form-label">Role <span class="text-danger">*</span></label>
-                    <div class="col-9">
-                        <input type="text" name="role" class="form-control" id="role" placeholder="Name" value="{{ $info->role ?? '' }}" required>
+                    <label for="subscription_id" class="col-4 col-form-label">Subscription <span class="text-danger">*</span></label>
+                    <div class="col-8">
+                        <select name="subscription_id" id="subscription_id" class="form-control" required>
+                            <option value="">--Select--</option>
+                        </select>
                     </div>
                 </div>
                 <div class="row mb-3">
-                    <label for="description" class="col-3 col-form-label">Description</label>
-                    <div class="col-9">
-                        <textarea  class="form-control" name="description" id="description" cols="30" rows="3" >{{ $info->description ?? '' }}</textarea>
+                    <label for="company_id" class="col-4 col-form-label">Company <span class="text-danger">*</span></label>
+                    <div class="col-8">
+                        <select name="company_id" id="company_id" class="form-control" required>
+                            <option value="">--Select--</option>
+                        </select>
                     </div>
                 </div>
-               <div class="row mb-3">
-                    <label for="description" class="col-3 col-form-label">Status</label>
+               
+                <div class="row mb-3 position-relative" id="datepicker4">
+                    <label class="form-label col-4">Start Date <span class="text-danger">*</span></label>
+                    <div class="col-8">
+                        <input type="text" required name="start_date" id="start_date" class="form-control" data-provide="datepicker" data-date-autoclose="true" data-date-container="#datepicker4">
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <label for="description" class="col-4 col-form-label">Status</label>
                     <!-- Success Switch-->
-                    <div class="col-9">
+                    <div class="col-8">
                         <input type="checkbox" name="status" id="switch3" {{ (isset($info->status) && $info->status == '1' )  ? 'checked' : '' }} data-switch="success"/>
                         <label for="switch3" data-on-label="" data-off-label=""></label>
                     </div>
-               </div>
-                
+                </div>
                 <div class=" row">
                     <div class="col-12 text-end">
                         <button type="submit" class="btn btn-info" id="save">Save</button>
@@ -46,7 +56,7 @@
 </div>
 
 <script>
-        $("#role-form").validate({
+        $("#csubscription-form").validate({
             submitHandler:function(form) {
                 $.ajax({
                     url: form.action,

@@ -11,6 +11,8 @@
 <!-- demo app -->
 {{-- <script src="{{ asset('assets/js/pages/demo.dashboard-crm.js') }}"></script> --}}
 <!-- end demo js-->
+<script src="{{ asset('assets/js/pages/demo.timepicker.js') }}"></script>
+
 <script>
 
     function display_errors( item, index) {
@@ -24,8 +26,6 @@
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
-        
-
         $.ajax({
             url: ajax_url,
             method:'POST',
@@ -72,6 +72,8 @@
             return ajax_url = '{{ route("users.add") }}';
         } else if(page_type=='subscriptions') {
             return ajax_url = '{{ route("subscriptions.add") }}';
+        } else if(page_type=='company-subscriptions') {
+            return ajax_url = '{{ route("company-subscriptions.add") }}';
         }
     }
     function set_delete_url(page_type) {
@@ -81,6 +83,8 @@
             return ajax_url = '{{ route("users.delete") }}';
         } else if(page_type=='subscriptions') {
             return ajax_url = '{{ route("subscriptions.delete") }}';
+        } else if(page_type=='company-subscriptions') {
+            return ajax_url = '{{ route("company-subscriptions.delete") }}';
         }
     }
 </script>

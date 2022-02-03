@@ -23,5 +23,8 @@
         .error {
             color:#fa5c7c;
         }
+        .datepicker {
+            width: fit-content;
+        }
     </style>
 </head>
