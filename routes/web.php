@@ -56,5 +56,12 @@ Route::middleware([SetViewVariable::class, 'auth'])->group(function(){
         Route::post('/company-subscriptions/save', [App\Http\Controllers\CompanySubscriptionController::class, 'save'])->name('company-subscriptions.save');
         Route::post('/company-subscriptions/list', [App\Http\Controllers\CompanySubscriptionController::class, 'ajax_list'])->name('company-subscriptions.list');
         Route::post('/company-subscriptions/delete', [App\Http\Controllers\CompanySubscriptionController::class, 'delete'])->name('company-subscriptions.delete');
+
+        Route::get('/company', [App\Http\Controllers\CompanyController::class, 'index'])->name('company');
+        Route::post('/company/add', [App\Http\Controllers\CompanyController::class, 'add_edit'])->name('company.add');
+        Route::post('/company/view', [App\Http\Controllers\CompanyController::class, 'view'])->name('company.view');
+        Route::post('/company/save', [App\Http\Controllers\CompanyController::class, 'save'])->name('company.save');
+        Route::post('/company/list', [App\Http\Controllers\CompanyController::class, 'ajax_list'])->name('company.list');
+        Route::post('/company/delete', [App\Http\Controllers\CompanyController::class, 'delete'])->name('company.delete');
     });
 });
