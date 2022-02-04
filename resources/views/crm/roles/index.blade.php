@@ -30,17 +30,8 @@
             <div class="card">
                 <div class="card-body">
                     {{-- <h4 class="header-title">Personal Preference</h4> --}}
-                    <div class="row mb-2">
-                        <div class="col-sm-5">
-                            @include('crm.common.common_add_btn')
-                        </div>
-                        <div class="col-sm-7">
-                            <div class="text-sm-end">
-                                {{-- <button type="button" class="btn btn-success mb-2 me-1"><i class="mdi mdi-cog-outline"></i></button> --}}
-                                <button type="button" class="btn btn-light mb-2">Export</button>
-                            </div>
-                        </div><!-- end col-->
-                    </div>
+                    @include('crm.common.common_add_btn')
+
                     <div class="table-responsive">
                         <table class="table table-centered w-100 dt-responsive nowrap" id="roles-datatable">
                             <thead class="table-light">

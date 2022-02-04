@@ -30,19 +30,9 @@
             <div class="card">
                 <div class="card-body">
                     {{-- <h4 class="header-title">Personal Preference</h4> --}}
-                    <div class="row mb-2">
-                        <div class="col-sm-5">
-                            @include('crm.common.common_add_btn')
-                        </div>
-                        <div class="col-sm-7">
-                            <div class="text-sm-end">
-                                {{-- <button type="button" class="btn btn-success mb-2 me-1"><i class="mdi mdi-cog-outline"></i></button> --}}
-                                <button type="button" class="btn btn-light mb-2">Export</button>
-                            </div>
-                        </div><!-- end col-->
-                    </div>
+                    @include('crm.common.common_add_btn')
                     <div class="table-responsive">
-                        <table class="table table-centered w-100 dt-responsive nowrap" id="csubscriptions-datatable">
+                        <table class="table table-centered w-100 dt-responsive nowrap" id="company-datatable">
                             <thead class="table-light">
                                 <tr>
                                     <th class="all" style="width: 20px;">
@@ -91,8 +81,7 @@
             },
             "columns"       : [
                 {"data" : "id"},
-                {"data" : "subscription_name"},
-                {"data" : "company_name"},
+                {"data" : "site_name"},
                 {"data" : "status" },
                 {"data" : "action" },
             ],
@@ -105,23 +94,5 @@
         roletable.ajax.reload();
     }
 
-    function get_subscription_view( id ) {
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
-        $.ajax({
-            url: '{{ route("company-subscriptions.view") }}',
-            method:'POST',
-            data: {id:id},
-            // dataType:'json',
-            success:function(res){
-                $('#Mymodal').html(res);
-                $('#Mymodal').modal('show');
-            }
-        })
-        return false;
-    }
     </script>
 @endsection
