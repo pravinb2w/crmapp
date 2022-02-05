@@ -25,7 +25,7 @@
 
                 <!-- logo -->
                 <a href="index.html" class="navbar-brand me-lg-5">
-                    <img src="{{ asset('assets/images/logo1.jpeg') }}" alt="" class="logo-dark" height="18" />
+                    <img src="{{ asset('assets/images/logo/logo.png') }}" alt="" class="logo-dark" height="35" />
                 </a>
 
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
@@ -81,22 +81,21 @@
                         <div class="mt-md-4">
                             <div>
                                 <span class="badge bg-danger rounded-pill">New</span>
-                                <span class="text-white-50 ms-1">Welcome to new landing page</span>
+                                <span class="text-white-50 ms-1">Welcome to Brand New</span>
                             </div>
                             <h2 class="text-white fw-normal mb-4 mt-3 hero-title">
-                                Responsive Web UI Kit & Dashboard Template
+                               Phoenix - Customer relationship management system 
                             </h2>
 
-                            <p class="mb-4 font-16 text-white-50">Hyper is a fully featured dashboard and admin template
-                                comes with tones of well designed UI elements, components, widgets and pages.</p>
+                            <p class="mb-4 font-16 text-white-50">Phoenix CRM is a fully featured  with business or other organization administers its interactions with customers, typically using data analysis to study large amounts of information.</p>
 
-                            <a href="" target="_blank" class="btn btn-success">Preview <i
+                            <a href="login" target="_blank" class="btn btn-info rounded-pill">Explore  <i
                                     class="mdi mdi-arrow-right ms-1"></i></a>
                         </div>
                     </div>
                     <div class="col-md-5 offset-md-2">
-                        <div class="text-md-end mt-3 mt-md-0">
-                            <img src="{{ asset('assets/images/startup.svg') }}" alt="" class="img-fluid" />
+                        <div class="text-md-center mt-3 mt-md-0">
+                            <img src="{{ asset('assets/images/logo/logo-xl.png') }}" alt="" class="img-fluid" />
                         </div>
                     </div>
                 </div>
@@ -104,7 +103,7 @@
         </section>
         <!-- END HERO -->
 
-        <!-- START SERVICES -->
+        {{-- <!-- START SERVICES -->
         <section class="py-5">
             <div class="container">
                 <div class="row py-4">
@@ -418,7 +417,7 @@
 
             </div>
         </section>
-        <!-- END PRICING -->
+        <!-- END PRICING --> --}}
 
         <!-- START FAQ -->
         <section class="py-5">
@@ -559,8 +558,9 @@
             <div class="container">
                 <div class="row">
                     <div class="col-lg-6">
-                        <img src="assets/images/logo.png" alt="" class="logo-dark" height="18" />
-                        <p class="text-muted mt-4">Hyper makes it easier to build better websites with
+                        {{-- <img src="assets/images/logo.png" alt="" class="logo-dark" height="18" /> --}}
+                        <strong class="text-white"> PHOENIX</strong>
+                        <p class="text-muted mt-4">PHOENIX TECH makes it easier to build better websites with
                             <br> great speed. Save hundreds of hours of design
                             <br> and development by using it.</p>
 
@@ -619,8 +619,8 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="mt-5">
-                            <p class="text-muted mt-4 text-center mb-0">© 2018 - 2021 Hyper. Design and coded by
-                                Coderthemes</p>
+                            <p class="text-muted mt-4 text-center mb-0">© 2022 - 2023 PHOENIX. Design and coded by
+                                DuraiBytes</p>
                         </div>
                     </div>
                 </div>
