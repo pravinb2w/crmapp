@@ -21,7 +21,7 @@
         <div class="col-12">
             <div class="card">
                 
-                <div class="card-body">
+                <div class="card-body"> 
                     <div class="row mb-2">
                         <div class="col-sm-5">
                             <a href="#" class="btn btn-danger mb-2" data-bs-toggle="modal" data-bs-target="#signup-modalz">
@@ -110,10 +110,8 @@
                 </div>  <!-- end card-body -->
             </div>  <!-- end card -->
         </div>
-    </div>
-
+    </div> 
 </div>
-
  
 <div id="signup-modalz" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-lg">
