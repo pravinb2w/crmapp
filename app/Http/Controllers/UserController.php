@@ -25,7 +25,7 @@ class UserController extends Controller
             return response('Forbidden.', 403);
         }
 
-        $columns            = [ 'id', 'role', 'added_by', 'status', '' ];
+        $columns            = [ 'id', 'role', 'added_by', 'status', 'id' ];
 
         $limit              = $request->input( 'length' );
         $start              = $request->input( 'start' );

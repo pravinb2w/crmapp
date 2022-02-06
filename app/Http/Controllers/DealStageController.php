@@ -22,7 +22,7 @@ class DealStageController extends Controller
             return response('Forbidden.', 403);
         }
 
-        $columns            = [ 'id', 'stages', 'status', '' ];
+        $columns            = [ 'id', 'stages', 'status', 'id' ];
 
         $limit              = $request->input( 'length' );
         $start              = $request->input( 'start' );

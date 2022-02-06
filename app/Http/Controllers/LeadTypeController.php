@@ -22,7 +22,7 @@ class LeadTypeController extends Controller
             return response('Forbidden.', 403);
         }
 
-        $columns            = [ 'id', 'type', 'status', '' ];
+        $columns            = [ 'id', 'type', 'status', 'id' ];
 
         $limit              = $request->input( 'length' );
         $start              = $request->input( 'start' );

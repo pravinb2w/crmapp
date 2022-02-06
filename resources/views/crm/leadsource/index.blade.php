@@ -19,7 +19,7 @@
                         <th>EndAt</th>
                         <th>Amount</th>
                         <th>Status</th>
-                        <th style="width: 80px;">Action</th>
+                        <th data-orderable="false" style="width: 80px;">Action</th>
                     </tr>
                 </thead>
                 
@@ -56,6 +56,7 @@
                 {"data" : "status" },
                 {"data" : "action" },
             ],
+            
             
         } );
     });

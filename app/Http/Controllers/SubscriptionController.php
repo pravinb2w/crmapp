@@ -22,7 +22,7 @@ class SubscriptionController extends Controller
             return response('Forbidden.', 403);
         }
 
-        $columns            = [ 'id', 'subscription_name', 'subscription_period', 'amount', 'status', '' ];
+        $columns            = [ 'id', 'subscription_name', 'subscription_period', 'amount', 'status', 'id' ];
 
         $limit              = $request->input( 'length' );
         $start              = $request->input( 'start' );

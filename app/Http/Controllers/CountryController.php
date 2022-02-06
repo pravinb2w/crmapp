@@ -22,7 +22,7 @@ class CountryController extends Controller
             return response('Forbidden.', 403);
         }
 
-        $columns            = [ 'id', 'country_name', 'dial_code', 'country_code', 'status', '' ];
+        $columns            = [ 'id', 'country_name', 'dial_code', 'country_code', 'status', 'id' ];
 
         $limit              = $request->input( 'length' );
         $start              = $request->input( 'start' );

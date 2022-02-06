@@ -31,7 +31,7 @@ class LeadSourceController extends Controller
             return response('Forbidden.', 403);
         }
 
-        $columns            = [ 'id', 'type', 'status', '' ];
+        $columns            = [ 'id', 'source', 'status', 'id' ];
 
         $limit              = $request->input( 'length' );
         $start              = $request->input( 'start' );
@@ -42,11 +42,11 @@ class LeadSourceController extends Controller
         $total_list         = LeadSource::count();
         // DB::enableQueryLog();
         if( $order != 'id') {
-            $list               = LeadSource::whereRaw('created_at')->orderBy($order, $dir)
+            $list               = LeadSource::orderBy($order, $dir)
                                 ->search( $search )
                                 ->get();
         } else {
-            $list               = LeadSource::whereRaw('created_at')->Latests()
+            $list               = LeadSource::Latests()
                                 ->search( $search )
                                 ->get();
         }

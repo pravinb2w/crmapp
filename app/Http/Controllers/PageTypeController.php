@@ -22,7 +22,7 @@ class PageTypeController extends Controller
             return response('Forbidden.', 403);
         }
 
-        $columns            = [ 'id', 'page', 'status', '' ];
+        $columns            = [ 'id', 'page', 'status', 'id' ];
 
         $limit              = $request->input( 'length' );
         $start              = $request->input( 'start' );
