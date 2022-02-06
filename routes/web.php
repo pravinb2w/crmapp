@@ -124,8 +124,13 @@ Route::middleware([SetViewVariable::class, 'auth'])->group(function(){
     });
 
     // Customers Routes
-    Route::get('/Customers', function () {
+    Route::get('/customers', function () {
         return view('crm.customers.index');
     })->name("customers.index");
+
+    // Products Routes
+    Route::get('/products', function () {
+        return view('crm.products.index');
+    })->name("products.index");
 
 });

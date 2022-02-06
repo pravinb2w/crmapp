@@ -202,7 +202,7 @@
                     <div class=" row">
                         <div class="col-12 text-end">
                             <button type="button" class="btn btn-light me-2" data-bs-dismiss="modal" aria-label="Close"> Cancel</button>
-                            <button type="submit" class="btn btn-info" id="save">Save</button>
+                            <button type="submit" class="btn btn-success" id="save">Save</button>
                         </div>
                     </div>
                 </form>

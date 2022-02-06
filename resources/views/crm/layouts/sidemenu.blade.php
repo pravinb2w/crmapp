@@ -94,7 +94,7 @@
                 </div>
             </li>
             <li class="side-nav-item">
-                <a href="javascipt:void(0)" class="side-nav-link">
+                <a href="{{ route('products.index') }}" class="side-nav-link">
                     <i class="mdi mdi-archive"></i>
                     <span> Products </span>
                 </a>
