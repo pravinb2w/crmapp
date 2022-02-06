@@ -20,7 +20,7 @@
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="{{ asset('assets/js/vendor/sweetalert2.all.min.js') }}"></script>
     <link rel="stylesheet" href="{{ asset('assets/css/vendor/sweetalert2.all.min.css') }}">
-
+    
     <style>
         input.error, textarea.error,select.error {
             border: 1px solid #fa5c7c;
