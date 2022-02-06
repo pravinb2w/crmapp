@@ -12,7 +12,7 @@
                     <ol class="breadcrumb m-0">
                         <li class="breadcrumb-item"><a href="javascript: void(0);">CRM</a></li>
                         <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
-                        <li class="breadcrumb-item active">Company Subscriptions</li>
+                        <li class="breadcrumb-item active">Country</li>
                     </ol>
                 </div>
                 <h4 class="page-title">Settings </h4>
@@ -33,7 +33,7 @@
                     @include('crm.common.common_add_btn')
 
                     <div class="table-responsive">
-                        <table class="table table-centered w-100 dt-responsive nowrap" id="company-subscriptions-datatable">
+                        <table class="table table-centered w-100 dt-responsive nowrap" id="country-datatable">
                             <thead class="table-light">
                                 <tr>
                                     <th class="all" style="width: 20px;">
@@ -42,11 +42,10 @@
                                             <label class="form-check-label" for="customCheck1">&nbsp;</label>
                                         </div>
                                     </th>
-                                    <th class="all">Subscription</th>
-                                    <th>Company</th>
-                                    <th>StartAt</th>
-                                    <th>EndAt</th>
-                                    <th>Amount</th>
+                                    <th class="all">Country</th>
+                                    <th>Dial Code</th>
+                                    <th>Country Code</th>
+                                    <th>Currency</th>
                                     <th>Status</th>
                                     <th style="width: 80px;">Action</th>
                                 </tr>
@@ -74,23 +73,22 @@
     <script>
         $(document).ready(function(){"use strict";
         
-        const roletable = $('#company-subscriptions-datatable').DataTable( {
+        const roletable = $('#country-datatable').DataTable( {
             
             "processing"    : true,
             "serverSide"    : true,
             "ajax"          : {
-                "url"       : "<?= route( 'company-subscriptions.list' ); ?>",
+                "url"       : "<?= route( 'country.list' ); ?>",
                 "dataType"  : "json",
                 "type"      : "POST",
                 "data"      : { "_token" : "<?=csrf_token();?>" }
             },
             "columns"       : [
                 {"data" : "id"},
-                {"data" : "subscription_name"},
-                {"data" : "company_name"},
-                {"data" : "startAt"},
-                {"data" : "endAt"},
-                {"data" : "amount"},
+                {"data" : "country_name"},
+                {"data" : "dial_code"},
+                {"data" : "country_code"},
+                {"data" : "currency"},
                 {"data" : "status" },
                 {"data" : "action" },
             ],
@@ -103,23 +101,5 @@
         roletable.ajax.reload();
     }
 
-    function get_company_subscription_view( id ) {
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
-        $.ajax({
-            url: '{{ route("company-subscriptions.view") }}',
-            method:'POST',
-            data: {id:id},
-            // dataType:'json',
-            success:function(res){
-                $('#Mymodal').html(res);
-                $('#Mymodal').modal('show');
-            }
-        })
-        return false;
-    }
     </script>
 @endsection

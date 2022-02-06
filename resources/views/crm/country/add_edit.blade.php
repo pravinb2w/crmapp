@@ -9,58 +9,41 @@
                 <div class="col-12" id="error">
                 </div>
             </div>
-            <form class="form-horizontal modal-body" id="csubscription-form" method="POST" action="{{ route('company-subscriptions.save') }}" autocomplete="off">
+            <form class="form-horizontal modal-body" id="country-form" method="POST" action="{{ route('country.save') }}" autocomplete="off">
                 @csrf
                 <input type="hidden" name="id" value="{{ $id ?? '' }}">
                 <div class="row mb-3">
-                    <label for="subscription_id" class="col-4 col-form-label">Subscription <span class="text-danger">*</span></label>
+                    <label for="country_name" class="col-4 col-form-label">Country Name <span class="text-danger">*</span></label>
                     <div class="col-8">
-                        <select name="subscription_id" id="subscription_id" class="form-control" required>
-                            <option value="">--Select--</option>
-                            @if(isset($subscriptions) && !empty($subscriptions))
-                                @foreach ($subscriptions as $item)
-                                    <option value="{{ $item->id }}" @if(isset($info->subscription_id) && $info->subscription_id == $item->id) selected @endif>{{ $item->subscription_name }}</option>
-                                @endforeach
-                            @endif
-                        </select>
+                        <input type="text" name="country_name" id="country_name" class="form-control" value="{{ $info->country_name ?? '' }}" required>
                     </div>
                 </div>
                 <div class="row mb-3">
-                    <label for="company_id" class="col-4 col-form-label">Company <span class="text-danger">*</span></label>
+                    <label for="dial_code" class="col-4 col-form-label">Dial Code </label>
                     <div class="col-8">
-                        <select name="company_id" id="company_id" class="form-control" required>
-                            <option value="">--Select--</option>
-                            @if(isset($company) && !empty($company))
-                                @foreach ($company as $item)
-                                    <option value="{{ $item->id }}"  @if(isset($info->company_id) && $info->company_id == $item->id) selected @endif>{{ $item->site_name }}</option>
-                                @endforeach
-                            @endif
-                        </select>
-                    </div>
-                </div>
-               
-                <div class="row mb-3 position-relative" id="datepicker4">
-                    <label class="form-label col-4">Start Date <span class="text-danger">*</span></label>
-                    <div class="col-8">
-                        <input type="text" required name="start_date" id="start_date" class="form-control datepicker w-100" value="<?= isset($info->startAt) ? date('d-m-Y', strtotime($info->startAt)): ''?>">
+                        <input type="text" name="dial_code" id="dial_code" class="form-control" value="{{ $info->dial_code ?? '' }}" >
                     </div>
                 </div>
                 <div class="row mb-3">
-                    <label for="total_amount" class="col-4 col-form-label">Total Amount <span class="text-danger">*</span></label>
-                    <!-- Success Switch-->
+                    <label for="country_code" class="col-4 col-form-label">Country Code </label>
                     <div class="col-8">
-                        <input type="text" name="total_amount" id="total_amount" value="{{ $info->total_amount ?? '' }}" class="form-control" required/>
+                        <input type="text" name="country_code" id="country_code" class="form-control" value="{{ $info->country_code ?? '' }}" >
                     </div>
                 </div>
                 <div class="row mb-3">
-                    <label for="description" class="col-4 col-form-label">Description</label>
-                    <!-- Success Switch-->
+                    <label for="currency" class="col-4 col-form-label">Currency </label>
                     <div class="col-8">
-                        <textarea name="description" class="form-control" id="description" cols="30" rows="3"></textarea>
+                        <input type="text" name="currency" id="currency" class="form-control" value="{{ $info->currency ?? '' }}" >
                     </div>
                 </div>
                 <div class="row mb-3">
-                    <label for="status" class="col-4 col-form-label">Status</label>
+                    <label for="description" class="col-4 col-form-label"> Description </label>
+                    <div class="col-8">
+                        <textarea name="description" class="form-control" id="description" cols="30" rows="3">{{ $info->description ?? '' }}</textarea>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <label for="description" class="col-4 col-form-label">Status</label>
                     <!-- Success Switch-->
                     <div class="col-8">
                         <input type="checkbox" name="status" id="switch3" {{ (isset($info->status) && $info->status == '1' )  ? 'checked' : '' }} data-switch="success"/>
@@ -69,8 +52,9 @@
                 </div>
                 <div class=" row">
                     <div class="col-12 text-end">
-                        <button type="submit" class="btn btn-info" id="save">Save</button>
                         <button type="button" class="btn btn-dark" data-bs-dismiss="modal" aria-label="Close"> Cancel</button>
+                        <button type="submit" class="btn btn-info" id="save">Save</button>
+
                     </div>
                 </div>
             </form> 
@@ -79,7 +63,7 @@
 </div>
 
 <script>
-        $("#csubscription-form").validate({
+        $("#country-form").validate({
             submitHandler:function(form) {
                 $.ajax({
                     url: form.action,
@@ -102,18 +86,12 @@
                             setTimeout(function(){
                                 $('#Mymodal').modal('hide');
                             },100);
-                            ReloadDataTableModal('company-subscriptions-datatable');
+                            ReloadDataTableModal('country-datatable');
                         }
                     }            
                 });
             }
         });
 
-        $(function(){
-            $('.datepicker').datepicker({
-                format: 'dd-mm-yyyy',
-                // endDate: '+0d',
-                autoclose: true
-            });
-        }); 
+        
 </script>

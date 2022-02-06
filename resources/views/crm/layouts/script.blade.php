@@ -131,8 +131,18 @@
             return ajax_url = '{{ route("subscriptions.add") }}';
         } else if(page_type=='company-subscriptions') {
             return ajax_url = '{{ route("company-subscriptions.add") }}';
-        }  else if(page_type=='company') {
+        } else if(page_type=='company') {
             return ajax_url = '{{ route("company.add") }}';
+        } else if(page_type=='pagetype') {
+            return ajax_url = '{{ route("pagetype.add") }}';
+        } else if(page_type=='dealstages') {
+            return ajax_url = '{{ route("dealstages.add") }}';
+        } else if(page_type=='leadtype') {
+            return ajax_url = '{{ route("leadtype.add") }}';
+        } else if(page_type=='leadsource') {
+            return ajax_url = '{{ route("leadsource.add") }}';
+        } else if(page_type=='country') {
+            return ajax_url = '{{ route("country.add") }}';
         }
     }
     function set_delete_url(page_type) {
@@ -144,8 +154,18 @@
             return ajax_url = '{{ route("subscriptions.delete") }}';
         } else if(page_type=='company-subscriptions') {
             return ajax_url = '{{ route("company-subscriptions.delete") }}';
-        }  else if(page_type=='company') {
+        } else if(page_type=='company') {
             return ajax_url = '{{ route("company.delete") }}';
+        } else if(page_type=='pagetype') {
+            return ajax_url = '{{ route("pagetype.delete") }}';
+        } else if(page_type=='dealstages') {
+            return ajax_url = '{{ route("dealstages.delete") }}';
+        } else if(page_type=='leadtype') {
+            return ajax_url = '{{ route("leadtype.delete") }}';
+        } else if(page_type=='leadsource') {
+            return ajax_url = '{{ route("leadsource.delete") }}';
+        } else if(page_type=='country') {
+            return ajax_url = '{{ route("country.delete") }}';
         }
     }
 
@@ -158,8 +178,64 @@
             return ajax_url = '{{ route("subscriptions.status") }}';
         } else if(page_type=='company-subscriptions') {
             return ajax_url = '{{ route("company-subscriptions.status") }}';
-        }  else if(page_type=='company') {
+        } else if(page_type=='company') {
             return ajax_url = '{{ route("company.status") }}';
+        } else if(page_type=='pagetype') {
+            return ajax_url = '{{ route("pagetype.status") }}';
+        } else if(page_type=='dealstages') {
+            return ajax_url = '{{ route("dealstages.status") }}';
+        } else if(page_type=='leadtype') {
+            return ajax_url = '{{ route("leadtype.status") }}';
+        } else if(page_type=='leadsource') {
+            return ajax_url = '{{ route("leadsource.status") }}';
+        } else if(page_type=='country') {
+            return ajax_url = '{{ route("country.status") }}';
         }
     }
+
+    function set_url(page_type) {
+        if(page_type=='roles') {
+            return ajax_url = '{{ route("roles") }}';
+        } else if(page_type=='users') {
+            return ajax_url = '{{ route("users") }}';
+        } else if(page_type=='subscriptions') {
+            return ajax_url = '{{ route("subscriptions") }}';
+        } else if(page_type=='company-subscriptions') {
+            return ajax_url = '{{ route("company-subscriptions") }}';
+        } else if(page_type=='company') {
+            return ajax_url = '{{ route("company") }}';
+        } else if(page_type=='pagetype') {
+            return ajax_url = '{{ route("pagetype") }}';
+        } else if(page_type=='dealstages') {
+            return ajax_url = '{{ route("dealstages") }}';
+        } else if(page_type=='leadtype') {
+            return ajax_url = '{{ route("leadtype") }}';
+        } else if(page_type=='leadsource') {
+            return ajax_url = '{{ route("leadsource") }}';
+        } else if(page_type=='country') {
+            return ajax_url = '{{ route("country") }}';
+        }
+    }
+</script>
+<script>
+
+    $('.inner-menu').click(function(){
+        // alert($(this).data("id"));
+        var page = $(this).data("id");
+        var ajax_url = set_url(page);
+
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        $.ajax({
+            url: ajax_url,
+            method:'POST',
+            data: {page:page},
+            success:function(response){
+                $('#setup_menu_view').html(response);
+            }      
+        });
+    })
 </script>

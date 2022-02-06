@@ -6,15 +6,14 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use DB;
-use App\Models\CompanySettings;
+use App\Models\LeadType;
 
-
-class CompanyController extends Controller
+class LeadTypeController extends Controller
 {
     public function index(Type $var = null)
     {
-        $params = array('btn_name' => 'Company', 'btn_fn_param' => 'company');
-        return view('crm.company.index', $params);
+        $params = array('btn_name' => 'Lead Type', 'btn_fn_param' => 'leadtype');
+        return view('crm.leadtype.index', $params);
     }
 
     public function ajax_list( Request $request ) {
@@ -23,51 +22,50 @@ class CompanyController extends Controller
             return response('Forbidden.', 403);
         }
 
-        $columns            = [ 'id', 'site_name', 'status', '' ];
+        $columns            = [ 'id', 'type', 'status', '' ];
 
         $limit              = $request->input( 'length' );
         $start              = $request->input( 'start' );
         $order              = $columns[ intval( $request->input( 'order' )[0][ 'column' ] ) ];        
         $dir                = $request->input( 'order' )[0][ 'dir' ];
         $search             = $request->input( 'search.value' );
-        $approve_status     = $request->input( 'approve_status' );
        
-        $total_list         = CompanySettings::whereNotNull('created_at')->count();
+        $total_list         = LeadType::count();
         // DB::enableQueryLog();
         if( $order != 'id') {
-            $list               = CompanySettings::whereNotNull('created_at')->orderBy($order, $dir)
+            $list               = LeadType::whereRaw('created_at')->orderBy($order, $dir)
                                 ->search( $search )
                                 ->get();
         } else {
-            $list               = CompanySettings::whereNotNull('created_at')->Latests()
+            $list               = LeadType::whereRaw('created_at')->Latests()
                                 ->search( $search )
                                 ->get();
         }
         // $query = DB::getQueryLog();
         if( empty( $request->input( 'search.value' ) ) ) {
-            $total_filtered = CompanySettings::whereNotNull('created_at')->count();
+            $total_filtered = LeadType::count();
         } else {
-            $total_filtered = CompanySettings::whereNotNull('created_at')->search( $search )
+            $total_filtered = LeadType::search( $search )
                                 ->count();
         }
         
         $data           = array();
         if( $list ) {
             $i=1;
-            foreach( $list as $company ) {
-                $company_status                         = '<div class="badge bg-danger" role="button" onclick="change_status(\'company\','.$company->id.', 1)"> Inactive </div>';
-                if( $company->status == 1 ) {
-                    $company_status                     = '<div class="badge bg-success" role="button" onclick="change_status(\'company\','.$company->id.', 0)"> Active </div>';
+            foreach( $list as $leadtype ) {
+                $leadtype_status                         = '<div class="badge bg-danger" role="button" onclick="change_status(\'leadtype\','.$leadtype->id.', 1)"> Inactive </div>';
+                if( $leadtype->status == 1 ) {
+                    $leadtype_status                     = '<div class="badge bg-success" role="button" onclick="change_status(\'leadtype\','.$leadtype->id.', 0)"> Active </div>';
                 }
-                $action = '<a href="javascript:void(0);" class="action-icon" onclick="return get_add_modal(\'company\', '.$company->id.')"> <i class="mdi mdi-square-edit-outline"></i></a>
-                <a href="javascript:void(0);" class="action-icon" onclick="return common_soft_delete(\'company\', '.$company->id.')"> <i class="mdi mdi-delete"></i></a>';
+                $action = '<a href="javascript:void(0);" class="action-icon" onclick="return get_add_modal(\'leadtype\', '.$leadtype->id.')"> <i class="mdi mdi-square-edit-outline"></i></a>
+                <a href="javascript:void(0);" class="action-icon" onclick="return common_soft_delete(\'leadtype\', '.$leadtype->id.')"> <i class="mdi mdi-delete"></i></a>';
 
                 $nested_data[ 'id' ]                = '<div class="form-check">
-                    <input type="checkbox" class="form-check-input" id="customCheck2" value="'.$company->id.'">
+                    <input type="checkbox" class="form-check-input" id="customCheck2" value="'.$leadtype->id.'">
                     <label class="form-check-label" for="customCheck2">&nbsp;</label>
                 </div>';
-                $nested_data[ 'site_name' ]         = $company->site_name;
-                $nested_data[ 'status' ]            = $company_status;
+                $nested_data[ 'type' ]              = $leadtype->type;
+                $nested_data[ 'status' ]            = $leadtype_status;
                 $nested_data[ 'action' ]            = $action;
                 $data[]                             = $nested_data;
             }
@@ -87,13 +85,13 @@ class CompanyController extends Controller
             return response('Forbidden.', 403);
         }
         $id = $request->id;
-        $modal_title = 'Add Company';
+        $modal_title = 'Add Lead Type';
         if( isset( $id ) && !empty($id) ) {
-            $info = CompanySettings::find($id);
-            $modal_title = 'Update Company';
+            $info = LeadType::find($id);
+            $modal_title = 'Update Lead Type';
         }
         $params = ['modal_title' => $modal_title, 'id' => $id ?? '', 'info' => $info ?? ''];
-        return view('crm.company.add_edit', $params);
+        return view('crm.leadtype.add_edit', $params);
         echo json_encode(['view' => $view]);
         return true;
     }
@@ -102,24 +100,31 @@ class CompanyController extends Controller
     {
         $id = $request->id;
         
-        $role_validator   = [
-            'company_name'      => [ 'required', 'string', 'max:255'],
-        ];
+        if( isset( $id ) && !empty($id) ) {
+            $role_validator   = [
+                'type'      => [ 'required', 'string', 'max:255', 'unique:lead_types,type,'.$id ],
+            ];
+        } else {
+            $role_validator   = [
+                'type'      => [ 'required', 'string', 'max:255', 'unique:lead_types,type'],
+            ];
+        }
         //Validate the product
         $validator                     = Validator::make( $request->all(), $role_validator );
         
         if ($validator->passes()) {
 
             $ins['status'] = isset($request->status) ? 1 : 0;
-            $ins['site_name'] = $request->company_name;
+            $ins['type'] = $request->type;
+            $ins['description'] = $request->description;
             
             if( isset($id) && !empty($id) ) {
-                CompanySettings::whereId($id)->update($ins);
-                $success = 'Updated Company';
+                LeadType::whereId($id)->update($ins);
+                $success = 'Updated Lead Type';
             } else {
                 $ins['added_by'] = Auth::id();
-                CompanySettings::create($ins);
-                $success = 'Added new company';
+                LeadType::create($ins);
+                $success = 'Added new Lead Type';
             }
             return response()->json(['error'=>[$success], 'status' => '0']);
         }
@@ -129,7 +134,7 @@ class CompanyController extends Controller
     public function delete(Request $request)
     {
         $id = $request->id;
-        $role = CompanySettings::find($id);
+        $role = LeadType::find($id);
         $role->delete();
         $delete_msg = 'Deleted successfully';
         return response()->json(['error'=>[$delete_msg], 'status' => '0']);
@@ -140,9 +145,8 @@ class CompanyController extends Controller
         $id = $request->id;
         $status = $request->status;
         $ins['status'] = $status;
-        CompanySettings::whereId($id)->update($ins);
+        LeadType::whereId($id)->update($ins);
         $update_msg = 'Updated successfully';
         return response()->json(['error'=>[$update_msg], 'status' => '0']);
     }
-
 }

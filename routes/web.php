@@ -29,6 +29,15 @@ Route::middleware([SetViewVariable::class, 'auth'])->group(function(){
     Route::post('/company/save', [App\Http\Controllers\AccountController::class, 'company_save'])->name('account.company.save');
 
     Route::prefix('settings')->group(function () {
+        Route::get('/', [App\Http\Controllers\SettingController::class, 'index'])->name('settings');
+
+        //users route
+        Route::get('/cms', [App\Http\Controllers\UserController::class, 'index'])->name('cms');
+        Route::post('/cms/add', [App\Http\Controllers\UserController::class, 'add_edit'])->name('cms.add');
+        Route::post('/cms/save', [App\Http\Controllers\UserController::class, 'save'])->name('cms.save');
+        Route::post('/cms/list', [App\Http\Controllers\UserController::class, 'ajax_list'])->name('cms.list');
+        Route::post('/cms/delete', [App\Http\Controllers\UserController::class, 'delete'])->name('cms.delete');
+        Route::post('/cms/status', [App\Http\Controllers\UserController::class, 'change_status'])->name('cms.status');
         //users route
         Route::get('/users', [App\Http\Controllers\UserController::class, 'index'])->name('users');
         Route::post('/users/add', [App\Http\Controllers\UserController::class, 'add_edit'])->name('users.add');
@@ -71,6 +80,46 @@ Route::middleware([SetViewVariable::class, 'auth'])->group(function(){
         Route::post('/company/list', [App\Http\Controllers\CompanyController::class, 'ajax_list'])->name('company.list');
         Route::post('/company/delete', [App\Http\Controllers\CompanyController::class, 'delete'])->name('company.delete');
         Route::post('/company/status', [App\Http\Controllers\CompanyController::class, 'change_status'])->name('company.status');
+
+        Route::get('/pagetype', [App\Http\Controllers\PageTypeController::class, 'index'])->name('pagetype');
+        Route::post('/pagetype/add', [App\Http\Controllers\PageTypeController::class, 'add_edit'])->name('pagetype.add');
+        Route::post('/pagetype/view', [App\Http\Controllers\PageTypeController::class, 'view'])->name('pagetype.view');
+        Route::post('/pagetype/save', [App\Http\Controllers\PageTypeController::class, 'save'])->name('pagetype.save');
+        Route::post('/pagetype/list', [App\Http\Controllers\PageTypeController::class, 'ajax_list'])->name('pagetype.list');
+        Route::post('/pagetype/delete', [App\Http\Controllers\PageTypeController::class, 'delete'])->name('pagetype.delete');
+        Route::post('/pagetype/status', [App\Http\Controllers\PageTypeController::class, 'change_status'])->name('pagetype.status');
+
+        Route::get('/dealstages', [App\Http\Controllers\DealStageController::class, 'index'])->name('dealstages');
+        Route::post('/dealstages/add', [App\Http\Controllers\DealStageController::class, 'add_edit'])->name('dealstages.add');
+        Route::post('/dealstages/view', [App\Http\Controllers\DealStageController::class, 'view'])->name('dealstages.view');
+        Route::post('/dealstages/save', [App\Http\Controllers\DealStageController::class, 'save'])->name('dealstages.save');
+        Route::post('/dealstages/list', [App\Http\Controllers\DealStageController::class, 'ajax_list'])->name('dealstages.list');
+        Route::post('/dealstages/delete', [App\Http\Controllers\DealStageController::class, 'delete'])->name('dealstages.delete');
+        Route::post('/dealstages/status', [App\Http\Controllers\DealStageController::class, 'change_status'])->name('dealstages.status');
+
+        Route::get('/leadtype', [App\Http\Controllers\LeadTypeController::class, 'index'])->name('leadtype');
+        Route::post('/leadtype/add', [App\Http\Controllers\LeadTypeController::class, 'add_edit'])->name('leadtype.add');
+        Route::post('/leadtype/view', [App\Http\Controllers\LeadTypeController::class, 'view'])->name('leadtype.view');
+        Route::post('/leadtype/save', [App\Http\Controllers\LeadTypeController::class, 'save'])->name('leadtype.save');
+        Route::post('/leadtype/list', [App\Http\Controllers\LeadTypeController::class, 'ajax_list'])->name('leadtype.list');
+        Route::post('/leadtype/delete', [App\Http\Controllers\LeadTypeController::class, 'delete'])->name('leadtype.delete');
+        Route::post('/leadtype/status', [App\Http\Controllers\LeadTypeController::class, 'change_status'])->name('leadtype.status');
+
+        Route::any('/leadsource', [App\Http\Controllers\LeadSourceController::class, 'index'])->name('leadsource');
+        Route::post('/leadsource/add', [App\Http\Controllers\LeadSourceController::class, 'add_edit'])->name('leadsource.add');
+        Route::post('/leadsource/view', [App\Http\Controllers\LeadSourceController::class, 'view'])->name('leadsource.view');
+        Route::post('/leadsource/save', [App\Http\Controllers\LeadSourceController::class, 'save'])->name('leadsource.save');
+        Route::post('/leadsource/list', [App\Http\Controllers\LeadSourceController::class, 'ajax_list'])->name('leadsource.list');
+        Route::post('/leadsource/delete', [App\Http\Controllers\LeadSourceController::class, 'delete'])->name('leadsource.delete');
+        Route::post('/leadsource/status', [App\Http\Controllers\LeadSourceController::class, 'change_status'])->name('leadsource.status');
+
+        Route::get('/country', [App\Http\Controllers\CountryController::class, 'index'])->name('country');
+        Route::post('/country/add', [App\Http\Controllers\CountryController::class, 'add_edit'])->name('country.add');
+        Route::post('/country/view', [App\Http\Controllers\CountryController::class, 'view'])->name('country.view');
+        Route::post('/country/save', [App\Http\Controllers\CountryController::class, 'save'])->name('country.save');
+        Route::post('/country/list', [App\Http\Controllers\CountryController::class, 'ajax_list'])->name('country.list');
+        Route::post('/country/delete', [App\Http\Controllers\CountryController::class, 'delete'])->name('country.delete');
+        Route::post('/country/status', [App\Http\Controllers\CountryController::class, 'change_status'])->name('country.status');
 
     });
 });

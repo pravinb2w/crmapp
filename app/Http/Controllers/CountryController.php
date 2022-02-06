@@ -6,15 +6,14 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use DB;
-use App\Models\CompanySettings;
+use App\Models\Country;
 
-
-class CompanyController extends Controller
+class CountryController extends Controller
 {
     public function index(Type $var = null)
     {
-        $params = array('btn_name' => 'Company', 'btn_fn_param' => 'company');
-        return view('crm.company.index', $params);
+        $params = array('btn_name' => 'Country', 'btn_fn_param' => 'country');
+        return view('crm.country.index', $params);
     }
 
     public function ajax_list( Request $request ) {
@@ -23,51 +22,53 @@ class CompanyController extends Controller
             return response('Forbidden.', 403);
         }
 
-        $columns            = [ 'id', 'site_name', 'status', '' ];
+        $columns            = [ 'id', 'country_name', 'dial_code', 'country_code', 'status', '' ];
 
         $limit              = $request->input( 'length' );
         $start              = $request->input( 'start' );
         $order              = $columns[ intval( $request->input( 'order' )[0][ 'column' ] ) ];        
         $dir                = $request->input( 'order' )[0][ 'dir' ];
         $search             = $request->input( 'search.value' );
-        $approve_status     = $request->input( 'approve_status' );
        
-        $total_list         = CompanySettings::whereNotNull('created_at')->count();
+        $total_list         = Country::count();
         // DB::enableQueryLog();
         if( $order != 'id') {
-            $list               = CompanySettings::whereNotNull('created_at')->orderBy($order, $dir)
+            $list               = Country::whereRaw('created_at')->orderBy($order, $dir)
                                 ->search( $search )
                                 ->get();
         } else {
-            $list               = CompanySettings::whereNotNull('created_at')->Latests()
+            $list               = Country::whereRaw('created_at')->Latests()
                                 ->search( $search )
                                 ->get();
         }
         // $query = DB::getQueryLog();
         if( empty( $request->input( 'search.value' ) ) ) {
-            $total_filtered = CompanySettings::whereNotNull('created_at')->count();
+            $total_filtered = Country::count();
         } else {
-            $total_filtered = CompanySettings::whereNotNull('created_at')->search( $search )
+            $total_filtered = Country::search( $search )
                                 ->count();
         }
         
         $data           = array();
         if( $list ) {
             $i=1;
-            foreach( $list as $company ) {
-                $company_status                         = '<div class="badge bg-danger" role="button" onclick="change_status(\'company\','.$company->id.', 1)"> Inactive </div>';
-                if( $company->status == 1 ) {
-                    $company_status                     = '<div class="badge bg-success" role="button" onclick="change_status(\'company\','.$company->id.', 0)"> Active </div>';
+            foreach( $list as $county ) {
+                $county_status                         = '<div class="badge bg-danger" role="button" onclick="change_status(\'country\','.$county->id.', 1)"> Inactive </div>';
+                if( $county->status == 1 ) {
+                    $county_status                     = '<div class="badge bg-success" role="button" onclick="change_status(\'country\','.$county->id.', 0)"> Active </div>';
                 }
-                $action = '<a href="javascript:void(0);" class="action-icon" onclick="return get_add_modal(\'company\', '.$company->id.')"> <i class="mdi mdi-square-edit-outline"></i></a>
-                <a href="javascript:void(0);" class="action-icon" onclick="return common_soft_delete(\'company\', '.$company->id.')"> <i class="mdi mdi-delete"></i></a>';
+                $action = '<a href="javascript:void(0);" class="action-icon" onclick="return get_add_modal(\'country\', '.$county->id.')"> <i class="mdi mdi-square-edit-outline"></i></a>
+                <a href="javascript:void(0);" class="action-icon" onclick="return common_soft_delete(\'country\', '.$county->id.')"> <i class="mdi mdi-delete"></i></a>';
 
                 $nested_data[ 'id' ]                = '<div class="form-check">
-                    <input type="checkbox" class="form-check-input" id="customCheck2" value="'.$company->id.'">
+                    <input type="checkbox" class="form-check-input" id="customCheck2" value="'.$county->id.'">
                     <label class="form-check-label" for="customCheck2">&nbsp;</label>
                 </div>';
-                $nested_data[ 'site_name' ]         = $company->site_name;
-                $nested_data[ 'status' ]            = $company_status;
+                $nested_data[ 'country_name' ]      = $county->country_name;
+                $nested_data[ 'dial_code' ]         = $county->dial_code ?? '-';
+                $nested_data[ 'country_code' ]      = $county->country_code ?? '-';
+                $nested_data[ 'currency' ]          = $county->currency ?? '-';
+                $nested_data[ 'status' ]            = $county_status;
                 $nested_data[ 'action' ]            = $action;
                 $data[]                             = $nested_data;
             }
@@ -87,13 +88,13 @@ class CompanyController extends Controller
             return response('Forbidden.', 403);
         }
         $id = $request->id;
-        $modal_title = 'Add Company';
+        $modal_title = 'Add Country';
         if( isset( $id ) && !empty($id) ) {
-            $info = CompanySettings::find($id);
-            $modal_title = 'Update Company';
+            $info = Country::find($id);
+            $modal_title = 'Update Lead Type';
         }
         $params = ['modal_title' => $modal_title, 'id' => $id ?? '', 'info' => $info ?? ''];
-        return view('crm.company.add_edit', $params);
+        return view('crm.country.add_edit', $params);
         echo json_encode(['view' => $view]);
         return true;
     }
@@ -102,24 +103,34 @@ class CompanyController extends Controller
     {
         $id = $request->id;
         
-        $role_validator   = [
-            'company_name'      => [ 'required', 'string', 'max:255'],
-        ];
+        if( isset( $id ) && !empty($id) ) {
+            $role_validator   = [
+                'country_name'      => [ 'required', 'string', 'max:255', 'unique:countries,country_name,'.$id ],
+            ];
+        } else {
+            $role_validator   = [
+                'country_name'      => [ 'required', 'string', 'max:255', 'unique:countries,country_name'],
+            ];
+        }
         //Validate the product
         $validator                     = Validator::make( $request->all(), $role_validator );
         
         if ($validator->passes()) {
 
             $ins['status'] = isset($request->status) ? 1 : 0;
-            $ins['site_name'] = $request->company_name;
+            $ins['country_name'] = $request->country_name;
+            $ins['dial_code'] = $request->dial_code;
+            $ins['country_code'] = $request->country_code;
+            $ins['currency'] = $request->currency;
+            $ins['description'] = $request->description;
             
             if( isset($id) && !empty($id) ) {
-                CompanySettings::whereId($id)->update($ins);
-                $success = 'Updated Company';
+                Country::whereId($id)->update($ins);
+                $success = 'Updated country';
             } else {
                 $ins['added_by'] = Auth::id();
-                CompanySettings::create($ins);
-                $success = 'Added new company';
+                Country::create($ins);
+                $success = 'Added new country';
             }
             return response()->json(['error'=>[$success], 'status' => '0']);
         }
@@ -129,7 +140,7 @@ class CompanyController extends Controller
     public function delete(Request $request)
     {
         $id = $request->id;
-        $role = CompanySettings::find($id);
+        $role = Country::find($id);
         $role->delete();
         $delete_msg = 'Deleted successfully';
         return response()->json(['error'=>[$delete_msg], 'status' => '0']);
@@ -140,9 +151,8 @@ class CompanyController extends Controller
         $id = $request->id;
         $status = $request->status;
         $ins['status'] = $status;
-        CompanySettings::whereId($id)->update($ins);
+        Country::whereId($id)->update($ins);
         $update_msg = 'Updated successfully';
         return response()->json(['error'=>[$update_msg], 'status' => '0']);
     }
-
 }
