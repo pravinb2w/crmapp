@@ -1,12 +1,17 @@
 <div class="leftside-menu">
     
     <!-- LOGO -->
-    <a href="index.html" class="logo text-center logo-light">
+    <a href="#" class="logo text-center logo-light">
         <span class="logo-lg">
             @if($cm_logo)
             <img src="{{ asset('storage/'.$cm_logo) }}" alt="" height="16">
             @else
-            <img src="{{ asset('assets/images/logo.png') }}" alt="" height="16">
+                <div class="d-flex justify-content-center">
+                    <div class="me-2">
+                        <img src="{{ asset('assets/images/logo/logo.png') }}" width="40px">
+                    </div>
+                    <strong class="text-white">PHOENIX <span class="text-secondary">TECH</span></strong>
+                </div>                
             @endif
             {{--  --}}
 
@@ -15,13 +20,13 @@
             @if($cm_logo)
             <img src="{{ asset('storage/'.$cm_logo) }}" alt="" height="16">
             @else
-            <img src="{{ asset('assets/images/logo.png') }}" alt="" height="16">
+            <img src="{{ asset('assets/images/logo/logo.png') }}" alt="" height="16">
             @endif
         </span>
     </a>
 
     <!-- LOGO -->
-    <a href="index.html" class="logo text-center logo-dark">
+    <a href="#" class="logo text-center logo-dark">
         <span class="logo-lg">
             <img src="{{ asset('assets/images/logo-dark.png') }}" alt="" height="16">
         </span>
@@ -59,7 +64,7 @@
                 </div>
             </li>
             <li class="side-nav-item">
-                <a href="javascript:void(0)" class="side-nav-link">
+                <a href="{{ route('customers.index') }}" class="side-nav-link">
                     <i class="mdi mdi-account-tie"></i>
                     <span> Customers </span>
                 </a>
@@ -183,17 +188,7 @@
 
         </ul>
 
-        <!-- Help Box -->
-        <div class="help-box text-white text-center">
-            <a href="javascript: void(0);" class="float-end close-btn text-white">
-                <i class="mdi mdi-close"></i>
-            </a>
-            <img src="{{ asset('assets/images/help-icon.svg') }}" height="90" alt="Helper Icon Image" />
-            <h5 class="mt-3">Unlimited Access</h5>
-            <p class="mb-3">Upgrade to plan to get access to unlimited reports</p>
-            <a href="javascript: void(0);" class="btn btn-outline-light btn-sm">Upgrade</a>
-        </div>
-        <!-- end Help Box -->
+       
         <!-- End Sidebar -->
 
         <div class="clearfix"></div>

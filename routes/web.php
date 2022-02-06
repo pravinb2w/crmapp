@@ -122,4 +122,10 @@ Route::middleware([SetViewVariable::class, 'auth'])->group(function(){
         Route::post('/country/status', [App\Http\Controllers\CountryController::class, 'change_status'])->name('country.status');
 
     });
+
+    // Customers Routes
+    Route::get('/Customers', function () {
+        return view('crm.customers.index');
+    })->name("customers.index");
+
 });
