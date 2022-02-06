@@ -1,3 +1,7 @@
+<div class="row">
+    <div class="col-12" id="error">
+    </div>
+</div>
 <form class="form-horizontal account_form" enctype="multipart/form-data" id="account_form">
     @csrf
     <div class="row mb-3">
@@ -52,6 +56,8 @@
        
         let formData = new FormData(this);
         $('#error').html("");
+        $('#error').removeClass("alert alert-danger");
+        $('#error').removeClass("alert alert-success");
         $.ajax({
             type:'POST',
             url: '{{ route("account.save") }}',
@@ -62,10 +68,17 @@
                 $('.loader').show();
             },
             success: (response) => {
-                get_settings_tab('profile');
+                if( response.status == '1') {
+                    $('#error').addClass('alert alert-danger');
+                    $('#error').text(response.error);
+                } else {
+                    $('#error').addClass('alert alert-success');
+                    get_settings_tab('profile');
+                }
+                $('.loader').hide();
             },
             error: function(response){
-                $('#error').text(response.responseJSON.errors.file);
+                
             }
         });
         return false;
