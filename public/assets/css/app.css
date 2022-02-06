@@ -3329,7 +3329,7 @@ textarea.form-control-lg {
 
 .btn-secondary {
   color: #fff;
-  background-color: #6c757d;
+  background-color: var(--bs-secondary);
   border-color: #6c757d;
 }
 .btn-secondary:hover {
@@ -21114,4 +21114,7 @@ div.dataTables_scrollBody > table > :not(:first-child) {
 }
 .side-nav-item .collapse.show  .menuitem-active .active {
   color: var(--bs-primary) !important;
+}
+.poniter-0 {
+  pointer-events: none !important;
 }

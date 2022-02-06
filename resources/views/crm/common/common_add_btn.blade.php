@@ -1,6 +1,6 @@
 <div class="row mb-2">
     <div class="col-sm-5">
-        <a href="javascript:void(0);" class="btn btn-danger mb-2" onclick="return get_add_modal('{{ $btn_fn_param }}');">
+        <a href="javascript:void(0);" class="btn btn-secondary mb-2" onclick="return get_add_modal('{{ $btn_fn_param }}');">
             <i class="mdi mdi-plus-circle me-2"></i> Add {{ $btn_name }}</a>
     </div>
     <div class="col-sm-7">
