@@ -10,7 +10,7 @@
                     <div class="me-2">
                         <img src="{{ asset('assets/images/logo/logo.png') }}" width="40px">
                     </div>
-                    <strong class="text-white">PHOENIX <span class="text-secondary">TECH</span></strong>
+                    <strong class="text-primary">PHOENIX <span class="text-secondary">TECH</span></strong>
                 </div>                
             @endif
             {{--  --}}
