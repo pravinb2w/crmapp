@@ -5,9 +5,9 @@
     <div class="col-xxl-4 col-lg-5">
         <div class="card">
             <!-- Logo -->
-            <div class="card-header pt-4 pb-4 text-center bg-primary">
+            <div class="card-header py-3 text-center bg-primary">
                 <a href="/">
-                    <span><img src="{{ asset('assets/images/logo.png') }}" alt="" height="18"></span>
+                    <span><img src="{{ asset('assets/images/logo/logo.png') }}" width="120px"></span>
                 </a>
             </div>
             
@@ -35,6 +35,8 @@
                     </div>
                 </form>
             </div> <!-- end card-body-->
+            <div class="card-footer py-2 bg-primary"></div>
+
         </div>
         <!-- end card -->
     

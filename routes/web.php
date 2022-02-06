@@ -73,4 +73,10 @@ Route::middleware([SetViewVariable::class, 'auth'])->group(function(){
         Route::post('/company/status', [App\Http\Controllers\CompanyController::class, 'change_status'])->name('company.status');
 
     });
+
+    // Customers Routes
+    Route::get('/Customers', function () {
+        return view('crm.customers.index');
+    })->name("customers.index");
+
 });

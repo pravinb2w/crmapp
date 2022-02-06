@@ -14,6 +14,7 @@
     <!-- App css -->
     <link href="{{ asset('assets/css/icons.min.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('assets/custom/css/variable.css') }}" rel="stylesheet" type="text/css" id="light-style" />
+    <link href="{{ asset('assets/custom/css/effect.css') }}" rel="stylesheet" type="text/css" id="light-style" />
     <link href="{{ asset('assets/css/app.css') }}" rel="stylesheet" type="text/css" id="light-style" />
     <link href="{{ asset('assets/css/app-dark.css') }}" rel="stylesheet" type="text/css" id="dark-style" />
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
