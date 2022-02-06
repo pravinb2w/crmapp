@@ -143,6 +143,8 @@
             return ajax_url = '{{ route("leadsource.add") }}';
         } else if(page_type=='country') {
             return ajax_url = '{{ route("country.add") }}';
+        } else if(page_type=='customers') {
+            return ajax_url = '{{ route("customers.add") }}';
         }
     }
     function set_delete_url(page_type) {

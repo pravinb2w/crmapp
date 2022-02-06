@@ -28,6 +28,14 @@ Route::middleware([SetViewVariable::class, 'auth'])->group(function(){
     Route::post('/account/save', [App\Http\Controllers\AccountController::class, 'save'])->name('account.save');
     Route::post('/company/save', [App\Http\Controllers\AccountController::class, 'company_save'])->name('account.company.save');
 
+    Route::get('/customers', [App\Http\Controllers\CustomerController::class, 'index'])->name('customers');
+    Route::post('/customers/add', [App\Http\Controllers\CustomerController::class, 'add_edit'])->name('customers.add');
+    Route::post('/customers/view', [App\Http\Controllers\CustomerController::class, 'view'])->name('customers.view');
+    Route::post('/customers/save', [App\Http\Controllers\CustomerController::class, 'save'])->name('customers.save');
+    Route::post('/customers/list', [App\Http\Controllers\CustomerController::class, 'ajax_list'])->name('customers.list');
+    Route::post('/customers/delete', [App\Http\Controllers\CustomerController::class, 'delete'])->name('customers.delete');
+    Route::post('/customers/status', [App\Http\Controllers\CustomerController::class, 'change_status'])->name('customers.status');
+    
     Route::prefix('settings')->group(function () {
         Route::get('/', [App\Http\Controllers\SettingController::class, 'index'])->name('settings');
 
@@ -121,12 +129,9 @@ Route::middleware([SetViewVariable::class, 'auth'])->group(function(){
         Route::post('/country/delete', [App\Http\Controllers\CountryController::class, 'delete'])->name('country.delete');
         Route::post('/country/status', [App\Http\Controllers\CountryController::class, 'change_status'])->name('country.status');
 
-    });
+        
 
-    // Customers Routes
-    Route::get('/customers', function () {
-        return view('crm.customers.index');
-    })->name("customers.index");
+    });
 
     // Products Routes
     Route::get('/products', function () {
