@@ -14,7 +14,8 @@ class DealStage extends Model
         'stages',
         'description',
         'added_by',
-        'status'
+        'status',
+        'company_id'
     ];
 
     public function scopeLatests( Builder $query ) {
@@ -31,5 +32,10 @@ class DealStage extends Model
                     $query->where( 'deal_stages', 'like', "%{$search}%" )
                         ->orWhere( 'description', 'like', "%{$search}%" );
                 }); 
+    }
+
+    public function company()
+    {
+        return $this->hasOne(CompanySettings::class, 'id', 'company_id');
     }
 }

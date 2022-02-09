@@ -7,15 +7,20 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Builder;
 
-class LeadSource extends Model
+class Organization extends Model
 {
     use HasFactory, SoftDeletes;
     protected $fillable = [
-        'source',
+        'company_id',
+        'name',
+        'mobile_no',
+        'email',
+        'address',
+        'logo',
         'description',
+        'fax',
         'added_by',
-        'status',
-        'company_id'
+        'status'
     ];
 
     public function scopeLatests( Builder $query ) {
@@ -29,8 +34,10 @@ class LeadSource extends Model
         }
 
         return  $query->where( function( $query ) use( $search ) {
-                    $query->where( 'source', 'like', "%{$search}%" )
-                        ->orWhere( 'description', 'like', "%{$search}%" );
+                    $query->where( 'name', 'like', "%{$search}%" )
+                        ->orWhere( 'mobile_no', 'like', "%{$search}%" )
+                        ->orWhere( 'email', 'like', "%{$search}%" )
+                        ->orWhere( 'address', 'like', "%{$search}%" );
                 }); 
     }
 }

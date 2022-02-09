@@ -62,8 +62,7 @@ class CompanySubscriptionController extends Controller
                 if( $subscriptions->status == '1' ) {
                     $subscriptions_status                     = '<div class="badge bg-success"> Active </div>';
                 }
-                $action = '<a href="javascript:void(0);" class="action-icon" onclick="return get_company_subscription_view('.$subscriptions->id.')"> <i class="mdi mdi-eye"></i></a>
-                <a href="javascript:void(0);" class="action-icon" onclick="return get_add_modal(\'company-subscriptions\', '.$subscriptions->id.')"> <i class="mdi mdi-square-edit-outline"></i></a>
+                $action = '<a href="javascript:void(0);" class="action-icon" onclick="return get_add_modal(\'company-subscriptions\', '.$subscriptions->id.')"> <i class="mdi mdi-square-edit-outline"></i></a>
                 <a href="javascript:void(0);" class="action-icon" onclick="return common_soft_delete(\'company-subscriptions\', '.$subscriptions->id.')"> <i class="mdi mdi-delete"></i></a>';
 
                 $nested_data[ 'id' ]                = '<div class="form-check">
@@ -96,7 +95,7 @@ class CompanySubscriptionController extends Controller
         }
         $id = $request->id;
         $modal_title = 'Add Company Subscriptions';
-        $company = CompanySettings::whereNotNull('created_at')->get();
+        $company = CompanySettings::whereNull('created_at')->get();
         $subscriptions = Subscription::all();
         if( isset( $id ) && !empty($id) ) {
             $info = CompanySubscription::find($id);
@@ -115,7 +114,7 @@ class CompanySubscriptionController extends Controller
         $role_validator   = [
             'company_id'      => [ 'required', 'string', 'max:255' ],
             'subscription_id'      => [ 'required', 'string', 'max:255' ],
-            'start_date' => ['required', 'date']
+            'start_date' => ['required', 'date'],
         ];
         
         //Validate the product
@@ -140,6 +139,25 @@ class CompanySubscriptionController extends Controller
             $ins['total_amount'] = $request->total_amount;
             $ins['description'] = $request->description;
 
+            $check_where = ['company_id' => $company_id, 'subscription_id' => $subscription_id];
+            $ch_stat_where = ['company_id' => $company_id, 'status' => 1 ];
+
+            $check = CompanySubscription::where($check_where)->when($id, function($q) use($id){
+                            return $q->whereNotIn('id', [$id]);
+                        } )->first();
+            if( isset( $check ) && !empty($check)){
+                $success = 'Subscription already assigned to company';
+                return response()->json(['error'=>[$success], 'status' => '1']);
+            }
+
+            $check_status = CompanySubscription::where($ch_stat_where)->when($id, function($q) use($id){
+                                return $q->whereNotIn('id', [$id]);
+                            } )->first();
+            if( isset( $check_status ) && !empty($check_status) && $status == 1 ){
+                $success = 'Company already has active subscription, please create inactive subscription or you can not create it';
+                return response()->json(['error'=>[$success], 'status' => '1']);
+            }
+
             if( isset($id) && !empty($id) ) {
                 $csub = CompanySubscription::whereId($id)->update($ins);
                 if( $status == 1 ) {
@@ -149,14 +167,10 @@ class CompanySubscriptionController extends Controller
                 }
                 $success = 'Updated Company Subscription';
             } else {
-                $check_cond = ['company_id' => $company_id ];
-                if (CompanySubscription::where($check_cond)->whereIn('status',[0,1] )->first()) {
-                    $success = 'This company already has subscription';
-                    return response()->json(['error'=>[$success], 'status' => '1']);
-                }
     
                 $ins['added_by'] = Auth::id();
                 $csub = CompanySubscription::create($ins);
+                
                 if( $status == 1 ) {
                     $upd['subscription_id'] = $csub->id;
                     CompanySettings::whereId($company_id)->update($upd);
@@ -185,6 +199,9 @@ class CompanySubscriptionController extends Controller
     {
         $id = $request->id;
         $csub = CompanySubscription::find($id);
+        if( $csub->status == 1) {
+            return response()->json(['error'=> 'You Cannot delete Active Subscription', 'status' => '1']);
+        }
         $company_id = $csub->company_id;
         $csub->delete();
         $upd['subscription_id'] = null;

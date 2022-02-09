@@ -7,16 +7,21 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Builder;
 
-class LeadSource extends Model
+class Team extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory,SoftDeletes;
     protected $fillable = [
-        'source',
+        'team_name',
+        'team_limit',
         'description',
         'added_by',
         'status',
-        'company_id'
     ];
+
+    public function added()
+    {
+        return $this->hasOne(User::class, 'id', 'added_by');
+    }
 
     public function scopeLatests( Builder $query ) {
         return $query->orderBy( static::CREATED_AT, 'desc' );
@@ -29,8 +34,8 @@ class LeadSource extends Model
         }
 
         return  $query->where( function( $query ) use( $search ) {
-                    $query->where( 'source', 'like', "%{$search}%" )
-                        ->orWhere( 'description', 'like', "%{$search}%" );
-                }); 
+            $query->where( 'team_name', 'like', "%{$search}%" )
+                ->orWhere( 'team_limit', 'like', "%{$search}%" );
+        }); 
     }
 }

@@ -1,4 +1,4 @@
-<div class="modal-dialog modal-md">
+<div class="modal-dialog modal-md modal-right">
     <div class="modal-content">
         <div class="modal-header">
             <h4 class="modal-title" id="myLargeModalLabel">{{ $modal_title }}</h4>
@@ -18,6 +18,7 @@
                         <input type="text" name="page" id="page" class="form-control" value="{{ $info->page ?? '' }}" required>
                     </div>
                 </div>
+                
                 <div class="row mb-3">
                     <label for="description" class="col-4 col-form-label"> Description </label>
                     <div class="col-8">

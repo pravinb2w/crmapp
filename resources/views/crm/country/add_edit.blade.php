@@ -1,4 +1,4 @@
-<div class="modal-dialog modal-md">
+<div class="modal-dialog modal-md modal-right">
     <div class="modal-content">
         <div class="modal-header">
             <h4 class="modal-title" id="myLargeModalLabel">{{ $modal_title }}</h4>

@@ -14,7 +14,8 @@ class Role extends Model
         'role',
         'description',
         'added_by',
-        'status'
+        'status',
+        'company_id'
     ];
 
     public function added()

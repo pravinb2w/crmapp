@@ -1,4 +1,4 @@
-<div class="modal-dialog modal-md modal-right">
+<div class="modal-dialog modal-lg modal-right">
     <div class="modal-content">
         <div class="modal-header">
             <h4 class="modal-title" id="myLargeModalLabel">{{ $modal_title }}</h4>
@@ -9,35 +9,47 @@
                 <div class="col-12" id="error">
                 </div>
             </div>
-            <form class="form-horizontal modal-body" id="dealstage-form" method="POST" action="{{ route('dealstages.save') }}" autocomplete="off">
+            <form class="form-horizontal modal-body" id="organizations-form" method="POST" action="{{ route('organizations.save') }}" autocomplete="off">
                 @csrf
                 <input type="hidden" name="id" value="{{ $id ?? '' }}">
+                
                 <div class="row mb-3">
-                    <label for="stages" class="col-4 col-form-label">Stage <span class="text-danger">*</span></label>
-                    <div class="col-8">
-                        <input type="text" name="stages" id="stages" class="form-control" value="{{ $info->stages ?? '' }}" required>
+                    <label for="name" class="col-3 col-form-label">Organization Name <span class="text-danger">*</span></label>
+                    <div class="col-9">
+                        <input type="text" name="name" class="form-control" id="name" placeholder="Name" value="{{ $info->name ?? '' }}" required>
                     </div>
                 </div>
                
                 <div class="row mb-3">
-                    <label for="description" class="col-4 col-form-label"> Description </label>
-                    <div class="col-8">
-                        <textarea name="description" class="form-control" id="description" cols="30" rows="3">{{ $info->description ?? '' }}</textarea>
+                    <label for="email" class="col-3 col-form-label"> Email</label>
+                    <div class="col-9">
+                        <input type="text" name="email" class="form-control" id="email" placeholder="Email" value="{{ $info->email ?? '' }}" >
                     </div>
                 </div>
                 <div class="row mb-3">
-                    <label for="description" class="col-4 col-form-label">Status</label>
+                    <label for="mobile_no" class="col-3 col-form-label">Mobile Number </label>
+                    <div class="col-9">
+                        <input type="text" name="mobile_no" class="form-control mobile" id="mobile_no" placeholder="Mobile Number" value="{{ $info->mobile_no ?? '' }}" >
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <label for="mobile_no" class="col-3 col-form-label"> Address </label>
+                    <div class="col-9">
+                        <textarea name="address" id="address"  class="form-control" cols="30" rows="3">{{ $info->address ?? '' }}</textarea>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <label for="description" class="col-3 col-form-label">Status</label>
                     <!-- Success Switch-->
-                    <div class="col-8">
+                    <div class="col-9">
                         <input type="checkbox" name="status" id="switch3" {{ (isset($info->status) && $info->status == '1' )  ? 'checked' : '' }} data-switch="success"/>
                         <label for="switch3" data-on-label="" data-off-label=""></label>
                     </div>
                 </div>
                 <div class=" row">
                     <div class="col-12 text-end">
-                        <button type="button" class="btn btn-dark" data-bs-dismiss="modal" aria-label="Close"> Cancel</button>
+                        <button type="button" class="btn btn-light me-2" data-bs-dismiss="modal" aria-label="Close"> Cancel</button>
                         <button type="submit" class="btn btn-info" id="save">Save</button>
-
                     </div>
                 </div>
             </form> 
@@ -46,7 +58,7 @@
 </div>
 
 <script>
-        $("#dealstage-form").validate({
+        $("#organizations-form").validate({
             submitHandler:function(form) {
                 $.ajax({
                     url: form.action,
@@ -69,7 +81,7 @@
                             setTimeout(function(){
                                 $('#Mymodal').modal('hide');
                             },100);
-                            ReloadDataTableModal('dealstages-datatable');
+                            ReloadDataTableModal('organizations-datatable');
                         }
                     }            
                 });

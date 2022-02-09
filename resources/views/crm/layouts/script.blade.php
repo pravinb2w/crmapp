@@ -62,17 +62,18 @@
                         method:'POST',
                         data: {page_type:page_type, id:id},
                         success:function(response){
-                            if(response.error.length > 0 && response.status == "1" ) {
-                                $('#error').addClass('alert alert-danger');
-                                response.error.forEach(display_errors);
+                            console.log( response );
+                            if( response.status == "1" ) {
+                                Swal.fire( response.error, '', 'error')
                             } else {
                                 $('#error').addClass('alert alert-success');
                                 response.error.forEach(display_errors);
                                 ReloadDataTableModal(page_type+'-datatable');
+                                Swal.fire('Deleted!', '', 'success')
                             }
                         }      
                     });
-                    Swal.fire('Deleted!', '', 'success')
+                    
                 } 
             })
             return false;
@@ -145,6 +146,10 @@
             return ajax_url = '{{ route("country.add") }}';
         } else if(page_type=='customers') {
             return ajax_url = '{{ route("customers.add") }}';
+        } else if(page_type=='organizations') {
+            return ajax_url = '{{ route("organizations.add") }}';
+        } else if(page_type=='teams') {
+            return ajax_url = '{{ route("teams.add") }}';
         }
     }
     function set_delete_url(page_type) {
@@ -168,6 +173,10 @@
             return ajax_url = '{{ route("leadsource.delete") }}';
         } else if(page_type=='country') {
             return ajax_url = '{{ route("country.delete") }}';
+        } else if(page_type=='organizations') {
+            return ajax_url = '{{ route("organizations.delete") }}';
+        } else if(page_type=='teams') {
+            return ajax_url = '{{ route("teams.delete") }}';
         }
     }
 
@@ -192,6 +201,10 @@
             return ajax_url = '{{ route("leadsource.status") }}';
         } else if(page_type=='country') {
             return ajax_url = '{{ route("country.status") }}';
+        } else if(page_type=='organizations') {
+            return ajax_url = '{{ route("organizations.status") }}';
+        } else if(page_type=='teams') {
+            return ajax_url = '{{ route("teams.status") }}';
         }
     }
 

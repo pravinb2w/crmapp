@@ -129,7 +129,21 @@ Route::middleware([SetViewVariable::class, 'auth'])->group(function(){
         Route::post('/country/delete', [App\Http\Controllers\CountryController::class, 'delete'])->name('country.delete');
         Route::post('/country/status', [App\Http\Controllers\CountryController::class, 'change_status'])->name('country.status');
 
-        
+        Route::get('/organizations', [App\Http\Controllers\OrganizationController::class, 'index'])->name('organizations');
+        Route::post('/organizations/add', [App\Http\Controllers\OrganizationController::class, 'add_edit'])->name('organizations.add');
+        Route::post('/organizations/view', [App\Http\Controllers\OrganizationController::class, 'view'])->name('organizations.view');
+        Route::post('/organizations/save', [App\Http\Controllers\OrganizationController::class, 'save'])->name('organizations.save');
+        Route::post('/organizations/list', [App\Http\Controllers\OrganizationController::class, 'ajax_list'])->name('organizations.list');
+        Route::post('/organizations/delete', [App\Http\Controllers\OrganizationController::class, 'delete'])->name('organizations.delete');
+        Route::post('/organizations/status', [App\Http\Controllers\OrganizationController::class, 'change_status'])->name('organizations.status');
+
+        Route::get('/teams', [App\Http\Controllers\TeamController::class, 'index'])->name('teams');
+        Route::post('/teams/add', [App\Http\Controllers\TeamController::class, 'add_edit'])->name('teams.add');
+        Route::post('/teams/view', [App\Http\Controllers\TeamController::class, 'view'])->name('teams.view');
+        Route::post('/teams/save', [App\Http\Controllers\TeamController::class, 'save'])->name('teams.save');
+        Route::post('/teams/list', [App\Http\Controllers\TeamController::class, 'ajax_list'])->name('teams.list');
+        Route::post('/teams/delete', [App\Http\Controllers\TeamController::class, 'delete'])->name('teams.delete');
+        Route::post('/teams/status', [App\Http\Controllers\TeamController::class, 'change_status'])->name('teams.status');
 
     });
 

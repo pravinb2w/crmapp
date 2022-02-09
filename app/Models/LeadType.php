@@ -14,7 +14,8 @@ class LeadType extends Model
         'type',
         'description',
         'added_by',
-        'status'
+        'status',
+        'company_id'
     ];
 
     public function scopeLatests( Builder $query ) {

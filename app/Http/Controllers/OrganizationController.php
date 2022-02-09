@@ -2,19 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Organization;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use DB;
-use App\Models\PageType;
-use App\Models\CompanySettings;
 
-class PageTypeController extends Controller
+class OrganizationController extends Controller
 {
     public function index(Type $var = null)
     {
-        $params = array('btn_name' => 'Page Type', 'btn_fn_param' => 'pagetype');
-        return view('crm.pagetype.index', $params);
+        $params = array('btn_name' => 'Organization', 'btn_fn_param' => 'organizations');
+        return view('crm.organization.index', $params);
     }
 
     public function ajax_list( Request $request ) {
@@ -23,7 +22,7 @@ class PageTypeController extends Controller
             return response('Forbidden.', 403);
         }
 
-        $columns            = [ 'id', 'page', 'status', 'id' ];
+        $columns            = [ 'id', 'name', 'email', 'mobile_no', 'id' ];
 
         $limit              = $request->input( 'length' );
         $start              = $request->input( 'start' );
@@ -31,42 +30,44 @@ class PageTypeController extends Controller
         $dir                = $request->input( 'order' )[0][ 'dir' ];
         $search             = $request->input( 'search.value' );
        
-        $total_list         = PageType::count();
+        $total_list         = Organization::count();
         // DB::enableQueryLog();
         if( $order != 'id') {
-            $list               = PageType::whereRaw('created_at')->orderBy($order, $dir)
+            $list               = Organization::orderBy($order, $dir)
                                 ->search( $search )
                                 ->get();
         } else {
-            $list               = PageType::whereRaw('created_at')->Latests()
+            $list               = Organization::Latests()
                                 ->search( $search )
                                 ->get();
         }
         // $query = DB::getQueryLog();
         if( empty( $request->input( 'search.value' ) ) ) {
-            $total_filtered = PageType::count();
+            $total_filtered = Organization::count();
         } else {
-            $total_filtered = PageType::search( $search )
+            $total_filtered = Organization::search( $search )
                                 ->count();
         }
         
         $data           = array();
         if( $list ) {
             $i=1;
-            foreach( $list as $pagetype ) {
-                $pagetype_status                         = '<div class="badge bg-danger" role="button" onclick="change_status(\'pagetype\','.$pagetype->id.', 1)"> Inactive </div>';
-                if( $pagetype->status == 1 ) {
-                    $pagetype_status                     = '<div class="badge bg-success" role="button" onclick="change_status(\'pagetype\','.$pagetype->id.', 0)"> Active </div>';
+            foreach( $list as $organizations ) {
+                $organizations_status                         = '<div class="badge bg-danger" role="button" onclick="change_status(\'organizations\','.$organizations->id.', 1)"> Inactive </div>';
+                if( $organizations->status == 1 ) {
+                    $organizations_status                     = '<div class="badge bg-success" role="button" onclick="change_status(\'organizations\','.$organizations->id.', 0)"> Active </div>';
                 }
-                $action = '<a href="javascript:void(0);" class="action-icon" onclick="return get_add_modal(\'pagetype\', '.$pagetype->id.')"> <i class="mdi mdi-square-edit-outline"></i></a>
-                <a href="javascript:void(0);" class="action-icon" onclick="return common_soft_delete(\'pagetype\', '.$pagetype->id.')"> <i class="mdi mdi-delete"></i></a>';
+                $action = '<a href="javascript:void(0);" class="action-icon" onclick="return get_add_modal(\'organizations\', '.$organizations->id.')"> <i class="mdi mdi-square-edit-outline"></i></a>
+                <a href="javascript:void(0);" class="action-icon" onclick="return common_soft_delete(\'organizations\', '.$organizations->id.')"> <i class="mdi mdi-delete"></i></a>';
 
                 $nested_data[ 'id' ]                = '<div class="form-check">
-                    <input type="checkbox" class="form-check-input" id="customCheck2" value="'.$pagetype->id.'">
+                    <input type="checkbox" class="form-check-input" id="customCheck2" value="'.$organizations->id.'">
                     <label class="form-check-label" for="customCheck2">&nbsp;</label>
                 </div>';
-                $nested_data[ 'page' ]              = $pagetype->page;
-                $nested_data[ 'status' ]            = $pagetype_status;
+                $nested_data[ 'name' ]              = $organizations->name;
+                $nested_data[ 'email' ]             = $organizations->email;
+                $nested_data[ 'mobile_no' ]         = $organizations->mobile_no;
+                $nested_data[ 'status' ]            = $organizations_status;
                 $nested_data[ 'action' ]            = $action;
                 $data[]                             = $nested_data;
             }
@@ -86,15 +87,14 @@ class PageTypeController extends Controller
             return response('Forbidden.', 403);
         }
         $id = $request->id;
-        $modal_title = 'Add Page Type';
-        $company = CompanySettings::whereNotNull('created_at')->get();
+        $modal_title = 'Add Organization';
 
         if( isset( $id ) && !empty($id) ) {
-            $info = PageType::find($id);
-            $modal_title = 'Update Page Type';
+            $info = Organization::find($id);
+            $modal_title = 'Update Organization';
         }
-        $params = ['modal_title' => $modal_title, 'id' => $id ?? '', 'info' => $info ?? '', 'company' => $company];
-        return view('crm.pagetype.add_edit', $params);
+        $params = ['modal_title' => $modal_title, 'id' => $id ?? '', 'info' => $info ?? ''];
+        return view('crm.organization.add_edit', $params);
         echo json_encode(['view' => $view]);
         return true;
     }
@@ -103,16 +103,20 @@ class PageTypeController extends Controller
     {
         $id = $request->id;
         
-        $role_validator   = [
-            'page'      => [ 'required', 'string', 'max:255'],
-        ];
+        
         if( isset( $id ) && !empty($id) ) {
             $role_validator   = [
-                'page'      => [ 'required', 'string', 'max:255', 'unique:page_types,page,'.$id ],
+                'name'      => [ 'required', 'string', 'max:255', 'unique:organizations,name,'.$id ],
+                'email'      => [ 'nullable', 'string', 'max:255', 'unique:organizations,email,'.$id ],
+                'mobile_no'      => [ 'nullable', 'string', 'max:255', 'unique:organizations,mobile_no,'.$id ],
+
             ];
         } else {
             $role_validator   = [
-                'page'      => [ 'required', 'string', 'max:255', 'unique:page_types,page'],
+                'name'      => [ 'required', 'string', 'max:255', 'unique:organizations,name'],
+                'email'      => [ 'nullable', 'string', 'max:255', 'unique:organizations,email'],
+                'mobile_no'      => [ 'nullable', 'string', 'max:255', 'unique:organizations,mobile_no'],
+
             ];
         }
         //Validate the product
@@ -121,16 +125,18 @@ class PageTypeController extends Controller
         if ($validator->passes()) {
 
             $ins['status'] = isset($request->status) ? 1 : 0;
-            $ins['page'] = $request->page;
-            $ins['description'] = $request->description;
+            $ins['name'] = $request->name;
+            $ins['email'] = $request->email;
+            $ins['mobile_no'] = $request->mobile_no;
+            $ins['address'] = $request->address;
             
             if( isset($id) && !empty($id) ) {
-                PageType::whereId($id)->update($ins);
-                $success = 'Updated Page Type';
+                Organization::whereId($id)->update($ins);
+                $success = 'Updated Organization';
             } else {
                 $ins['added_by'] = Auth::id();
-                PageType::create($ins);
-                $success = 'Added new Page Type';
+                Organization::create($ins);
+                $success = 'Added new Organization';
             }
             return response()->json(['error'=>[$success], 'status' => '0']);
         }
@@ -140,7 +146,7 @@ class PageTypeController extends Controller
     public function delete(Request $request)
     {
         $id = $request->id;
-        $role = PageType::find($id);
+        $role = Organization::find($id);
         $role->delete();
         $delete_msg = 'Deleted successfully';
         return response()->json(['error'=>[$delete_msg], 'status' => '0']);
@@ -151,8 +157,9 @@ class PageTypeController extends Controller
         $id = $request->id;
         $status = $request->status;
         $ins['status'] = $status;
-        PageType::whereId($id)->update($ins);
+        Organization::whereId($id)->update($ins);
         $update_msg = 'Updated successfully';
         return response()->json(['error'=>[$update_msg], 'status' => '0']);
     }
+
 }

@@ -14,7 +14,8 @@ class PageType extends Model
         'page',
         'description',
         'added_by',
-        'status'
+        'status',
+        'company_id',
     ];
 
     public function scopeLatests( Builder $query ) {
@@ -31,5 +32,10 @@ class PageType extends Model
                     $query->where( 'page', 'like', "%{$search}%" )
                         ->orWhere( 'description', 'like', "%{$search}%" );
                 }); 
+    }
+
+    public function company()
+    {
+        return $this->hasOne(CompanySettings::class, 'id', 'company_id');
     }
 }

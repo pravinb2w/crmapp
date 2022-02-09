@@ -1,5 +1,5 @@
 <div class="modal-dialog modal-lg modal-right">
-    <div class="modal-content h-100">
+    <div class="modal-content">
         <div class="modal-header px-3" id="myLargeModalLabel">{{ $modal_title }}</h4>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
