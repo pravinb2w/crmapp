@@ -58,7 +58,7 @@
                             <a href="{{ route('account') }}">Configuration</a>
                         </li>
                         <li>
-                            <a href="javascript:void(0)">Pages</a>
+                            <a href="{{ route('pages') }}">Pages</a>
                         </li>
                     </ul>
                 </div>
@@ -117,12 +117,7 @@
                     <span> Notes </span>
                 </a>
             </li>
-            <li class="side-nav-item">
-                <a href="javascipt:void(0)" class="side-nav-link">
-                    <i class="mdi mdi-cart-check"></i>
-                    <span> Subscription </span>
-                </a>
-            </li>
+            
             <li class="side-nav-item">
                 <a data-bs-toggle="collapse" href="#sidebarProjects" aria-expanded="false" aria-controls="sidebarProjects" class="side-nav-link">
                     <i class="mdi mdi-apps"></i>

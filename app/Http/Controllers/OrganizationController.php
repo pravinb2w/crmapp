@@ -131,7 +131,15 @@ class OrganizationController extends Controller
             $ins['address'] = $request->address;
             
             if( isset($id) && !empty($id) ) {
-                Organization::whereId($id)->update($ins);
+                $org = Organization::find($id);
+            
+                $org->status = isset($request->status) ? 1 : 0;
+                $org->name = $request->name;
+                $org->email = $request->email;
+                $org->mobile_no = $request->mobile_no;
+                $org->address = $request->address;
+
+                $org->update();
                 $success = 'Updated Organization';
             } else {
                 $ins['added_by'] = Auth::id();
@@ -156,8 +164,9 @@ class OrganizationController extends Controller
     {
         $id = $request->id;
         $status = $request->status;
-        $ins['status'] = $status;
-        Organization::whereId($id)->update($ins);
+        $org = Organization::find($id);
+        $org->status = $status;
+        $org->update();
         $update_msg = 'Updated successfully';
         return response()->json(['error'=>[$update_msg], 'status' => '0']);
     }

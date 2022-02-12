@@ -91,7 +91,7 @@ class CountryController extends Controller
         $modal_title = 'Add Country';
         if( isset( $id ) && !empty($id) ) {
             $info = Country::find($id);
-            $modal_title = 'Update Lead Type';
+            $modal_title = 'Update Country';
         }
         $params = ['modal_title' => $modal_title, 'id' => $id ?? '', 'info' => $info ?? ''];
         return view('crm.country.add_edit', $params);
@@ -125,7 +125,15 @@ class CountryController extends Controller
             $ins['description'] = $request->description;
             
             if( isset($id) && !empty($id) ) {
-                Country::whereId($id)->update($ins);
+                $count = Country::find($id);
+                $count->status = isset($request->status) ? 1 : 0;
+                $count->country_name = $request->country_name;
+                $count->dial_code = $request->dial_code;
+                $count->country_code = $request->country_code;
+                $count->currency = $request->currency;
+                $count->description = $request->description;
+                $count->update();
+
                 $success = 'Updated country';
             } else {
                 $ins['added_by'] = Auth::id();
@@ -150,8 +158,9 @@ class CountryController extends Controller
     {
         $id = $request->id;
         $status = $request->status;
-        $ins['status'] = $status;
-        Country::whereId($id)->update($ins);
+        $role = Country::find($id);
+        $role->status = $status;
+        $role->update();
         $update_msg = 'Updated successfully';
         return response()->json(['error'=>[$update_msg], 'status' => '0']);
     }

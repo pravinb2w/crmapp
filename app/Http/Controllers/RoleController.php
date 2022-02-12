@@ -121,7 +121,11 @@ class RoleController extends Controller
             $ins['description'] = $request->description;
             
             if( isset($id) && !empty($id) ) {
-                Role::whereId($id)->update($ins);
+                $role = Role::find($id);
+                $role->status = isset($request->status) ? 1 : 0;
+                $role->role = $request->role;
+                $role->description = $request->description;
+                $role->update();
                 $success = 'Updated role';
             } else {
                 $ins['added_by'] = Auth::id();

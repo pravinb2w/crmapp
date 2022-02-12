@@ -33,7 +33,7 @@
                     @include('crm.common.common_add_btn')
 
                     <div class="table-responsive">
-                        <table class="table table-centered w-100 dt-responsive nowrap" id="products-datatable">
+                        <table class="table table-centered w-100 dt-responsive nowrap" id="users-datatable">
                             <thead class="table-light">
                                 <tr>
                                     <th class="all" style="width: 20px;">
@@ -42,9 +42,9 @@
                                             <label class="form-check-label" for="customCheck1">&nbsp;</label>
                                         </div>
                                     </th>
-                                    <th class="all">User Info</th>
-                                    <th>Address</th>
-                                    <th>Added Date</th>
+                                    <th class="all">Name</th>
+                                    <th>Email</th>
+                                    <th>Mobile Number</th>
                                     <th>Status</th>
                                     <th style="width: 80px;">Action</th>
                                 </tr>
@@ -68,9 +68,34 @@
     <script src="{{ asset('assets/js/vendor/dataTables.checkboxes.min.js') }}"></script>
     {{-- <script src="{{ asset('assets/js/pages/demo.products.js') }}"></script> --}}
     <script>
-        $(document).ready(function(){
-            "use strict";
-            $("#products-datatable").DataTable()
+        $(document).ready(function(){"use strict";
+        
+        const roletable = $('#users-datatable').DataTable( {
+            
+            "processing"    : true,
+            "serverSide"    : true,
+            "ajax"          : {
+                "url"       : "<?= route( 'users.list' ); ?>",
+                "dataType"  : "json",
+                "type"      : "POST",
+                "data"      : { "_token" : "<?=csrf_token();?>" }
+            },
+            "columns"       : [
+                {"data" : "id"},
+                {"data" : "name"},
+                {"data" : "email"},
+                {"data" : "mobile_no"},
+                {"data" : "status" },
+                {"data" : "action" },
+            ],
+            
+        } );
     });
+
+    function ReloadDataTableModal(id) {
+        var roletable = $('#'+id).DataTable();
+        roletable.ajax.reload();
+    }
+
     </script>
 @endsection

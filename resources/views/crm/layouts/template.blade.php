@@ -148,8 +148,6 @@
 
         <div class="rightbar-overlay"></div>
         <!-- /End-bar -->
-
-
         @include('crm.layouts.script')
         @yield('add_on_script')
 

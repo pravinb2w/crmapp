@@ -107,28 +107,33 @@ class AccountController extends Controller
                 $id = Auth::id();
                 
                 $user = User::find($id);
+                $sett = CompanySettings::find($user->company_id);
                 if( $type == 'company' ) {
-                    $ins['site_name' ] = $request->site_name;
-                    $ins['site_url' ] = $request->site_url;
-                    $ins['copyrights'] = $request->copyrights;
+                    $sett->site_name = $request->site_name;
+                    $sett->site_url = $request->site_url;
+                    $sett->copyrights = $request->copyrights;
+                    $sett->site_email = $request->site_email;
+                    $sett->site_phone = $request->site_phone;
+                    $sett->office_time = $request->office_time;
+                    $sett->address = $request->address;
+
                     if( $request->hasFile( 'site_logo' ) ) {
                         $file                       = $request->file( 'site_logo' )->store( 'account', 'public' );
-                        $ins['site_logo']             = $file;
+                        $sett->site_logo            = $file;
                     }
                     if( $request->hasFile( 'site_favicon' ) ) {
                         $file                       = $request->file( 'site_favicon' )->store( 'account', 'public' );
-                        $ins['site_favicon']          = $file;
+                        $sett->site_favicon         = $file;
                     }
-                    CompanySettings::whereId($user->company->id)->update($ins);
+                    $sett->update();
                     $success = 'Account settings saved';
                     return response()->json(['error'=>[$success], 'status' => '0']);
                 } else if($type == 'mail') {
-                    $ins['smtp_host' ] = $request->smtp_host;
-                    $ins['smtp_port' ] = $request->smtp_port;
-                    $ins['smtp_user' ] = $request->smtp_user;
-                    $ins['smtp_password' ] = $request->smtp_password;
-                    
-                    CompanySettings::whereId($user->company->id)->update($ins);
+                    $sett->smtp_host = $request->smtp_host;
+                    $sett->smtp_port = $request->smtp_port;
+                    $sett->smtp_user = $request->smtp_user;
+                    $sett->smtp_password = $request->smtp_password;
+                    $sett->update();
                     $success = 'Account settings saved';
                     return response()->json(['error'=>[$success], 'status' => '0']);
                 } else {
@@ -149,17 +154,18 @@ class AccountController extends Controller
         } else {
             $id = Auth::id();
             $user = User::find($id);
+            $sett = CompanySettings::find($user->company_id);
+
             if( $type == 'api') {
-                $ins['aws_access_key' ] = $request->aws_access_key;
-                $ins['aws_secret_key' ] = $request->aws_secret_key;
-                $ins['fcm_token' ] = $request->fcm_token;
+                $sett->aws_access_key = $request->aws_access_key;
+                $sett->aws_secret_key = $request->aws_secret_key;
+                $sett->fcm_token = $request->fcm_token;
             } else if($type == 'link') {
-                $ins['facebook_url' ] = $request->facebook_url;
-                $ins['twitter_url' ] = $request->twitter_url;
-                $ins['instagram_url' ] = $request->instagram_url;
+                $sett->facebook_url = $request->facebook_url;
+                $sett->twitter_url = $request->twitter_url;
+                $sett->instagram_url = $request->instagram_url;
             }
-            
-            CompanySettings::whereId($user->company->id)->update($ins);
+            $sett->update();
             $success = 'Account settings saved';
             return response()->json(['error'=>[$success], 'status' => '0']);
         }

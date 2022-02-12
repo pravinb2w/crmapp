@@ -14,9 +14,8 @@ use App\Http\Middleware\SetViewVariable;
 |
 */
 
-Route::get('/', function () {
-    return view('landing.landing');
-});
+Route::get('/', [App\Http\Controllers\LandingController::class, 'index']);
+
 
 Auth::routes();
 Route::middleware([SetViewVariable::class, 'auth'])->group(function(){
@@ -36,16 +35,20 @@ Route::middleware([SetViewVariable::class, 'auth'])->group(function(){
     Route::post('/customers/delete', [App\Http\Controllers\CustomerController::class, 'delete'])->name('customers.delete');
     Route::post('/customers/status', [App\Http\Controllers\CustomerController::class, 'change_status'])->name('customers.status');
     
+    //users route
+    Route::prefix('pages')->group(function () {
+        Route::get('/', [App\Http\Controllers\CmsController::class, 'index'])->name('pages');
+        Route::get('/add/{id?}', [App\Http\Controllers\CmsController::class, 'add'])->name('pages.add');
+        Route::post('/save', [App\Http\Controllers\CmsController::class, 'save'])->name('pages.save');
+        Route::post('/list', [App\Http\Controllers\CmsController::class, 'ajax_list'])->name('pages.list');
+        Route::post('/delete', [App\Http\Controllers\CmsController::class, 'delete'])->name('pages.delete');
+        Route::post('/status', [App\Http\Controllers\CmsController::class, 'change_status'])->name('pages.status');
+    });
+
     Route::prefix('settings')->group(function () {
         Route::get('/', [App\Http\Controllers\SettingController::class, 'index'])->name('settings');
 
-        //users route
-        Route::get('/cms', [App\Http\Controllers\UserController::class, 'index'])->name('cms');
-        Route::post('/cms/add', [App\Http\Controllers\UserController::class, 'add_edit'])->name('cms.add');
-        Route::post('/cms/save', [App\Http\Controllers\UserController::class, 'save'])->name('cms.save');
-        Route::post('/cms/list', [App\Http\Controllers\UserController::class, 'ajax_list'])->name('cms.list');
-        Route::post('/cms/delete', [App\Http\Controllers\UserController::class, 'delete'])->name('cms.delete');
-        Route::post('/cms/status', [App\Http\Controllers\UserController::class, 'change_status'])->name('cms.status');
+        
         //users route
         Route::get('/users', [App\Http\Controllers\UserController::class, 'index'])->name('users');
         Route::post('/users/add', [App\Http\Controllers\UserController::class, 'add_edit'])->name('users.add');
@@ -128,7 +131,7 @@ Route::middleware([SetViewVariable::class, 'auth'])->group(function(){
         Route::post('/country/list', [App\Http\Controllers\CountryController::class, 'ajax_list'])->name('country.list');
         Route::post('/country/delete', [App\Http\Controllers\CountryController::class, 'delete'])->name('country.delete');
         Route::post('/country/status', [App\Http\Controllers\CountryController::class, 'change_status'])->name('country.status');
-
+ 
         Route::get('/organizations', [App\Http\Controllers\OrganizationController::class, 'index'])->name('organizations');
         Route::post('/organizations/add', [App\Http\Controllers\OrganizationController::class, 'add_edit'])->name('organizations.add');
         Route::post('/organizations/view', [App\Http\Controllers\OrganizationController::class, 'view'])->name('organizations.view');

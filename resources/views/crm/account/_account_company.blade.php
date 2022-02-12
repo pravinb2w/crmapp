@@ -43,6 +43,30 @@
         </div>
     </div>
     <div class="row mb-3">
+        <label for="site_email" class="col-3 col-form-label">Site Email</label>
+        <div class="col-9">
+            <input type="text" name="site_email" class="form-control" value="{{ $info->company->site_email ?? '' }}" id="site_email" placeholder="Site email">
+        </div>
+    </div>
+    <div class="row mb-3">
+        <label for="site_phone" class="col-3 col-form-label">Site Phone Number</label>
+        <div class="col-9">
+            <input type="text" name="site_phone" class="form-control" value="{{ $info->company->site_phone ?? '' }}" id="site_phone" placeholder="Copyrights">
+        </div>
+    </div>
+    <div class="row mb-3">
+        <label for="office_time" class="col-3 col-form-label">Office Time</label>
+        <div class="col-9">
+            <input type="text" name="office_time" class="form-control" value="{{ $info->company->office_time ?? '' }}" id="office_time" placeholder="10:00 AM - 7:00 PM">
+        </div>
+    </div>
+    <div class="row mb-3">
+        <label for="address" class="col-3 col-form-label">Site Address</label>
+        <div class="col-9">
+            <input type="text" name="address" class="form-control" value="{{ $info->company->address ?? '' }}" id="address" placeholder="Address">
+        </div>
+    </div>
+    <div class="row mb-3">
         <label for="copyrights" class="col-3 col-form-label">Copyrights</label>
         <div class="col-9">
             <input type="text" name="copyrights" class="form-control" value="{{ $info->company->copyrights ?? '' }}" id="copyrights" placeholder="Copyrights">

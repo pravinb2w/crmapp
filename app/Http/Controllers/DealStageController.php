@@ -122,7 +122,11 @@ class DealStageController extends Controller
             $ins['description'] = $request->description;
             
             if( isset($id) && !empty($id) ) {
-                DealStage::whereId($id)->update($ins);
+                $deal = DealStage::find($id);
+                $deal->status = isset($request->status) ? 1 : 0;
+                $deal->stages = $request->stages;
+                $deal->description = $request->description;
+                $deal->update();
                 $success = 'Updated Deal Stage';
             } else {
                 $ins['added_by'] = Auth::id();
@@ -147,8 +151,9 @@ class DealStageController extends Controller
     {
         $id = $request->id;
         $status = $request->status;
-        $ins['status'] = $status;
-        DealStage::whereId($id)->update($ins);
+        $deal = DealStage::find($id);
+        $deal->status = $status;
+        $deal->update();
         $update_msg = 'Updated successfully';
         return response()->json(['error'=>[$update_msg], 'status' => '0']);
     }

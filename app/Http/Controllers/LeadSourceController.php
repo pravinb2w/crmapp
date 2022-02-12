@@ -128,8 +128,13 @@ class LeadSourceController extends Controller
             $ins['description'] = $request->description;
             
             if( isset($id) && !empty($id) ) {
-                LeadSource::whereId($id)->update($ins);
+                $lead = LeadSource::find($id);
+                $lead->status = isset($request->status) ? 1 : 0;
+                $lead->source = $request->source;
+                $lead->description = $request->description;
+                $lead->update();
                 $success = 'Updated Lead Source';
+
             } else {
                 $ins['added_by'] = Auth::id();
                 LeadSource::create($ins);
@@ -154,7 +159,9 @@ class LeadSourceController extends Controller
         $id = $request->id;
         $status = $request->status;
         $ins['status'] = $status;
-        LeadSource::whereId($id)->update($ins);
+        $lead = LeadSource::find($id);
+        $lead->status = $status;
+        $lead->update();
         $update_msg = 'Updated successfully';
         return response()->json(['error'=>[$update_msg], 'status' => '0']);
     }

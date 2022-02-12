@@ -125,7 +125,11 @@ class PageTypeController extends Controller
             $ins['description'] = $request->description;
             
             if( isset($id) && !empty($id) ) {
-                PageType::whereId($id)->update($ins);
+                $page = PageType::find($id);
+                $page->status = isset($request->status) ? 1 : 0;
+                $page->page = $request->page;
+                $page->description = $request->description;
+                $page->update();
                 $success = 'Updated Page Type';
             } else {
                 $ins['added_by'] = Auth::id();
@@ -150,8 +154,9 @@ class PageTypeController extends Controller
     {
         $id = $request->id;
         $status = $request->status;
-        $ins['status'] = $status;
-        PageType::whereId($id)->update($ins);
+        $page = PageType::find($id);
+        $page->status = $status;
+        $page->update();
         $update_msg = 'Updated successfully';
         return response()->json(['error'=>[$update_msg], 'status' => '0']);
     }

@@ -120,29 +120,48 @@ class SubscriptionController extends Controller
         
         if ($validator->passes()) {
 
-            $ins['status'] = isset($request->status) ? 1 : 0;
-            $ins['subscription_name'] = $request->subscription_name;
-            $ins['subscription_period'] = $request->subscription_period.'-'.$request->duration;
-            $ins['no_of_clients'] = $request->no_of_clients ?? null;
-            $ins['no_of_employees'] = $request->no_of_employees ?? null;
-            $ins['no_of_leads'] = $request->no_of_leads ?? null;
-            $ins['no_of_deals'] = $request->no_of_deals ?? null;
-            $ins['no_of_pages'] = $request->no_of_pages ?? null;
-            $ins['no_of_email_templates'] = $request->no_of_email_templates ?? null;
-            $ins['bulk_import'] = $request->bulk_import ?? null;
-            $ins['database_backup'] = $request->database_backup ?? null;
-            $ins['work_automation'] = $request->work_automation ?? null;
-            $ins['telegram_bot'] = $request->telegram_bot ?? null;
-            $ins['sms_integration'] = $request->sms_integration ?? null;
-            $ins['payment_gateway'] = $request->payment_gateway ?? null;
-            $ins['business_whatsapp'] = $request->business_whatsapp ?? null;
-            $ins['amount'] = $request->amount;
-
             if( isset($id) && !empty($id) ) {
-                $ins['updated_by'] = Auth::id();
-                Subscription::whereId($id)->update($ins);
+
+                $sub = Subscription::find($id);
+                $sub->status = isset($request->status) ? 1 : 0;
+                $sub->subscription_name = $request->subscription_name;
+                $sub->subscription_period = $request->subscription_period.'-'.$request->duration;
+                $sub->no_of_clients =  $request->no_of_clients ?? null;
+                $sub->no_of_employees = $request->no_of_employees ?? null;
+                $sub->no_of_leads = $request->no_of_leads ?? null;
+                $sub->no_of_deals = $request->no_of_deals ?? null;
+                $sub->no_of_pages = $request->no_of_pages ?? null;
+                $sub->no_of_email_templates = $request->no_of_email_templates ?? null;
+                $sub->bulk_import = $request->bulk_import ?? null;
+                $sub->database_backup = $request->database_backup ?? null;
+                $sub->work_automation = $request->work_automation ?? null;
+                $sub->telegram_bot = $request->telegram_bot ?? null;
+                $sub->sms_integration = $request->sms_integration ?? null;
+                $sub->payment_gateway = $request->payment_gateway ?? null;
+                $sub->business_whatsapp = $request->business_whatsapp ?? null;
+                $sub->amount = $request->amount ?? null;
+                $sub->updated_by = Auth::id();
+                $sub->update();
+
                 $success = 'Updated subscriptions';
             } else {
+                $ins['status'] = isset($request->status) ? 1 : 0;
+                $ins['subscription_name'] = $request->subscription_name;
+                $ins['subscription_period'] = $request->subscription_period.'-'.$request->duration;
+                $ins['no_of_clients'] = $request->no_of_clients ?? null;
+                $ins['no_of_employees'] = $request->no_of_employees ?? null;
+                $ins['no_of_leads'] = $request->no_of_leads ?? null;
+                $ins['no_of_deals'] = $request->no_of_deals ?? null;
+                $ins['no_of_pages'] = $request->no_of_pages ?? null;
+                $ins['no_of_email_templates'] = $request->no_of_email_templates ?? null;
+                $ins['bulk_import'] = $request->bulk_import ?? null;
+                $ins['database_backup'] = $request->database_backup ?? null;
+                $ins['work_automation'] = $request->work_automation ?? null;
+                $ins['telegram_bot'] = $request->telegram_bot ?? null;
+                $ins['sms_integration'] = $request->sms_integration ?? null;
+                $ins['payment_gateway'] = $request->payment_gateway ?? null;
+                $ins['business_whatsapp'] = $request->business_whatsapp ?? null;
+                $ins['amount'] = $request->amount;
                 $ins['added_by'] = Auth::id();
                 Subscription::create($ins);
                 $success = 'Added new subscription';

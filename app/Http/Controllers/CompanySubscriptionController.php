@@ -159,7 +159,15 @@ class CompanySubscriptionController extends Controller
             }
 
             if( isset($id) && !empty($id) ) {
-                $csub = CompanySubscription::whereId($id)->update($ins);
+                $comp = CompanySubscription::find($id);
+                $comp->status = $status;
+                $comp->company_id = $company_id;
+                $comp->subscription_id = $subscription_id;
+                $comp->startAt = date('Y-m-d', strtotime($startAt));
+                $comp->endAt = $endAt ?? date('Y-m-d');
+                $comp->total_amount = $request->total_amount;
+                $comp->description = $request->description;
+                $comp->update();
                 if( $status == 1 ) {
                     $info = CompanySubscription::find($id);
                     $upd['subscription_id'] = $info->id;

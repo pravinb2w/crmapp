@@ -114,7 +114,10 @@ class CompanyController extends Controller
             $ins['site_name'] = $request->company_name;
             
             if( isset($id) && !empty($id) ) {
-                CompanySettings::whereId($id)->update($ins);
+                $sett = CompanySettings::find($id);
+                $sett->status = isset($request->status) ? 1 : 0;
+                $sett->site_name = $request->company_name;
+                $sett->update();
                 $success = 'Updated Company';
             } else {
                 $ins['added_by'] = Auth::id();
@@ -139,8 +142,9 @@ class CompanyController extends Controller
     {
         $id = $request->id;
         $status = $request->status;
-        $ins['status'] = $status;
-        CompanySettings::whereId($id)->update($ins);
+        $role = CompanySettings::find($id);
+        $role->status = $status;
+        $role->update();
         $update_msg = 'Updated successfully';
         return response()->json(['error'=>[$update_msg], 'status' => '0']);
     }

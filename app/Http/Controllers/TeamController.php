@@ -126,7 +126,12 @@ class TeamController extends Controller
             $ins['description'] = $request->description;
             
             if( isset($id) && !empty($id) ) {
-                Team::whereId($id)->update($ins);
+                $team = Team::find($id);
+                $team->status = isset($request->status) ? 1 : 0;
+                $team->team_name = $request->team_name;
+                $team->team_limit = $request->team_limit;
+                $team->description = $request->description;
+                $team->update();
                 $success = 'Updated Team';
             } else {
                 $ins['added_by'] = Auth::id();
@@ -151,8 +156,9 @@ class TeamController extends Controller
     {
         $id = $request->id;
         $status = $request->status;
-        $ins['status'] = $status;
-        Team::whereId($id)->update($ins);
+        $team = Team::find($id);
+        $team->status = $status;
+        $team->update();
         $update_msg = 'Updated successfully';
         return response()->json(['error'=>[$update_msg], 'status' => '0']);
     }

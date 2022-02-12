@@ -119,7 +119,11 @@ class LeadTypeController extends Controller
             $ins['description'] = $request->description;
             
             if( isset($id) && !empty($id) ) {
-                LeadType::whereId($id)->update($ins);
+                $leadtype = LeadType::find($id);
+                $leadtype->status = isset($request->status) ? 1 : 0;
+                $leadtype->type = $request->type;
+                $leadtype->description = $request->description;
+                $leadtype->update();
                 $success = 'Updated Lead Type';
             } else {
                 $ins['added_by'] = Auth::id();
@@ -145,7 +149,9 @@ class LeadTypeController extends Controller
         $id = $request->id;
         $status = $request->status;
         $ins['status'] = $status;
-        LeadType::whereId($id)->update($ins);
+        $leadtype = LeadType::find($id);
+        $leadtype->status = $status;
+        $leadtype->update();
         $update_msg = 'Updated successfully';
         return response()->json(['error'=>[$update_msg], 'status' => '0']);
     }

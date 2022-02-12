@@ -1,7 +1,5 @@
 <div class="list-group">
-    <a href="{{ route('cms') }}" class="list-group-item list-group-item-action {{ Request::segment(2) == 'cms' ? 'active' : '' }}">
-        CMS
-      </a>
+    
     <a href="{{ route('users') }}" class="list-group-item list-group-item-action {{ Request::segment(2) == 'users' ? 'active' : '' }}">
       Users
     </a>

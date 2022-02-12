@@ -6,9 +6,10 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Role;
 use App\Models\CompanySettings;
-
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use DB;
 
 class UserController extends Controller
@@ -25,7 +26,7 @@ class UserController extends Controller
             return response('Forbidden.', 403);
         }
 
-        $columns            = [ 'id', 'role', 'added_by', 'status', 'id' ];
+        $columns            = [ 'id', 'name', 'email', 'mobile_no', 'status', 'id' ];
 
         $limit              = $request->input( 'length' );
         $start              = $request->input( 'start' );
@@ -34,44 +35,45 @@ class UserController extends Controller
         $search             = $request->input( 'search.value' );
         $approve_status     = $request->input( 'approve_status' );
        
-        $total_list         = Role::count();
+        $total_list         = User::whereNotNull('role_id')->count();
         // DB::enableQueryLog();
         if( $order != 'id') {
-            $list               = Role::orderBy($order, $dir)
+            $list               = User::whereNotNull('role_id')->orderBy($order, $dir)
                                 ->search( $search )
                                 ->get();
         } else {
-            $list               = Role::Latests()
+            $list               = User::whereNotNull('role_id')->Latests()
                                 ->search( $search )
                                 ->get();
         }
         // $query = DB::getQueryLog();
         if( empty( $request->input( 'search.value' ) ) ) {
-            $total_filtered = Role::count();
+            $total_filtered = User::whereNotNull('role_id')->count();
         } else {
-            $total_filtered = Role::search( $search )
+            $total_filtered = User::whereNotNull('role_id')->search( $search )
                                 ->count();
         }
         
         $data           = array();
         if( $list ) {
             $i=1;
-            foreach( $list as $roles ) {
-                $roles_status                         = '<div class="badge bg-danger"> Inactive </div>';
-                if( $roles->status == '1' ) {
-                    $roles_status                     = '<div class="badge bg-success"> Active </div>';
+            foreach( $list as $users ) {
+                $users_status                         = '<div class="badge bg-danger" role="button" onclick="change_status(\'users\','.$users->id.', 1)"> Inactive </div>';
+                if( $users->status == 1 ) {
+                    $users_status                     = '<div class="badge bg-success" role="button" onclick="change_status(\'users\','.$users->id.', 0)"> Active </div>';
                 }
                 $action = '<a href="javascript:void(0);" class="action-icon"> <i class="mdi mdi-eye"></i></a>
-                <a href="javascript:void(0);" class="action-icon" onclick="return get_add_modal(\'roles\', '.$roles->id.')"> <i class="mdi mdi-square-edit-outline"></i></a>
-                <a href="javascript:void(0);" class="action-icon" onclick="return common_soft_delete(\'roles\', '.$roles->id.')"> <i class="mdi mdi-delete"></i></a>';
+                <a href="javascript:void(0);" class="action-icon" onclick="return get_add_modal(\'users\', '.$users->id.')"> <i class="mdi mdi-square-edit-outline"></i></a>
+                <a href="javascript:void(0);" class="action-icon" onclick="return common_soft_delete(\'users\', '.$users->id.')"> <i class="mdi mdi-delete"></i></a>';
 
                 $nested_data[ 'id' ]                = '<div class="form-check">
-                    <input type="checkbox" class="form-check-input" id="customCheck2" value="'.$roles->id.'">
+                    <input type="checkbox" class="form-check-input" id="customCheck2" value="'.$users->id.'">
                     <label class="form-check-label" for="customCheck2">&nbsp;</label>
                 </div>';
-                $nested_data[ 'role' ]              = $roles->role;
-                $nested_data[ 'addedBy' ]           = $roles->added->name;
-                $nested_data[ 'status' ]            = $roles_status;
+                $nested_data[ 'name' ]              = $users->name;
+                $nested_data[ 'email' ]             = $users->email;
+                $nested_data[ 'mobile_no' ]         = $users->mobile_no;
+                $nested_data[ 'status' ]            = $users_status;
                 $nested_data[ 'action' ]            = $action;
                 $data[]                             = $nested_data;
             }
@@ -92,13 +94,12 @@ class UserController extends Controller
         }
         $id = $request->id;
         $modal_title = 'Add User';
-        $company = CompanySettings::all();
-        $roles = Role::all();
+        $roles = Role::where('status',1)->get();
         if( isset( $id ) && !empty($id) ) {
             $info = User::find($id);
             $modal_title = 'Update User';
         }
-        $params = ['modal_title' => $modal_title, 'id' => $id ?? '', 'info' => $info ?? '', 'company' => $company, 'roles' => $roles];
+        $params = ['modal_title' => $modal_title, 'id' => $id ?? '', 'info' => $info ?? '', 'roles' => $roles];
         return view('crm.user.add_edit', $params);
        
     }
@@ -108,11 +109,18 @@ class UserController extends Controller
         $id = $request->id;
         if( isset( $id ) && !empty($id) ) {
             $role_validator   = [
-                'role'      => [ 'required', 'string', 'max:255', 'unique:roles,role,'.$id ],
+                'email'      => [ 'required', 'email', 'string', 'max:255', 'unique:users,email,'.$id ],
+                'mobile_no'      => [ 'required', 'digits:10', 'max:255', 'unique:users,mobile_no,'.$id ],
+                // 'password' => ['required', 'string', 'min:6'],
+
             ];
         } else {
             $role_validator   = [
-                'role'      => [ 'required', 'string', 'max:255', 'unique:roles,role' ],
+                'name' => ['required', 'string', 'max:255'],
+                'email'      => [ 'required', 'email','string', 'max:255', 'unique:roles,role' ],
+                'mobile_no' => ['required', 'digits:10', 'max:255'],
+                'password' => ['required', 'string', 'min:6'],
+
             ];
         }
         //Validate the product
@@ -120,17 +128,41 @@ class UserController extends Controller
         
         if ($validator->passes()) {
 
+            if( $request->hasFile( 'profile_image' ) ) {
+                $file                       = $request->file( 'profile_image' )->store( 'account', 'public' );
+                $ins['image'] = $file;
+            }
             $ins['status'] = isset($request->status) ? 1 : 0;
-            $ins['role'] = $request->role;
-            $ins['description'] = $request->description;
-            
+            $ins['name'] = $request->name;
+            $ins['last_name'] = $request->last_name;
+            $ins['mobile_no'] = $request->mobile_no;
+            $ins['role_id'] = $request->role_id;
+            $ins['email'] = $request->email;
+            if( isset( $request->password ) ) {
+                $ins['password'] = Hash::make($request->password);
+            }
+            // dd($ins);
             if( isset($id) && !empty($id) ) {
-                Role::whereId($id)->update($ins);
-                $success = 'Updated role';
+                $user = User::find($id);
+                $user->status = isset($request->status) ? 1 : 0;
+                $user->name = $request->name;
+                $user->last_name = $request->last_name;
+                $user->email = $request->email;
+                $user->mobile_no = $request->mobile_no;
+                $user->role_id = $request->role_id;
+                if( isset( $request->password ) ) {
+                    $user->password = Hash::make($request->password);
+                }
+                if( $request->hasFile( 'profile_image' ) ) {
+                    $file        = $request->file( 'profile_image' )->store( 'account', 'public' );
+                    $user->image = $file;
+                }
+                $user->save();
+                $success = 'Updated User';
             } else {
                 $ins['added_by'] = Auth::id();
-                Role::create($ins);
-                $success = 'Added new roles';
+                User::create($ins);
+                $success = 'Added new user';
             }
             return response()->json(['error'=>[$success], 'status' => '0']);
         }
@@ -140,9 +172,20 @@ class UserController extends Controller
     public function delete(Request $request)
     {
         $id = $request->id;
-        $role = Role::find($id);
+        $role = User::find($id);
         $role->delete();
         $delete_msg = 'Deleted successfully';
         return response()->json(['error'=>[$delete_msg], 'status' => '0']);
+    }
+
+    public function change_status(Request $request)
+    {
+        $id = $request->id;
+        $status = $request->status;
+        $org = User::find($id);
+        $org->status = $status;
+        $org->update();
+        $update_msg = 'Updated successfully';
+        return response()->json(['error'=>[$update_msg], 'status' => '0']);
     }
 }
