@@ -21,6 +21,7 @@ class UserSeeder extends Seeder
             // 'email' => Str::random(10).'@gmail.com',
             'email' => 'admin@yopmail.com',
             'password' => Hash::make('password'),
+            'status' => 1
         ]);
     }
 }
