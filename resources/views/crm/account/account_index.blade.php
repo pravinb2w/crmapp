@@ -11,7 +11,7 @@
     border-radius: 50%;
     width: 75px;
     height: 75px;
-    animation: spin 2s linear infinite;
+    animation: spin 0.5s linear infinite;
     background-position:center;
     z-index:10000000;
     opacity: 0.4;
@@ -68,6 +68,16 @@
                         <li class="nav-item">
                             <a href="#horizontal-form-link" data-bs-toggle="tab" onclick="return get_settings_tab('link')" aria-expanded="true" class="nav-link">
                                 Link
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#horizontal-form-mail" data-bs-toggle="tab" onclick="return get_settings_tab('mail')" aria-expanded="true" class="nav-link">
+                                Mail
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#horizontal-form-subscription" data-bs-toggle="tab" onclick="return get_settings_tab('subscription')" aria-expanded="true" class="nav-link">
+                                Subscription
                             </a>
                         </li>
                         <li class="nav-item">

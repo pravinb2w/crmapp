@@ -27,6 +27,11 @@ class CompanySettings extends Model
         'status'
     ];
 
+    public function subscription()
+    {
+        return $this->hasOne(CompanySubscription::class, 'id', 'subscription_id');
+    }
+
     public function scopeLatests( Builder $query ) {
         return $query->orderBy( static::CREATED_AT, 'desc' );
     }

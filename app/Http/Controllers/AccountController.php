@@ -85,6 +85,13 @@ class AccountController extends Controller
                     'site_logo' => ['image', 'mimes:jpeg,png,jpg,gif,svg'],
                     'site_favicon' => ['image', 'mimes:jpeg,png,jpg,gif,svg'],
                 ];
+            } else if( $type == 'mail') {
+                $validator   = [
+                    'smtp_host' => [ 'required', 'string', 'max:255' ],
+                    'smtp_port' => ['required', 'max:5'],
+                    'smtp_user' => ['required', 'string', 'max:55'],
+                    'smtp_password' => ['required', 'string', 'max:55'],
+                ];
             } else {
                 $validator   = [
                     'current_password' => [ 'required', 'string', 'max:255' ],
@@ -103,6 +110,7 @@ class AccountController extends Controller
                 if( $type == 'company' ) {
                     $ins['site_name' ] = $request->site_name;
                     $ins['site_url' ] = $request->site_url;
+                    $ins['copyrights'] = $request->copyrights;
                     if( $request->hasFile( 'site_logo' ) ) {
                         $file                       = $request->file( 'site_logo' )->store( 'account', 'public' );
                         $ins['site_logo']             = $file;
@@ -111,6 +119,15 @@ class AccountController extends Controller
                         $file                       = $request->file( 'site_favicon' )->store( 'account', 'public' );
                         $ins['site_favicon']          = $file;
                     }
+                    CompanySettings::whereId($user->company->id)->update($ins);
+                    $success = 'Account settings saved';
+                    return response()->json(['error'=>[$success], 'status' => '0']);
+                } else if($type == 'mail') {
+                    $ins['smtp_host' ] = $request->smtp_host;
+                    $ins['smtp_port' ] = $request->smtp_port;
+                    $ins['smtp_user' ] = $request->smtp_user;
+                    $ins['smtp_password' ] = $request->smtp_password;
+                    
                     CompanySettings::whereId($user->company->id)->update($ins);
                     $success = 'Account settings saved';
                     return response()->json(['error'=>[$success], 'status' => '0']);

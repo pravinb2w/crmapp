@@ -42,6 +42,12 @@
         @endif
         </div>
     </div>
+    <div class="row mb-3">
+        <label for="copyrights" class="col-3 col-form-label">Copyrights</label>
+        <div class="col-9">
+            <input type="text" name="copyrights" class="form-control" value="{{ $info->company->copyrights ?? '' }}" id="copyrights" placeholder="Copyrights">
+        </div>
+    </div>
     <div class="justify-content-end row">
         <div class="col-9">
             <button type="submit" class="btn btn-info">Update</button>
