@@ -14,7 +14,7 @@ class AddStatusToOrganizationsTable extends Migration
     public function up()
     {
         Schema::table('organizations', function (Blueprint $table) {
-        $table->integer('status')->comment('0-inactive,1-active');
+        $table->integer('status')->comment('0-inactive,1-active')->default(0);
         });
     }
 

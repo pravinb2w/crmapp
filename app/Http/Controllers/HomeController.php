@@ -22,7 +22,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $info = CompanySettings::find(1);
+        // $info = CompanySettings::find(1);
         return view('home');
     }
 }
