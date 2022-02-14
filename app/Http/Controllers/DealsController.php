@@ -14,4 +14,8 @@ class DealsController extends Controller
     {
         return view('crm.deals.create');
     }
+    public function show(Request $request)
+    {
+        return view('crm.deals.show');
+    }
 }
