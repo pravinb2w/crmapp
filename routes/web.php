@@ -68,6 +68,11 @@ Route::middleware([SetViewVariable::class, 'auth'])->group(function(){
         Route::post('/delete', [App\Http\Controllers\LeadController::class, 'delete'])->name('leads.delete');
         Route::post('/status', [App\Http\Controllers\LeadController::class, 'change_status'])->name('leads.status');
     });
+    //leads route
+    Route::prefix('deals')->group(function () {
+        Route::get('/', [App\Http\Controllers\DealsController::class, 'index'])->name('deals');
+        Route::get('/view/{id}', [App\Http\Controllers\DealsController::class, 'view'])->name('deals.view');
+    });
     //tasks route
     Route::prefix('tasks')->group(function () {
         Route::get('/', [App\Http\Controllers\TaskController::class, 'index'])->name('tasks');

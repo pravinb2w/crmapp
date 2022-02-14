@@ -95,7 +95,7 @@
                 <div class="collapse" id="sidebarEmail">
                     <ul class="side-nav-second-level">
                         <li>
-                            <a href="javscript:void(0);">Leads</a>
+                            <a href="{{ route('leads') }}">Leads</a>
                         </li>
                         <li>
                             <a href="javascipt:void(0)">Deals</a>

@@ -83,6 +83,6 @@ class LeadController extends Controller
     }
 
     public function view(Request $request, $id = '') {
-        dd($id);
+        return view('crm.lead.view');
     }
 }
