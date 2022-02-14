@@ -70,6 +70,13 @@ Route::middleware([SetViewVariable::class, 'auth'])->group(function(){
         Route::post('/status', [App\Http\Controllers\TaskController::class, 'change_status'])->name('tasks.status');
     });
 
+    // Deals Routes
+    Route::prefix('deals')->group(function () {
+        Route::get('/', [App\Http\Controllers\DealsController::class, 'index'])->name('deals'); 
+        Route::get('/create', [App\Http\Controllers\DealsController::class, 'create'])->name('create-deal'); 
+
+    });
+
     Route::prefix('settings')->group(function () {
         Route::get('/', [App\Http\Controllers\SettingController::class, 'index'])->name('settings');
         //users route

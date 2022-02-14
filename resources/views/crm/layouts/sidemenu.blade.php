@@ -98,7 +98,7 @@
                             <a href="javscript:void(0);">Leads</a>
                         </li>
                         <li>
-                            <a href="javascipt:void(0)">Deals</a>
+                            <a href="{{ route('deals') }}">Deals</a>
                         </li>
                         <li>
                             <a href="javascipt:void(0)">Invoices</a>
