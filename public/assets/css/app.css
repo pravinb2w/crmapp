@@ -21118,3 +21118,22 @@ div.dataTables_scrollBody > table > :not(:first-child) {
 .poniter-0 {
   pointer-events: none !important;
 }
+.cursor {
+  cursor: pointer !important;
+}
+.pipeline-btn {   
+  clip-path: polygon(90% 0, 100% 50%, 89% 100%, 0% 100%, 6% 50%, 0% 0%);
+   padding: 10px 10px !important;
+}
+
+.pipeline-btn.active{   
+  background: var(--bs-primary) !important;
+}
+.group-scroll {
+  max-height: 200px;
+  overflow: auto;
+}
+.group-scroll-lg {
+  max-height: 300px;
+  overflow: auto;
+}
