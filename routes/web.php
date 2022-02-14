@@ -22,6 +22,7 @@ Route::middleware([SetViewVariable::class, 'auth'])->group(function(){
 
     Route::get('/dashboard', [App\Http\Controllers\HomeController::class, 'index'])->name('dashboard');
     Route::get('/deals-dashboard', [App\Http\Controllers\HomeController::class, 'dealsIndex'])->name('deals-dashboard');
+    Route::get('/deals-pipelines', [App\Http\Controllers\HomeController::class, 'dealsPipeline'])->name('deals-pipeline');
 
     Route::get('/account', [App\Http\Controllers\AccountController::class, 'index'])->name('account');
     Route::get('/account/change-password',[App\Http\Controllers\AccountController::class, 'index'])->name('change_password');

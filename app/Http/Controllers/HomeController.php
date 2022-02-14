@@ -30,4 +30,8 @@ class HomeController extends Controller
     {
         return view('dashboard.deals');
     }
+    public function dealsPipeline()
+    {
+        return view('dashboard.deals-pipeline');
+    }
 }
