@@ -20,12 +20,12 @@
     <body class="loading" data-layout-config='{"darkMode":false}'>
 
         <!-- NAVBAR START -->
-        <nav class="navbar navbar-expand-lg py-lg-3 navbar-dark">
+        <nav class="navbar navbar-expand-lg bg-primary p-0 navbar-dark">
             <div class="container">
 
                 <!-- logo -->
-                <a href="index.html" class="navbar-brand me-lg-5">
-                    <img src="{{ asset('assets/images/logo/logo.png') }}" alt="" class="logo-dark" height="35" />
+                <a href="index.html" class="navbar-brand me-lg-5 ">
+                    <img src="{{ asset('assets/images/logo/logo.png') }}" style="filter:brightness(10);transform:scale(.8)" class="logo-dark" width="100px"  />
                 </a>
 
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
@@ -37,538 +37,352 @@
                 <div class="collapse navbar-collapse" id="navbarNavDropdown">
 
                     <!-- left menu -->
-                    <ul class="navbar-nav me-auto align-items-center">
-                        <li class="nav-item mx-lg-1">
-                            <a class="nav-link active" href="">Home</a>
+                    <ul class="navbar-nav ms-auto py-2 align-items-center"> 
+                        <li class="nav-item mx-lg-1 text-center">
+                            <a href="javascript: void(0);" class="social-list-item border text-white"><i class="mdi mdi-facebook"></i></a>
+                        </li>
+                        <li class="nav-item mx-lg-1 text-center">
+                            <a href="javascript: void(0);" class="social-list-item border text-white"><i class="mdi mdi-instagram"></i></a>
+                        </li>
+                        <li class="nav-item mx-lg-1 text-center">
+                            <a href="javascript: void(0);" class="social-list-item border text-white"><i class="mdi mdi-twitter"></i></a>
+                        </li>
+                        <li class="nav-item mx-lg-1 text-center">
+                            <a href="javascript: void(0);" class="social-list-item border text-white"><i class="mdi mdi-google"></i></a>
                         </li>
                         <li class="nav-item mx-lg-1">
-                            <a class="nav-link" href="">Features</a>
+                            <a class="nav-link text-white" href="">Contact us</a>
                         </li>
-                        <li class="nav-item mx-lg-1">
-                            <a class="nav-link" href="">Pricing</a>
-                        </li>
-                        <li class="nav-item mx-lg-1">
-                            <a class="nav-link" href="">FAQs</a>
-                        </li>
-                        <li class="nav-item mx-lg-1">
-                            <a class="nav-link" href="">Clients</a>
-                        </li>
-                        <li class="nav-item mx-lg-1">
-                            <a class="nav-link" href="">Contact</a>
-                        </li>
-                    </ul>
-
-                    <!-- right menu -->
-                    <ul class="navbar-nav ms-auto align-items-center">
-                        <li class="nav-item me-0">
+                        <li class="nav-item me-0 ms-3">
                             <a href="https://themes.getbootstrap.com/product/hyper-responsive-admin-dashboard-template/" target="_blank" class="nav-link d-lg-none">Purchase now</a>
                             <a href="login" target="_blank" class="btn btn-sm btn-light rounded-pill d-none d-lg-inline-flex">
                                 <i class="mdi mdi-login-variant me-2"></i> LOGIN
                             </a>
                         </li>
-                    </ul>
+                    </ul> 
 
                 </div>
             </div>
         </nav>
         <!-- NAVBAR END -->
 
-        <!-- START HERO -->
-        <section class="hero-section">
-            <div class="container">
-                <div class="row align-items-center">
-                    <div class="col-md-5">
-                        <div class="mt-md-4">
-                            <div>
-                                <span class="badge bg-danger rounded-pill">New</span>
-                                <span class="text-white-50 ms-1">Welcome to Brand New</span>
+        <!-- START HERO --> 
+        <div id="carouselExampleCaption" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner" role="listbox">
+                <div class="carousel-item active">
+                    <div class="slider-img w-100" style="min-height: 90vh;background: linear-gradient(#02020285, #000000) , url('https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1115&q=80');background-size:cover"></div>
+                    <div class="carousel-caption p-0  d-none d-md-block">
+                        <div class="row m-0 align-items-center" style="min-height: 90vh">
+                            <div class="col-md-7 h-100 text-start">
+                                <div>
+                                    <span class="text-white-50 ms-1">Welcome to Brand <span class="badge bg-danger rounded-pill">New</span></span>
+                                </div>
+                                <h2 class="text-white fw-normal mb-4 mt-3 hero-title">
+                                   Phoenix - Customer relationship management system 
+                                </h2>
+                                <p class="mb-4 font-16 text-white-50">Phoenix CRM is a fully featured  with business or other organization administers its interactions with customers, typically using data analysis to study large amounts of information.</p>
                             </div>
-                            <h2 class="text-white fw-normal mb-4 mt-3 hero-title">
-                               Phoenix - Customer relationship management system 
-                            </h2>
-
-                            <p class="mb-4 font-16 text-white-50">Phoenix CRM is a fully featured  with business or other organization administers its interactions with customers, typically using data analysis to study large amounts of information.</p>
-
-                            <a href="login" target="_blank" class="btn btn-info rounded-pill">Explore  <i
-                                    class="mdi mdi-arrow-right ms-1"></i></a>
+                            <div class="col-md-5 h-100 p-4 border rounded shadow" style="backdrop-filter: blur(20px)">
+                                <form id="enquiry-form" method="POST" action="{{ route('enquiry.save') }}" autocomplete="off">
+                                    <div id="error"></div>
+                                    <h3 class="h3 text-center">
+                                        Reach us
+                                    </h3>
+                                    <div class="row mt-4">
+                                        <div class="col-lg-12">
+                                            <div class="mb-2 text-start">
+                                                <label for="fullname" class="form-label">Your Name</label>
+                                                <input class="form-control form-control-light" type="text" id="fullname" name="fullname" placeholder="Name..." required>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-12">
+                                            <div class="mb-2 text-start">
+                                                <label for="emailaddress" class="form-label">Your Email</label>
+                                                <input class="form-control form-control-light" name="email" type="email" required id="emailaddress" placeholder="Enter you email...">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-12">
+                                            <div class="mb-2 text-start">
+                                                <label for="subject" class="form-label">Mobile Number</label>
+                                                <input class="form-control form-control-light" required name="subject" type="text" id="subject" placeholder="Enter subject...">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-12">
+                                            <div class="mb-2 text-start">
+                                                <label for="subject" class="form-label">Company</label>
+                                                <input class="form-control form-control-light" required name="subject" type="text" id="subject" placeholder="Enter subject...">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-12">
+                                            <div class="mb-2 text-start">
+                                                <label for="subject" class="form-label">Remarks</label>
+                                                <input class="form-control form-control-light" required name="subject" type="text" id="subject" placeholder="Enter subject...">
+                                            </div>
+                                        </div>
+                                    </div> 
+                                    <div class="row mt-2">
+                                        <div class="col-12 text-center">
+                                            <button class="btn btn-primary" type="submit">Send a Message <i
+                                                class="mdi mdi-telegram ms-1"></i> </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
                         </div>
                     </div>
-                    <div class="col-md-5 offset-md-2">
-                        <div class="text-md-center mt-3 mt-md-0">
-                            <img src="{{ asset('assets/images/logo/logo-xl.png') }}" alt="" class="img-fluid" />
+                </div>
+                <div class="carousel-item">
+                    <div class="slider-img w-100" style="min-height: 90vh;background: linear-gradient(#02020285, #000000) , url('https://images.unsplash.com/photo-1599658880436-c61792e70672?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80');background-size:cover"></div>
+                    <div class="carousel-caption p-0  d-none d-md-block">
+                        <div class="row m-0 align-items-center" style="min-height: 90vh">
+                            <div class="col-md-7 text-start">
+                                <div>
+                                    <span class="text-white-50 ms-1">Welcome to Brand <span class="badge bg-danger rounded-pill">New</span></span>
+                                </div>
+                                <h2 class="text-white fw-normal mb-4 mt-3 hero-title">
+                                   Phoenix - Customer relationship management system 
+                                </h2>
+                                <p class="mb-4 font-16 text-white-50">Phoenix CRM is a fully featured  with business or other organization administers its interactions with customers, typically using data analysis to study large amounts of information.</p>
+                            </div>
+                            <div class="col-md-5 p-4 border rounded shadow" style="backdrop-filter: blur(20px)">
+                                <form id="enquiry-form" method="POST" action="{{ route('enquiry.save') }}" autocomplete="off">
+                                    <div id="error"></div>
+                                    <h3 class="h3 text-center">
+                                        Reach us
+                                    </h3>
+                                    <div class="row mt-4">
+                                        <div class="col-lg-12">
+                                            <div class="mb-2 text-start">
+                                                <label for="fullname" class="form-label">Your Name</label>
+                                                <input class="form-control form-control-light" type="text" id="fullname" name="fullname" placeholder="Name..." required>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-12">
+                                            <div class="mb-2 text-start">
+                                                <label for="emailaddress" class="form-label">Your Email</label>
+                                                <input class="form-control form-control-light" name="email" type="email" required id="emailaddress" placeholder="Enter you email...">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-12">
+                                            <div class="mb-2 text-start">
+                                                <label for="subject" class="form-label">Mobile Number</label>
+                                                <input class="form-control form-control-light" required name="subject" type="text" id="subject" placeholder="Enter subject...">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-12">
+                                            <div class="mb-2 text-start">
+                                                <label for="subject" class="form-label">Company</label>
+                                                <input class="form-control form-control-light" required name="subject" type="text" id="subject" placeholder="Enter subject...">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-12">
+                                            <div class="mb-2 text-start">
+                                                <label for="subject" class="form-label">Remarks</label>
+                                                <input class="form-control form-control-light" required name="subject" type="text" id="subject" placeholder="Enter subject...">
+                                            </div>
+                                        </div>
+                                    </div> 
+                                    <div class="row mt-2">
+                                        <div class="col-12 text-center">
+                                            <button class="btn btn-primary" type="submit">Send a Message <i
+                                                class="mdi mdi-telegram ms-1"></i> </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="slider-img w-100" style="min-height: 90vh;background: linear-gradient(#02020285, #000000) , url('https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1176&q=80');background-size:cover"></div>
+                    <div class="carousel-caption p-0  d-none d-md-block">
+                        <div class="row m-0 align-items-center" style="min-height: 90vh">
+                            <div class="col-md-7 text-start">
+                                <div>
+                                    <span class="text-white-50 ms-1">Welcome to Brand <span class="badge bg-danger rounded-pill">New</span></span>
+                                </div>
+                                <h2 class="text-white fw-normal mb-4 mt-3 hero-title">
+                                   Phoenix - Customer relationship management system 
+                                </h2>
+                                <p class="mb-4 font-16 text-white-50">Phoenix CRM is a fully featured  with business or other organization administers its interactions with customers, typically using data analysis to study large amounts of information.</p>
+                            </div>
+                            <div class="col-md-5 p-4 border rounded shadow" style="backdrop-filter: blur(20px)">
+                                <form id="enquiry-form" method="POST" action="{{ route('enquiry.save') }}" autocomplete="off">
+                                    <div id="error"></div>
+                                    <h3 class="h3 text-center">
+                                        Reach us
+                                    </h3>
+                                    <div class="row mt-4">
+                                        <div class="col-lg-12">
+                                            <div class="mb-2 text-start">
+                                                <label for="fullname" class="form-label">Your Name</label>
+                                                <input class="form-control form-control-light" type="text" id="fullname" name="fullname" placeholder="Name..." required>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-12">
+                                            <div class="mb-2 text-start">
+                                                <label for="emailaddress" class="form-label">Your Email</label>
+                                                <input class="form-control form-control-light" name="email" type="email" required id="emailaddress" placeholder="Enter you email...">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-12">
+                                            <div class="mb-2 text-start">
+                                                <label for="subject" class="form-label">Mobile Number</label>
+                                                <input class="form-control form-control-light" required name="subject" type="text" id="subject" placeholder="Enter subject...">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-12">
+                                            <div class="mb-2 text-start">
+                                                <label for="subject" class="form-label">Company</label>
+                                                <input class="form-control form-control-light" required name="subject" type="text" id="subject" placeholder="Enter subject...">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-12">
+                                            <div class="mb-2 text-start">
+                                                <label for="subject" class="form-label">Remarks</label>
+                                                <input class="form-control form-control-light" required name="subject" type="text" id="subject" placeholder="Enter subject...">
+                                            </div>
+                                        </div>
+                                    </div> 
+                                    <div class="row mt-2">
+                                        <div class="col-12 text-center">
+                                            <button class="btn btn-primary" type="submit">Send a Message <i
+                                                class="mdi mdi-telegram ms-1"></i> </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </section>
+            <a class="carousel-control-prev" href="#carouselExampleCaption" role="button" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </a>
+            <a class="carousel-control-next" href="#carouselExampleCaption" role="button" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </a>
+        </div>
         <!-- END HERO -->
 
-        {{-- <!-- START SERVICES -->
-        <section class="py-5">
-            <div class="container">
-                <div class="row py-4">
-                    <div class="col-lg-12">
-                        <div class="text-center">
-                            <h1 class="mt-0"><i class="mdi mdi-infinity"></i></h1>
-                            <h3>The admin is fully <span class="text-primary">responsive</span> and easy to <span
-                                    class="text-primary">customize</span></h3>
-                            <p class="text-muted mt-2">The clean and well commented code allows easy customization of the
-                                theme.It's designed for
-                                <br>describing your app, agency or business.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-lg-4 col-md-6">
-                        <div class="text-center p-2 p-sm-3">
-                            <div class="avatar-sm m-auto">
-                                <span class="avatar-title bg-primary-lighten rounded-circle">
-                                    <i class="uil uil-desktop text-primary font-24"></i>
-                                </span>
-                            </div>
-                            <h4 class="mt-3">Responsive Layouts</h4>
-                            <p class="text-muted mt-2 mb-0">Et harum quidem rerum as expedita distinctio nam libero tempore
-                                cum soluta nobis est cumque quo.
-                            </p>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-4 col-md-6">
-                        <div class="text-center p-2 p-sm-3">
-                            <div class="avatar-sm m-auto">
-                                <span class="avatar-title bg-primary-lighten rounded-circle">
-                                    <i class="uil uil-vector-square text-primary font-24"></i>
-                                </span>
-                            </div>
-                            <h4 class="mt-3">Based on Bootstrap UI</h4>
-                            <p class="text-muted mt-2 mb-0">Temporibus autem quibusdam et aut officiis necessitatibus saepe
-                                eveniet ut sit et recusandae.
-                            </p>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-4 col-md-6">
-                        <div class="text-center p-2 p-sm-3">
-                            <div class="avatar-sm m-auto">
-                                <span class="avatar-title bg-primary-lighten rounded-circle">
-                                    <i class="uil uil-presentation text-primary font-24"></i>
-                                </span>
-                            </div>
-                            <h4 class="mt-3">Creative Design</h4>
-                            <p class="text-muted mt-2 mb-0">Nam libero tempore, cum soluta a est eligendi minus id quod
-                                maxime placeate facere assumenda est.
-                            </p>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-4 col-md-6">
-                        <div class="text-center p-2 p-sm-3">
-                            <div class="avatar-sm m-auto">
-                                <span class="avatar-title bg-primary-lighten rounded-circle">
-                                    <i class="uil uil-apps text-primary font-24"></i>
-                                </span>
-                            </div>
-                            <h4 class="mt-3">Multiple Applications</h4>
-                            <p class="text-muted mt-2 mb-0">Et harum quidem rerum as expedita distinctio nam libero tempore
-                                cum soluta nobis est cumque quo.
-                            </p>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-4 col-md-6">
-                        <div class="text-center p-2 p-sm-3">
-                            <div class="avatar-sm m-auto">
-                                <span class="avatar-title bg-primary-lighten rounded-circle">
-                                    <i class="uil uil-shopping-cart-alt text-primary font-24"></i>
-                                </span>
-                            </div>
-                            <h4 class="mt-3">Ecommerce Pages</h4>
-                            <p class="text-muted mt-2 mb-0">Temporibus autem quibusdam et aut officiis necessitatibus saepe
-                                eveniet ut sit et recusandae.
-                            </p>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-4 col-md-6">
-                        <div class="text-center p-2 p-sm-3">
-                            <div class="avatar-sm m-auto">
-                                <span class="avatar-title bg-primary-lighten rounded-circle">
-                                    <i class="uil uil-grids text-primary font-24"></i>
-                                </span>
-                            </div>
-                            <h4 class="mt-3">Multiple Layouts</h4>
-                            <p class="text-muted mt-2 mb-0">Nam libero tempore, cum soluta a est eligendi minus id quod
-                                maxime placeate facere assumenda est.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-        </section>
-        <!-- END SERVICES -->
-
-        <!-- START FEATURES 1 -->
-        <section class="py-5 bg-light-lighten border-top border-bottom border-light">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="text-center">
-                            <h3>Flexible <span class="text-primary">Layouts</span></h3>
-                            <p class="text-muted mt-2">There are three different layout options available to cater need for
-                                any <br /> modern web
-                                application.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row mt-4">
-                    <div class="col-lg-4 col-md-6">
-                        <div class="demo-box text-center mt-3 mt-lg-0">
-                            <img src="{{ asset('assets/images/layouts/layout-1.png') }}" alt="demo-img"
-                                class="img-fluid shadow-sm rounded">
-                            <h5 class="mt-3 f-17">Vertical Layout</h5>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-4 col-md-6">
-                        <div class="demo-box text-center mt-3 mt-lg-0">
-                            <img src="{{ asset('assets/images/layouts/layout-2.png') }}" alt="demo-img"
-                                class="img-fluid shadow-sm rounded">
-                            <h5 class="mt-3 f-17">Horizontal Layout</h5>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-4 col-md-6">
-                        <div class="demo-box text-center mt-3 mt-lg-0">
-                            <img src="{{ asset('assets/images/layouts/layout-3.png') }}" alt="demo-img"
-                                class="img-fluid shadow-sm rounded">
-                            <h5 class="mt-3 f-17">Detached Layout</h5>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-4 col-md-6">
-                        <div class="demo-box text-center mt-3 mt-lg-0">
-                            <img src="{{ asset('assets/images/layouts/layout-5.png') }}" alt="demo-img"
-                                class="img-fluid shadow-sm rounded">
-                            <h5 class="mt-3 f-17">Light Sidenav Layout</h5>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-4 col-md-6">
-                        <div class="demo-box text-center mt-3 mt-lg-0">
-                            <img src="{{ asset('assets/images/layouts/layout-6.png') }}" alt="demo-img"
-                                class="img-fluid shadow-sm rounded">
-                            <h5 class="mt-3 f-17">Boxed Layout</h5>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-4 col-md-6">
-                        <div class="demo-box text-center mt-3 mt-lg-0">
-                            <img src="{{ asset('assets/images/layouts/layout-4.png') }}" alt="demo-img"
-                                class="img-fluid shadow-sm rounded">
-                            <h5 class="mt-3 f-17">Semi Dark Layout</h5>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <!-- END FEATURES 1 -->
-
-        <!-- START FEATURES 2 -->
-        <section class="py-5">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="text-center">
-                            <h1 class="mt-0"><i class="mdi mdi-heart-multiple-outline"></i></h1>
-                            <h3>Features you'll <span class="text-danger">love</span></h3>
-                            <p class="text-muted mt-2">Hyper comes with next generation ui design and have multiple benefits
-                            </p>
-                        </div>
-                    </div>
-                </div>
-                <div class="row mt-2 py-5 align-items-center">
-                    <div class="col-lg-5 col-md-6">
-                        <img src="{{ asset('assets/images/features-1.svg') }}" class="img-fluid" alt="">
-                    </div>
-                    <div class="col-lg-6 offset-md-1 col-md-5">
-                        <h3 class="fw-normal">Inbuilt applications and pages</h3>
-                        <p class="text-muted mt-3">Hyper comes with a variety of ready-to-use applications and pages that help to speed up the development</p>
-
+       <!-- START FEATURES 2 -->
+         <section class="py-5">
+            <div class="container"> 
+                <div class="row pb-3 pt-5 align-items-center">
+                    <div class="col-lg-6 col-md-5">
+                        <h3 class="fw-normal">Who We are?</h3>
                         <div class="mt-4">
-                            <p class="text-muted"><i class="mdi mdi-circle-medium text-primary"></i> Projects & Tasks</p>
-                            <p class="text-muted"><i class="mdi mdi-circle-medium text-primary"></i> Ecommerce Application Pages</p>
-                            <p class="text-muted"><i class="mdi mdi-circle-medium text-primary"></i> Profile, pricing, invoice</p>
-                            <p class="text-muted"><i class="mdi mdi-circle-medium text-primary"></i> Login, signup, forget password</p>
+                            <p class="text-muted mb-3">Phoenix  CRM was originally designed to minimize the pain points of managing Small and Medium-Sized Companies with regards to Clients, Employees, and Finances.</p>
+                            <p class="text-muted mb-3"> The Core Brain behind the development of Phoenix  CRM is having a huge experience in handling clients with regards to multiple industries and he found that most of the startup, small and medium scale companies are lagging in maintaining their own customers, new leads, followups with them, invoice tracking, finances and many other minor things which are affecting their business in a huge way. They are losing so many potential clients as well as their existing clients in the long run.</p>
+                            <p class="text-muted mb-3"> Hence, we produced a system that will help them to overcome all these growth hurdles in their business and help them to reach the next level in their Business.</p>
+                            <p class="text-muted mb-3"> Phoenix  CRM CRM(solidperformers.com) is owned by Phoenix  CRM Private Limited. We are a B2B Platform offering solutions only to Corporate Businesses of all sizes.</p>
                         </div>
 
                         <a href="" class="btn btn-primary rounded-pill mt-3">Read More <i class="mdi mdi-arrow-right ms-1"></i></a>
 
                     </div>
-                </div>
-
-                <div class="row pb-3 pt-5 align-items-center">
-                    <div class="col-lg-6 col-md-5">
-                        <h3 class="fw-normal">Simply beautiful design</h3>
-                        <p class="text-muted mt-3">The simplest and fastest way to build dashboard or admin panel. Hyper is built using the latest tech and tools and provide an easy way to customize anything, including an overall color schemes, layout, etc.</p>
-
-                        <div class="mt-4">
-                            <p class="text-muted"><i class="mdi mdi-circle-medium text-success"></i> Built with latest Bootstrap</p>
-                            <p class="text-muted"><i class="mdi mdi-circle-medium text-success"></i> Extensive use of SCSS variables</p>
-                            <p class="text-muted"><i class="mdi mdi-circle-medium text-success"></i> Well documented and structured code</p>
-                            <p class="text-muted"><i class="mdi mdi-circle-medium text-success"></i> Detailed Documentation</p>
-                        </div>
-
-                        <a href="" class="btn btn-success rounded-pill mt-3">Read More <i class="mdi mdi-arrow-right ms-1"></i></a>
-
-                    </div>
                     <div class="col-lg-5 col-md-6 offset-md-1">
-                        <img src="{{ asset('assets/images/features-2.svg') }}" class="img-fluid" alt="">
+                        <img src="{{ asset('assets/images/about-us.jpg') }}" class="img-fluid" alt="">
                     </div>
-                </div>
-
+                </div> 
             </div>
-        </section>
-        <!-- END FEATURES 2 -->
-
-        <!-- START PRICING -->
-        <section class="py-5 bg-light-lighten border-top border-bottom border-light">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="text-center">
-                            <h1 class="mt-0"><i class="mdi mdi-tag-multiple"></i></h1>
-                            <h3>Choose Simple <span class="text-primary">Pricing</span></h3>
-                            <p class="text-muted mt-2">The clean and well commented code allows easy customization of the
-                                theme.It's designed for
-                                <br>describing your app, agency or business.</p>
+            </section>
+        <!-- END FEATURES 2 -->   
+ 
+        {{-- SERVICE --}}
+            <section class="py-5 bg-light">
+                <div class="container">
+                    <div class="row pb-3 pt-5 align-items-center">
+                        <div class="col-lg-8">
+                            <h3 class="fw-normal">Our services</h3>
+                            <p class="text-muted mt-3">
+                                In recent years, there has been a growing number of independent writers who are making a living by connecting directly with their readers. That’s why we’re launching Bulletin, a set of publishing and subscription tools to support creators in the US. And today, we’re sharing Bulletin’s first wave of writers.
+                                Through Bulletin, we want to support these creators, and unify our existing tools with something that could more directly support great writing and audio content — from podcasts to Live Audio Rooms — all in one place. We respect the work of writers and want to be clear that anyone who partners with us will have complete editorial independence.
+                            </p>
+                            <a href="" class="btn btn-primary rounded-pill mt-3">Know More <i class="mdi mdi-arrow-right ms-1"></i></a>
                         </div>
-                    </div>
-                </div>
-
-                <div class="row mt-5 pt-3">
-                    <div class="col-md-4">
-                        <div class="card card-pricing">
-                            <div class="card-body text-center">
-                                <p class="card-pricing-plan-name fw-bold text-uppercase">Standard License </p>
-                                <i class="card-pricing-icon dripicons-user text-primary"></i>
-                                <h2 class="card-pricing-price">$49 <span>/ License</span></h2>
-                                <ul class="card-pricing-features">
-                                    <li>10 GB Storage</li>
-                                    <li>500 GB Bandwidth</li>
-                                    <li>No Domain</li>
-                                    <li>1 User</li>
-                                    <li>Email Support</li>
-                                    <li>24x7 Support</li>
-                                </ul>
-                                <button class="btn btn-primary mt-4 mb-2 rounded-pill">Choose Plan</button>
+                        <div class="col-lg-4">
+                            <div class="border rounded bg-white shadow p-4">
+                                <h3 class="fw-normal">Features</h3>
+                                <div class="mt-4">
+                                    <p class="text-muted"><i class="mdi mdi-circle-medium text-primary"></i> Built with latest Bootstrap</p>
+                                    <p class="text-muted"><i class="mdi mdi-circle-medium text-primary"></i> Extensive use of SCSS variables</p>
+                                    <p class="text-muted"><i class="mdi mdi-circle-medium text-primary"></i> Well documented and structured code</p>
+                                    <p class="text-muted"><i class="mdi mdi-circle-medium text-primary"></i> Detailed Documentation</p>
+                                </div> 
                             </div>
                         </div>
-                        <!-- end Pricing_card -->
                     </div>
-                    <!-- end col -->
-
-                    <div class="col-md-4">
-                        <div class="card card-pricing card-pricing-recommended">
-                            <div class="card-body text-center">
-                                <div class="card-pricing-plan-tag">Recommended</div>
-                                <p class="card-pricing-plan-name fw-bold text-uppercase">Multiple License</p>
-                                <i class="card-pricing-icon dripicons-briefcase text-primary"></i>
-                                <h2 class="card-pricing-price">$99 <span>/ License</span></h2>
-                                <ul class="card-pricing-features">
-                                    <li>50 GB Storage</li>
-                                    <li>900 GB Bandwidth</li>
-                                    <li>2 Domain</li>
-                                    <li>10 User</li>
-                                    <li>Email Support</li>
-                                    <li>24x7 Support</li>
-                                </ul>
-                                <button class="btn btn-primary mt-4 mb-2 rounded-pill">Choose Plan</button>
+                </div>
+            </section>
+            <section class="py-5">
+                <div class="container">
+                    <div class="row align-items-center m-0">
+                        <div class="col-md">
+                            <h3 class="h3">
+                                Subscribe with us get the newsletter
+                            </h3>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="btn-group border shadow-sm rounded w-100">
+                                <div class="w-100">
+                                    <input class="form-control border-0 rounded-0  form-control-light w-100 p-3" type="text" id="subject" placeholder="Enter your e   mail...">
+                                </div>
+                                <div class="">
+                                    <button type="submit" class=" border-0 rounded-0 btn btn-primary p-3">Subscribe</button>
+                                </div>
                             </div>
                         </div>
-                        <!-- end Pricing_card -->
                     </div>
-                    <!-- end col -->
-
-                    <div class="col-md-4">
-                        <div class="card card-pricing">
-                            <div class="card-body text-center">
-                                <p class="card-pricing-plan-name fw-bold text-uppercase">Extended License</p>
-                                <i class="card-pricing-icon dripicons-store text-primary"></i>
-                                <h2 class="card-pricing-price">$599 <span>/ License</span></h2>
-                                <ul class="card-pricing-features">
-                                    <li>100 GB Storege</li>
-                                    <li>Unlimited Bandwidth</li>
-                                    <li>10 Domain</li>
-                                    <li>Unlimited User</li>
-                                    <li>Email Support</li>
-                                    <li>24x7 Support</li>
-                                </ul>
-                                <button class="btn btn-primary mt-4 mb-2 rounded-pill">Choose Plan</button>
+                </div>
+            </section>
+            <footer class="bg-primary py-5">
+                <div class="container">
+                    <div class="row justify-content-center" >
+                        <div class="col-md-4 text-center">
+                            {{-- <img src="assets/images/logo.png" alt="" class="logo-dark" height="18" /> --}}
+                            <strong class="text-white"> PHOENIX</strong>
+                            <p class="text-white mt-4">PHOENIX TECH makes it easier to build better websites with
+                                <br> great speed. Save hundreds of hours of design
+                                <br> and development by using it.</p>
+    
+                            <ul class="social-list list-inline mt-3">
+                                <li class="list-inline-item text-center">
+                                    <a href="javascript: void(0);" class="social-list-item border-white text-white"><i class="mdi mdi-facebook"></i></a>
+                                </li>
+                                <li class="list-inline-item text-center">
+                                    <a href="javascript: void(0);" class="social-list-item border-white text-white"><i class="mdi mdi-google"></i></a>
+                                </li>
+                                <li class="list-inline-item text-center">
+                                    <a href="javascript: void(0);" class="social-list-item border-white text-white"><i class="mdi mdi-twitter"></i></a>
+                                </li>
+                                <li class="list-inline-item text-center">
+                                    <a href="javascript: void(0);" class="social-list-item border-white text-white"><i class="mdi mdi-github"></i></a>
+                                </li>
+                            </ul>
+                        </div>  
+                        <div class="col-12 text-center">
+                            <ul class="list-unstyled justify-content-center d-flex ps-0 mb-0 mt-3">
+                                <li class="m-2"><a href="javascript: void(0);" class="text-light">About Us</a></li>
+                                <li class="m-2"><a href="javascript: void(0);" class="text-light">Price</a></li>
+                                <li class="m-2"><a href="javascript: void(0);" class="text-light">Blog</a></li>
+                                <li class="m-2"><a href="javascript: void(0);" class="text-light">Contact us</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                        
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="mt-5">
+                                <p class="text-light mt-4 text-center mb-0">{{ $copyrights ?? '© 2022 - 2023 PHOENIX. Design and coded by
+                                    DuraiBytes' }}</p>
                             </div>
                         </div>
-                        <!-- end Pricing_card -->
-                    </div>
-                    <!-- end col -->
-
-                </div>
-
-            </div>
-        </section>
-        <!-- END PRICING --> --}}
-
-        <!-- START FAQ -->
-        <section class="py-5">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="text-center">
-                            <h1 class="mt-0"><i class="mdi mdi-frequently-asked-questions"></i></h1>
-                            <h3>Frequently Asked <span class="text-primary">Questions</span></h3>
-                            <p class="text-muted mt-2">Here are some of the basic types of questions for our customers. For more 
-                                <br>information please contact us.</p>
-
-                            <button type="button" class="btn btn-success btn-sm mt-2"><i class="mdi mdi-email-outline me-1"></i> Email us your question</button>
-                            <button type="button" class="btn btn-info btn-sm mt-2 ms-1"><i class="mdi mdi-twitter me-1"></i> Send us a tweet</button>
-                        </div>
                     </div>
                 </div>
-
-                <div class="row mt-5">
-                    <div class="col-lg-5 offset-lg-1">
-                        <!-- Question/Answer -->
-                        <div>
-                            <div class="faq-question-q-box">Q.</div>
-                            <h4 class="faq-question text-body">Can I use this template for my client?</h4>
-                            <p class="faq-answer mb-4 pb-1 text-muted">Yup, the marketplace license allows you to use this theme
-                                in any end products.
-                                For more information on licenses, please refere <a href="https://themes.getbootstrap.com/licenses/" target="_blank">here</a>.</p>
-                        </div>
-
-                        <!-- Question/Answer -->
-                        <div>
-                            <div class="faq-question-q-box">Q.</div>
-                            <h4 class="faq-question text-body">How do I get help with the theme?</h4>
-                            <p class="faq-answer mb-4 pb-1 text-muted">Use our dedicated support email (support@coderthemes.com) to send your issues or feedback. We are here to help anytime.</p>
-                        </div>
-
-                    </div>
-                    <!--/col-lg-5 -->
-
-                    <div class="col-lg-5">
-                        <!-- Question/Answer -->
-                        <div>
-                            <div class="faq-question-q-box">Q.</div>
-                            <h4 class="faq-question text-body">Can this theme work with Wordpress?</h4>
-                            <p class="faq-answer mb-4 pb-1 text-muted">No. This is a HTML template. It won't directly with
-                                wordpress, though you can convert this into wordpress compatible theme.</p>
-                        </div>
-
-                        <!-- Question/Answer -->
-                        <div>
-                            <div class="faq-question-q-box">Q.</div>
-                            <h4 class="faq-question text-body">Will you regularly give updates of Hyper?</h4>
-                            <p class="faq-answer mb-4 pb-1 text-muted">Yes, We will update the Hyper regularly. All the
-                                future updates would be available without any cost.</p>
-                        </div>
-
-                    </div>
-                    <!--/col-lg-5-->
-                </div>
-                <!-- end row -->
-
-            </div> <!-- end container-->
-        </section>
-        <!-- END FAQ -->
-
-        
-        <!-- START CONTACT -->
-        <section class="py-5 bg-light-lighten border-top border-bottom border-light">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="text-center">
-                            <h3>Get In <span class="text-primary">Touch</span></h3>
-                            <p class="text-muted mt-2">Please fill out the following form and we will get back to you shortly. For more 
-                                <br>information please contact us.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row align-items-center mt-3">
-                    <div class="col-md-4">
-                        <p class="text-muted"><span class="fw-bold">Customer Support:</span><br> <span class="d-block mt-1">+1 234 56 7894</span></p>
-                        <p class="text-muted mt-4"><span class="fw-bold">Email Address:</span><br> <span class="d-block mt-1">info@gmail.com</span></p>
-                        <p class="text-muted mt-4"><span class="fw-bold">Office Address:</span><br> <span class="d-block mt-1">4461 Cedar Street Moro, AR 72368</span></p>
-                        <p class="text-muted mt-4"><span class="fw-bold">Office Time:</span><br> <span class="d-block mt-1">9:00AM To 6:00PM</span></p>
-                    </div>
-                    @include('crm.layouts.script')
-                    <div class="col-md-8">
-                        @include('landing.enquiry')
-                    </div>
-                </div>
-            </div>
-        </section>
-        <!-- END CONTACT -->
-
-        <!-- START FOOTER -->
-        <footer class="bg-dark py-5">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-6">
-                        {{-- <img src="assets/images/logo.png" alt="" class="logo-dark" height="18" /> --}}
-                        <strong class="text-white"> PHOENIX</strong>
-                        <p class="text-muted mt-4">PHOENIX TECH makes it easier to build better websites with
-                            <br> great speed. Save hundreds of hours of design
-                            <br> and development by using it.</p>
-
-                        <ul class="social-list list-inline mt-3">
-                            <li class="list-inline-item text-center">
-                                <a href="javascript: void(0);" class="social-list-item border-primary text-primary"><i class="mdi mdi-facebook"></i></a>
-                            </li>
-                            <li class="list-inline-item text-center">
-                                <a href="javascript: void(0);" class="social-list-item border-danger text-danger"><i class="mdi mdi-google"></i></a>
-                            </li>
-                            <li class="list-inline-item text-center">
-                                <a href="javascript: void(0);" class="social-list-item border-info text-info"><i class="mdi mdi-twitter"></i></a>
-                            </li>
-                            <li class="list-inline-item text-center">
-                                <a href="javascript: void(0);" class="social-list-item border-secondary text-secondary"><i class="mdi mdi-github"></i></a>
-                            </li>
-                        </ul>
-                    </div>
-
-                    <div class="col-lg-2 col-md-4 mt-3 mt-lg-0">
-                    </div>
-
-                    <div class="col-lg-2 col-md-4 mt-3 mt-lg-0">
-                    </div>
-
-                    <div class="col-lg-2 col-md-4 mt-3 mt-lg-0">
-                        <h5 class="text-light">Company</h5>
-                        <ul class="list-unstyled ps-0 mb-0 mt-3">
-                            <li class="mt-2"><a href="javascript: void(0);" class="text-muted">About Us</a></li>
-                            <li class="mt-2"><a href="javascript: void(0);" class="text-muted">Documentation</a></li>
-                            <li class="mt-2"><a href="javascript: void(0);" class="text-muted">Blog</a></li>
-                            <li class="mt-2"><a href="javascript: void(0);" class="text-muted">Affiliate Program</a></li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="mt-5">
-                            <p class="text-muted mt-4 text-center mb-0">{{ $copyrights ?? '© 2022 - 2023 PHOENIX. Design and coded by
-                                DuraiBytes' }}</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </footer>
-        <!-- END FOOTER -->
-
+            </footer>
         <!-- bundle -->
         <script src="{{ asset('assets/js/vendor.min.js') }}"></script>
         <script src="{{ asset('assets/js/app.min.js') }}"></script>
