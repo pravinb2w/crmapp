@@ -10,7 +10,13 @@ input.error {
 }
 </style>
 <form id="enquiry-form" method="POST" action="{{ route('enquiry.save') }}" autocomplete="off">
-    <div id="error"></div>
+    @csrf
+    {{-- <div id="error"></div> --}}
+    @if (session('status'))
+        <div class="alert alert-success">
+            {{ session('status') }}
+        </div>
+    @endif
     <div class="row mt-4">
         <div class="col-lg-6">
             <div class="mb-2">
@@ -53,33 +59,5 @@ input.error {
 </form>
 
 <script>
-    $("#enquiry-form").validate({
-            submitHandler:function(form) {
-                $.ajax({
-                    url: form.action,
-                    type: form.method,
-                    data: $(form).serialize(),
-                    beforeSend: function() {
-                        $('#error').removeClass('alert alert-danger');
-                        $('#error').html('');
-                        $('#error').removeClass('alert alert-success');
-                        $('#save').html('Loading...');
-                    },
-                    success: function(response) {
-                        $('#save').html('Save');
-                        if(response.error.length > 0 && response.status == "1" ) {
-                            $('#error').addClass('alert alert-danger');
-                            response.error.forEach(display_errors);
-                        } else {
-                            $('#error').addClass('alert alert-success');
-                            response.error.forEach(display_errors);
-                            setTimeout(function(){
-                                $('#Mymodal').modal('hide');
-                            },100);
-                            ReloadDataTableModal('customers-datatable');
-                        }
-                    }            
-                });
-            }
-        });
+    $("#enquiry-form").validate();
 </script>

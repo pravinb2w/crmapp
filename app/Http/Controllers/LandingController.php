@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\CompanySettings;
+use App\Models\Customer;
+use App\Models\Lead;
+use Illuminate\Support\Facades\Validator;
 
 class LandingController extends Controller
 {
@@ -28,15 +31,27 @@ class LandingController extends Controller
         $validator                     = Validator::make( $request->all(), $role_validator );
         
         if ($validator->passes()) {
+            $customer = Customer::where('email',$request->email)->first();
 
-            // $ins['status'] = isset($request->status) ? 1 : 0;
-            // $ins['site_name'] = $request->company_name;
-            // $ins['added_by'] = Auth::id();
-            // CompanySettings::create($ins);
-            // $success = 'Added new company';
-        
-            return response()->json(['error'=>[$success], 'status' => '0']);
+            if( isset($customer) && !empty($customer)) {
+                $customer_id = $customer->id;
+            } else {
+                $ins['status'] = 1;
+                $ins['first_name'] = $request->fullname;
+                $ins['email'] = $request->email;
+                $ins['added_by'] = 1;
+                $customer_id = Customer::create($ins)->id;
+            }
+            $lea['customer_id'] = $customer_id;
+            $lea['status'] = 1;
+            $lea['added_by'] = 1;
+            $lea['lead_subject'] = $request->subject;
+            $lea['lead_description'] = $request->message;
+            Lead::create($lea);
+            $success = 'Enquiry has been sent';
+            
         }
-        return response()->json(['error'=>$validator->errors()->all(), 'status' => '1']);
+        return redirect('/')->with('status', $success);
+        // return response()->json(['error'=>$validator->errors()->all(), 'status' => '1']);
     }
 }
