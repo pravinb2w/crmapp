@@ -41,7 +41,6 @@ Route::middleware([SetViewVariable::class, 'auth'])->group(function(){
     Route::post('/autocomplete_org', [App\Http\Controllers\CustomerController::class, 'autocomplete_organization'])->name('autocomplete_org');
     Route::post('/autocomplete_org_save', [App\Http\Controllers\CustomerController::class, 'autocomplete_organization_save'])->name('autocomplete_org_save');
 
-
     //pages route
     Route::prefix('pages')->group(function () {
         Route::get('/', [App\Http\Controllers\CmsController::class, 'index'])->name('pages');
@@ -59,6 +58,15 @@ Route::middleware([SetViewVariable::class, 'auth'])->group(function(){
         Route::post('/list', [App\Http\Controllers\ProductController::class, 'ajax_list'])->name('products.list');
         Route::post('/delete', [App\Http\Controllers\ProductController::class, 'delete'])->name('products.delete');
         Route::post('/status', [App\Http\Controllers\ProductController::class, 'change_status'])->name('products.status');
+    });
+    //leads route
+    Route::prefix('leads')->group(function () {
+        Route::get('/', [App\Http\Controllers\LeadController::class, 'index'])->name('leads');
+        Route::get('/view/{id}', [App\Http\Controllers\LeadController::class, 'view'])->name('leads.view');
+        Route::post('/save', [App\Http\Controllers\LeadController::class, 'save'])->name('leads.save');
+        Route::post('/list', [App\Http\Controllers\LeadController::class, 'ajax_list'])->name('leads.list');
+        Route::post('/delete', [App\Http\Controllers\LeadController::class, 'delete'])->name('leads.delete');
+        Route::post('/status', [App\Http\Controllers\LeadController::class, 'change_status'])->name('leads.status');
     });
     //tasks route
     Route::prefix('tasks')->group(function () {

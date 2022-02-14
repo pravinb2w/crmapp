@@ -85,54 +85,12 @@
                                 <p class="mb-4 font-16 text-white-50">Phoenix CRM is a fully featured  with business or other organization administers its interactions with customers, typically using data analysis to study large amounts of information.</p>
                             </div>
                             <div class="col-md-5 h-100 p-4 border rounded shadow" style="backdrop-filter: blur(20px)">
-                                <form id="enquiry-form" method="POST" action="{{ route('enquiry.save') }}" autocomplete="off">
-                                    <div id="error"></div>
-                                    <h3 class="h3 text-center">
-                                        Reach us
-                                    </h3>
-                                    <div class="row mt-4">
-                                        <div class="col-lg-12">
-                                            <div class="mb-2 text-start">
-                                                <label for="fullname" class="form-label">Your Name</label>
-                                                <input class="form-control form-control-light" type="text" id="fullname" name="fullname" placeholder="Name..." required>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-12">
-                                            <div class="mb-2 text-start">
-                                                <label for="emailaddress" class="form-label">Your Email</label>
-                                                <input class="form-control form-control-light" name="email" type="email" required id="emailaddress" placeholder="Enter you email...">
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-12">
-                                            <div class="mb-2 text-start">
-                                                <label for="subject" class="form-label">Mobile Number</label>
-                                                <input class="form-control form-control-light" required name="subject" type="text" id="subject" placeholder="Enter subject...">
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-12">
-                                            <div class="mb-2 text-start">
-                                                <label for="subject" class="form-label">Company</label>
-                                                <input class="form-control form-control-light" required name="subject" type="text" id="subject" placeholder="Enter subject...">
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-12">
-                                            <div class="mb-2 text-start">
-                                                <label for="subject" class="form-label">Remarks</label>
-                                                <input class="form-control form-control-light" required name="subject" type="text" id="subject" placeholder="Enter subject...">
-                                            </div>
-                                        </div>
-                                    </div> 
-                                    <div class="row mt-2">
-                                        <div class="col-12 text-center">
-                                            <button class="btn btn-primary" type="submit">Send a Message <i
-                                                class="mdi mdi-telegram ms-1"></i> </button>
-                                        </div>
-                                    </div>
-                                </form>
+                                @include('landing.enquiry')
                             </div>
                         </div>
                     </div>
                 </div>
+
                 <div class="carousel-item">
                     <div class="slider-img w-100" style="min-height: 90vh;background: linear-gradient(#02020285, #000000) , url('https://images.unsplash.com/photo-1599658880436-c61792e70672?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80');background-size:cover"></div>
                     <div class="carousel-caption p-0  d-none d-md-block">
@@ -147,50 +105,7 @@
                                 <p class="mb-4 font-16 text-white-50">Phoenix CRM is a fully featured  with business or other organization administers its interactions with customers, typically using data analysis to study large amounts of information.</p>
                             </div>
                             <div class="col-md-5 p-4 border rounded shadow" style="backdrop-filter: blur(20px)">
-                                <form id="enquiry-form" method="POST" action="{{ route('enquiry.save') }}" autocomplete="off">
-                                    <div id="error"></div>
-                                    <h3 class="h3 text-center">
-                                        Reach us
-                                    </h3>
-                                    <div class="row mt-4">
-                                        <div class="col-lg-12">
-                                            <div class="mb-2 text-start">
-                                                <label for="fullname" class="form-label">Your Name</label>
-                                                <input class="form-control form-control-light" type="text" id="fullname" name="fullname" placeholder="Name..." required>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-12">
-                                            <div class="mb-2 text-start">
-                                                <label for="emailaddress" class="form-label">Your Email</label>
-                                                <input class="form-control form-control-light" name="email" type="email" required id="emailaddress" placeholder="Enter you email...">
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-12">
-                                            <div class="mb-2 text-start">
-                                                <label for="subject" class="form-label">Mobile Number</label>
-                                                <input class="form-control form-control-light" required name="subject" type="text" id="subject" placeholder="Enter subject...">
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-12">
-                                            <div class="mb-2 text-start">
-                                                <label for="subject" class="form-label">Company</label>
-                                                <input class="form-control form-control-light" required name="subject" type="text" id="subject" placeholder="Enter subject...">
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-12">
-                                            <div class="mb-2 text-start">
-                                                <label for="subject" class="form-label">Remarks</label>
-                                                <input class="form-control form-control-light" required name="subject" type="text" id="subject" placeholder="Enter subject...">
-                                            </div>
-                                        </div>
-                                    </div> 
-                                    <div class="row mt-2">
-                                        <div class="col-12 text-center">
-                                            <button class="btn btn-primary" type="submit">Send a Message <i
-                                                class="mdi mdi-telegram ms-1"></i> </button>
-                                        </div>
-                                    </div>
-                                </form>
+                                @include('landing.enquiry')
                             </div>
                         </div>
                     </div>
@@ -209,50 +124,7 @@
                                 <p class="mb-4 font-16 text-white-50">Phoenix CRM is a fully featured  with business or other organization administers its interactions with customers, typically using data analysis to study large amounts of information.</p>
                             </div>
                             <div class="col-md-5 p-4 border rounded shadow" style="backdrop-filter: blur(20px)">
-                                <form id="enquiry-form" method="POST" action="{{ route('enquiry.save') }}" autocomplete="off">
-                                    <div id="error"></div>
-                                    <h3 class="h3 text-center">
-                                        Reach us
-                                    </h3>
-                                    <div class="row mt-4">
-                                        <div class="col-lg-12">
-                                            <div class="mb-2 text-start">
-                                                <label for="fullname" class="form-label">Your Name</label>
-                                                <input class="form-control form-control-light" type="text" id="fullname" name="fullname" placeholder="Name..." required>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-12">
-                                            <div class="mb-2 text-start">
-                                                <label for="emailaddress" class="form-label">Your Email</label>
-                                                <input class="form-control form-control-light" name="email" type="email" required id="emailaddress" placeholder="Enter you email...">
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-12">
-                                            <div class="mb-2 text-start">
-                                                <label for="subject" class="form-label">Mobile Number</label>
-                                                <input class="form-control form-control-light" required name="subject" type="text" id="subject" placeholder="Enter subject...">
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-12">
-                                            <div class="mb-2 text-start">
-                                                <label for="subject" class="form-label">Company</label>
-                                                <input class="form-control form-control-light" required name="subject" type="text" id="subject" placeholder="Enter subject...">
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-12">
-                                            <div class="mb-2 text-start">
-                                                <label for="subject" class="form-label">Remarks</label>
-                                                <input class="form-control form-control-light" required name="subject" type="text" id="subject" placeholder="Enter subject...">
-                                            </div>
-                                        </div>
-                                    </div> 
-                                    <div class="row mt-2">
-                                        <div class="col-12 text-center">
-                                            <button class="btn btn-primary" type="submit">Send a Message <i
-                                                class="mdi mdi-telegram ms-1"></i> </button>
-                                        </div>
-                                    </div>
-                                </form>
+                                @include('landing.enquiry')
                             </div>
                         </div>
                     </div>
@@ -388,7 +260,42 @@
         <!-- bundle -->
         <script src="{{ asset('assets/js/vendor.min.js') }}"></script>
         <script src="{{ asset('assets/js/app.min.js') }}"></script>
+        <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.js"></script>
 
+        <script>
+            $(".enquiry-form").validate({
+            submitHandler:function(form) {
+                $.ajax({
+                    url: form.action,
+                    type: form.method,
+                    data: $(form).serialize(),
+                    beforeSend: function() {
+                        $('#error').removeClass('alert alert-danger');
+                        $('#error').html('');
+                        $('#error').removeClass('alert alert-success');
+                        $('#save').html('Loading...');
+                    },
+                    success: function(response) {
+                        $('#save').html('Save');
+                        if(response.error.length > 0 && response.status == "1" ) {
+                            $('#error').addClass('alert alert-danger');
+                            response.error.forEach(display_errors);
+                        } else {
+                            $('#error').addClass('alert alert-success');
+                            response.error.forEach(display_errors);
+                            setTimeout(function(){
+                                location.reload();
+                            },100);
+                        }
+                    }            
+                });
+            }
+        });
+
+        function display_errors( item, index) {
+            $('#error').append('<div>'+item+'</div>');
+        }
+        </script>
     </body>
 
 </html>

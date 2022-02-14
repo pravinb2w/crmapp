@@ -70,4 +70,14 @@ class Lead extends Model implements Auditable
     {
         return $this->hasOne(User::class, 'id', 'updated_by');
     }
+
+    public function leadType()
+    {
+        return $this->hasOne(LeadType::class, 'id', 'lead_type_id');
+    }
+
+    public function leadSource()
+    {
+        return $this->hasOne(LeadSource::class, 'id', 'lead_source_id');
+    }
 }

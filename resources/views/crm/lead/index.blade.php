@@ -12,22 +12,24 @@
                     <ol class="breadcrumb m-0">
                         <li class="breadcrumb-item"><a href="javascript: void(0);">CRM</a></li>
                         <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
-                        <li class="breadcrumb-item active">customers</li>
+                        <li class="breadcrumb-item active">Leads</li>
                     </ol>
                 </div>
-                <h4 class="page-title">Customers </h4>
+                <h4 class="page-title">Leads </h4>
             </div>
         </div>
     </div>     
     <!-- end page title --> 
     <div class="row">
+        
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-body">
                     {{-- <h4 class="header-title">Personal Preference</h4> --}}
                     @include('crm.common.common_add_btn')
+
                     <div class="table-responsive">
-                        <table class="table table-centered w-100 dt-responsive nowrap" id="customers-datatable">
+                        <table class="table table-centered w-100 dt-responsive nowrap" id="leads-datatable">
                             <thead class="table-light">
                                 <tr>
                                     <th class="all" style="width: 20px;">
@@ -36,9 +38,10 @@
                                             <label class="form-check-label" for="customCheck1">&nbsp;</label>
                                         </div>
                                     </th>
-                                    <th>Name</th>
-                                    <th>Email</th>
-                                    <th>Mobile No</th>
+                                    <th class="all">Title</th>
+                                    <th>Lead Type</th>
+                                    <th>Lead Source</th>
+                                    <th>Lead Created</th>
                                     <th>Status</th>
                                     <th style="width: 80px;">Action</th>
                                 </tr>
@@ -66,21 +69,22 @@
     <script>
         $(document).ready(function(){"use strict";
         
-        const roletable = $('#customers-datatable').DataTable( {
+        const roletable = $('#leads-datatable').DataTable( {
             
             "processing"    : true,
             "serverSide"    : true,
             "ajax"          : {
-                "url"       : "<?= route( 'customers.list' ); ?>",
+                "url"       : "<?= route( 'leads.list' ); ?>",
                 "dataType"  : "json",
                 "type"      : "POST",
                 "data"      : { "_token" : "<?=csrf_token();?>" }
             },
             "columns"       : [
                 {"data" : "id"},
-                {"data" : "first_name"},
-                {"data" : "email"},
-                {"data" : "mobile_no"},
+                {"data" : "title"},
+                {"data" : "type" },
+                {"data" : "source" },
+                {"data" : "created_at" },
                 {"data" : "status" },
                 {"data" : "action" },
             ],
