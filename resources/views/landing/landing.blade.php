@@ -305,12 +305,12 @@
                         </div>
                         <div class="col-lg-4">
                             <div class="border rounded bg-white shadow p-4">
-                                <h3 class="fw-normal">Features</h3>
+                                <h3 class="fw-normal">Features</h3> 
                                 <div class="mt-4">
-                                    <p class="text-muted"><i class="mdi mdi-circle-medium text-primary"></i> Built with latest Bootstrap</p>
-                                    <p class="text-muted"><i class="mdi mdi-circle-medium text-primary"></i> Extensive use of SCSS variables</p>
-                                    <p class="text-muted"><i class="mdi mdi-circle-medium text-primary"></i> Well documented and structured code</p>
-                                    <p class="text-muted"><i class="mdi mdi-circle-medium text-primary"></i> Detailed Documentation</p>
+                                    <p class="text-muted"><i class="mdi mdi-circle-medium text-primary"></i> Drag and Drop Interface CRM</p>
+                                    <p class="text-muted"><i class="mdi mdi-circle-medium text-primary"></i> Dynamic Data Management</p>
+                                    <p class="text-muted"><i class="mdi mdi-circle-medium text-primary"></i> Email Automation</p>
+                                    <p class="text-muted"><i class="mdi mdi-circle-medium text-primary"></i>  Follow-Up Management</p>
                                 </div> 
                             </div>
                         </div>
