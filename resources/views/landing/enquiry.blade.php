@@ -1,12 +1,12 @@
 <style>
-label.error {
-    color: red;
-}
-textarea.error {
-    border-color: red !important;
-}
-input.error {
-    border-color: red !important;
+    label.error {
+        color: red;
+    }
+    textarea.error {
+        border-color: red !important;
+    }
+    input.error {
+        border-color: red !important;
 }
 </style>
 <form id="enquiry-form" method="POST" action="{{ route('enquiry.save') }}" autocomplete="off">

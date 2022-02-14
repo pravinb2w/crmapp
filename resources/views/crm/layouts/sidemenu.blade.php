@@ -40,12 +40,26 @@
     <div class="h-100" id="leftside-menu-container" data-simplebar>
         <!--- Sidemenu -->
         <ul class="side-nav">
-
+ 
             <li class="side-nav-item">
-                <a href="{{ route('dashboard') }}" class="side-nav-link">
+                <a data-bs-toggle="collapse" href="#sidebarEcommerce" aria-expanded="false" aria-controls="sidebarEcommerce" class="side-nav-link">
                     <i class="uil-home-alt"></i>
-                    <span> Dashboard </span>
+                    <span> Dashboards </span>
+                    <span class="menu-arrow"></span>
                 </a>
+                <div class="collapse" id="sidebarEcommerce">
+                    <ul class="side-nav-second-level">
+                        <li>
+                            <a href="{{ route('dashboard') }}">Tasks</a>
+                        </li>
+                        <li>
+                            <a href="{{ route('deals-dashboard') }}">Deals</a>
+                        </li>
+                        <li>
+                            <a href="{{ route('deals-pipeline') }}">Deals pipelines</a>
+                        </li>
+                    </ul>
+                </div>
             </li>
 
             <li class="side-nav-item">

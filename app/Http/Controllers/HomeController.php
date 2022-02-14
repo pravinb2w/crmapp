@@ -23,6 +23,15 @@ class HomeController extends Controller
     public function index()
     {
         // $info = CompanySettings::find(1);
-        return view('home');
+        return view('dashboard.home');
+    }
+
+    public function dealsIndex()
+    {
+        return view('dashboard.deals');
+    }
+    public function dealsPipeline()
+    {
+        return view('dashboard.deals-pipeline');
     }
 }
