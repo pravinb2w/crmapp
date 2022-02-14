@@ -15,7 +15,7 @@ use App\Http\Middleware\SetViewVariable;
 */
 
 Route::get('/', [App\Http\Controllers\LandingController::class, 'index']);
-
+Route::post('/enquiry', [App\Http\Controllers\LandingController::class, 'enquiry_save'])->name('enquiry.save');
 
 Auth::routes();
 Route::middleware([SetViewVariable::class, 'auth'])->group(function(){
@@ -35,7 +35,12 @@ Route::middleware([SetViewVariable::class, 'auth'])->group(function(){
     Route::post('/customers/delete', [App\Http\Controllers\CustomerController::class, 'delete'])->name('customers.delete');
     Route::post('/customers/status', [App\Http\Controllers\CustomerController::class, 'change_status'])->name('customers.status');
     
-    //users route
+
+    Route::post('/autocomplete_org', [App\Http\Controllers\CustomerController::class, 'autocomplete_organization'])->name('autocomplete_org');
+    Route::post('/autocomplete_org_save', [App\Http\Controllers\CustomerController::class, 'autocomplete_organization_save'])->name('autocomplete_org_save');
+
+
+    //pages route
     Route::prefix('pages')->group(function () {
         Route::get('/', [App\Http\Controllers\CmsController::class, 'index'])->name('pages');
         Route::get('/add/{id?}', [App\Http\Controllers\CmsController::class, 'add'])->name('pages.add');
@@ -44,11 +49,27 @@ Route::middleware([SetViewVariable::class, 'auth'])->group(function(){
         Route::post('/delete', [App\Http\Controllers\CmsController::class, 'delete'])->name('pages.delete');
         Route::post('/status', [App\Http\Controllers\CmsController::class, 'change_status'])->name('pages.status');
     });
+    //products route
+    Route::prefix('products')->group(function () {
+        Route::get('/', [App\Http\Controllers\ProductController::class, 'index'])->name('products');
+        Route::post('/add', [App\Http\Controllers\ProductController::class, 'add_edit'])->name('products.add');
+        Route::post('/save', [App\Http\Controllers\ProductController::class, 'save'])->name('products.save');
+        Route::post('/list', [App\Http\Controllers\ProductController::class, 'ajax_list'])->name('products.list');
+        Route::post('/delete', [App\Http\Controllers\ProductController::class, 'delete'])->name('products.delete');
+        Route::post('/status', [App\Http\Controllers\ProductController::class, 'change_status'])->name('products.status');
+    });
+    //tasks route
+    Route::prefix('tasks')->group(function () {
+        Route::get('/', [App\Http\Controllers\TaskController::class, 'index'])->name('tasks');
+        Route::post('/add', [App\Http\Controllers\TaskController::class, 'add_edit'])->name('tasks.add');
+        Route::post('/save', [App\Http\Controllers\TaskController::class, 'save'])->name('tasks.save');
+        Route::post('/list', [App\Http\Controllers\TaskController::class, 'ajax_list'])->name('tasks.list');
+        Route::post('/delete', [App\Http\Controllers\TaskController::class, 'delete'])->name('tasks.delete');
+        Route::post('/status', [App\Http\Controllers\TaskController::class, 'change_status'])->name('tasks.status');
+    });
 
     Route::prefix('settings')->group(function () {
         Route::get('/', [App\Http\Controllers\SettingController::class, 'index'])->name('settings');
-
-        
         //users route
         Route::get('/users', [App\Http\Controllers\UserController::class, 'index'])->name('users');
         Route::post('/users/add', [App\Http\Controllers\UserController::class, 'add_edit'])->name('users.add');
@@ -56,7 +77,6 @@ Route::middleware([SetViewVariable::class, 'auth'])->group(function(){
         Route::post('/users/list', [App\Http\Controllers\UserController::class, 'ajax_list'])->name('users.list');
         Route::post('/users/delete', [App\Http\Controllers\UserController::class, 'delete'])->name('users.delete');
         Route::post('/users/status', [App\Http\Controllers\UserController::class, 'change_status'])->name('users.status');
-
         //roles route
         Route::get('/roles', [App\Http\Controllers\RoleController::class, 'index'])->name('roles');
         Route::post('/roles/add', [App\Http\Controllers\RoleController::class, 'add_edit'])->name('roles.add');
@@ -64,7 +84,6 @@ Route::middleware([SetViewVariable::class, 'auth'])->group(function(){
         Route::post('/roles/list', [App\Http\Controllers\RoleController::class, 'ajax_list'])->name('roles.list');
         Route::post('/roles/delete', [App\Http\Controllers\RoleController::class, 'delete'])->name('roles.delete');
         Route::post('/roles/status', [App\Http\Controllers\RoleController::class, 'change_status'])->name('roles.status');
-
          //subscriptions route
         Route::get('/subscriptions', [App\Http\Controllers\SubscriptionController::class, 'index'])->name('subscriptions');
         Route::post('/subscriptions/add', [App\Http\Controllers\SubscriptionController::class, 'add_edit'])->name('subscriptions.add');
@@ -73,7 +92,6 @@ Route::middleware([SetViewVariable::class, 'auth'])->group(function(){
         Route::post('/subscriptions/list', [App\Http\Controllers\SubscriptionController::class, 'ajax_list'])->name('subscriptions.list');
         Route::post('/subscriptions/delete', [App\Http\Controllers\SubscriptionController::class, 'delete'])->name('subscriptions.delete');
         Route::post('/subscriptions/status', [App\Http\Controllers\SubscriptionController::class, 'change_status'])->name('subscriptions.status');
-
         //company subscriptions route
          //subscriptions route
         Route::get('/company-subscriptions', [App\Http\Controllers\CompanySubscriptionController::class, 'index'])->name('company-subscriptions');
@@ -150,9 +168,5 @@ Route::middleware([SetViewVariable::class, 'auth'])->group(function(){
 
     });
 
-    // Products Routes
-    Route::get('/products', function () {
-        return view('crm.products.index');
-    })->name("products.index");
 
 });

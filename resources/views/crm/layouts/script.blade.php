@@ -7,13 +7,14 @@
 
 <!-- Todo js -->
 <script src="{{ asset('assets/js/ui/component.todo.js') }}"></script>
-
 <!-- demo app -->
 {{-- <script src="{{ asset('assets/js/pages/demo.dashboard-crm.js') }}"></script> --}}
 <!-- end demo js-->
 <script src="{{ asset('assets/js/pages/demo.timepicker.js') }}"></script>
 <script src="{{ asset('assets/custom/js/effect.js') }}"></script>
+
 <script>
+   
 
     function display_errors( item, index) {
         $('#error').append('<div>'+item+'</div>');
@@ -150,6 +151,10 @@
             return ajax_url = '{{ route("organizations.add") }}';
         } else if(page_type=='teams') {
             return ajax_url = '{{ route("teams.add") }}';
+        } else if(page_type=='products') {
+            return ajax_url = '{{ route("products.add") }}';
+        } else if(page_type=='tasks') {
+            return ajax_url = '{{ route("tasks.add") }}';
         }
     }
     function set_delete_url(page_type) {
@@ -177,6 +182,12 @@
             return ajax_url = '{{ route("organizations.delete") }}';
         } else if(page_type=='teams') {
             return ajax_url = '{{ route("teams.delete") }}';
+        } else if(page_type=='products') {
+            return ajax_url = '{{ route("products.delete") }}';
+        } else if(page_type=='tasks') {
+            return ajax_url = '{{ route("tasks.delete") }}';
+        } else if(page_type=='customers') {
+            return ajax_url = '{{ route("customers.delete") }}';
         }
     }
 
@@ -205,6 +216,12 @@
             return ajax_url = '{{ route("organizations.status") }}';
         } else if(page_type=='teams') {
             return ajax_url = '{{ route("teams.status") }}';
+        } else if(page_type=='products') {
+            return ajax_url = '{{ route("products.status") }}';
+        } else if(page_type=='tasks') {
+            return ajax_url = '{{ route("tasks.status") }}';
+        } else if(page_type=='customers') {
+            return ajax_url = '{{ route("customers.status") }}';
         }
     }
 
@@ -231,26 +248,46 @@
             return ajax_url = '{{ route("country") }}';
         }
     }
-</script>
-<script>
 
-    $('.inner-menu').click(function(){
-        // alert($(this).data("id"));
-        var page = $(this).data("id");
-        var ajax_url = set_url(page);
+    // Restricts input for the given textbox to the given inputFilter.
+function setInputFilter(textbox, inputFilter) {
+  ["input", "keydown", "keyup", "mousedown", "mouseup", "select", "contextmenu", "drop"].forEach(function(event) {
+    textbox.addEventListener(event, function() {
+      if (inputFilter(this.value)) {
+        this.oldValue = this.value;
+        this.oldSelectionStart = this.selectionStart;
+        this.oldSelectionEnd = this.selectionEnd;
+      } else if (this.hasOwnProperty("oldValue")) {
+        this.value = this.oldValue;
+        this.setSelectionRange(this.oldSelectionStart, this.oldSelectionEnd);
+      } else {
+        this.value = "";
+      }
+    });
+  });
+}
 
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+setInputFilter(document.getElementById("phone"), function(value) {
+  return /^-?\d*$/.test(value); });
+
+function org_auto_operand(id, query) {
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+    $.ajax({
+        url: "{{ route('autocomplete_org_save') }}",
+        method:'POST',
+        data: {query:query, id:id},
+        success:function(response){
+            if( response.name ) {
+                $('#organization').val(response.name);
+                $('#organization_id').val(response.id);
+                $('#result').hide();
             }
-        });
-        $.ajax({
-            url: ajax_url,
-            method:'POST',
-            data: {page:page},
-            success:function(response){
-                $('#setup_menu_view').html(response);
-            }      
-        });
-    })
+        }      
+    });
+}
+
 </script>

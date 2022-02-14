@@ -7,10 +7,12 @@
             <img src="{{ asset('storage/'.$cm_logo) }}" alt="" height="16">
             @else
                 <div class="d-flex justify-content-center">
-                    <div class="me-2">
-                        <img src="{{ asset('assets/images/logo/logo.png') }}" width="40px">
-                    </div>
-                    <strong class="text-primary">PHOENIX <span class="text-secondary">TECH</span></strong>
+                    {{-- <a href="{{ url('/') }}"> --}}
+                        <div class="me-2">
+                            <img src="{{ asset('assets/images/logo/logo.png') }}" width="40px">
+                        </div>
+                        <strong class="text-primary">PHOENIX <span class="text-secondary">TECH</span></strong>
+                    {{-- </a> --}}
                 </div>                
             @endif
             {{--  --}}
@@ -94,7 +96,7 @@
                 </div>
             </li>
             <li class="side-nav-item">
-                <a href="{{ route('products.index') }}" class="side-nav-link">
+                <a href="{{ route('products') }}" class="side-nav-link">
                     <i class="mdi mdi-archive"></i>
                     <span> Products </span>
                 </a>
@@ -106,7 +108,7 @@
                 </a>
             </li>
             <li class="side-nav-item">
-                <a href="javascipt:void(0)" class="side-nav-link">
+                <a href="{{ route('tasks') }}" class="side-nav-link">
                     <i class="mdi mdi-progress-clock"></i>
                     <span> Tasks </span>
                 </a>

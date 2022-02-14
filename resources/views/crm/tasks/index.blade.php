@@ -12,27 +12,24 @@
                     <ol class="breadcrumb m-0">
                         <li class="breadcrumb-item"><a href="javascript: void(0);">CRM</a></li>
                         <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
-                        <li class="breadcrumb-item active">customers</li>
+                        <li class="breadcrumb-item active">Page Type</li>
                     </ol>
                 </div>
-                <h4 class="page-title">Customers </h4>
+                <h4 class="page-title">Settings </h4>
             </div>
         </div>
     </div>     
     <!-- end page title --> 
     <div class="row">
-        <div class="col-lg-2">
-            <div>
-                @include('crm.layouts.setup_menu')             
-            </div>
-        </div>
-        <div class="col-lg-10">
+       
+        <div class="col-lg-12">
             <div class="card">
                 <div class="card-body">
                     {{-- <h4 class="header-title">Personal Preference</h4> --}}
                     @include('crm.common.common_add_btn')
+
                     <div class="table-responsive">
-                        <table class="table table-centered w-100 dt-responsive nowrap" id="customers-datatable">
+                        <table class="table table-centered w-100 dt-responsive nowrap" id="tasks-datatable">
                             <thead class="table-light">
                                 <tr>
                                     <th class="all" style="width: 20px;">
@@ -41,9 +38,9 @@
                                             <label class="form-check-label" for="customCheck1">&nbsp;</label>
                                         </div>
                                     </th>
-                                    <th>Name</th>
-                                    <th>Email</th>
-                                    <th>Mobile No</th>
+                                    <th class="">Task</th>
+                                    <th>Assigned To</th>
+                                    <th>Assigned Date</th>
                                     <th>Status</th>
                                     <th style="width: 80px;">Action</th>
                                 </tr>
@@ -71,21 +68,21 @@
     <script>
         $(document).ready(function(){"use strict";
         
-        const roletable = $('#customers-datatable').DataTable( {
+        const roletable = $('#tasks-datatable').DataTable( {
             
             "processing"    : true,
-            "serverSide"    : true,
+            "serverSide"    : true, 
             "ajax"          : {
-                "url"       : "<?= route( 'customers.list' ); ?>",
+                "url"       : "<?= route( 'tasks.list' ); ?>",
                 "dataType"  : "json",
                 "type"      : "POST",
                 "data"      : { "_token" : "<?=csrf_token();?>" }
             },
             "columns"       : [
                 {"data" : "id"},
-                {"data" : "first_name"},
-                {"data" : "email"},
-                {"data" : "mobile_no"},
+                {"data" : "task_name"},
+                {"data" : "assigned_to"},
+                {"data" : "assigned_date"},
                 {"data" : "status" },
                 {"data" : "action" },
             ],

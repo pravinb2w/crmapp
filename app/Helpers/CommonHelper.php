@@ -2,6 +2,10 @@
 
 namespace App\Helpers;
 
+use Illuminate\Http\Request;
+use DB;
+use App\Models\Product;
+
 class CommonHelper
 {
     public static function getExpiry($period, $start_date)
@@ -16,5 +20,9 @@ class CommonHelper
         } else if(  strtolower($period[1]) == 'd' ) {
             return date('Y-m-d', strtotime( '+'.$day.' days', strtotime($start) ));
         }
+    }
+
+    public static function get_product_code() {
+        return $code  = 'CM'.date('ymdhis');
     }
 }
