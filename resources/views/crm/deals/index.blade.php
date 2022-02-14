@@ -60,7 +60,7 @@
                                         <td>Alan group of company</td>
                                         <td>9874584125</td>
                                         <td>alan@gmail.com</td>
-                                        <td><a href="javascript:void(0);" class="action-icon"> <i class="mdi mdi-eye"></i></a>
+                                        <td><a href="{{ route('view-deal') }}" class="action-icon"> <i class="mdi mdi-eye"></i></a>
                                             <a href="javascript:void(0);" class="action-icon"  > <i class="mdi mdi-square-edit-outline"></i></a>
                                             <a href="javascript:void(0);" class="action-icon"  > <i class="mdi mdi-delete"></i></a></td>
                                     </tr>

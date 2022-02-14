@@ -21123,8 +21123,9 @@ div.dataTables_scrollBody > table > :not(:first-child) {
 }
 .pipeline-btn {   
   clip-path: polygon(90% 0, 100% 50%, 89% 100%, 0% 100%, 6% 50%, 0% 0%);
-   padding: 10px 10px !important;
 }
+
+ 
 
 .pipeline-btn.active{   
   background: var(--bs-primary) !important;
@@ -21136,4 +21137,9 @@ div.dataTables_scrollBody > table > :not(:first-child) {
 .group-scroll-lg {
   max-height: 300px;
   overflow: auto;
+}
+.custom .nav-link.active {
+  background: #F5FBFE !important;
+  color: var(--bs-primary) !important;
+  border-bottom: 2px solid var(--bs-primary); 
 }

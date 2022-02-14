@@ -74,6 +74,7 @@ Route::middleware([SetViewVariable::class, 'auth'])->group(function(){
     Route::prefix('deals')->group(function () {
         Route::get('/', [App\Http\Controllers\DealsController::class, 'index'])->name('deals'); 
         Route::get('/create', [App\Http\Controllers\DealsController::class, 'create'])->name('create-deal'); 
+        Route::get('/view', [App\Http\Controllers\DealsController::class, 'show'])->name('view-deal'); 
 
     });
 
