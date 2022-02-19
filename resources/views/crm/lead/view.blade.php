@@ -88,34 +88,38 @@ form#activites-form>div>label>i {
                                 </div>
                             </div>
                         </div>
-                        <div class="col-4">
-                            <div class="card">
-                                <ul class="nav nav-tabs nav-bordered mb-3 w-100">
-                                    <li class="nav-item w-50">
-                                        <a href="#notes" data-bs-toggle="tab" aria-expanded="false" class="nav-link active">
-                                            <i class="mdi mdi-home-variant d-md-none d-block"></i>
-                                            <span class="d-none d-md-block"><i class="mdi mdi-note-text"></i> Notes </span>
+                        <div class="col-12"> 
+                            <div class="card shadow-sm">
+                                <ul class="nav nav-pills bg-nav-pills nav-justified custom">
+                                    <li class="nav-item">
+                                        <a href="#Notes" data-bs-toggle="tab" aria-expanded="false" class="nav-link rounded-0 active">
+                                            <i class="uil uil-pen"></i>
+                                            <span>Notes</span>
                                         </a>
                                     </li>
-                                    <li class="nav-item w-50">
-                                        <a href="#activity" data-bs-toggle="tab" aria-expanded="true" class="nav-link ">
-                                            <i class="mdi mdi-account-circle d-md-none d-block"></i>
-                                            <span class="d-none d-md-block"> <i class="mdi mdi-calendar"></i> Activity </span>
+                                    <li class="nav-item">
+                                        <a href="#Activity" data-bs-toggle="tab" aria-expanded="true" class="nav-link rounded-0 ">
+                                            <i class="uil uil-user"></i>
+                                            <span >Activity</span>
                                         </a>
-                                    </li>
+                                    </li>  
+                                    <li class="nav-item">
+                                        <a href="#Email" data-bs-toggle="tab" aria-expanded="true" class="nav-link rounded-0">
+                                            <i class="uil uil-envelope-alt"></i>
+                                            <span>Email</span>
+                                        </a>
+                                    </li> 
                                 </ul>
                                 
-                                <div class="tab-content">
-                                    <div class="tab-pane show active" id="notes">
-                                        <div class="form-group">
-                                            <textarea name="notes" id="notes" cols="30" rows="2"></textarea>
-                                            <div class="notes-pane">
-                                                <button type="button" class="btn btn-light me-2" > Discard </button>
-                                                <button type="button" class="btn btn-success"> Save </button>
-                                            </div>
+                                <div class="tab-content p-3">
+                                    <div class="tab-pane active" id="Notes">
+                                        <textarea name="" id="" cols="30" placeholder="Take a note's..." class="form-control" rows="10"></textarea>
+                                        <div  class="text-end">
+                                            <button type="button" class="btn btn-light me-2" > Discard </button>
+                                            <button type="button" class="btn btn-success"> Save </button>
                                         </div>
                                     </div>
-                                    <div class="tab-pane" id="activity">
+                                    <div class="tab-pane show" id="Activity">
                                         <form action="" id="lead-activity">
                                             <div class="form-group">
                                                 <input type="text" name="activity_title" id="activity_title" placeholder="Call" class="form-control">
@@ -170,25 +174,21 @@ form#activites-form>div>label>i {
                                                 <button type="button" class="btn btn-success"> Save </button>
                                             </div>
                                         </form>
-                                    </div>
+                                    </div> 
+                                    <div class="tab-pane" id="Email">
+                                        <p>Email times</p>
+                                    </div> 
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-8">
-                            <div class="card">
-                                <div class="card-body">
-                                    <div class="row">
-                                        <div class="col-12">
-                                            @include('crm.lead._timeline')
-                                            <!-- end timeline -->
-                                        </div> <!-- end col -->
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        </div>  
                     </div>
                 </div>  <!-- end card-body -->
             </div>  <!-- end card -->
+            <div class="card">
+                <div class="card-body">
+                    @include('crm.lead._timeline')
+                </div>
+            </div>
         </div>
     </div> 
 </div>

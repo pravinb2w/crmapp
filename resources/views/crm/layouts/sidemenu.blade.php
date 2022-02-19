@@ -63,12 +63,12 @@
             </li>
 
             <li class="side-nav-item">
-                <a data-bs-toggle="collapse" href="#sidebarEcommerce" aria-expanded="false" aria-controls="sidebarEcommerce" class="side-nav-link">
+                <a data-bs-toggle="collapse" href="#Accounts" aria-expanded="false" aria-controls="Accounts" class="side-nav-link">
                     <i class="mdi mdi-account-settings"></i>
                     <span> Accounts </span>
                     <span class="menu-arrow"></span>
                 </a>
-                <div class="collapse" id="sidebarEcommerce">
+                <div class="collapse" id="Accounts">
                     <ul class="side-nav-second-level">
                         <li>
                             <a href="{{ route('account') }}">Configuration</a>

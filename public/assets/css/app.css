@@ -17280,9 +17280,9 @@ body.auth-fluid-pages[data-leftbar-compact-mode=condensed] {
     width: 50%;
   }
 
-  .timeline-lg-item {
+  /* .timeline-lg-item {
     display: table-row;
-  }
+  } */
   .timeline-lg-item:before {
     content: "";
     display: block;

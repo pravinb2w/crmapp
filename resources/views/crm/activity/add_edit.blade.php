@@ -1,10 +1,10 @@
 <div class="modal-dialog modal-lg modal-right">
-    <div class="modal-content">
+    <div class="modal-content h-100">
         <div class="modal-header">
             <h4 class="modal-title" id="myLargeModalLabel">{{ $modal_title }}</h4>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-        <div class="modal-body">
+        <div class="modal-body" style="max-height: 95vh;overflow:auto">
             <link href="{{ asset('assets/css/vendor/simplemde.min.css') }}" rel="stylesheet" type="text/css" />
             <style>
                 .CodeMirror, .editor-toolbar {
@@ -71,7 +71,7 @@
                     display: none;
                 }
             </style>
-            <div class="row">
+            <div class="row m-0">
                 <div class="col-12" id="error">
                 </div>
             </div>
@@ -82,44 +82,43 @@
                         <div class="form-group">
                             <input type="text" name="activity_title" value="{{ $info->subject ?? '' }}" id="activity_title" placeholder="CALL" class="form-control" required>
                         </div>
-                        <div class="form-group mt-3">
+                        <div class="btn-group mt-3">
                             <label>
                                 <input type="radio" class="activity-title" name="activity_type" value="call" @if(isset($info->activity_type) && $info->activity_type == 'call') checked @endif>
-                                <i class="dripicons-phone" title="Call"></i>
+                                <i class="btn btn-light px-2 mx-1 dripicons-phone" title="Call"></i>
                             </label>
                             
                             <label>
                                 <input type="radio" class="activity-title" name="activity_type" value="meeting" @if(isset($info->activity_type) && $info->activity_type == 'meeting') checked @endif>
-                                <i class="dripicons-user-group" title="Meeting"></i>
+                                <i class="btn btn-light px-2 mx-1 dripicons-user-group" title="Meeting"></i>
                             </label>
                             <label>
                                 <input type="radio" class="activity-title" name="activity_type" value="deadline" @if(isset($info->activity_type) && $info->activity_type == 'deadline') checked @endif>
-                                <i class="dripicons-flag" title="Deadline"></i>
+                                <i class="btn btn-light px-2 mx-1 dripicons-flag" title="Deadline"></i>
                             </label>
                             <label>
                                 <input type="radio" class="activity-title"  name="activity_type" value="task" @if(isset($info->activity_type) && $info->activity_type == 'task') checked @endif>
-                                <i class="dripicons-time-reverse" title="Task"></i>
+                                <i class="btn btn-light px-2 mx-1 dripicons-time-reverse" title="Task"></i>
                             </label>
                             <label>
                                 <input type="radio" class="activity-title"  name="activity_type" value="email" @if(isset($info->activity_type) && $info->activity_type == 'email') checked @endif>
-                                <i class="dripicons-mail" title="Email"></i>
+                                <i class="btn btn-light px-2 mx-1 dripicons-mail" title="Email"></i>
                             </label>
                             <label>
                                 <input type="radio" class="activity-title"  name="activity_type" value="lunch" @if(isset($info->activity_type) && $info->activity_type == 'lunch') checked @endif>
-                                <i class="mdi mdi-food" title="Lunch"></i>
+                                <i class="btn btn-light px-2 mx-1 mdi mdi-food" title="Lunch"></i>
                             </label>
                         </div>
                         <div class="form-group mt-3 timeinput">
-                            <div class="timeinput w-50">
+                            {{-- ------------- --}}
                                 <span><i class="dripicons-time-reverse"></i></span>
-                                <input type="text" required name="start_date" id="start_date" class="form-control datepicker w-50" value="<?= isset($info->started_at) ? date('d-m-Y', strtotime($info->started_at)): date('M d,Y')?>">
-                                <input type="time" name="start_time" id="start_time" class="form-control w-50" value="<?= isset($info->started_at) ? date('h:i', strtotime($info->started_at)) : ''?>" required>
-                            </div>
-                            <div class="timeinput w-50 mt-3">
+                                <input type="text" required name="start_date" id="start_date" class="form-control datepicker" value="<?= isset($info->started_at) ? date('d-m-Y', strtotime($info->started_at)): date('M d,Y')?>">
+                                <input type="time" name="start_time" id="start_time" class="form-control" value="<?= isset($info->started_at) ? date('h:i', strtotime($info->started_at)) : ''?>" required>
+                            {{-- ------------- --}}
                                 <span><i class="dripicons-time-reverse"></i></span>
-                                <input type="time" name="due_time" id="due_time" class="form-control w-50" value="<?= isset($info->due_at) ? date('h:i', strtotime($info->due_at)) : ''?>" required readonly>
-                                <input type="text" required name="due_date" id="due_date" class="form-control datepicker w-50" value="<?= isset($info->due_at) ? date('d-m-Y', strtotime($info->due_at)): date('M d,Y')?>">
-                            </div>
+                                <input type="time" name="due_time" id="due_time" class="form-control" value="<?= isset($info->due_at) ? date('h:i', strtotime($info->due_at)) : ''?>" required readonly>
+                                <input type="text" required name="due_date" id="due_date" class="form-control datepicker" value="<?= isset($info->due_at) ? date('d-m-Y', strtotime($info->due_at)): date('M d,Y')?>">
+                            {{-- ------------- --}}
                         </div>
                         
                         {{-- if user login only then hide user dropdown, show only admin login --}}
