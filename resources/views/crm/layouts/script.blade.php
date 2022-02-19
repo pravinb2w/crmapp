@@ -114,6 +114,7 @@
                             } else {
                                 $('#error').addClass('alert alert-success');
                                 response.error.forEach(display_errors);
+                                
                                 ReloadDataTableModal(page_type+'-datatable');
                             }
                         }      
@@ -155,6 +156,8 @@
             return ajax_url = '{{ route("products.add") }}';
         } else if(page_type=='tasks') {
             return ajax_url = '{{ route("tasks.add") }}';
+        } else if(page_type=='activities') {
+            return ajax_url = '{{ route("activities.add") }}';
         }
     }
     function set_delete_url(page_type) {
@@ -188,6 +191,8 @@
             return ajax_url = '{{ route("tasks.delete") }}';
         } else if(page_type=='customers') {
             return ajax_url = '{{ route("customers.delete") }}';
+        } else if(page_type=='activities') {
+            return ajax_url = '{{ route("activities.delete") }}';
         }
     }
 
@@ -222,6 +227,8 @@
             return ajax_url = '{{ route("tasks.status") }}';
         } else if(page_type=='customers') {
             return ajax_url = '{{ route("customers.status") }}';
+        } else if(page_type=='activities') {
+            return ajax_url = '{{ route("activities.status") }}';
         }
     }
 
@@ -285,6 +292,49 @@ function org_auto_operand(id, query) {
                 $('#organization').val(response.name);
                 $('#organization_id').val(response.id);
                 $('#result').hide();
+            }
+        }      
+    });
+}
+
+
+function cus_auto_operand(id, query) {
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+    $.ajax({
+        url: "{{ route('autocomplete_customer_save') }}",
+        method:'POST',
+        data: {query:query, id:id},
+        success:function(response){
+            if( response.name ) {
+                $('#customer').val(response.name);
+                $('#customer_id').val(response.id);
+                $('#result').hide();
+            }
+        }      
+    });
+}
+
+function leade_deal_set(id, lead_type ) {
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+    $.ajax({
+        url: "{{ route('autocomplete_lead_deal_set') }}",
+        method:'POST',
+        data: {lead_type:lead_type, id:id},
+        success:function(response){
+            if( response.name ) {
+                $('#lead_deal').val(response.name);
+                if( response.type == 'lead') {
+                    $('#lead_id').val(response.id);
+                } 
+                $('#lead-result').hide();
             }
         }      
     });

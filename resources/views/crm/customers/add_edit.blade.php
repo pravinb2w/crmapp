@@ -1,22 +1,5 @@
 <div class="modal-dialog modal-lg modal-right">
-    <style>
-        
-#result {
-  border: 1px dotted #ccc;
-  padding: 3px;
-}
-#result ul {
-  list-style-type: none;
-  padding: 0;
-  margin: 0;
-}
-#result ul li {
-  padding: 5px 0;
-}
-#result ul li:hover {
-  background: #eee;
-}
-    </style>
+
     <div class="modal-content">
         <div class="modal-header px-3" id="myLargeModalLabel">{{ $modal_title }}</h4>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>

@@ -85,4 +85,46 @@ class LeadController extends Controller
     public function view(Request $request, $id = '') {
         return view('crm.lead.view');
     }
+
+    public function autocomplete_lead_deal(Request $request) {
+        if (! $request->ajax()) {
+            return response('Forbidden.', 403);
+        }
+        $query              = $request->org;
+        $list               = Lead::search( $query )
+                                ->get();
+        $data = [];
+        if( isset($list) && !empty($list) ) {
+            foreach($list as $list){
+                $tmp['type'] = 'lead';
+                $tmp['id'] = $list->id;
+                $tmp['name'] = $list->lead_title ?? $list->lead_subject;
+                $data[] = $tmp;
+            }
+        }
+        $params['list']     = $data;
+        $params['query']    = $query;
+        return view('crm.common._autocomplete_lead_deal', $params);
+    }
+
+    public function autocomplete_lead_deal_set(Request $request){
+        if (! $request->ajax()) {
+            return response('Forbidden.', 403);
+        }
+        $id  = $_POST['id'];
+        $query = $_POST['query'] ?? '';
+        $type = $_POST['lead_type'];
+
+        if( isset($type) && $type == 'lead') {
+            $info = Lead::find($id);
+        } else {
+
+        }
+
+        $params['name'] = $info->lead_title ?? $info->lead_subject;
+        $params['id'] = $id;
+        $params['type'] = $type;
+
+        return response()->json($params);
+    }
 }

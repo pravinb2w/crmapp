@@ -198,4 +198,37 @@ class CustomerController extends Controller
         $update_msg = 'Updated successfully';
         return response()->json(['error'=>[$update_msg], 'status' => '0']);
     }
+
+    public function autocomplete_customer(Request $request) {
+        if (! $request->ajax()) {
+            return response('Forbidden.', 403);
+        }
+        $query              = $request->org;
+        $list               = Customer::search( $query )
+                                ->get();
+        $params['list']     = $list;
+        $params['query']    = $query;
+        return view('crm.common._autocomplete_customer', $params);
+    }
+
+    public function autocomplete_customer_save(Request $request){
+        if (! $request->ajax()) {
+            return response('Forbidden.', 403);
+        }
+        $id  = $_POST['id'];
+        $query = $_POST['query'] ?? '';
+        if( empty( $id ) ) {
+            $ins['first_name'] = $query;
+            $ins['added_by'] = Auth::id();
+            $ins['status'] = 1;
+            $id = Customer::create($ins)->id;
+            $params['name'] = $query;
+            $params['id'] = $id;
+        } else {
+            $info = Customer::find($id);
+            $params['name'] = $info->first_name;
+            $params['id'] = $info->id;
+        }
+        return response()->json($params);
+    }
 }

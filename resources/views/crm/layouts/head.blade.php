@@ -39,5 +39,25 @@
         .datepicker {
             width: fit-content;
         }
+        .typeahead-custom {
+        border: 1px dotted #ccc;
+        padding: 3px;
+        }
+        .typeahead-custom ul {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+        }
+        .typeahead-custom ul li {
+        padding: 5px 0;
+        cursor: pointer;
+        }
+        .typeahead-custom ul li:hover {
+        background: #eee;
+        }
+        .CodeMirror.cm-s-paper.CodeMirror-wrap {
+            height: 50px !important;
+            min-height: 50px !important;
+        }
     </style>
 </head>

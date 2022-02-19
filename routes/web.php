@@ -41,6 +41,21 @@ Route::middleware([SetViewVariable::class, 'auth'])->group(function(){
     Route::post('/autocomplete_org', [App\Http\Controllers\CustomerController::class, 'autocomplete_organization'])->name('autocomplete_org');
     Route::post('/autocomplete_org_save', [App\Http\Controllers\CustomerController::class, 'autocomplete_organization_save'])->name('autocomplete_org_save');
 
+    Route::post('/autocomplete_customer', [App\Http\Controllers\CustomerController::class, 'autocomplete_customer'])->name('autocomplete_customer');
+    Route::post('/autocomplete_customer_save', [App\Http\Controllers\CustomerController::class, 'autocomplete_customer_save'])->name('autocomplete_customer_save');
+
+    Route::post('/autocomplete_lead_deal', [App\Http\Controllers\LeadController::class, 'autocomplete_lead_deal'])->name('autocomplete_lead_deal');
+    Route::post('/autocomplete_lead_deal_set', [App\Http\Controllers\LeadController::class, 'autocomplete_lead_deal_set'])->name('autocomplete_lead_deal_set');
+
+    //Activities
+    Route::prefix('activities')->group(function () {
+        Route::get('/', [App\Http\Controllers\ActivityController::class, 'index'])->name('activities');
+        Route::post('/add', [App\Http\Controllers\ActivityController::class, 'add_edit'])->name('activities.add');
+        Route::post('/save', [App\Http\Controllers\ActivityController::class, 'save'])->name('activities.save');
+        Route::post('/list', [App\Http\Controllers\ActivityController::class, 'ajax_list'])->name('activities.list');
+        Route::post('/delete', [App\Http\Controllers\ActivityController::class, 'delete'])->name('activities.delete');
+        Route::post('/status', [App\Http\Controllers\ActivityController::class, 'change_status'])->name('activities.status');
+    });
     //pages route
     Route::prefix('pages')->group(function () {
         Route::get('/', [App\Http\Controllers\CmsController::class, 'index'])->name('pages');

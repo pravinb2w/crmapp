@@ -116,7 +116,7 @@
                 </a>
             </li>
             <li class="side-nav-item">
-                <a href="javascipt:void(0)" class="side-nav-link">
+                <a href="{{ route('activities') }}" class="side-nav-link">
                     <i class="mdi mdi-elevation-rise"></i>
                     <span> Activities </span>
                 </a>
