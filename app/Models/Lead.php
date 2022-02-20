@@ -69,7 +69,7 @@ class Lead extends Model implements Auditable
     public function updatedBy()
     {
         return $this->hasOne(User::class, 'id', 'updated_by');
-    }
+    }    
 
     public function leadType()
     {
@@ -79,5 +79,20 @@ class Lead extends Model implements Auditable
     public function leadSource()
     {
         return $this->hasOne(LeadSource::class, 'id', 'lead_source_id');
+    }
+
+    public function planned_activity()
+    {
+        return $this->hasMany(Activity::class, 'lead_id')->whereNull('activities.done_at')->orderBy('activities.created_at', 'desc');
+    }
+
+    public function done_activity()
+    {
+        return $this->hasMany(Activity::class, 'lead_id')->whereNotNull('activities.done_at')->orderBy('activities.done_at', 'desc');
+    }
+
+    public function notes()
+    {
+        return $this->hasMany(Note::class, 'lead_id')->orderBy('notes.created_at', 'desc');
     }
 }

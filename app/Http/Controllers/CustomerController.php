@@ -204,10 +204,13 @@ class CustomerController extends Controller
             return response('Forbidden.', 403);
         }
         $query              = $request->org;
+        $type               = $request->type;
         $list               = Customer::search( $query )
                                 ->get();
         $params['list']     = $list;
         $params['query']    = $query;
+        $params['type']     = $type ?? '';
+
         return view('crm.common._autocomplete_customer', $params);
     }
 
@@ -217,17 +220,25 @@ class CustomerController extends Controller
         }
         $id  = $_POST['id'];
         $query = $_POST['query'] ?? '';
+        $type = $_POST['type'] ?? '';
+
         if( empty( $id ) ) {
             $ins['first_name'] = $query;
             $ins['added_by'] = Auth::id();
             $ins['status'] = 1;
             $id = Customer::create($ins)->id;
+            $info = Customer::find($id);
             $params['name'] = $query;
             $params['id'] = $id;
+            $params['company_id'] = $info->company_id;
+            $params['company'] = $info->company->name ?? '';
         } else {
             $info = Customer::find($id);
             $params['name'] = $info->first_name;
             $params['id'] = $info->id;
+            $params['company_id'] = $info->company_id;
+            $params['company'] = $info->company->name ?? '';
+
         }
         return response()->json($params);
     }

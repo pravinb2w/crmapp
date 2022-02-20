@@ -3,7 +3,7 @@
         @if(isset($list) && count( $list )> 0)
         
             @foreach ($list as $item)
-                <li onclick="return cus_auto_operand('{{ $item->id }}')">
+                <li onclick="return cus_auto_operand('{{ $item->id }}', '{{ $item->type }}')">
                     {{ $item->first_name .' ' .$item->email}} 
                 </li>
             @endforeach

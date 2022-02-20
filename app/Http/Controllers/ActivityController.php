@@ -55,6 +55,13 @@ class ActivityController extends Controller
         if( $list ) {
             $i=1;
             foreach( $list as $activities ) {
+                if( empty($activities->done_at) ) {
+                    $activities_done                        = '<div class="badge badge-warning-lighten" role="button" onclick="mark_as_done(\'activities\','.$activities->id.')"> Mark as done </div>';
+                } else {
+                    $activities_done                        = '<div class="badge badge-success-lighten" role="button"> Done '.date('d M Y H:i A', strtotime($activities->done_at ) ).'
+                                                                </div>';
+                }
+
                 $activities_status                         = '<div class="badge bg-danger" role="button" onclick="change_status(\'activities\','.$activities->id.', 1)"> Inactive </div>';
                 if( $activities->status == 1 ) {
                     $activities_status                     = '<div class="badge bg-success" role="button" onclick="change_status(\'activities\','.$activities->id.', 0)"> Active </div>';
@@ -72,6 +79,7 @@ class ActivityController extends Controller
                 $nested_data[ 'customer' ]          = $activities->customer->first_name ?? '';
                 $nested_data[ 'startAt' ]           = date('d M Y H:i A', strtotime($activities->started_at ) );
                 $nested_data[ 'dueAt' ]             = date('d M Y H:i A', strtotime($activities->due_at ) );
+                $nested_data['done']                = $activities_done;
                 $nested_data[ 'status' ]            = $activities_status;
                 $nested_data[ 'action' ]            = $action;
                 $data[]                             = $nested_data;
@@ -182,5 +190,18 @@ class ActivityController extends Controller
         $role->update();
         $update_msg = 'Updated successfully';
         return response()->json(['error'=>[$update_msg], 'status' => '0']);
+    }
+
+    public function mark_as_done(Request $request)
+    {
+        $id = $request->id;
+        $page_type = $request->page_type;
+        $lead_id = $request->lead_id;
+        $role = Activity::find($id);
+        $role->done_by = Auth::id();
+        $role->done_at = date('Y-m-d H:i:s');
+        $role->update();
+        $update_msg = 'Updated successfully';
+        return response()->json(['error'=>[$update_msg], 'status' => '0', 'page_type' => $page_type, 'lead_id' => $lead_id]);
     }
 }

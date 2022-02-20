@@ -44,6 +44,7 @@
                                     <th > Customer </th>
                                     <th > StartAt</th>
                                     <th >Due</th>
+                                    <th> Done </th>
                                     <th>Status</th>
                                     <th style="width: 80px;">Action</th>
                                 </tr>
@@ -89,6 +90,7 @@
                 {"data" : "customer"},
                 {"data" : "startAt"},
                 {"data" : "dueAt"},
+                {"data" : "done"},
                 {"data" : "status" },
                 {"data" : "action" },
             ],

@@ -55,6 +55,7 @@ Route::middleware([SetViewVariable::class, 'auth'])->group(function(){
         Route::post('/list', [App\Http\Controllers\ActivityController::class, 'ajax_list'])->name('activities.list');
         Route::post('/delete', [App\Http\Controllers\ActivityController::class, 'delete'])->name('activities.delete');
         Route::post('/status', [App\Http\Controllers\ActivityController::class, 'change_status'])->name('activities.status');
+        Route::post('/mark_as_done', [App\Http\Controllers\ActivityController::class, 'mark_as_done'])->name('activities.mark_as_done');
     });
     //pages route
     Route::prefix('pages')->group(function () {
@@ -78,10 +79,16 @@ Route::middleware([SetViewVariable::class, 'auth'])->group(function(){
     Route::prefix('leads')->group(function () {
         Route::get('/', [App\Http\Controllers\LeadController::class, 'index'])->name('leads');
         Route::get('/view/{id}', [App\Http\Controllers\LeadController::class, 'view'])->name('leads.view');
+        Route::post('/add', [App\Http\Controllers\LeadController::class, 'add_edit'])->name('leads.add');
         Route::post('/save', [App\Http\Controllers\LeadController::class, 'save'])->name('leads.save');
+        Route::post('/activity/save', [App\Http\Controllers\LeadController::class, 'activity_save'])->name('leads.save-activity');
+        Route::post('/notes/save', [App\Http\Controllers\LeadController::class, 'notes_save'])->name('leads.save-notes');
         Route::post('/list', [App\Http\Controllers\LeadController::class, 'ajax_list'])->name('leads.list');
         Route::post('/delete', [App\Http\Controllers\LeadController::class, 'delete'])->name('leads.delete');
         Route::post('/status', [App\Http\Controllers\LeadController::class, 'change_status'])->name('leads.status');
+        Route::post('/refresh/timeline', [App\Http\Controllers\LeadController::class, 'refresh_timeline'])->name('leads.refresh-timeline');
+        Route::post('/activity/delete', [App\Http\Controllers\LeadController::class, 'delete_activity'])->name('leads.activity-delete');
+
     });
     //leads route
     Route::prefix('deals')->group(function () {

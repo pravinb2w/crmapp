@@ -60,10 +60,10 @@ class Activity extends Model implements Auditable
         return $this->hasOne(User::class, 'id', 'updated_by');
     }
 
-    public function lead()
-    {
-        return $this->hasOne(Lead::class, 'id', 'lead_id');
-    }
+    // public function lead()
+    // {
+    //     return $this->hasOne(Lead::class, 'id', 'lead_id');
+    // }
 
     public function customer()
     {
@@ -76,6 +76,16 @@ class Activity extends Model implements Auditable
     }
 
     public function done()
+    {
+        return $this->hasOne(User::class, 'id', 'done_by');
+    }
+
+    public function lead()
+    {
+        return $this->belongsTo(Lead::class, 'lead_id', 'id');
+    }
+
+    public function doneBy()
     {
         return $this->hasOne(User::class, 'id', 'done_by');
     }

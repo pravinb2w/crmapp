@@ -6,12 +6,18 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Lead;
+use App\Models\User;
+use App\Models\Customer;
+use App\Models\LeadSource;
+use App\Models\LeadType;
+use App\Models\Note;
+use App\Models\Activity;
 
 class LeadController extends Controller
 {
     public function index(Request $request)
     {
-        $params = array('btn_name' => 'Lead Soure', 'btn_fn_param' => 'leadsource');
+        $params = array('btn_name' => 'Lead', 'btn_fn_param' => 'leads');
         return view('crm.lead.index', $params);
     }
 
@@ -83,7 +89,10 @@ class LeadController extends Controller
     }
 
     public function view(Request $request, $id = '') {
-        return view('crm.lead.view');
+        $users = User::whereNotNull('role_id')->get();
+        $info = Lead::with(['planned_activity','done_activity'])->find($id);
+        
+        return view('crm.lead.view', ['users' => $users, 'id' => $id, 'info' => $info]);
     }
 
     public function autocomplete_lead_deal(Request $request) {
@@ -126,5 +135,187 @@ class LeadController extends Controller
         $params['type'] = $type;
 
         return response()->json($params);
+    }
+
+    public function activity_save(Request $request) {
+        $id = $request->id;
+        
+        $role_validator   = [
+            'activity_title'      => [ 'required', 'string', 'max:255'],
+            'activity_type'      => [ 'required', 'string', 'max:255'],
+            'start_date'      => [ 'required', 'string', 'max:255'],
+            'start_time'      => [ 'required', 'string', 'max:255'],
+            'due_time'      => [ 'required', 'string', 'max:255'],
+            'due_date'      => [ 'required', 'string', 'max:255'],
+            'lead_id'      => [ 'required', 'string', 'max:255'],
+        ];
+        //Validate the product
+        $validator                     = Validator::make( $request->all(), $role_validator );
+        
+        if ($validator->passes()) {
+            $lead_id  = $request->lead_id;
+            $lead_info = Lead::find($lead_id);
+            $start_date = $request->start_date;
+            $start_date = date('Y-m-d', strtotime($start_date));
+            $start_date = $start_date.' '.$request->start_time.':00';
+            $started_at = date('Y-m-d H:i:s', strtotime($start_date));
+
+            $due_date = $request->due_date;
+            $due_date = date('Y-m-d', strtotime($due_date));
+            $due_date = $due_date.' '.$request->due_time.':00';
+            $due_at = date('Y-m-d H:i:s', strtotime($due_date));
+
+            $ins['status'] = isset($request->status) ? 1 : 0;
+            $ins['subject'] = $request->activity_title;
+            $ins['activity_type'] = $request->activity_type;
+            $ins['notes'] = $request->notes ?? null;
+            $ins['lead_id'] = $request->lead_id ?? null;
+            $ins['customer_id'] = $lead_info->customer_id ?? null;
+            $ins['started_at'] = $started_at;
+            $ins['due_at'] = $due_at;
+            $ins['user_id'] = $request->user_id;
+
+            if( isset($id) && !empty($id) ) {
+                $act = Activity::find($id);
+                $act->status = isset($request->status) ? 1 : 0;
+                $act->subject = $request->activity_title;
+                $act->activity_type = $request->activity_type;
+                $act->notes = $request->notes ?? null;
+                $act->lead_id = $request->lead_id ?? null;
+                $act->customer_id = $request->customer_id ?? null;
+                $act->started_at = $started_at;
+                $act->due_at = $due_at;
+                $act->user_id = $request->user_id;
+                $act->updated_by = Auth::id();
+                $act->update();
+            } else {
+                $ins['added_by'] = Auth::id();
+                Activity::create($ins);
+                $success = 'Acitivity added successfully';
+            }
+            return response()->json(['error'=>[$success], 'status' => '0', 'lead_id' => $lead_id, 'type' => 'planned']);
+        }
+        return response()->json(['error'=>$validator->errors()->all(), 'status' => '1']);
+    }
+
+    public function refresh_timeline(Request $request) {
+        $type = $request->type;
+        $lead_id = $request->lead_id;
+
+        $info = Lead::with(['planned_activity','done_activity', 'notes'])->find($lead_id);
+
+        return view('crm.lead._'.$type.'_pane', ['info' => $info]);
+    }
+
+    public function delete_activity(Request $request)
+    {
+        $lead_id = $request->lead_id;
+        $activity_id = $request->activity_id;
+        $type = $request->type;
+
+        $role = Activity::find($activity_id);
+        $role->delete();
+        return response()->json(['status' => '0', 'lead_id' => $lead_id, 'type' => $type]);
+
+    }
+
+    public function notes_save(Request $request) {
+        $id = $request->id;
+        
+        $role_validator   = [
+            'notes'      => [ 'required', 'string', 'max:255'],
+            'lead_id'      => [ 'required', 'string', 'max:255'],
+        ];
+        //Validate the product
+        $validator                     = Validator::make( $request->all(), $role_validator );
+        
+        if ($validator->passes()) {
+            $lead_id  = $request->lead_id;
+            $lead_info = Lead::find($lead_id);
+            $notes = $request->notes;
+
+            $ins['status'] = isset($request->status) ? $request->status: 1;
+            $ins['notes'] = $request->notes ?? null;
+            $ins['lead_id'] = $request->lead_id ?? null;
+            $ins['customer_id'] = $lead_info->customer_id ?? null;
+            $ins['user_id'] = Auth::id();
+
+            if( isset($id) && !empty($id) ) {
+                $act = Note::find($id);
+                $act->status = isset($request->status) ? 1 : 0;
+                $act->notes = $request->notes ?? null;
+                $act->lead_id = $request->lead_id ?? null;
+                $act->customer_id = $request->customer_id ?? null;
+                $act->user_id = Auth::id();
+                $act->updated_by = Auth::id();
+                $act->update();
+            } else {
+                $ins['added_by'] = Auth::id();
+                Note::create($ins);
+                $success = 'Acitivity added successfully';
+            }
+            return response()->json(['error'=>[$success], 'status' => '0', 'lead_id' => $lead_id, 'type' => 'done']);
+        }
+        return response()->json(['error'=>$validator->errors()->all(), 'status' => '1']);
+    }
+
+    public function add_edit(Request $request) {
+        if (! $request->ajax()) {
+            return response('Forbidden.', 403);
+        }
+        $id = $request->id;
+        $modal_title = 'Add Lead';
+        $leadsource = LeadSource::all();
+        $leadtype = LeadType::all();
+
+        if( isset( $id ) && !empty($id) ) {
+            $info = Lead::find($id);
+            $modal_title = 'Update Lead';
+        }
+        $params = ['modal_title' => $modal_title, 'id' => $id ?? '', 'info' => $info ?? '', 'leadsource' => $leadsource ?? '', 'leadtype' => $leadtype ?? ''];
+        return view('crm.lead.add_edit', $params);
+        echo json_encode(['view' => $view]);
+        return true;
+    }
+
+    public function save(Request $request)
+    {
+        $id = $request->id;
+        
+        $role_validator   = [
+            'customer_id'      => [ 'required', 'string', 'max:255'],
+            'organization_id'      => [ 'required', 'string', 'max:255'],
+            'title'      => [ 'required', 'string', 'max:255'],
+            'lead_type'      => [ 'required', 'string', 'max:255'],
+            'lead_source'      => [ 'required', 'string', 'max:255'],
+        ];
+       
+        //Validate the product
+        $validator                     = Validator::make( $request->all(), $role_validator );
+        
+        if ($validator->passes()) {
+
+            $ins['status'] = isset($request->status) ? 1 : 0;
+            $ins['lead_title'] = $request->title;
+            $ins['customer_id'] = $request->customer_id;
+            $ins['lead_type_id'] = $request->lead_type;
+            $ins['lead_source_id'] = $request->lead_source;
+            $ins['lead_value'] = $request->lead_value;
+            
+            if( isset($id) && !empty($id) ) {
+                $page = Lead::find($id);
+                $page->status = isset($request->status) ? 1 : 0;
+                $page->page = $request->page;
+                $page->description = $request->description;
+                $page->update();
+                $success = 'Updated Page Type';
+            } else {
+                $ins['added_by'] = Auth::id();
+                Lead::create($ins);
+                $success = 'Added new Page Type';
+            }
+            return response()->json(['error'=>[$success], 'status' => '0']);
+        }
+        return response()->json(['error'=>$validator->errors()->all(), 'status' => '1']);
     }
 }

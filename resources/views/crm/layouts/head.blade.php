@@ -59,5 +59,11 @@
             height: 50px !important;
             min-height: 50px !important;
         }
+        .w-30 {
+            width:30% !important;
+        }
+        .w-15 {
+            width:15% !important;
+        }
     </style>
 </head>

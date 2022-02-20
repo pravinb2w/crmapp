@@ -103,81 +103,31 @@ form#activites-form>div>label>i {
                                             <span >Activity</span>
                                         </a>
                                     </li>  
-                                    <li class="nav-item">
+                                    {{-- <li class="nav-item">
                                         <a href="#Email" data-bs-toggle="tab" aria-expanded="true" class="nav-link rounded-0">
                                             <i class="uil uil-envelope-alt"></i>
                                             <span>Email</span>
                                         </a>
-                                    </li> 
+                                    </li>  --}}
                                 </ul>
                                 
                                 <div class="tab-content p-3">
                                     <div class="tab-pane active" id="Notes">
-                                        <textarea name="" id="" cols="30" placeholder="Take a note's..." class="form-control" rows="10"></textarea>
-                                        <div  class="text-end">
-                                            <button type="button" class="btn btn-light me-2" > Discard </button>
-                                            <button type="button" class="btn btn-success"> Save </button>
-                                        </div>
-                                    </div>
-                                    <div class="tab-pane show" id="Activity">
-                                        <form action="" id="lead-activity">
-                                            <div class="form-group">
-                                                <input type="text" name="activity_title" id="activity_title" placeholder="Call" class="form-control">
-                                            </div>
-                                            <div class="form-group mt-3">
-                                                <label>
-                                                    <input type="radio" name="test" value="small" checked>
-                                                    <i class="dripicons-phone" title="Call"></i>
-                                                </label>
-                                                  
-                                                <label>
-                                                    <input type="radio" name="test" value="big">
-                                                    <i class="dripicons-user-group" title="Meeting"></i>
-                                                </label>
-                                                <label>
-                                                    <input type="radio" name="test" value="big">
-                                                    <i class="dripicons-flag" title="Deadline"></i>
-                                                </label>
-                                                  <label>
-                                                    <input type="radio" name="test" value="big">
-                                                    <i class="dripicons-time-reverse" title="Task"></i>
-                                                  </label>
-                                                  <label>
-                                                    <input type="radio" name="test" value="big">
-                                                    <i class="dripicons-mail" title="Email"></i>
-                                                  </label>
-                                                  <label>
-                                                    <input type="radio" name="test" value="big">
-                                                    <i class="mdi mdi-food" title="Lunch"></i>
-                                                  </label>
-                                            </div>
-                                            <div class="form-group mt-3">
-                                                <div class="timeinput">
-                                                    <span><i class="dripicons-time-reverse"></i></span>
-                                                    <input type="text" class="form-control w-98" data-provide="datepicker" data-date-container="#datepicker1">
-                                                    <input type="time" class="form-control w-35" >
-                                                </div>
-                                                <div class="timeinput mt-3">
-                                                    <span><i class="dripicons-time-reverse"></i></span>
-                                                    <input type="text" class="form-control w-98" data-provide="datepicker" data-date-container="#datepicker1">
-                                                    <input type="time" class="form-control w-35" >
-                                                </div>
-                                            </div>
-                                            <div class="form-group timeinput mt-3">
-                                                <span><i class="dripicons-user"></i></span>
-                                                <select name="user_id" id="user_id" class="form-control">
-                                                    <option value="">--select User -- </option>
-                                                </select>
-                                            </div>
-                                            <div class="form-group mt-3 text-end">
-                                                <button type="button" class="btn btn-light me-2" > Cancel </button>
-                                                <button type="button" class="btn btn-success"> Save </button>
+                                        <form id="lead-insert-notes">
+                                            <input type="hidden" name="lead_id" id="lead_id" value="{{ $info->id ?? '' }}">
+                                            <textarea name="notes" id="notes" cols="30" placeholder="Take a note's..." class="form-control" rows="10"></textarea>
+                                            <div  class="text-end">
+                                                <button type="button" class="btn btn-light me-2" > Discard </button>
+                                                <button type="button" id="lead-notes-submit" onclick="return insert_notes()" class="btn btn-success"> Save </button>
                                             </div>
                                         </form>
+                                    </div>
+                                    <div class="tab-pane show" id="Activity">
+                                        @include('crm.lead._activity_form')
                                     </div> 
-                                    <div class="tab-pane" id="Email">
+                                    {{-- <div class="tab-pane" id="Email">
                                         <p>Email times</p>
-                                    </div> 
+                                    </div>  --}}
                                 </div>
                             </div>
                         </div>  
@@ -185,25 +135,16 @@ form#activites-form>div>label>i {
                 </div>  <!-- end card-body -->
             </div>  <!-- end card -->
             <div class="card">
-                <div class="card-body">
+                <div class="card-body" id="lead_timeline">
                     @include('crm.lead._timeline')
                 </div>
             </div>
         </div>
     </div> 
 </div>
+
 <!-- SimpleMDE js -->
 @endsection
-@section('add_on_script')
-<script src="{{ asset('assets/js/vendor/simplemde.min.js') }}"></script>
-    <!-- SimpleMDE demo -->
-<script src="{{ asset('assets/js/pages/demo.simplemde.js') }}"></script>
-<script>
-    $('textarea').each(function() {
-        var simplemde = new SimpleMDE({
-            element: this,
-        });
-   });
-</script>
-@endsection
+
+
  

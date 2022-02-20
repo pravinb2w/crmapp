@@ -13,8 +13,16 @@
 <script src="{{ asset('assets/js/pages/demo.timepicker.js') }}"></script>
 <script src="{{ asset('assets/custom/js/effect.js') }}"></script>
 
+<script src="{{ asset('assets/js/vendor/simplemde.min.js') }}"></script>
+    <!-- SimpleMDE demo -->
+<script src="{{ asset('assets/js/pages/demo.simplemde.js') }}"></script>
+
 <script>
-   
+   $('textarea').each(function() {
+        var simplemde = new SimpleMDE({
+            element: this,
+        });
+   });
 
     function display_errors( item, index) {
         $('#error').append('<div>'+item+'</div>');
@@ -158,6 +166,8 @@
             return ajax_url = '{{ route("tasks.add") }}';
         } else if(page_type=='activities') {
             return ajax_url = '{{ route("activities.add") }}';
+        } else if(page_type=='leads') {
+            return ajax_url = '{{ route("leads.add") }}';
         }
     }
     function set_delete_url(page_type) {
@@ -193,6 +203,8 @@
             return ajax_url = '{{ route("customers.delete") }}';
         } else if(page_type=='activities') {
             return ajax_url = '{{ route("activities.delete") }}';
+        } else if(page_type=='leads') {
+            return ajax_url = '{{ route("leads.delete") }}';
         }
     }
 
@@ -229,6 +241,8 @@
             return ajax_url = '{{ route("customers.status") }}';
         } else if(page_type=='activities') {
             return ajax_url = '{{ route("activities.status") }}';
+        } else if(page_type=='leads') {
+            return ajax_url = '{{ route("leads.status") }}';
         }
     }
 
@@ -292,13 +306,15 @@ function org_auto_operand(id, query) {
                 $('#organization').val(response.name);
                 $('#organization_id').val(response.id);
                 $('#result').hide();
+                $('#result-org').hide();
+
             }
         }      
     });
 }
 
 
-function cus_auto_operand(id, query) {
+function cus_auto_operand(id, query, type = '') {
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -307,12 +323,16 @@ function cus_auto_operand(id, query) {
     $.ajax({
         url: "{{ route('autocomplete_customer_save') }}",
         method:'POST',
-        data: {query:query, id:id},
+        data: {query:query, id:id, type:type},
         success:function(response){
             if( response.name ) {
                 $('#customer').val(response.name);
                 $('#customer_id').val(response.id);
                 $('#result').hide();
+                if( type == 'lead') {
+                    $('#organization').val(response.company);
+                    $('#organization_id').val(response.company_id);
+                }
             }
         }      
     });
@@ -339,5 +359,103 @@ function leade_deal_set(id, lead_type ) {
         }      
     });
 }
+
+function mark_as_done(page_type, id, lead_id='') {
+        var ttt = 'You are trying to complete Activity';
+
+        Swal.fire({
+            title: 'Are you sure?',
+            text: ttt,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, do it!'
+            }).then((result) => {
+                /* Read more about isConfirmed, isDenied below */
+                if (result.isConfirmed) {
+                    var ajax_url = "{{ route('activities.mark_as_done') }}";
+                    $.ajaxSetup({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        }
+                    });
+                    $.ajax({
+                        url: ajax_url,
+                        method:'POST',
+                        data: {page_type:page_type, id:id, lead_id:lead_id},
+                        success:function(response){
+                            if(response.error.length > 0 && response.status == "1" ) {
+                                $('#error').addClass('alert alert-danger');
+                                response.error.forEach(display_errors);
+                            } else {
+                                if( response.page_type == 'planned') {
+                                    refresh_lead_timeline('planned', response.lead_id);
+                                    refresh_lead_timeline('done', response.lead_id);
+
+                                } else {
+                                    $('#error').addClass('alert alert-success');
+                                    response.error.forEach(display_errors);
+                                    ReloadDataTableModal(page_type+'-datatable');
+                                }
+                            }
+                        }      
+                    });
+                    Swal.fire('Updated!', '', 'success')
+                } 
+            })
+            return false;
+    }
+
+    function refresh_lead_timeline(type, lead_id) {
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        $.ajax({
+            url: "{{ route('leads.refresh-timeline') }}",
+            method:'POST',
+            data: {type:type, lead_id:lead_id},
+            success:function(response){
+               $('#'+type).html(response);
+            }      
+        });
+
+    }
+
+    function insert_notes() {
+       
+        var form_data = $('#lead-insert-notes').serialize();
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        $.ajax({
+            url: "{{ route('leads.save-notes') }}",
+            type: 'POST',
+            data: form_data,
+            beforeSend: function() {
+                // $('#error').removeClass('alert alert-danger');
+                // $('#error').html('');
+                // $('#error').removeClass('alert alert-success');
+                // $('#save').html('Loading...');
+            },
+            success: function(response) {
+                if(response.error.length > 0 && response.status == "1" ) {
+                    $('#error').addClass('alert alert-danger');
+                    response.error.forEach(display_errors);
+                } else {
+                    $('#notes').val('');
+                    $('#error').addClass('alert alert-success');
+                    response.error.forEach(display_errors);
+                    if( response.type  && response.lead_id ) {
+                        refresh_lead_timeline(response.type, response.lead_id);
+                    }
+                }
+            }            
+        });
+    }
 
 </script>
