@@ -230,13 +230,13 @@ class CustomerController extends Controller
             $info = Customer::find($id);
             $params['name'] = $query;
             $params['id'] = $id;
-            $params['company_id'] = $info->company_id;
+            $params['company_id'] = $info->organization_id;
             $params['company'] = $info->company->name ?? '';
         } else {
             $info = Customer::find($id);
             $params['name'] = $info->first_name;
             $params['id'] = $info->id;
-            $params['company_id'] = $info->company_id;
+            $params['company_id'] = $info->organization_id;
             $params['company'] = $info->company->name ?? '';
 
         }

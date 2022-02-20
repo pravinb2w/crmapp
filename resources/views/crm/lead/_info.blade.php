@@ -1,11 +1,13 @@
 <div class="row  ">
     <div class="col-md-6 mb-3">
-       <h3 class="h4 link"><a href="#" class="me-1">Lead Title</a> <i class="mdi mdi-tag"></i></h3>
+       <h3 class="h4 link"><a href="#" class="me-1">{{ $info->lead_title ?? $info->lead_subject }}</a> <i class="mdi mdi-tag"></i></h3>
         <div class="d-flex">
-            <div class="btn ps-0"><b class="h4">RS. 300</b></div>
+            @if( isset($info->lead_value ) && !empty($info->lead_value))
+            <div class="btn ps-0"><b class="h4">RS.{{ $info->lead_value }}</b></div>
+            @endif
             <div class="btn link">5 Products</div>
-            <div class="btn"><i class="me-1 dripicons-user"></i> Praveen </div>
-            <div class="btn"><i class="me-1 mdi-office-building mdi"></i> Phoenix</div>
+            <div class="btn"><i class="me-1 dripicons-user"></i> {{ $info->customer->first_name ?? '' }} {{ $info->customer->email ?? '' }}</div>
+            <div class="btn"><i class="me-1 mdi-office-building mdi"></i> {{ $info->customer->company->name ?? '' }}</div>
         </div>
     </div>
     <div class="col-md-6 mb-3">
@@ -28,7 +30,7 @@
     <div class="col-md-12 mb-2"> 
         
         <div class="form-group">
-            Lead Info here
+            
         </div>
     </div>
 </div>

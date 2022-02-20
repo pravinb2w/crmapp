@@ -39,9 +39,12 @@
             foreach ($list as $key => $part) {
                 $sort[$key] = strtotime($part['done_at']);
             }
-            array_multisort($sort, SORT_DESC, $list);
+            if( !empty($list)) {
+                array_multisort($sort, SORT_DESC, $list);
+            }
         @endphp
-        @foreach ($list as $litem)
+        @forelse ($list as $item)
+       
             <div class="right">
                 <div class="timeline-lg-item timeline-item-right">
                     <div class="timeline-desk">
@@ -70,6 +73,10 @@
                     </div>
                 </div> 
             </div>
-        @endforeach
+            @empty
+            <div class="text-center">
+                <span>No data</span>
+            </div>
+            @endforelse
     @endif
 </div>

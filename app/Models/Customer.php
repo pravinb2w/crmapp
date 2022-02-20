@@ -30,7 +30,7 @@ class Customer extends Model implements Auditable
 
     public function company()
     {
-        return $this->hasOne(Organization::class, 'id', 'company_id');
+        return $this->hasOne(Organization::class, 'id', 'organization_id');
     }
 
     public function scopeLatests( Builder $query ) {

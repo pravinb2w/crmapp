@@ -69,7 +69,12 @@ class Lead extends Model implements Auditable
     public function updatedBy()
     {
         return $this->hasOne(User::class, 'id', 'updated_by');
-    }    
+    } 
+    
+    public function customer()
+    {
+        return $this->hasOne(Customer::class, 'id', 'customer_id');
+    } 
 
     public function leadType()
     {

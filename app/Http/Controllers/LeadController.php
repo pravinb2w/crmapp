@@ -296,12 +296,16 @@ class LeadController extends Controller
         if ($validator->passes()) {
 
             $ins['status'] = isset($request->status) ? 1 : 0;
-            $ins['lead_title'] = $request->title;
+            $ins['lead_subject'] = $request->title;
             $ins['customer_id'] = $request->customer_id;
             $ins['lead_type_id'] = $request->lead_type;
             $ins['lead_source_id'] = $request->lead_source;
             $ins['lead_value'] = $request->lead_value;
-            
+            if( $request->organization_id ) {
+                $cus = Customer::find($request->customer_id);
+                $cus->organization_id = $request->organization_id;
+                $cus->update();
+            }
             if( isset($id) && !empty($id) ) {
                 $page = Lead::find($id);
                 $page->status = isset($request->status) ? 1 : 0;
@@ -317,5 +321,26 @@ class LeadController extends Controller
             return response()->json(['error'=>[$success], 'status' => '0']);
         }
         return response()->json(['error'=>$validator->errors()->all(), 'status' => '1']);
+    }
+
+    public function delete(Request $request)
+    {
+        $id = $request->id;
+        $role = Lead::find($id);
+        $role->delete();
+        $delete_msg = 'Deleted successfully';
+        return response()->json(['error'=>[$delete_msg], 'status' => '0']);
+    }
+
+    public function change_status(Request $request)
+    {
+        $id = $request->id;
+        $status = $request->status;
+        $ins['status'] = $status;
+        $leadtype = Lead::find($id);
+        $leadtype->status = $status;
+        $leadtype->update();
+        $update_msg = 'Updated successfully';
+        return response()->json(['error'=>[$update_msg], 'status' => '0']);
     }
 }

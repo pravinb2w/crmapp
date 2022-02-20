@@ -329,7 +329,7 @@ function cus_auto_operand(id, query, type = '') {
                 $('#customer').val(response.name);
                 $('#customer_id').val(response.id);
                 $('#result').hide();
-                if( type == 'lead') {
+                if(response.company) {
                     $('#organization').val(response.company);
                     $('#organization_id').val(response.company_id);
                 }

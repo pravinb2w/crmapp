@@ -3,7 +3,7 @@
 </div> 
 <div class="border-start py-0 p-3" id="initiated-pane">
     @if( isset($info->planned_activity ) && !empty($info->planned_activity))
-        @foreach ($info->planned_activity as $item)
+        @forelse ($info->planned_activity as $item)
             <div class="right">
                 <div class="timeline-lg-item timeline-item-right">
                     <div class="timeline-desk">
@@ -35,6 +35,10 @@
                     </div>
                 </div> 
             </div>
-        @endforeach
+        @empty
+        <div class="text-center">
+            <span>No data.</span>
+        </div>
+        @endforelse
     @endif
 </div>
