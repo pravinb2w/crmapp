@@ -18,7 +18,12 @@
                         <input type="text" name="stages" id="stages" class="form-control" value="{{ $info->stages ?? '' }}" required>
                     </div>
                 </div>
-               
+                <div class="row mb-3">
+                    <label for="order_by" class="col-4 col-form-label">Order <span class="text-danger">*</span></label>
+                    <div class="col-8">
+                        <input type="text" name="order_by" id="order_by" class="form-control" value="{{ $info->order_by ?? '' }}" required>
+                    </div>
+                </div>
                 <div class="row mb-3">
                     <label for="description" class="col-4 col-form-label"> Description </label>
                     <div class="col-8">

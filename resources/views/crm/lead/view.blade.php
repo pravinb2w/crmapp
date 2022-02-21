@@ -3,7 +3,7 @@
 @section('content')
 <link href="{{ asset('assets/css/vendor/simplemde.min.css') }}" rel="stylesheet" type="text/css" />
 <style>
-    .CodeMirror, .editor-toolbar {
+    .CodeMirror, .editor-toolbar, #notes {
         background: rgb(255, 252, 220);
     }
     .notes-pane {
@@ -71,10 +71,10 @@ form#activites-form>div>label>i {
                     <ol class="breadcrumb m-0">
                         <li class="breadcrumb-item"><a href="javascript: void(0);">CRM</a></li>
                         <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
-                        <li class="breadcrumb-item active"> Pages </li>
+                        <li class="breadcrumb-item active"> Leads </li>
                     </ol>
                 </div>
-                <h4 class="page-title">CMS Pages</h4>
+                <h4 class="page-title">Lead Info</h4>
             </div>
         </div>
         <div class="col-12">
@@ -113,14 +113,7 @@ form#activites-form>div>label>i {
                                 
                                 <div class="tab-content p-3">
                                     <div class="tab-pane active" id="Notes">
-                                        <form id="lead-insert-notes">
-                                            <input type="hidden" name="lead_id" id="lead_id" value="{{ $info->id ?? '' }}">
-                                            <textarea name="notes" id="notes" cols="30" placeholder="Take a note's..." class="form-control" rows="10"></textarea>
-                                            <div  class="text-end">
-                                                <button type="button" class="btn btn-light me-2" > Discard </button>
-                                                <button type="button" id="lead-notes-submit" onclick="return insert_notes()" class="btn btn-success"> Save </button>
-                                            </div>
-                                        </form>
+                                        @include('crm.lead._note_form')
                                     </div>
                                     <div class="tab-pane show" id="Activity">
                                         @include('crm.lead._activity_form')

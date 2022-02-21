@@ -94,6 +94,9 @@ Route::middleware([SetViewVariable::class, 'auth'])->group(function(){
     Route::prefix('deals')->group(function () {
         Route::get('/', [App\Http\Controllers\DealsController::class, 'index'])->name('deals');
         Route::get('/view/{id}', [App\Http\Controllers\DealsController::class, 'view'])->name('deals.view');
+        Route::post('/add', [App\Http\Controllers\DealsController::class, 'add_edit'])->name('deals.open_add_modal');
+        Route::post('/save', [App\Http\Controllers\DealsController::class, 'save'])->name('deals.save');
+
     });
     //tasks route
     Route::prefix('tasks')->group(function () {

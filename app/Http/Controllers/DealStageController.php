@@ -37,7 +37,7 @@ class DealStageController extends Controller
                                 ->search( $search )
                                 ->get();
         } else {
-            $list               = DealStage::whereRaw('created_at')->Latests()
+            $list               = DealStage::whereRaw('created_at')->orderBy('order_by', 'asc')
                                 ->search( $search )
                                 ->get();
         }
@@ -100,16 +100,15 @@ class DealStageController extends Controller
     {
         $id = $request->id;
         
-        $role_validator   = [
-            'stages'      => [ 'required', 'string', 'max:255'],
-        ];
         if( isset( $id ) && !empty($id) ) {
             $role_validator   = [
-                'stages'      => [ 'required', 'string', 'max:255', 'unique:deal_stages,stages,'.$id ],
+                'stages'      => [ 'required', 'string', 'max:255'],
+                'order_by' => ['required', 'string']
             ];
         } else {
             $role_validator   = [
                 'stages'      => [ 'required', 'string', 'max:255', 'unique:deal_stages,stages'],
+                'order_by' => ['required', 'string']
             ];
         }
         //Validate the product
@@ -120,12 +119,13 @@ class DealStageController extends Controller
             $ins['status'] = isset($request->status) ? 1 : 0;
             $ins['stages'] = $request->stages;
             $ins['description'] = $request->description;
-            
+            $ins['order_by'] = $request->order_by;
             if( isset($id) && !empty($id) ) {
                 $deal = DealStage::find($id);
                 $deal->status = isset($request->status) ? 1 : 0;
                 $deal->stages = $request->stages;
                 $deal->description = $request->description;
+                $deal->order_by = $request->order_by;
                 $deal->update();
                 $success = 'Updated Deal Stage';
             } else {

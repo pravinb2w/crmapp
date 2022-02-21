@@ -43,7 +43,7 @@
                 array_multisort($sort, SORT_DESC, $list);
             }
         @endphp
-        @forelse ($list as $item)
+        @forelse ($list as $litem)
        
             <div class="right">
                 <div class="timeline-lg-item timeline-item-right">
@@ -57,16 +57,16 @@
                                     <i class="mdi mdi-dots-vertical"></i>
                                 </button>
                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                    <a class="dropdown-item" href="#"  onclick="change_activity_status('{{ $info->id }}','{{ $item['id'] }}', 'done')">Delete</a>
+                                    <a class="dropdown-item" href="#"  onclick="change_activity_status('{{ $info->id }}','{{ $litem['id'] }}', 'done')">Delete</a>
                                 </div>
                             </div>
                             <div class="text-danger">
-                                <small> {{ $item['done_at']. date('d M Y H:i A', strtotime($item['done_at'] ) ); }}
+                                <small> {{ $litem['done_at']. date('d M Y H:i A', strtotime($litem['done_at'] ) ); }}
                                 </small>
-                                @if( isset($item['done_by'])&& !empty($item['done_by']))
-                                    <span class="badge badge-success-lighten"> CompletedBy : {{ $item['doneBy']->name ?? '' }}</span>
+                                @if( isset($litem['done_by'])&& !empty($litem['done_by']))
+                                    <span class="badge badge-success-lighten"> CompletedBy : {{ $litem['doneBy']->name ?? '' }}</span>
                                 @else
-                                    <span class="badge badge-success-lighten"> AddedBy : {{ $item['added']->name ?? '' }}</span>
+                                    <span class="badge badge-success-lighten"> AddedBy : {{ $litem['added']->name ?? '' }}</span>
                                 @endif
                             </div>
                         </div>

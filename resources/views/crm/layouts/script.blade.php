@@ -18,11 +18,7 @@
 <script src="{{ asset('assets/js/pages/demo.simplemde.js') }}"></script>
 
 <script>
-   $('textarea').each(function() {
-        var simplemde = new SimpleMDE({
-            element: this,
-        });
-   });
+   
 
     function display_errors( item, index) {
         $('#error').append('<div>'+item+'</div>');
@@ -60,6 +56,10 @@
             }).then((result) => {
                 /* Read more about isConfirmed, isDenied below */
                 if (result.isConfirmed) {
+                    if( page_type == 'lead_delete') {
+                        var page_url = 'lead_delete';
+                        page_type = 'leads';
+                    }
                     var ajax_url = set_delete_url(page_type);
                     $.ajaxSetup({
                         headers: {
@@ -77,7 +77,12 @@
                             } else {
                                 $('#error').addClass('alert alert-success');
                                 response.error.forEach(display_errors);
-                                ReloadDataTableModal(page_type+'-datatable');
+                                if( page_url ) {
+                                    window.location.href = "{{ route('leads') }}";
+                                } else {
+                                    ReloadDataTableModal(page_type+'-datatable');
+
+                                }
                                 Swal.fire('Deleted!', '', 'success')
                             }
                         }      
@@ -425,7 +430,7 @@ function mark_as_done(page_type, id, lead_id='') {
     }
 
     function insert_notes() {
-       
+        
         var form_data = $('#lead-insert-notes').serialize();
         $.ajaxSetup({
             headers: {
@@ -456,6 +461,26 @@ function mark_as_done(page_type, id, lead_id='') {
                 }
             }            
         });
+    }
+
+    function get_deal_modal(lead_id = '', id = '') {
+        var ajax_url = "{{ route('deals.open_add_modal') }}";
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        $.ajax({
+            url: ajax_url,
+            method:'POST',
+            data: {lead_id:lead_id, id:id},
+            // dataType:'json',
+            success:function(res){
+                $('#Mymodal').html(res);
+                $('#Mymodal').modal('show');
+            }
+        })
+        return false;
     }
 
 </script>
