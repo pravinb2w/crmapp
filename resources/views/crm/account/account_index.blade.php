@@ -81,6 +81,11 @@
                             </a>
                         </li>
                         <li class="nav-item">
+                            <a href="#horizontal-form-prefix" data-bs-toggle="tab" onclick="return get_settings_tab('prefix')" aria-expanded="true" class="nav-link">
+                                Prefix
+                            </a>
+                        </li>
+                        <li class="nav-item">
                             <a href="#horizontal-form-code" data-bs-toggle="tab" onclick="return get_settings_tab('change')" aria-expanded="true" class="nav-link @if($type=='change') active @endif">
                                 Change Password
                             </a>

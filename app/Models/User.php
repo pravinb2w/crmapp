@@ -30,7 +30,10 @@ class User extends Authenticatable implements Auditable
         'login_ip',
         'last_login',
         'password',
-        'status'
+        'status',
+        'lead_limit',
+        'deal_limit',
+        
     ];
 
     /**

@@ -6,19 +6,17 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Builder;
+use OwenIt\Auditing\Contracts\Auditable;
 
-class CustomerMobile extends Model
+class PrefixSetting extends Model implements Auditable
 {
     use HasFactory, SoftDeletes;
-    protected $table = 'customer_mobile';
+    use \OwenIt\Auditing\Auditable;
+
     protected $fillable = [
         'company_id',
-        'mobile_no',
-        'contact_type_id',
-        'description',
+        'prefix_field',
+        'prefix_value',
         'status',
-        'added_by',
-        'updated_by',
-        'customer_id',
     ];
 }

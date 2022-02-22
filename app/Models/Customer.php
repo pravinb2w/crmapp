@@ -50,4 +50,14 @@ class Customer extends Model implements Auditable
                         ->orWhere( 'mobile_no', 'like', "%{$search}%" );
                 }); 
     }
+
+    public function secondary_email()
+    {
+        return $this->hasMany(CustomerEmail::class, 'customer_id')->orderBy('custor_email.created_at', 'desc');
+    }
+
+    public function secondary_mobile()
+    {
+        return $this->hasMany(CustomerMobile::class, 'customer_id')->orderBy('customer_mobile.created_at', 'desc');
+    }
 }

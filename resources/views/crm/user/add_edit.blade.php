@@ -9,27 +9,24 @@
                 <div class="col-12" id="error">
                 </div>
             </div>
-            <form class="form-horizontal modal-body" id="users-form" method="POST" action="{{ route('users.save') }}" autocomplete="off">
+            <form class="form-horizontal" id="users-form" method="POST" action="{{ route('users.save') }}" autocomplete="off">
                 @csrf
-                <div class="modal-body d-flex justify-content-center align-items-center h-100 p-3">
+                <div class="modal-body d-flex justify-content-center align-items-center h-100 p-3 custom-scroll">
                     <div class="w-100">
-
-                
                         <input type="hidden" name="id" value="{{ $id ?? '' }}">
-                        
-                        <div class="row mb-3">
+                        <div class="row mb-1">
                             <label for="name" class="col-3 col-form-label">First Name <span class="text-danger">*</span></label>
                             <div class="col-9">
                                 <input type="text" name="name" class="form-control" id="name" placeholder="Name" value="{{ $info->name ?? '' }}" required>
                             </div>
                         </div>
-                        <div class="row mb-3">
+                        <div class="row mb-1">
                             <label for="last_name" class="col-3 col-form-label">Last Name </label>
                             <div class="col-9">
                                 <input type="text" name="last_name" class="form-control" id="last_name" placeholder="Last Name" value="{{ $info->last_name ?? '' }}" >
                             </div>
                         </div>
-                        <div class="row mb-3">
+                        <div class="row mb-1">
                             <label for="email" class="col-3 col-form-label"> Email<span class="text-danger">*</span></label>
                             <div class="col-9">
                                 <input type="text" name="email" class="form-control" id="email" placeholder="Email" value="{{ $info->email ?? '' }}" required>
@@ -37,21 +34,21 @@
                         </div>
                         
                         @if( empty($id))
-                        <div class="row mb-3">
+                        <div class="row mb-1">
                             <label for="password" class="col-3 col-form-label"> Password<span class="text-danger">*</span></label>
                             <div class="col-9">
                                 <input type="password" name="password" class="form-control" id="password" placeholder="Password" value="{{ $info->password ?? '' }}" required>
                             </div>
                         </div>
                         @endif
-                        <div class="row mb-3">
+                        <div class="row mb-1">
                             <label for="mobile_no" class="col-3 col-form-label">Mobile Number <span class="text-danger">*</span></label>
                             <div class="col-9">
                                 <input type="text" name="mobile_no" class="form-control" id="mobile_no" placeholder="Mobile Number" value="{{ $info->mobile_no ?? '' }}" required>
                             </div>
                         </div>
                         
-                        <div class="row mb-3">
+                        <div class="row mb-1">
                             <label for="mobile_no" class="col-3 col-form-label">Role <span class="text-danger">*</span></label>
                             <div class="col-9">
                                 <select name="role_id" id="role_id" class="form-control">
@@ -62,16 +59,17 @@
                                         @endforeach
                                     @endif
                                 </select>
-                                {{-- <div class="input-group bootstrap-touchspin bootstrap-touchspin-injected">
-                                    <select name="role_id" id="role_id" class="form-control"></select>
-                                    <span class="input-group-btn input-group-append">
-                                        <button class="btn btn-primary bootstrap-touchspin-up" type="button">+</button>
-                                    </span>
-                                </div> --}}
                             </div>
                         </div>
+                        <div class="row mb-1">
+                            <label for="lead_limit" class="col-3 col-form-label">Lead Limit </label>
+                            <div class="col-9">
+                                <input type="text" name="lead_limit" class="form-control" id="lead_limit" placeholder="Lead limit" value="{{ $info->lead_limit ?? '' }}" required>
+                            </div>
+                        </div>
+
                         
-                        <div class="row mb-3">
+                        <div class="row mb-1">
                             <label for="description" class="col-3 col-form-label">Status</label>
                             <!-- Success Switch-->
                             <div class="col-9">

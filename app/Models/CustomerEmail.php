@@ -20,5 +20,6 @@ class CustomerEmail extends Model
         'status',
         'added_by',
         'updated_by',
+        'customer_id'
     ];
 }

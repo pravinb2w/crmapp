@@ -138,6 +138,8 @@ class UserController extends Controller
             $ins['mobile_no'] = $request->mobile_no;
             $ins['role_id'] = $request->role_id;
             $ins['email'] = $request->email;
+            $ins['lead_limit'] = $request->lead_limit;
+
             if( isset( $request->password ) ) {
                 $ins['password'] = Hash::make($request->password);
             }
@@ -150,6 +152,8 @@ class UserController extends Controller
                 $user->email = $request->email;
                 $user->mobile_no = $request->mobile_no;
                 $user->role_id = $request->role_id;
+                $user->lead_limit = $request->lead_limit;
+
                 if( isset( $request->password ) ) {
                     $user->password = Hash::make($request->password);
                 }

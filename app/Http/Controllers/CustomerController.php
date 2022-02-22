@@ -91,7 +91,7 @@ class CustomerController extends Controller
         $id = $request->id;
         $modal_title = 'Add Customer';
         if( isset( $id ) && !empty($id) ) {
-            $info = Country::find($id);
+            $info = Customer::with(['secondary_email', 'secondary_mobile'])->find($id);
             $modal_title = 'Update Customer';
         }
         $params = ['modal_title' => $modal_title, 'id' => $id ?? '', 'info' => $info ?? ''];
@@ -138,7 +138,7 @@ class CustomerController extends Controller
         $id = $request->id;
         if( isset($id) && !empty($id)){
             $role_validator   = [
-                'name'       => [ 'required', 'string', 'max:255'],
+                'first_name'       => [ 'required', 'string', 'max:255'],
                 'email'      => [ 'nullable', 'string', 'max:255', 'unique:customers,email,'.$id ],
                 'mobile_no'  => [ 'nullable', 'string', 'max:255', 'unique:customers,mobile_no,'.$id ],
 
@@ -150,7 +150,6 @@ class CustomerController extends Controller
                 'mobile_no' => ['nullable', 'digits:10', 'unique:customers']
             ];
         }
-        
         //Validate the product
         $validator                     = Validator::make( $request->all(), $role_validator );
         
@@ -162,17 +161,48 @@ class CustomerController extends Controller
             $ins['organization_id'] = $request->organization_id;
             $ins['email'] = $request->email;
             $ins['mobile_no'] = $request->mobile_no;
-            
+           
             if( isset($id) && !empty($id) ) {
                 $sett = Customer::find($id);
                 $sett->status = isset($request->status) ? 1 : 0;
-                $sett->first_name = $request->company_name;
+                $sett->first_name = $request->first_name;
+                $sett->last_name = $request->last_name;
+                $sett->organization_id = $request->organization_id;
+                $sett->email = $request->email;
+                $sett->mobile_no = $request->mobile_no;
                 $sett->update();
                 $success = 'Updated Customer';
+                $customer_id = $id;
             } else {
                 $ins['added_by'] = Auth::id();
                 $customer_id = Customer::create($ins)->id;
                 $success = 'Added new Customer';
+            }
+            //insert in customer mobile and emails
+            CustomerMobile::where('customer_id', $customer_id)->forceDelete();
+            CustomerEmail::where('customer_id', $customer_id)->forceDelete();
+
+            $secondary_phone = $request->secondary_phone;
+            if( isset( $secondary_phone ) && !empty( $secondary_phone ) ) {
+                foreach ($secondary_phone as $value) {
+                    $cust['mobile_no'] = $value;
+                    $cust['customer_id'] = $customer_id;
+                    $cust['description'] = 'manual';
+                    $cust['status'] = 1;
+                    $cust['added_by'] = Auth::id();
+                    CustomerMobile::create($cust);
+                }
+            }
+            $secondary_email = $request->secondary_email;
+            if( isset( $secondary_email ) && !empty( $secondary_email ) ) {
+                foreach ($secondary_email as $value) {
+                    $cust1['email'] = $value;
+                    $cust1['customer_id'] = $customer_id;
+                    $cust1['description'] = 'manual';
+                    $cust1['status'] = 1;
+                    $cust1['added_by'] = Auth::id();
+                    CustomerEmail::create($cust1);
+                }
             }
             return response()->json(['error'=>[$success], 'status' => '0']);
         }

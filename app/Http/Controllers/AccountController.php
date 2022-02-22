@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Storage;
 use DB;
 use App\Models\User;
 use App\Models\CompanySettings;
+use App\Models\PrefixSetting;
 use Illuminate\Support\Facades\Hash;
 
 
@@ -35,8 +36,8 @@ class AccountController extends Controller
         $type = $request->type;
         $id = Auth::id();
         $info = User::find($id);
-        
-        $params = ['type' => $type, 'info' => $info];
+        $prefix = PrefixSetting::where(['company_id' => $info->company_id, 'status' => 1])->get();
+        $params = ['type' => $type, 'info' => $info, 'prefix' => $prefix];
         $view = 'crm.account._account_'.$type;
         return view($view, $params);
     }
@@ -78,7 +79,7 @@ class AccountController extends Controller
     public function company_save(Request $request)
     {
         $type = $request->type;
-        if( isset($type ) && ( $type != 'api' && $type != 'link')) {
+        if( isset($type ) && ( $type != 'api' && $type != 'link' && $type != 'prefix')) {
             if( $type == 'company' ) {
                 $validator   = [
                     'site_name' => [ 'required', 'string', 'max:255' ],
@@ -160,12 +161,41 @@ class AccountController extends Controller
                 $sett->aws_access_key = $request->aws_access_key;
                 $sett->aws_secret_key = $request->aws_secret_key;
                 $sett->fcm_token = $request->fcm_token;
+                $sett->update();
+
             } else if($type == 'link') {
                 $sett->facebook_url = $request->facebook_url;
                 $sett->twitter_url = $request->twitter_url;
                 $sett->instagram_url = $request->instagram_url;
+                $sett->update();
+
+            } else if( $type == 'prefix' ) {
+
+                $prefix_field = $request->prefix_field;
+                $prefix_value = $request->prefix_value;
+                $prefix_id = $request->prefix_id;
+                $tmp = [];
+                for ($i=0; $i < count($prefix_field); $i++) { 
+                    $tmp[] = [ 'id' => $prefix_id[$i] ?? '', 'prefix_field' => $prefix_field[$i], 'prefix_value' => $prefix_value[$i]];
+                }
+                
+                if( !empty($tmp)) {
+                    foreach ($tmp as $key => $value) {
+                        if( isset( $value['id'] ) && !empty($value['id']) ){
+                            $pref = PrefixSetting::find($value['id']);
+                            $pref->prefix_field = $value['prefix_field'];
+                            $pref->prefix_value = $value['prefix_value'];
+                            $pref->update();
+                        } else {
+                            $ins[ 'prefix_field'] = $value['prefix_field'];
+                            $ins[ 'prefix_value'] = $value['prefix_value'];
+                            $ins[ 'status'] = 1;
+                            $ins['company_id'] = $user->company_id;
+                            PrefixSetting::create($ins);
+                        }
+                    }
+                }
             }
-            $sett->update();
             $success = 'Account settings saved';
             return response()->json(['error'=>[$success], 'status' => '0']);
         }

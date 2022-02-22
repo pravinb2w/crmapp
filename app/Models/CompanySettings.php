@@ -49,4 +49,9 @@ class CompanySettings extends Model implements Auditable
                         ->orWhere( 'description', 'like', "%{$search}%" );
                 }); 
     }
+
+    public function prefix()
+    {
+        return $this->hasMany(PrefixSetting::class, 'company_id');
+    }
 }
