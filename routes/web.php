@@ -57,6 +57,15 @@ Route::middleware([SetViewVariable::class, 'auth'])->group(function(){
         Route::post('/status', [App\Http\Controllers\ActivityController::class, 'change_status'])->name('activities.status');
         Route::post('/mark_as_done', [App\Http\Controllers\ActivityController::class, 'mark_as_done'])->name('activities.mark_as_done');
     });
+    //notes route
+    Route::prefix('notes')->group(function () {
+        Route::get('/', [App\Http\Controllers\NoteController::class, 'index'])->name('notes');
+        Route::post('/add', [App\Http\Controllers\NoteController::class, 'add_edit'])->name('notes.add');
+        Route::post('/save', [App\Http\Controllers\NoteController::class, 'save'])->name('notes.save');
+        Route::post('/list', [App\Http\Controllers\NoteController::class, 'ajax_list'])->name('notes.list');
+        Route::post('/delete', [App\Http\Controllers\NoteController::class, 'delete'])->name('notes.delete');
+        Route::post('/status', [App\Http\Controllers\NoteController::class, 'change_status'])->name('notes.status');
+    });
     //pages route
     Route::prefix('pages')->group(function () {
         Route::get('/', [App\Http\Controllers\CmsController::class, 'index'])->name('pages');
@@ -132,6 +141,12 @@ Route::middleware([SetViewVariable::class, 'auth'])->group(function(){
         Route::post('/roles/list', [App\Http\Controllers\RoleController::class, 'ajax_list'])->name('roles.list');
         Route::post('/roles/delete', [App\Http\Controllers\RoleController::class, 'delete'])->name('roles.delete');
         Route::post('/roles/status', [App\Http\Controllers\RoleController::class, 'change_status'])->name('roles.status');
+        //permission route
+        Route::get('/permissions', [App\Http\Controllers\PermissionController::class, 'index'])->name('permissions');
+        Route::post('/permissions/add', [App\Http\Controllers\PermissionController::class, 'add_edit'])->name('permissions.add');
+        Route::post('/permissions/save', [App\Http\Controllers\PermissionController::class, 'save'])->name('permissions.save');
+        Route::post('/permissions/list', [App\Http\Controllers\PermissionController::class, 'ajax_list'])->name('permissions.list');
+        Route::post('/permissions/delete', [App\Http\Controllers\PermissionController::class, 'delete'])->name('permissions.delete');
          //subscriptions route
         Route::get('/subscriptions', [App\Http\Controllers\SubscriptionController::class, 'index'])->name('subscriptions');
         Route::post('/subscriptions/add', [App\Http\Controllers\SubscriptionController::class, 'add_edit'])->name('subscriptions.add');

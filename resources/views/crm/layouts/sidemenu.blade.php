@@ -50,7 +50,7 @@
                 <div class="collapse" id="sidebarEcommerce">
                     <ul class="side-nav-second-level">
                         <li>
-                            <a href="{{ route('dashboard') }}">Tasks</a>
+                            <a href="{{ route('dashboard') }}">Main</a>
                         </li>
                         <li>
                             <a href="{{ route('deals-dashboard') }}">Deals</a>
@@ -128,7 +128,7 @@
                 </a>
             </li>
             <li class="side-nav-item">
-                <a href="javascipt:void(0)" class="side-nav-link">
+                <a href="{{ route('notes') }}" class="side-nav-link">
                     <i class="mdi mdi-note-text"></i>
                     <span> Notes </span>
                 </a>

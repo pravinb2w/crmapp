@@ -6,21 +6,22 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Builder;
-use OwenIt\Auditing\Contracts\Auditable;
 
-class Note extends Model implements Auditable
+class Permission extends Model
 {
     use HasFactory, SoftDeletes;
-    use \OwenIt\Auditing\Auditable;
 
+    protected $table = 'role_permissions';
     protected $fillable = [
-        'notes',
-        'lead_id',
-        'customer_id',
-        'user_id',
-        'updated_by',
-        'added_by',
+        'role_id',
+        'menu',
+        'is_view',
+        'is_edit',
+        'is_delete',
+        'is_assign',
         'status',
+        'added_by',
+        'updated_by',
     ];
 
     public function scopeLatests( Builder $query ) {
@@ -34,32 +35,13 @@ class Note extends Model implements Auditable
         }
 
         return  $query->where( function( $query ) use( $search ) {
-                    $query->where( 'notes', 'like', "%{$search}%" );
+                    $query->where( 'menu', 'like', "%{$search}%" )
+                        ->orWhere( 'role_id', 'like', "%{$search}%" );
                 }); 
     }
 
-    public function updatedBy()
-    {
-        return $this->hasOne(User::class, 'id', 'updated_by');
-    }
     public function added()
     {
         return $this->hasOne(User::class, 'id', 'added_by');
     }
-
-    public function lead()
-    {
-        return $this->hasOne(Lead::class, 'id', 'lead_id');
-    }
-
-    public function customer()
-    {
-        return $this->hasOne(Customer::class, 'id', 'customer_id');
-    }
-
-    public function user()
-    {
-        return $this->hasOne(User::class, 'id', 'user_id');
-    }
-
 }

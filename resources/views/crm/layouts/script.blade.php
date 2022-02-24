@@ -173,6 +173,10 @@
             return ajax_url = '{{ route("activities.add") }}';
         } else if(page_type=='leads') {
             return ajax_url = '{{ route("leads.add") }}';
+        } else if(page_type=='notes') {
+            return ajax_url = '{{ route("notes.add") }}';
+        } else if(page_type=='permissions') {
+            return ajax_url = '{{ route("permissions.add") }}';
         }
     }
     function set_delete_url(page_type) {
@@ -210,6 +214,10 @@
             return ajax_url = '{{ route("activities.delete") }}';
         } else if(page_type=='leads') {
             return ajax_url = '{{ route("leads.delete") }}';
+        } else if(page_type=='notes') {
+            return ajax_url = '{{ route("notes.delete") }}';
+        } else if(page_type=='permissions') {
+            return ajax_url = '{{ route("permissions.delete") }}';
         }
     }
 
@@ -248,6 +256,8 @@
             return ajax_url = '{{ route("activities.status") }}';
         } else if(page_type=='leads') {
             return ajax_url = '{{ route("leads.status") }}';
+        } else if(page_type=='notes') {
+            return ajax_url = '{{ route("notes.status") }}';
         }
     }
 
@@ -317,7 +327,6 @@ function org_auto_operand(id, query) {
         }      
     });
 }
-
 
 function cus_auto_operand(id, query, type = '') {
     $.ajaxSetup({

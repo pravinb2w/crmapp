@@ -17,7 +17,7 @@
         Lead Type</a>
     <a href="{{ route('dealstages') }}" class="list-group-item list-group-item-action {{ Request::segment(2) == 'dealstages' ? 'active' : '' }}">
         Deal Stages</a>
-    <a href="#" class="list-group-item list-group-item-action {{ Request::segment(2) == 'permissions' ? 'active' : '' }}">
+    <a href="{{ route('permissions') }}" class="list-group-item list-group-item-action {{ Request::segment(2) == 'permissions' ? 'active' : '' }}">
         Permission</a>
     <a href="{{ route('pagetype') }}" class="list-group-item list-group-item-action {{ Request::segment(2) == 'pagetype' ? 'active' : '' }}">
         Page Type</a>
