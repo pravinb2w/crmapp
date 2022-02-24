@@ -21143,3 +21143,27 @@ div.dataTables_scrollBody > table > :not(:first-child) {
   color: var(--bs-primary) !important;
   border-bottom: 2px solid var(--bs-primary); 
 }
+.custom-form-group  {
+  position: relative;
+}
+.custom-form-group .form-select , 
+.custom-form-group .form-control {
+  background-color: white !important;
+}
+.custom-form-group .custom-label {
+  position: absolute;
+  top: 0;
+  left: 10px;
+  transform: translateY(-10px);
+  background: #fafbfe;
+  font-size: 11px;
+  padding: 0 3px;
+} 
+.table.padding-collapse td {
+  padding: 0 !important;
+}
+.border-bottom.form-control {
+  border-top: none;
+  border-right: none;
+  border-left: none;
+}

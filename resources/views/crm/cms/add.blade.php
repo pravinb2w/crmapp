@@ -21,165 +21,134 @@
                         <li class="breadcrumb-item active"> Pages </li>
                     </ol>
                 </div>
-                <h4 class="page-title">CMS Pages</h4>
+                <h4 class="page-title">Add New Page</h4>
             </div>
         </div>
-        <div class="col-12">
-            <div class="card">
-                
-                <div class="card-body"> 
-                    <div class="row">
-                        <div class="col-12" id="error">
-                        </div>
-                    </div>
-                    <form class="form-horizontal modal-body" id="pages-form" method="POST" action="{{ route('pages.save') }}" autocomplete="off">
-                        @csrf
-                        <input type="hidden" name="id" value="{{ $id ?? '' }}">
-                        
-                        <div class="row mb-3">
-                            <label for="page_id" class="col-3 col-form-label"> Page Type <span class="text-danger">*</span></label>
-                            <div class="col-9">
-                                <select name="page_id" id="page_id" class="form-control">
-                                    <option value="">--select--</option>
-                                    @if( isset($pagetype ) && !empty($pagetype))
-                                        @foreach ($pagetype as $item)
-                                            <option value="{{ $item->id }}">{{ $item->page }}</option>
-                                        @endforeach
-                                    @endif
-                                </select>
+        <div class="col-12 p-0">
+            <div class="row m-0">
+                <div class="col-12" id="error">
+                </div>
+            </div>  
+            <form class="form-horizontal account_form" enctype="multipart/form-data" id="account_form">
+                @csrf
+                <div class="row m-0">
+                    <div class="col-md-8">
+                        <div class="row m-0 mb-3">
+                            <div class="col-6 ps-md-0">
+                                <div class="custom-form-group">
+                                    <select name="page_type" id="" class="form-select">
+                                        <option value="Home">Home</option>
+                                        <option value="About">About Us</option>
+                                        <option value="Conact">Conact Us</option>
+                                    </select>
+                                    <label for="" class="custom-label">Page Type</label>
+                                </div> 
+                            </div>
+                            <div class="col-6">
+                                <div class="custom-form-group">
+                                    <input type="text" name="page_title" class="form-control" placeholder="Enter the page title">
+                                    <label for="" class="custom-label">Page Title</label>
+                                </div> 
                             </div>
                         </div>
-                       
-                        <div class="row mb-3">
-                            <label for="mobile_no" class="col-3 col-form-label"> Header Section </label>
-                            <div class="col-9">
-                                <textarea id="header_section" name="header_section"></textarea>
-                            </div>
-                        </div>
-                        <div class="row mb-3">
-                            <label for="mobile_no" class="col-3 col-form-label"> Body Section </label>
-                            <div class="col-9">
-                                <textarea id="body_section" name="body_section"></textarea>
-                            </div>
-                        </div>
-                        <div class="row mb-3">
-                            <label for="mobile_no" class="col-3 col-form-label"> Footer Section </label>
-                            <div class="col-9">
-                                <textarea id="footer_section" name="footer_section"></textarea>
-                            </div>
-                        </div>
-                        <div class="row mb-3">
-                            <label for="mobile_no" class="col-3 col-form-label"> Form Filed </label>
-                            <div class="col-9 mb-1">
-                                <input type="text" name="form_title" id="form_tile" placeholder="Form Title" class="form-control">
-                                <div id="form-panel">
-                                    <div class="row mt-1">
-                                        <div class="col-3">
-                                            {{-- <input type="text" name="field_name" id="field_name" class="form-control" placeholder="Field Name"> --}}
-                                            <select name="input_type" id="input_type" class="form-control" >
-                                                <option value="">-select</option>
-                                                <option value="input">Name</option>
-                                                <option value="input">Last Name</option>
-                                                <option value="textarea"> Email</option>
-                                                <option value="checkbox"> Mobile Number </option>
-                                                <option value="radio"> Subject </option>
-                                                <option value="radio"> Message </option>
-
-                                            </select>
-                                        </div>
-                                        <div class="col-3">
-                                            <!-- Without label-->
-                                            <input type="checkbox" name="is_mandatory" id="switch0" data-switch="none"/>
-                                            <label for="switch0" data-on-label="" data-off-label="" style="top:7px;"></label>
-                                            <span>Mandatory</span>
-                                        </div>
-                                        <div class="col-3">
-                                            <select name="input_type" id="input_type" class="form-control" >
-                                                <option value="">-select</option>
-                                                <option value="input">Input Field</option>
-                                                <option value="textarea"> TextArea</option>
-                                                <option value="checkbox"> CheckBox </option>
-                                                <option value="radio"> Radio </option>
-                                            </select>
-                                        </div>
-                                        {{-- <div class="col-2">
-                                            <a href="javascript:void(0)" class="btn btn-success">
-                                                <i class="fa fa-plus"></i>
-                                            </a>
-                                        </div> --}}
-                                    </div>
-                                    <div class="row mt-1">
-                                        <div class="col-3">
-                                            <input type="text" name="field_name" id="field_name" class="form-control" placeholder="Field Name">
-                                        </div>
-                                        <div class="col-3">
-                                            <!-- Without label-->
-                                            <input type="checkbox" name="is_mandatory" id="switch2" data-switch="none"/>
-                                            <label for="switch2" data-on-label="" data-off-label="" style="top:7px;"></label>
-                                            <span for="switch2">Mandatory</span>
-                                        </div>
-                                        <div class="col-3">
-                                            <select name="input_type" id="input_type" class="form-control" >
-                                                <option value="">-select</option>
-                                                <option value="input">Input Field</option>
-                                                <option value="textarea"> TextArea</option>
-                                                <option value="checkbox"> CheckBox </option>
-                                                <option value="radio"> Radio </option>
-                                            </select>
-                                        </div>
-                                        <div class="col-2">
-                                            <a href="javascript:void(0)" class="btn btn-success">
-                                                <i class="fa fa-plus"></i>
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <div class="row mt-1">
-                                        <div class="col-3">
-                                            <input type="text" name="field_name" id="field_name" class="form-control" placeholder="Field Name">
-                                        </div>
-                                        <div class="col-3">
-                                            <!-- Without label-->
-                                            <input type="checkbox" name="is_mandatory" id="switch1" data-switch="none"/>
-                                            <label for="switch1" data-on-label="" data-off-label="" style="top:7px;"></label>
-                                            <span>Mandatory</span>
-                                        </div>
-                                        <div class="col-3">
-                                            <select name="input_type" id="input_type" class="form-control" >
-                                                <option value="">-select</option>
-                                                <option value="input">Input Field</option>
-                                                <option value="textarea"> TextArea</option>
-                                                <option value="checkbox"> CheckBox </option>
-                                                <option value="radio"> Radio </option>
-                                            </select>
-                                        </div>
-                                        <div class="col-2">
-                                            <a href="javascript:void(0)" class="btn btn-success">
-                                                <i class="fa fa-plus"></i>
-                                            </a>
-                                        </div>
-                                    </div>
+                        <div class="custom-form-group mb-3">                             
+                            <label for="" class="custom-label">Social Media links</label>
+                            <div class="p-2 bg-white border rounded">
+                                <div class="text-end">
+                                    <a class="btn btn-primary btn-sm rounded-pill mb-2" id="add_social_media">+ Add</a>
+                                </div>
+                                <div style="max-height:150px;overflow:auto">
+                                    <table class="table border-less padding-collapse m-0">
+                                        <tbody id="social_medias">
+                                            <tr class="mb-2">
+                                                <td width="150px">
+                                                    <select name="media_type[]" id="" class="form-select form-control-sm rounded-0 bg-light">
+                                                        <option value="">-- Choose --</option>
+                                                        <option value="Instagram">Instagram</option>
+                                                        <option value="YouTube">YouTube</option>
+                                                        <option value="Facebook">Facebook</option>
+                                                        <option value="Twitter">Twitter</option>
+                                                        <option value="Gmail">Gmail</option>
+                                                        <option value="LinkedIn">LinkedIn</option>
+                                                        <option value="Pinterest">Pinterest</option>
+                                                        <option value="Whatsapp">Whatsapp</option>
+                                                        <option value="Snapchat">Snapchat</option>
+                                                        <option value="Reddit">Reddit</option>
+                                                    </select>
+                                                </td>
+                                                <td class="mb-1"><input name="link[]" type="url" class="rounded-0 form-control-sm form-control"></td>
+                                            </tr>
+                                            <tr class="mb-2">
+                                                <td width="150px">
+                                                    <select name="media_type[]" id="" class="form-select form-control-sm rounded-0 bg-light">
+                                                        <option value="">-- Choose --</option>
+                                                        <option value="Instagram">Instagram</option>
+                                                        <option value="YouTube">YouTube</option>
+                                                        <option value="Facebook">Facebook</option>
+                                                        <option value="Gmail">Gmail</option>
+                                                        <option value="Twitter">Twitter</option>
+                                                        <option value="LinkedIn">LinkedIn</option>
+                                                        <option value="Pinterest">Pinterest</option>
+                                                        <option value="Whatsapp">Whatsapp</option>
+                                                        <option value="Snapchat">Snapchat</option>
+                                                        <option value="Reddit">Reddit</option>
+                                                    </select>
+                                                </td>
+                                                <td class="mb-1"><input name="link[]" type="url" class="rounded-0 form-control-sm form-control"></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
-                            
-                        </div>
-                        <div class="row mb-3">
-                            <label for="description" class="col-3 col-form-label">Status</label>
-                            <!-- Success Switch-->
-                            <div class="col-9">
-                                <input type="checkbox" name="status" id="switch3" {{ (isset($info->status) && $info->status == '1' )  ? 'checked' : '' }} data-switch="success"/>
-                                <label for="switch3" data-on-label="" data-off-label=""></label>
+                        </div> 
+                        <div class="custom-form-group">                             
+                            <label for="" class="custom-label">Banner Sliders</label>
+                            <div class="p-2 bg-white border rounded">
+                                <div class="text-end">
+                                    <a class="btn btn-primary btn-sm rounded-pill mb-2" id="add_banner_sliders">+ Add</a>
+                                </div>
+                                <table class="table border-less padding-collapse m-0">
+                                    <tbody id="banner_sliders">
+                                        <tr class="mb-2">
+                                            <td class="mb-1"><input name="banner_title[]" type="text" class="rounded-0 form-control-sm form-control"></td>
+                                            <td class="mb-1"><input name="sub_banner_title[]" type="text" class="rounded-0 form-control-sm form-control"></td>
+                                            <td class="mb-1"><input name="banner_image[]" type="file" class="rounded-0 form-control-sm form-control"></td>
+                                            <td class="mb-1"><input name="banner_content[]" type="text" class="rounded-0 form-control-sm form-control"></td>
+                                        </tr> 
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div> 
+                    </div>
+                    <div class="col-md-4">
+                        <div class="border">
+                            <div class="card-header">
+                                <label for="">Page Logo</label>
+                            </div>
+                            <div class="card-body py-2 text-center">
+                                <input type="file" name="page_logo" id="page_logo" class="form-control mb-2 d-none" onchange="previewFile(this);" >
+                                <div style="width: 200px" class="border-0 mx-auto">
+                                    <img id="previewImg" style="width: 100%; height:80px" class="mx-auto border-0" src="https://zemez.io/html/wp-content/uploads/sites/9/2018/01/logo.png">
+                                </div>
+                            </div>
+                            <div class="card-footer text-center">
+                                <label for="page_logo" class="btn btn-primary btn-sm rounded-pill">Change Logo</label>
                             </div>
                         </div>
-                        <div class=" row">
-                            <div class="col-12 text-end">
-                                <button type="button" class="btn btn-light me-2" data-bs-dismiss="modal" aria-label="Close"> Cancel</button>
-                                <button type="submit" class="btn btn-info" id="save">Save</button>
+                        <div class="border mt-3">
+                            <div class="card-header">
+                                <label for="">Social Media links</label>
+                            </div>
+                            <div class="card-body">
+
                             </div>
                         </div>
-                    </form> 
-               
-                </div>  <!-- end card-body -->
-            </div>  <!-- end card -->
+                    </div>
+                    <div class="col-12 text-end">
+                        <button type="submit" class="btn btn-primary ">Create</button>
+                    </div>
+                </div>
+            </form> 
         </div>
     </div> 
 </div>
@@ -191,41 +160,90 @@
     <script src="{{ asset('assets/js/pages/demo.simplemde.js') }}"></script>
     <script>
 
-$('textarea').each(function() {
-      var simplemde = new SimpleMDE({
-         element: this,
-      });
-   });
-
-    $("#pages-form").validate({
-        submitHandler:function(form) {
+        $('textarea').each(function() {
+            var simplemde = new SimpleMDE({
+                element: this,
+            });
+        });
+        $('#account_form').submit(function(e) {
+            e.preventDefault();
+        
+            let formData = new FormData(this);
+            $('#error').html("");
+            $('#error').removeClass("alert alert-danger");
+            $('#error').removeClass("alert alert-success");
             $.ajax({
-                url: form.action,
-                type: form.method,
-                data: $(form).serialize(),
+                type:'POST',
+                url: '{{ route("pages.save") }}',
+                data: formData,
+                contentType: false,
+                processData: false,
                 beforeSend: function() {
-                    $('#error').removeClass('alert alert-danger');
-                    $('#error').html('');
-                    $('#error').removeClass('alert alert-success');
-                    $('#save').html('Loading...');
+                    $('.loader').show();
                 },
-                success: function(response) {
-                    $('#save').html('Save');
-                    if(response.error.length > 0 && response.status == "1" ) {
+                success: (response) => {
+                    if( response.status == '1') {
                         $('#error').addClass('alert alert-danger');
-                        response.error.forEach(display_errors);
+                        $('#error').text(response.error);
                     } else {
                         $('#error').addClass('alert alert-success');
-                        response.error.forEach(display_errors);
-                        setTimeout(function(){
-                            $('#Mymodal').modal('hide');
-                        },100);
-                        ReloadDataTableModal('organizations-datatable');
+                        get_settings_tab('profile');
                     }
-                }            
+                    $('.loader').hide();
+                },
+                error: function(response){
+                    
+                }
             });
+            return false;
+        })
+        function previewFile(input){
+            var file = $("input[type=file]").get(0).files[0];
+    
+            if(file){
+                var reader = new FileReader();
+    
+                reader.onload = function(){
+                    $("#previewImg").attr("src", reader.result);
+                }
+    
+                reader.readAsDataURL(file);
+            }
         }
-    });
-</script>
+        $(document).ready(function(){
+            $("#add_social_media").click(function(){
+                $("#social_medias").append(`
+                    <tr>
+                        <td width="150px">
+                            <select name="media_type[]" id="" class="form-select form-control-sm rounded-0 bg-light">
+                                <option value="">-- Choose --</option>
+                                <option value="Instagram">Instagram</option>
+                                <option value="YouTube">YouTube</option>
+                                <option value="Facebook">Facebook</option>
+                                <option value="Twitter">Twitter</option>
+                                <option value="Gmail">Gmail</option>
+                                <option value="LinkedIn">LinkedIn</option>
+                                <option value="Pinterest">Pinterest</option>
+                                <option value="Whatsapp">Whatsapp</option>
+                                <option value="Snapchat">Snapchat</option>
+                                <option value="Reddit">Reddit</option>
+                            </select>
+                        </td>
+                        <td class="mb-1"><input name="link[]" type="url" class="rounded-0 form-control-sm form-control"> </td>
+                    </tr>
+                `);
+            });
+            $("#add_banner_sliders").click(function(){
+                $("#banner_sliders").append(`
+                    <tr class="mb-2">
+                        <td class="mb-1"><input name="banner_title[]" type="text" class="rounded-0 form-control-sm form-control"></td>
+                        <td class="mb-1"><input name="sub_banner_title[]" type="text" class="rounded-0 form-control-sm form-control"></td>
+                        <td class="mb-1"><input name="banner_image[]" type="file" class="rounded-0 form-control-sm form-control"></td>
+                        <td class="mb-1"><input name="banner_content[]" type="text" class="rounded-0 form-control-sm form-control"></td>
+                    </tr> 
+                `);
+            });
+        });
+    </script>
 @endsection
  

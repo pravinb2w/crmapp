@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\CompanySettings;
 use App\Models\Customer;
 use App\Models\Lead;
+
 use Illuminate\Support\Facades\Validator;
 
 class LandingController extends Controller
@@ -15,20 +16,19 @@ class LandingController extends Controller
         $info = CompanySettings::find(1);
         $params['info'] = $info;
         return view('landing.landing', $params);
-    }
-
+    } 
     public function enquiry_save(Request $request) {
         $id = $request->id;
         
-        $role_validator   = [
-            'fullname'      => [ 'required', 'string', 'max:255'],
-            'email'         => [ 'required', 'string','email', 'max:255'],
-            'mobile_no'     => [ 'required', 'string', 'digits:10'],
-            'subject'      => [ 'required', 'string', 'max:255'],
-            'message'      => [ 'required', 'string', 'max:255'],
+        $role_validator = [
+            'fullname'  => [ 'required', 'string', 'max:255'],
+            'email'     => [ 'required', 'string','email', 'max:255'],
+            'mobile_no' => [ 'required', 'string', 'digits:10'],
+            'subject'   => [ 'required', 'string', 'max:255'],
+            'message'   => [ 'required', 'string', 'max:255'],
         ];
         //Validate the product
-        $validator                     = Validator::make( $request->all(), $role_validator );
+        $validator      =   Validator::make( $request->all(), $role_validator );
         
         if ($validator->passes()) {
             $customer = Customer::where('email',$request->email)->first();
@@ -54,4 +54,5 @@ class LandingController extends Controller
         }
         return response()->json(['error'=>$validator->errors()->all(), 'status' => '1']);
     }
+    
 }
