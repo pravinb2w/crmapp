@@ -162,12 +162,12 @@
                             <p class="text-muted mb-3 aos-init"data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="1800"> Phoenix  CRM CRM(solidperformers.com) is owned by Phoenix  CRM Private Limited. We are a B2B Platform offering solutions only to Corporate Businesses of all sizes.</p>
                         </div>
 
-                        <a href="#" class="btn btn-primary rounded-pill mt-3 aos-init" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="2000">Read More <i class="mdi mdi-arrow-right ms-1"></i></a>
+                        <a href="#" class="btn btn-primary rounded-pill mt-3 aos-init" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="2000">Know More <i class="mdi mdi-arrow-right ms-1"></i></a>
 
                     </div>
                     <div class="col-lg-5 col-md-6 offset-md-1">
                         <div class="aos-init"  data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="2000" >
-                            <img src="{{ asset('assets/images/about-us.jpg') }}" class="img-fluid"  alt="">
+                            <img src="{{ asset('assets/images/about.png') }}" class="img-fluid"  alt="">
                         </div>
                     </div>
                 </div> 
