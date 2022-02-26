@@ -315,8 +315,8 @@
                     </div>
                     <div class="col-md-6">
                         <div class="btn-group border shadow-sm rounded w-100 aos-init" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="1200">
-                            <div class="w-100">
-                                <input class="form-control border-0 rounded-0  form-control-light w-100 p-3" type="text" id="subject" placeholder="Enter your e   mail...">
+                            <div class="w-100 bg-white">
+                                <input class="form-control  border-0 rounded-0  w-100 p-3" type="text" id="subject" placeholder="Enter your e   mail...">
                             </div>
                             <div class="">
                                 <button type="submit" class=" border-0 rounded-0 btn btn-primary p-3">Subscribe</button>
