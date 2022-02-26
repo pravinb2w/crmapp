@@ -53,6 +53,7 @@
 }
 .bg-dark-50 {
   background: #000000e5 !important;
+  border-bottom: 2px solid var(--bs-primary) !important;
 }
 .nav-link.active {
   color: var(--bs-primary) !important;
@@ -91,4 +92,8 @@
   opacity: 1 !important;
   transition: all .5s;
 
+}
+
+.slider-img {
+  height: 100% !important;
 }

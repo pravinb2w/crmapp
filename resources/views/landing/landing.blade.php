@@ -106,7 +106,7 @@
         <div class="position-relative" style="min-height: 100vh;">
             <div class="container" style="z-index: 111 !important">
                 <div class="row m-0 align-items-center"style="min-height: 100vh">
-                    <div class="col-md-7 pe-lg-5 h-100 text-start">
+                    <div class="col-md-7 pe-lg-5 my-5 m-md-0 h-100 text-start">
                         <div>
                             <span class="ms-1">Welcome to Brand <span class="badge bg-danger rounded-pill">New</span></span>
                         </div>
@@ -119,7 +119,7 @@
                             <a href="#" class="ms-3 btn btn-dark rounded-pill">View Demo</a>
                         </div>
                     </div>
-                    <div   class="col-md-5 p-3 border rounded-5 shadow mt-lg-5" style="backdrop-filter: blur(20px)">
+                    <div class="col-md-5 p-3 border rounded-5 shadow mt-lg-5 my-5 m-md-0" style="backdrop-filter: blur(20px);background:#0000009a !important">
                         @include('landing.enquiry') 
                     </div>
                 </div>
