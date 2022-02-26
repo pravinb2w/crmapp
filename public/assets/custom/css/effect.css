@@ -55,18 +55,18 @@
   background: #000000e5 !important;
   border-bottom: 2px solid var(--bs-primary) !important;
 }
-.nav-link.active {
+#top-navbar-animated .nav-link.active {
   color: var(--bs-primary) !important;
   font-weight: bold !important;
 }
 
-.nav-link {
+#top-navbar-animated  .nav-link {
   position: relative;
   color: gray !important;
 }
 
 
-.nav-link::after {
+#top-navbar-animated  .nav-link::after {
   position: absolute;
   content: '';
   bottom: 0;
@@ -78,16 +78,16 @@
   transition: all .5s;
 }
 
-.nav-item:hover .nav-link::after {
+#top-navbar-animated  .nav-item:hover .nav-link::after {
   transform: translate(-50%, -0px) !important;
   opacity: 1 !important;
   transition: all .5s;
 }
-.nav-item:hover .nav-link{
+#top-navbar-animated  .nav-item:hover .nav-link{
   color: white !important;
 }
 
-.nav-link.active::after {
+#top-navbar-animated .nav-link.active::after {
   transform: translate(-50%, -0px) !important;
   opacity: 1 !important;
   transition: all .5s;

@@ -55,7 +55,7 @@
                             <label for="" class="custom-label">Social Media links</label>
                             <div class="p-2 bg-white border rounded">
                                 <div class="text-end">
-                                    <a class="btn btn-primary btn-sm rounded-pill mb-2" id="add_social_media">+ Add</a>
+                                    <a class="btn btn-secondary btn-sm rounded-pill mb-2" id="add_social_media">+ Add</a>
                                 </div>
                                 <div style="max-height:150px;overflow:auto">
                                     <table class="table border-less padding-collapse m-0">
@@ -105,7 +105,7 @@
                             <label for="" class="custom-label">Banner Sliders</label>
                             <div class="p-2 bg-white border rounded">
                                 <div class="text-end">
-                                    <a class="btn btn-primary btn-sm rounded-pill mb-2" id="add_banner_sliders">+ Add</a>
+                                    <a class="btn btn-secondary btn-sm rounded-pill mb-2" id="add_banner_sliders">+ Add</a>
                                 </div>
                                 <table class="table border-less padding-collapse m-0">
                                     <tbody id="banner_sliders">
@@ -132,7 +132,7 @@
                                 </div>
                             </div>
                             <div class="card-footer text-center">
-                                <label for="page_logo" class="btn btn-primary btn-sm rounded-pill">Change Logo</label>
+                                <label for="page_logo" class="btn btn-secondary btn-sm rounded-pill">Change Logo</label>
                             </div>
                         </div>
                         <div class="border mt-3">
@@ -145,7 +145,7 @@
                         </div>
                     </div>
                     <div class="col-12 text-end">
-                        <button type="submit" class="btn btn-primary ">Create</button>
+                        <button type="submit" class="btn btn-secondary ">Create</button>
                     </div>
                 </div>
             </form> 

@@ -96,10 +96,10 @@
  
     <!-- end row-->
     <div class="row" data-plugin="dragula" data-containers='["handle-dragula-left", "handle-dragula-right", "handle-dragula-bottom-left","handle-dragula-bottom-right"]' data-handleClass="dragula-handle">
-        <div class="col-md-6">
+        <div class="col-md-6" id="handle-dragula-left">
             <div class="bg-dragula card bg-white p-2 p-lg-4">
-                <h5 class="mt-0">OPEN TASKS</h5>
-                <div id="handle-dragula-left" class="py-2">
+                <h5 class="mt-0">OPEN TASKS <span class="dragula-handle float-end"></span></h5>
+                <div  class="py-2">
                     @for ($key = 0; $key<4; $key++)
                         <div class="card bg-light shadow-sm border mb-0 mt-2">
                             <div class="card-body">
@@ -108,8 +108,7 @@
                                     <div class="w-100 overflow-hidden">
                                         <h5 class="mb-1 mt-1">Louis K. Bond</h5>
                                         <p class="mb-0"> Founder & CEO </p>
-                                    </div> <!-- end w-100 -->
-                                    <span class="dragula-handle"></span>
+                                    </div> <!-- end w-100 --> 
                                 </div> <!-- end d-flex -->
                             </div> <!-- end card-body -->
                         </div> <!-- end col -->  
@@ -117,10 +116,10 @@
                 </div> <!-- end company-list-1-->
             </div> <!-- end div.bg-light-->
         </div> <!-- end col -->
-        <div class="col-md-6">
+        <div class="col-md-6" id="handle-dragula-right">
             <div class="bg-dragula card bg-white p-2 p-lg-4">
-                <h5 class="mt-0">TODAY TASKS</h5>
-                <div id="handle-dragula-right" class="py-2">
+                <h5 class="mt-0">TODAY TASKS <span class="dragula-handle float-end"></span></h5>
+                <div  class="py-2">
                     @for ($key = 0; $key<4; $key++)
                         <div class="card bg-light shadow-sm border mb-0 mt-2">
                             <div class="card-body">
@@ -130,7 +129,7 @@
                                         <h5 class="mb-1 mt-1">Louis K. Bond</h5>
                                         <p class="mb-0"> Founder & CEO </p>
                                     </div> <!-- end w-100 -->
-                                    <span class="dragula-handle"></span>
+                                    {{-- <span class="dragula-handle"></span> --}}
                                 </div> <!-- end d-flex -->
                             </div> <!-- end card-body -->
                         </div> <!-- end col -->  
@@ -138,10 +137,10 @@
                 </div> <!-- end company-list-1-->
             </div> <!-- end div.bg-light-->
         </div> <!-- end col -->
-        <div class="col-md-6">
+        <div class="col-md-6" id="handle-dragula-bottom-left">
             <div class="bg-dragula card bg-white p-2 p-lg-4">
-                <h5 class="mt-0">CLOSED TASKS</h5>
-                <div id="handle-dragula-bottom-left" class="py-2">
+                <h5 class="mt-0">CLOSED TASKS <span class="dragula-handle float-end"></span></h5>
+                <div  class="py-2">
                     @for ($key = 0; $key<4; $key++)
                         <div class="card bg-light shadow-sm border mb-0 mt-2">
                             <div class="card-body">
@@ -151,7 +150,7 @@
                                         <h5 class="mb-1 mt-1">Louis K. Bond</h5>
                                         <p class="mb-0"> Founder & CEO </p>
                                     </div> <!-- end w-100 -->
-                                    <span class="dragula-handle"></span>
+                                    {{-- <span class="dragula-handle"></span> --}}
                                 </div> <!-- end d-flex -->
                             </div> <!-- end card-body -->
                         </div> <!-- end col -->  
@@ -159,10 +158,10 @@
                 </div> <!-- end company-list-1-->
             </div> <!-- end div.bg-light-->
         </div> <!-- end col -->
-        <div class="col-md-6">
+        <div class="col-md-6" id="handle-dragula-bottom-right">
             <div class="bg-dragula card bg-white p-2 p-lg-4">
-                <h5 class="mt-0">PLANED VS DONE</h5>
-                <div id="handle-dragula-bottom-right" class="py-2">
+                <h5 class="mt-0">PLANED VS DONE <span class="dragula-handle float-end"></span></h5>
+                <div  class="py-2">
                     @for ($key = 0; $key<4; $key++)
                         <div class="card bg-light shadow-sm border mb-0 mt-2">
                             <div class="card-body">
@@ -172,7 +171,7 @@
                                         <h5 class="mb-1 mt-1">Louis K. Bond</h5>
                                         <p class="mb-0"> Founder & CEO </p>
                                     </div> <!-- end w-100 -->
-                                    <span class="dragula-handle"></span>
+                                    {{-- <span class="dragula-handle"></span> --}}
                                 </div> <!-- end d-flex -->
                             </div> <!-- end card-body -->
                         </div> <!-- end col -->  
