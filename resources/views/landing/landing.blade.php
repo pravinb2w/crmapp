@@ -343,16 +343,16 @@
                             <strong class="text-primary">Follow Us On Social...</strong>
                             <ul class="social-list list-inline mt-3">
                                 <li class="list-inline-item text-center">
-                                    <a href="javascript: void(0);" class="social-list-item tn btn-outline-primary"><i class="mdi mdi-facebook"></i></a>
+                                    <a href="javascript: void(0);" class="social-list-item border-primary text-white btn-outline-primary"><i class="mdi mdi-facebook"></i></a>
                                 </li>
                                 <li class="list-inline-item text-center">
-                                    <a href="javascript: void(0);" class="social-list-item tn btn-outline-primary"><i class="mdi mdi-google"></i></a>
+                                    <a href="javascript: void(0);" class="social-list-item border-primary text-white btn-outline-primary"><i class="mdi mdi-google"></i></a>
                                 </li>
                                 <li class="list-inline-item text-center">
-                                    <a href="javascript: void(0);" class="social-list-item tn btn-outline-primary"><i class="mdi mdi-twitter"></i></a>
+                                    <a href="javascript: void(0);" class="social-list-item border-primary text-white btn-outline-primary"><i class="mdi mdi-twitter"></i></a>
                                 </li>
                                 <li class="list-inline-item text-center">
-                                    <a href="javascript: void(0);" class="social-list-item tn btn-outline-primary"><i class="mdi mdi-github"></i></a>
+                                    <a href="javascript: void(0);" class="social-list-item border-primary text-white btn-outline-primary"><i class="mdi mdi-github"></i></a>
                                 </li>
                             </ul>
                         </div>
