@@ -97,3 +97,14 @@
 .slider-img {
   height: 100% !important;
 }
+.blog-img {
+  max-height: 220px !important;
+  min-height: 220px !important;
+  width: 100% !important;
+  object-fit: cover;
+}
+
+.btn-outline-primary:hover {
+  background-image: linear-gradient(to right, #00c6ff 0%, #006BDF 51%, #00c6ff 100%);
+  background-size: 200% auto;
+}
