@@ -21167,3 +21167,6 @@ div.dataTables_scrollBody > table > :not(:first-child) {
   border-right: none;
   border-left: none;
 }
+.bg-trans {
+  background:  red !important;
+}
