@@ -10,6 +10,7 @@ use App\Models\User;
 use App\Models\Customer;
 use App\Models\DealStage;
 use App\Models\Note;
+use App\Models\Product;
 use App\Models\Activity;
 
 class DealsController extends Controller
@@ -41,6 +42,13 @@ class DealsController extends Controller
         }
         $params = ['modal_title' => $modal_title, 'id' => $id ?? '', 'info' => $info ?? '', 'stage' => $stage ?? ''];
         return view('crm.deals.add_edit', $params);
-       
+        
+    }
+
+    function product_list(Request $request) {
+        $limit  = $request->limit;
+        $list = Product::all();
+        $params = ['limit' => $limit, 'list' => $list ];
+        return view('crm.common._product_field', $params );
     }
 }

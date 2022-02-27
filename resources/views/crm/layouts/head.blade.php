@@ -65,5 +65,14 @@
         .w-15 {
             width:15% !important;
         }
+        .w-10 {
+            width:10% !important;
+        }
+        .w-40 {
+            width:40% !important;
+        }
+        .w-20 {
+            width:20% !important;
+        }
     </style>
 </head>
