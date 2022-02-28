@@ -3,6 +3,7 @@
 </div> 
 <div class="border-start py-0 p-3" id="initiated-pane">
     @if( isset($info->planned_activity ) && !empty($info->planned_activity))
+    <input type="hidden" id="planned_count" value="{{ count($info->planned_activity) }}">
         @forelse ($info->planned_activity as $item)
             <div class="right">
                 <div class="timeline-lg-item timeline-item-right">

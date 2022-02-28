@@ -22,7 +22,7 @@ class DealStageController extends Controller
             return response('Forbidden.', 403);
         }
 
-        $columns            = [ 'id', 'stages', 'status', 'id' ];
+        $columns            = [ 'id', 'stages', 'order_by','status', 'id' ];
 
         $limit              = $request->input( 'length' );
         $start              = $request->input( 'start' );
@@ -33,11 +33,11 @@ class DealStageController extends Controller
         $total_list         = DealStage::count();
         // DB::enableQueryLog();
         if( $order != 'id') {
-            $list               = DealStage::whereRaw('created_at')->orderBy($order, $dir)
+            $list               = DealStage::orderBy($order, $dir)
                                 ->search( $search )
                                 ->get();
         } else {
-            $list               = DealStage::whereRaw('created_at')->orderBy('order_by', 'asc')
+            $list               = DealStage::orderBy('order_by', 'asc')
                                 ->search( $search )
                                 ->get();
         }
@@ -65,6 +65,7 @@ class DealStageController extends Controller
                     <label class="form-check-label" for="customCheck2">&nbsp;</label>
                 </div>';
                 $nested_data[ 'stages' ]            = $dealstages->stages;
+                $nested_data[ 'order_by' ]          = $dealstages->order_by;
                 $nested_data[ 'status' ]            = $dealstages_status;
                 $nested_data[ 'action' ]            = $action;
                 $data[]                             = $nested_data;
@@ -108,7 +109,7 @@ class DealStageController extends Controller
         } else {
             $role_validator   = [
                 'stages'      => [ 'required', 'string', 'max:255', 'unique:deal_stages,stages'],
-                'order_by' => ['required', 'string']
+                'order_by' => ['required', 'string', 'unique:deal_stages,order_by']
             ];
         }
         //Validate the product
@@ -120,6 +121,7 @@ class DealStageController extends Controller
             $ins['stages'] = $request->stages;
             $ins['description'] = $request->description;
             $ins['order_by'] = $request->order_by;
+            
             if( isset($id) && !empty($id) ) {
                 $deal = DealStage::find($id);
                 $deal->status = isset($request->status) ? 1 : 0;

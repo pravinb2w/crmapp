@@ -22,62 +22,7 @@
 
     <div class="row card p-4 mb-3">
         <div class="col-12">
-            <div class="row  ">
-                <div class="col-md-6 mb-3">
-                   <h3 class="h4 link"><a href="#" class="me-1">Praveen Phoenix Deal</a> <i class="mdi mdi-tag"></i></h3>
-                    <div class="d-flex">
-                        <div class="btn ps-0"><b class="h4">RS. 300</b></div>
-                        <div class="btn link">5 Products</div>
-                        <div class="btn"><i class="me-1 dripicons-user"></i> Praveen </div>
-                        <div class="btn"><i class="me-1 mdi-office-building mdi"></i> Phoenix</div>
-                    </div>
-                </div>
-                <div class="col-md-6 mb-3">
-                    <div class="d-flex align-items-center justify-content-end">
-                        <div class="dropdown me-2">
-                            <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                              <i style="font-size:20px" class="uill uil-user-circle me-1"></i> Praveen Paul Raj
-                            </button>
-                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                <a class="dropdown-item" href="#">Action</a>
-                                <a class="dropdown-item" href="#">Another action</a>
-                                <a class="dropdown-item" href="#">Something else here</a>
-                            </div>
-                        </div>
-                        <div class="btn me-2 btn-success">Won</div>
-                        <div class="btn  me-2 btn-danger">Loss</div>
-                        <div class="dropdown  me-2">
-                            <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="mdi mdi-table-large"></i>
-                            </button>
-                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                <a class="dropdown-item" href="#">Action</a>
-                                <a class="dropdown-item" href="#">Another action</a>
-                                <a class="dropdown-item" href="#">Something else here</a>
-                            </div>
-                        </div>
-                        <div class="dropdown">
-                            <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="mdi mdi-dots-vertical"></i>
-                            </button>
-                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                <a class="dropdown-item" href="#">Action</a>
-                                <a class="dropdown-item" href="#">Another action</a>
-                                <a class="dropdown-item" href="#">Something else here</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-12 mb-2"> 
-                    <div class="btn-group align-item-center p-1 w-100">
-                        <span class="pipeline-btn py-0 btn text-white btn-light active"><small>0 days</small></span>
-                        <span class="pipeline-btn py-0 btn text-white btn-light"></span>
-                        <span class="pipeline-btn py-0 btn text-white btn-light"></span>
-                        <span class="pipeline-btn py-0 btn text-white btn-light"></span>
-                        <span class="pipeline-btn py-0 btn text-white btn-light"></span>
-                    </div>
-                </div>
-            </div>
+            @include('crm.deals._pipeline_view')
         </div>
     </div>
     <div class="card shadow-sm">

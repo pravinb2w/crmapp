@@ -1,5 +1,5 @@
 <div id="add-product-tab" class="d-flex w-100 mb-1 calc">
-    <select name="item" id="item" class="form-control">
+    <select name="item_{{ $limit }}" id="item_{{ $limit }}" class="form-control">
         @if( isset( $list ) && !empty($list))
             @foreach($list as $list)
                 <option value="{{ $list->id }}">{{ $list->product_name }}</option>

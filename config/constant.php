@@ -23,6 +23,7 @@ return [
         'bulk_import',
         'landing_pages',
         'organization',
+        'subscription'
         
     ]
 ];

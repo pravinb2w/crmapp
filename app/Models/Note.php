@@ -51,6 +51,10 @@ class Note extends Model implements Auditable
     {
         return $this->hasOne(Lead::class, 'id', 'lead_id');
     }
+    public function deal()
+    {
+        return $this->hasOne(Deal::class, 'id', 'deal_id');
+    }
 
     public function customer()
     {

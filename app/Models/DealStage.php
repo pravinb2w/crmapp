@@ -18,6 +18,7 @@ class DealStage extends Model implements Auditable
         'description',
         'added_by',
         'status',
+        'order_by',
         'company_id'
     ];
 

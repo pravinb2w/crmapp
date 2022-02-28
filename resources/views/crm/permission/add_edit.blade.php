@@ -9,7 +9,7 @@
         <div class="modal-header px-3" id="myLargeModalLabel">{{ $modal_title }}</h4>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-        <form class="form-horizontal modal-body" id="customers-form" method="POST" action="{{ route('customers.save') }}" autocomplete="off">
+        <form class="form-horizontal modal-body" id="permissions-form" method="POST" action="{{ route('permissions.save') }}" autocomplete="off">
 
         <div class="modal-body justify-content-center align-items-center h-100 p-3 custom-scroll">
             <div class="w-100">
@@ -20,7 +20,7 @@
                     <div class="col-sm-12">
                         <div class="form-group">
                             <label for="role_id"> Role <span class="text-danger">*</span></label>
-                            <select name="role_id" id="role_id" class="form-control">
+                            <select name="role_id" id="role_id" class="form-control" required>
                                 <option value="">--select--</option>
                                 @if( isset( $role ) && !empty($role))
                                     @foreach ($role as $item)
@@ -49,23 +49,23 @@
                                     <td>
                                         <div class="mt-2">
                                             <div class="form-check form-check-inline">
-                                                <input type="checkbox" class="form-check-input" id="visible_{{ $item }}">
+                                                <input type="checkbox" class="form-check-input" name="visible_{{ $item }}" id="visible_{{ $item }}">
                                                 <label class="form-check-label" for="visible_{{ $item }}">Visible</label>
                                             </div>
                                             <div class="form-check form-check-inline">
-                                                <input type="checkbox" class="form-check-input" id="editable_{{ $item }}">
+                                                <input type="checkbox" name="editable_{{ $item }}" class="form-check-input" id="editable_{{ $item }}">
                                                 <label class="form-check-label" for="editable_{{ $item }}">Edit</label>
                                             </div>
                                             <div class="form-check form-check-inline">
-                                                <input type="checkbox" class="form-check-input" id="visible_{{ $item }}">
-                                                <label class="form-check-label" for="visible_{{ $item }}">Delete</label>
+                                                <input type="checkbox" name="delete_{{ $item }}" class="form-check-input" id="delete_{{ $item }}">
+                                                <label class="form-check-label" for="delete_{{ $item }}">Delete</label>
                                             </div>
                                             <div class="form-check form-check-inline">
-                                                <input type="checkbox" class="form-check-input" id="assign_{{ $item }}">
+                                                <input type="checkbox" name="assign_{{ $item }}" class="form-check-input" id="assign_{{ $item }}">
                                                 <label class="form-check-label" for="assign_{{ $item }}">Assign</label>
                                             </div>
                                             <div class="form-check form-check-inline">
-                                                <input type="checkbox" class="form-check-input" id="export_{{ $item }}">
+                                                <input type="checkbox" name="export_{{ $item }}" class="form-check-input" id="export_{{ $item }}">
                                                 <label class="form-check-label" for="export_{{ $item }}">Export</label>
                                             </div>
                                         </div>
@@ -91,7 +91,35 @@
 </div>
 
 <script>
-   
+   $("#permissions-form").validate({
+            submitHandler:function(form) {
+                $.ajax({
+                    url: form.action,
+                    type: form.method,
+                    data: $(form).serialize(),
+                    beforeSend: function() {
+                        $('#error').removeClass('alert alert-danger');
+                        $('#error').html('');
+                        $('#error').removeClass('alert alert-success');
+                        $('#save').html('Loading...');
+                    },
+                    success: function(response) {
+                        $('#save').html('Save');
+                        if(response.error.length > 0 && response.status == "1" ) {
+                            $('#error').addClass('alert alert-danger');
+                            response.error.forEach(display_errors);
+                        } else {
+                            $('#error').addClass('alert alert-success');
+                            response.error.forEach(display_errors);
+                            setTimeout(function(){
+                                $('#Mymodal').modal('hide');
+                            },100);
+                            ReloadDataTableModal('permissions-datatable');
+                        }
+                    }            
+                });
+            }
+        });
 
         
 </script>

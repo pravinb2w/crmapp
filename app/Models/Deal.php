@@ -8,24 +8,25 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Builder;
 use OwenIt\Auditing\Contracts\Auditable;
 
-class Lead extends Model implements Auditable
+class Deal extends Model implements Auditable
 {
     use HasFactory, SoftDeletes;
     use \OwenIt\Auditing\Auditable;
 
     protected $fillable = [
-        'lead_title',
-        'lead_subject',
-        'lead_description',
         'customer_id',
-        'lead_value',
-        'lead_currency',
-        'lead_type_id',
-        'lead_source_id',
+        'deal_title',
+        'deal_description',
+        'deal_value',
+        'deal_currency',
+        'lead_id',
+        'current_stage_id',
+        'stage_status',
+        'expected_completed_date',
+        'product_total',
         'assigned_at',
         'assigned_to',
         'assinged_by',
-        'visible_to',
         'status',
         'added_by',
         'updated_by'
@@ -42,12 +43,11 @@ class Lead extends Model implements Auditable
         }
 
         return  $query->where( function( $query ) use( $search ) {
-                    $query->where( 'lead_title', 'like', "%{$search}%" )
-                        ->orWhere( 'lead_subject', 'like', "%{$search}%" )
-                        ->orWhere( 'lead_description', 'like', "%{$search}%" )
-                        ->orWhere( 'lead_value', 'like', "%{$search}%" )
-                        ->orWhere( 'assigned_at', 'like', "%{$search}%" );
-
+                    $query->where( 'deal_title', 'like', "%{$search}%" )
+                        ->orWhere( 'deal_description', 'like', "%{$search}%" )
+                        ->orWhere( 'deal_value', 'like', "%{$search}%" )
+                        ->orWhere( 'expected_completed_date', 'like', "%{$search}%" )
+                        ->orWhere( 'stage_status', 'like', "%{$search}%" );
                 }); 
     }
 
@@ -74,30 +74,25 @@ class Lead extends Model implements Auditable
     public function customer()
     {
         return $this->hasOne(Customer::class, 'id', 'customer_id');
-    } 
-
-    public function leadType()
-    {
-        return $this->hasOne(LeadType::class, 'id', 'lead_type_id');
     }
-
-    public function leadSource()
+    
+    public function current_stage()
     {
-        return $this->hasOne(LeadSource::class, 'id', 'lead_source_id');
-    }
-
-    public function planned_activity()
-    {
-        return $this->hasMany(Activity::class, 'lead_id')->whereNull('activities.done_at')->where('status', 1)->orderBy('activities.created_at', 'desc');
-    }
-
-    public function done_activity()
-    {
-        return $this->hasMany(Activity::class, 'lead_id')->whereNotNull('activities.done_at')->where('status', 1)->orderBy('activities.done_at', 'desc');
+        return $this->hasOne(DealStage::class, 'id', 'current_stage_id');
     }
 
     public function notes()
     {
-        return $this->hasMany(Note::class, 'lead_id')->orderBy('notes.created_at', 'desc');
+        return $this->hasMany(Note::class, 'deal_id')->orderBy('notes.created_at', 'desc');
+    }
+
+    public function deal_products()
+    {
+        return $this->hasMany(DealProduct::class, 'deal_id')->orderBy('deal_products.created_at', 'asc');
+    }
+    
+    public function pipeline()
+    {
+        return $this->hasMany(DealPipline::class, 'deal_id');
     }
 }

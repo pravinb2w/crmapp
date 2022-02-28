@@ -6,26 +6,103 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Lead;
+use App\Models\Deal;
 use App\Models\User;
 use App\Models\Customer;
 use App\Models\DealStage;
 use App\Models\Note;
 use App\Models\Product;
 use App\Models\Activity;
+use App\Models\DealPipline;
+use App\Models\DealProduct;
 
 class DealsController extends Controller
 {
     public function index(Request $request)
     {
-        return view('crm.deals.index');
+        $params = array('btn_name' => 'Deals', 'btn_fn_param' => 'deals');
+        return view('crm.deals.index', $params);
     }
-    public function create(Request $request)
-    {
-        return view('crm.deals.create');
+
+    public function ajax_list( Request $request ) {
+        if (! $request->ajax()) {
+            return response('Forbidden.', 403);
+        }
+
+        $columns            = [ 'id', 'deal_title', 'customer_id', 'expected_completed_date', 'status', 'id' ];
+        $limit              = $request->input( 'length' );
+        $start              = $request->input( 'start' );
+        $order              = $columns[ intval( $request->input( 'order' )[0][ 'column' ] ) ];        
+        $dir                = $request->input( 'order' )[0][ 'dir' ];
+        $search             = $request->input( 'search.value' );
+        $total_list         = Deal::count();
+        // DB::enableQueryLog();
+        if( $order != 'id') {
+            $list           = Deal::orderBy($order, $dir)
+                                ->search( $search )
+                                ->get();
+        } else {
+            $list           = Deal::Latests()
+                                ->search( $search )
+                                ->get();
+        }
+        // $query = DB::getQueryLog();
+        if( empty( $request->input( 'search.value' ) ) ) {
+            $total_filtered = Deal::count();
+        } else {
+            $total_filtered = Deal::search( $search )
+                                ->count();
+        }
+        
+        $data           = array();
+        if( $list ) {
+            $i=1;
+            foreach( $list as $deals ) {
+                $deals_status                         = '<div class="badge bg-danger" role="button" onclick="change_status(\'deals\','.$deals->id.', 1)"> Inactive </div>';
+                if( $deals->status == 1 ) {
+                    $deals_status                     = '<div class="badge bg-success" role="button" onclick="change_status(\'deals\','.$deals->id.', 0)"> Active </div>';
+                }
+                $action = '<a href="'.route('deals.view',['id' => $deals->id]).'" class="action-icon"> <i class="mdi mdi-eye"></i></a>
+                <a href="javascript:void(0);" class="action-icon" onclick="return get_add_modal(\'deals\', '.$deals->id.')"> <i class="mdi mdi-square-edit-outline"></i></a>
+                <a href="javascript:void(0);" class="action-icon" onclick="return common_soft_delete(\'deals\', '.$deals->id.')"> <i class="mdi mdi-delete"></i></a>';
+
+                $nested_data[ 'id' ]                = '<div class="form-check">
+                    <input type="checkbox" class="form-check-input" id="customCheck2" value="'.$deals->id.'">
+                    <label class="form-check-label" for="customCheck2">&nbsp;</label>
+                </div>';
+                $nested_data[ 'title' ]             = $deals->deal_title ?? '';
+                $nested_data[ 'customer' ]          = $deals->customer->first_name ?? 'N/A';
+                $nested_data[ 'expected_delivery' ] = date('d M, Y', strtotime($deals->expected_completed_date));
+                $nested_data[ 'status' ]            = $deals_status;
+                $nested_data[ 'action' ]            = $action;
+                $data[]                             = $nested_data;
+            }
+        }
+
+        return response()->json( [ 
+            'draw'              => intval( $request->input( 'draw' ) ),
+            'recordsTotal'      => intval( $total_list ),
+            'data'              => $data,
+            'recordsFiltered'   => intval( $total_filtered )
+        ] );
     }
-    public function show(Request $request)
+   
+    public function view(Request $request)
     {
-        return view('crm.deals.show');
+        $id = $request->id;
+        $info = Deal::find($id);
+        $stage = DealStage::orderBy('order_by', 'asc')->get();
+        $completed_stage = [];
+        $pipeline = [];
+        if( isset( $info->pipeline ) && !empty($info->pipeline ) ) {
+            foreach ($info->pipeline as $key => $value) {
+                $completed_stage[] = $value->stage_id;
+                $pipeline[] = array( 'id' => $value->id, 'stage_id' => $value->stage_id, 'completed_at' => $value->completed_at, 'created_at' => $value->created_at);
+            }
+        }
+        $params = ['id' => $id, 'info' => $info, 'stage' => $stage, 'completed_stage' => $completed_stage, 'pipeline' => $pipeline ];
+
+        return view('crm.deals.show', $params);
     }
 
     public function add_edit(Request $request) {
@@ -33,16 +110,144 @@ class DealsController extends Controller
             return response('Forbidden.', 403);
         }
         $id = $request->id;
+
+        $lead_id = $request->lead_id;
         $modal_title = 'Add Deal';
         $stage = DealStage::orderBy('order_by', 'asc')->get();
-
+        $users = User::whereNotNull('role_id')->get();
+        $list = Product::all();
+        
+        if( isset( $lead_id ) && !empty($lead_id) ) {
+            $lead_info = Lead::find($lead_id);
+        }
         if( isset( $id ) && !empty($id) ) {
-            $info = Lead::find($id);
+            $info = Deal::find($id);
             $modal_title = 'Update Deal';
         }
-        $params = ['modal_title' => $modal_title, 'id' => $id ?? '', 'info' => $info ?? '', 'stage' => $stage ?? ''];
+        $params = ['modal_title' => $modal_title, 'id' => $id ?? '', 'info' => $info ?? '', 'lead_id' => $lead_id,
+                    'lead_info' => $lead_info ?? '', 'stage' => $stage ?? '', 'users' => $users, 'list' => $list ];
         return view('crm.deals.add_edit', $params);
         
+    }
+
+    public function save(Request $request)
+    {
+        $id = $request->id;
+        
+        $role_validator   = [
+            'customer_id'      => [ 'required', 'string', 'max:255'],
+            'organization_id'      => [ 'required', 'string', 'max:255'],
+            'title'      => [ 'required', 'string', 'max:255'],
+            'deal_stage'      => [ 'required', 'string', 'max:255'],
+            'expected_date'      => [ 'required', 'string', 'max:255'],
+        ];
+       
+        //Validate the product
+        $validator                     = Validator::make( $request->all(), $role_validator );
+        
+        if ($validator->passes()) {
+            
+            $ins['status'] = isset($request->status) ? 1 : 0;
+            $ins['deal_title'] = $request->title;
+            $ins['customer_id'] = $request->customer_id;
+            $ins['current_stage_id'] = $request->deal_stage;
+            $ins['deal_value'] = $request->deal_value;
+            $ins['lead_id'] = $request->lead_id ?? null;
+            $ins['product_total'] = $request->total_cost ?? null;
+            $ins['expected_completed_date'] = date('Y-m-d', strtotime($request->expected_date));
+            if( $request->assigned_to ) {
+                $ins['assinged_by'] = Auth::id();
+                $ins['assigned_to'] = $request->assigned_to;
+            }
+            if( $request->organization_id ) {
+                $cus = Customer::find($request->customer_id);
+                $cus->organization_id = $request->organization_id;
+                $cus->update();
+            }
+            //get data for pipelines
+            //insert in deal_piepines table
+            $deal_stage = $request->deal_stage;
+            $deal_stage_info = DealStage::find($deal_stage);
+            $all_stages = DealStage::where('order_by', '<=', $deal_stage_info->order_by )->orderBy('order_by', 'asc')->get();
+            
+            if( isset($id) && !empty($id) ) {
+                $deal = Deal::find($id);
+                $deal->deal_title = $request->title;
+                $deal->customer_id = $request->customer_id;
+                $deal->current_stage_id = $request->deal_stage;
+                $deal->deal_value = $request->deal_value;
+                $deal->lead_id = $request->lead_id ?? null;
+                $deal->product_total = $request->total_cost ?? null;
+                $deal->expected_completed_date = date('Y-m-d', strtotime($request->expected_date));
+                if( $request->assigned_to ) {
+                    $deal->assinged_by = Auth::id();
+                    $deal->assigned_to = $request->assigned_to;
+                }
+                $deal->status = isset($request->status) ? 1 : 0;
+                $deal->update();
+
+                $success = 'Updated Deal';
+            } else {
+                $ins['added_by'] = Auth::id();
+                $id = Deal::create($ins)->id;
+                $success = 'Added new Deal';
+            }
+            if( $request->lead_id ) {
+                $lead = Lead::find($request->lead_id);
+                $lead->status = 2;
+                $lead->updated_by = Auth::id();
+                $lead->update();
+            }
+
+            DealProduct::where('deal_id', $id)->forceDelete();
+            DealPipline::where('deal_id', $id)->forceDelete();
+            //insert in product tables
+            $limit = $request->limit;
+            for ($i=0; $i < $limit; $i++) { 
+                $inspro = [];
+                $item_field = 'item_'.$i;
+                $amount_field = 'amount_'.$i;
+                $quantity_field = 'quantity_'.$i;
+                $price_field = 'price_'.$i;
+
+                if( $request->$item_field ) {
+                    $inspro['product_id'] = $request->$item_field;
+                }
+                if( $request->$price_field ) {
+                    $inspro['price'] = $request->$price_field;
+                }if( $request->$quantity_field ) {
+                    $inspro['quantity'] = $request->$quantity_field;
+                }
+                if( $request->$amount_field ) {
+                    $inspro['amount'] = $request->$amount_field;
+                }
+                $inspro['deal_id'] = $id;
+                if( $inspro['product_id'] && $inspro['price'] ) {
+                    DealProduct::create($inspro);
+                }
+            }
+            //insert in pipeline
+            if( isset($all_stages) && !empty($all_stages)) {
+                foreach ($all_stages as $key => $value) {
+                    $status                 = 'completed';
+                    $completed_at           = date('Y-m-d H:i:s');
+                    if( $value->id == $deal_stage ) {
+                        $status             = 'pending';
+                        $completed_at       = null;
+                    }
+                    $sins                   = [];
+                    $sins['deal_id']        = $id;
+                    $sins['stage_id']       = $value->id;
+                    $sins['status']         = $status;
+                    $sins['completed_at']   = $completed_at;
+                    $sins['added_by']       = Auth::id();
+                    DealPipline::create($sins);
+                }
+            }
+            
+            return response()->json(['error'=>[$success], 'status' => '0', 'lead_id' => $request->lead_id ?? '']);
+        }
+        return response()->json(['error'=>$validator->errors()->all(), 'status' => '1']);
     }
 
     function product_list(Request $request) {
@@ -50,5 +255,26 @@ class DealsController extends Controller
         $list = Product::all();
         $params = ['limit' => $limit, 'list' => $list ];
         return view('crm.common._product_field', $params );
+    }
+
+    public function delete(Request $request)
+    {
+        $id = $request->id;
+        $role = Deal::find($id);
+        $role->delete();
+        $delete_msg = 'Deleted successfully';
+        return response()->json(['error'=>[$delete_msg], 'status' => '0']);
+    }
+
+    public function change_status(Request $request)
+    {
+        $id = $request->id;
+        $status = $request->status;
+        $ins['status'] = $status;
+        $leadtype = Deal::find($id);
+        $leadtype->status = $status;
+        $leadtype->update();
+        $update_msg = 'Updated successfully';
+        return response()->json(['error'=>[$update_msg], 'status' => '0']);
     }
 }

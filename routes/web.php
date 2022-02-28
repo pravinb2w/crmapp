@@ -97,14 +97,19 @@ Route::middleware([SetViewVariable::class, 'auth'])->group(function(){
         Route::post('/status', [App\Http\Controllers\LeadController::class, 'change_status'])->name('leads.status');
         Route::post('/refresh/timeline', [App\Http\Controllers\LeadController::class, 'refresh_timeline'])->name('leads.refresh-timeline');
         Route::post('/activity/delete', [App\Http\Controllers\LeadController::class, 'delete_activity'])->name('leads.activity-delete');
+        Route::post('/mark_as_done', [App\Http\Controllers\LeadController::class, 'mark_as_done'])->name('leads.mark_as_done');
 
     });
-    //leads route
+    //deals route
     Route::prefix('deals')->group(function () {
         Route::get('/', [App\Http\Controllers\DealsController::class, 'index'])->name('deals');
         Route::get('/view/{id}', [App\Http\Controllers\DealsController::class, 'view'])->name('deals.view');
-        Route::post('/add', [App\Http\Controllers\DealsController::class, 'add_edit'])->name('deals.open_add_modal');
+        Route::post('/add', [App\Http\Controllers\DealsController::class, 'add_edit'])->name('deals.add');
         Route::post('/save', [App\Http\Controllers\DealsController::class, 'save'])->name('deals.save');
+        Route::post('/delete', [App\Http\Controllers\DealsController::class, 'delete'])->name('deals.delete');
+        Route::post('/status', [App\Http\Controllers\DealsController::class, 'change_status'])->name('deals.status');
+        Route::post('/list', [App\Http\Controllers\DealsController::class, 'ajax_list'])->name('deals.list');
+        Route::post('/product/list', [App\Http\Controllers\DealsController::class, 'product_list'])->name('deals.product-list'); 
 
     });
     //tasks route
@@ -117,15 +122,7 @@ Route::middleware([SetViewVariable::class, 'auth'])->group(function(){
         Route::post('/status', [App\Http\Controllers\TaskController::class, 'change_status'])->name('tasks.status');
     });
 
-    // Deals Routes
-    Route::prefix('deals')->group(function () {
-        Route::get('/', [App\Http\Controllers\DealsController::class, 'index'])->name('deals'); 
-        Route::get('/create', [App\Http\Controllers\DealsController::class, 'create'])->name('create-deal'); 
-        Route::get('/view', [App\Http\Controllers\DealsController::class, 'show'])->name('view-deal'); 
-        Route::post('/product/list', [App\Http\Controllers\DealsController::class, 'product_list'])->name('deals.product-list'); 
 
-
-    });
 
     Route::prefix('settings')->group(function () {
         Route::get('/', [App\Http\Controllers\SettingController::class, 'index'])->name('settings');

@@ -96,4 +96,12 @@ class PermissionController extends Controller
         echo json_encode(['view' => $view]);
         return true;
     }
+
+    public function save( Request $request ) {
+        if (! $request->ajax()) {
+            return response('Forbidden.', 403);
+        }
+
+        dd( $_POST );
+    }
 }

@@ -88,6 +88,7 @@ form#activites-form>div>label>i {
                                 </div>
                             </div>
                         </div>
+                        @if( isset( $info->status ) && $info->status != 2 )
                         <div class="col-12"> 
                             <div class="card shadow-sm">
                                 <ul class="nav nav-pills bg-nav-pills nav-justified custom">
@@ -123,7 +124,8 @@ form#activites-form>div>label>i {
                                     </div>  --}}
                                 </div>
                             </div>
-                        </div>  
+                        </div> 
+                        @endif 
                     </div>
                 </div>  <!-- end card-body -->
             </div>  <!-- end card -->

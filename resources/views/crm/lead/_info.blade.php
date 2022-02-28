@@ -12,6 +12,7 @@
     </div>
     <div class="col-md-6 mb-3">
         <div class="d-flex align-items-center justify-content-end">
+            @if( isset( $info->status ) && $info->status != 2 )
             <div class="dropdown">
                 <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <i class="mdi mdi-dots-vertical"></i>
@@ -21,6 +22,11 @@
                     <a class="dropdown-item" href="#" onclick="return common_soft_delete('lead_delete', '{{ $info->id }}')">Delete Lead</a>
                 </div>
             </div>
+            @else 
+            <div>
+                <button class="btn btn-success">Converted to Deal</button>
+            </div>
+            @endif
         </div>
     </div>
     <div class="col-md-12 mb-2"> 

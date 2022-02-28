@@ -74,5 +74,8 @@
         .w-20 {
             width:20% !important;
         }
+        .float-right {
+            float: right;
+        }
     </style>
 </head>

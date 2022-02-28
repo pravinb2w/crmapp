@@ -24,19 +24,9 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-body"> 
-                    <div class="row mb-2">
-                        <div class="col-sm-5">
-                            <a href="{{ route('create-deal') }}" class="btn btn-secondary mb-2" >
-                                <i class="mdi mdi-plus-circle me-2"></i> Add Deal
-                            </a>
-                        </div>
-                        <div class="col-sm-7">
-                            <div class="text-sm-end"> 
-                            </div>
-                        </div><!-- end col-->
-                    </div>
+                    @include('crm.common.common_add_btn')
                     <div class="table-responsive">
-                        <table class="table table-centered w-100 dt-responsive nowrap" id="products-datatable">
+                        <table class="table table-centered w-100 dt-responsive nowrap" id="deals-datatable">
                             <thead class="table-light">
                                 <tr>
                                     <th class="all" style="width: 20px;">
@@ -45,30 +35,15 @@
                                             <label class="form-check-label" for="customCheck1">&nbsp;</label>
                                         </div>
                                     </th>
-                                    <th>Conact Person</th>
-                                    <th>Organization</th>
-                                    <th>Phone </th>
-                                    <th>email</th>
+                                    <th> Title </th>
+                                    <th> Customer </th>
+                                    <th> Expected Delivery </th>
+                                    <th> Status </th>
                                     <th style="width: 80px;">Action</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                @for ($key=0; $key<5; $key++)
-                                    <tr>
-                                        <td></td>
-                                        <td>Mr. alan</td>
-                                        <td>Alan group of company</td>
-                                        <td>9874584125</td>
-                                        <td>alan@gmail.com</td>
-                                        <td><a href="{{ route('view-deal') }}" class="action-icon"> <i class="mdi mdi-eye"></i></a>
-                                            <a href="javascript:void(0);" class="action-icon"  > <i class="mdi mdi-square-edit-outline"></i></a>
-                                            <a href="javascript:void(0);" class="action-icon"  > <i class="mdi mdi-delete"></i></a></td>
-                                    </tr>
-                                @endfor
-                            </tbody>
                         </table>
                     </div>
-               
                 </div>  <!-- end card-body -->
             </div>  <!-- end card -->
         </div>
@@ -84,31 +59,30 @@
     <script src="{{ asset('assets/js/vendor/dataTables.responsive.min.js') }}"></script>
     <script src="{{ asset('assets/js/vendor/responsive.bootstrap5.min.js') }}"></script>
     <script src="{{ asset('assets/js/vendor/dataTables.checkboxes.min.js') }}"></script>
-    {{-- <script src="{{ asset('assets/js/pages/demo.products.js') }}"></script> --}}
+    {{-- <script src="{{ asset('assets/js/pages/demo.deals.js') }}"></script> --}}
     <script>
         $(document).ready(function(){"use strict";
         
-        const roletable = $('#products-datatable').DataTable();
-          // const roletable = $('#products-datatable').DataTable( {
+          const roletable = $('#deals-datatable').DataTable( {
             
-        //     "processing"    : true,
-        //     "serverSide"    : true,
-        //     "ajax"          : {
-        //         "url"       : "<?= route( 'products.list' ); ?>",
-        //         "dataType"  : "json",
-        //         "type"      : "POST",
-        //         "data"      : { "_token" : "<?=csrf_token();?>" }
-        //     },
-        //     "columns"       : [
-        //         {"data" : "id"},
-        //         {"data" : "product_name"},
-        //         {"data" : "product_code"},
-        //         {"data" : "added"},
-        //         {"data" : "status" },
-        //         {"data" : "action" },
-        //     ],
+            "processing"    : true,
+            "serverSide"    : true,
+            "ajax"          : {
+                "url"       : "<?= route( 'deals.list' ); ?>",
+                "dataType"  : "json",
+                "type"      : "POST",
+                "data"      : { "_token" : "<?=csrf_token();?>" }
+            },
+            "columns"       : [
+                {"data" : "id"},
+                {"data" : "title"},
+                {"data" : "customer"},
+                {"data" : "expected_delivery"},
+                {"data" : "status" },
+                {"data" : "action" },
+            ],
             
-        // } );
+        } );
     });
 
     function ReloadDataTableModal(id) {

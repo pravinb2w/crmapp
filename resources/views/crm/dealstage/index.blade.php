@@ -42,7 +42,8 @@
                                             <label class="form-check-label" for="customCheck1">&nbsp;</label>
                                         </div>
                                     </th>
-                                    <th class="all">Stages</th>
+                                    <th>Stages</th>
+                                    <th>Order</th>
                                     <th>Status</th>
                                     <th style="width: 80px;">Action</th>
                                 </tr>
@@ -83,6 +84,7 @@
             "columns"       : [
                 {"data" : "id"},
                 {"data" : "stages"},
+                {"data" : "order_by"},
                 {"data" : "status" },
                 {"data" : "action" },
             ],

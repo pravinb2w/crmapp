@@ -177,6 +177,8 @@
             return ajax_url = '{{ route("notes.add") }}';
         } else if(page_type=='permissions') {
             return ajax_url = '{{ route("permissions.add") }}';
+        } else if(page_type=='deals') {
+            return ajax_url = '{{ route("deals.add") }}';
         }
     }
     function set_delete_url(page_type) {
@@ -218,6 +220,8 @@
             return ajax_url = '{{ route("notes.delete") }}';
         } else if(page_type=='permissions') {
             return ajax_url = '{{ route("permissions.delete") }}';
+        } else if(page_type=='deals') {
+            return ajax_url = '{{ route("deals.delete") }}';
         }
     }
 
@@ -258,6 +262,8 @@
             return ajax_url = '{{ route("leads.status") }}';
         } else if(page_type=='notes') {
             return ajax_url = '{{ route("notes.status") }}';
+        } else if(page_type=='deals') {
+            return ajax_url = '{{ route("deals.status") }}';
         }
     }
 
@@ -473,7 +479,20 @@ function mark_as_done(page_type, id, lead_id='') {
     }
 
     function get_deal_modal(lead_id = '', id = '') {
-        var ajax_url = "{{ route('deals.open_add_modal') }}";
+        if( lead_id ){
+            var planned = $('#planned_count').val();
+            planned = parseInt(planned);
+            if( planned > 0 ) {
+                check_activity_done(lead_id);
+            } else {
+                open_deal_modal(lead_id, id);
+            }
+        }
+        
+    }
+
+    function open_deal_modal(lead_id='', id=''){
+        var ajax_url = "{{ route('deals.add') }}";
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -488,6 +507,46 @@ function mark_as_done(page_type, id, lead_id='') {
                 $('#Mymodal').html(res);
                 $('#Mymodal').modal('show');
             }
+        })
+        return false;
+    }
+
+    function check_activity_done(lead_id) {
+        var ttt = 'You have un completed activity, if you continue further all activity mark as done';
+
+        Swal.fire({
+            title: 'Are you sure?',
+            text: ttt,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, do it!'
+            }).then((result) => {
+            /* Read more about isConfirmed, isDenied below */
+            if (result.isConfirmed) {
+                var ajax_url = "{{ route('leads.mark_as_done') }}";
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+                $.ajax({
+                    url: ajax_url,
+                    method:'POST',
+                    data: {lead_id:lead_id},
+                    async: true,
+                    success:function(response){
+                        if(response.error.length > 0 && response.status == "1" ) {
+                            $('#error').addClass('alert alert-danger');
+                            response.error.forEach(display_errors);
+                        } else {
+                            open_deal_modal(response.lead_id);
+                        }
+                    }      
+                });
+                Swal.fire('Updated!', '', 'success')
+            } 
         })
         return false;
     }
