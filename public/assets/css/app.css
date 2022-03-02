@@ -21170,3 +21170,21 @@ div.dataTables_scrollBody > table > :not(:first-child) {
 .bg-trans {
   background:  red !important;
 }
+.task-scroll {
+  max-height: 450px ;
+  overflow-y: auto ;
+}
+.task-scroll::-webkit-scrollbar {
+  width: 5px;
+  background-color: transparent;
+}
+.task-scroll::-webkit-slider-thumb {
+  background: red;
+}
+.task-scroll::-webkit-scrollbar-thumb {
+  background-color: lightgray;
+}
+
+.flex-x {
+  justify-content: space-between !important;
+}
