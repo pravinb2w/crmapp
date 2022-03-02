@@ -6,9 +6,9 @@
         <div class="card">
 
             <!-- Logo -->
-            <div class="card-header py-3 text-center bg-primary">
+            <div class="card-header py-3 text-center bg-light">
                 <a href="/">
-                    <span><img src="{{ asset('assets/images/logo/logo.png') }}" width="120px"></span>
+                    <span><img src="{{ asset('assets/images/logo/logo-xl.png') }}" width="120px"></span>
                 </a>
             </div>
 
@@ -69,7 +69,7 @@
 
                 </form>
             </div> <!-- end card-body -->
-            <div class="card-footer py-2 bg-primary"></div>
+            <div class="card-footer py-2 bg-light"></div>
         </div>
         <!-- end card -->
 

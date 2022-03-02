@@ -22,162 +22,142 @@
     {{-- <button class="btn btn-primary" type="submit">.ripple</button> --}}
 
     <div class="row">
-        <div class="col-md-6 col-xl-3">
-            <div class="card cta-box bg-primary text-white">
-                <div class="card-body">
-                    <div class="d-flex align-items-start align-items-center">
-                        <div class="w-100 overflow-hidden">
-                            <h2 class="mt-0"><i class="mdi mdi-bullhorn-outline"></i>&nbsp;</h2>
-                            <h3 class="m-0 fw-normal cta-box-title">Welcome {{ Auth::user()->name }}</h3>
-                        </div>
-                        {{-- <img class="ms-3" src="assets/images/email-campaign.svg" width="120" alt="Generic placeholder image"> --}}
+        <div class="col-md-6 px-1 col-xl-3">
+            <div class="card shadow-sm" style="background:linear-gradient(-30deg, #6AD5E6,#B1ECEC)">
+                <div class="card-body p-2 d-flex flex-x"> 
+                    <div>
+                        <h3 class="mt-0">254</h3> 
+                        <h5 class="m-0 text-dark" title="Total Tasks">Open Tasks</h5>
+                    </div>
+                    <div>
+                        <i class="mdi-clipboard-check-multiple mdi text-white fa-2x float-end"></i>
                     </div>
                 </div>
-                <!-- end card-body -->
             </div>
-            <!-- end card--> 
         </div>
-        <div class="col-md-6 col-xl-3">
-            <div class="card">
-                <div class="card-body">
-                    <div class="row align-items-center">
-                        <div class="col-6">
-                            <h5 class="text-muted fw-normal mt-0 text-truncate" title="Total Tasks">Total Tasks</h5>
-                            <h3 class="my-2 py-1">254</h3>
-                        </div>
-                        <div class="col-6">
-                            <div class="text-end">
-                                <div id="campaign-sent-chart" data-colors="#727cf5"></div>
-                            </div>
-                        </div>
-                    </div> <!-- end row-->
-                </div> <!-- end card-body -->
-            </div> <!-- end card -->
-        </div> <!-- end col -->
-
-        <div class="col-md-6 col-xl-3">
-            <div class="card">
-                <div class="card-body">
-                    <div class="row align-items-center">
-                        <div class="col-6">
-                            <h5 class="text-muted fw-normal mt-0 text-truncate" title="Total Open Tasks ">Total Open Tasks </h5>
-                            <h3 class="my-2 py-1">34</h3>
-                           
-                        </div>
-                        <div class="col-6">
-                            <div class="text-end">
-                                <div id="new-leads-chart" data-colors="#0acf97"></div>
-                            </div>
-                        </div>
-                    </div> <!-- end row-->
-                </div> <!-- end card-body -->
-            </div> <!-- end card -->
-        </div> <!-- end col -->
-
-        <div class="col-md-6 col-xl-3">
-            <div class="card">
-                <div class="card-body">
-                    <div class="row align-items-center">
-                        <div class="col-6">
-                            <h5 class="text-muted fw-normal mt-0 text-truncate" title="Total Overdue Tasks">Overdue Tasks</h5>
-                            <h3 class="my-2 py-1">861</h3> 
-                        </div>
-                        <div class="col-6">
-                            <div class="text-end">
-                                <div id="Total Overdue Tasks-chart" data-colors="#727cf5"></div>
-                            </div>
-                        </div>
-                    </div> <!-- end row-->
-                </div> <!-- end card-body -->
-            </div> <!-- end card -->
-        </div> <!-- end col --> 
+        <div class="col-md-6 px-1 col-xl-3">
+            <div class="card shadow-sm" style="background:linear-gradient(-30deg, #6AD5E6,#B1ECEC)">
+                <div class="card-body p-2 d-flex flex-x"> 
+                    <div>
+                        <h3 class="mt-0">254</h3> 
+                        <h5 class="m-0 text-dark" title="Total Tasks">Today Tasks</h5>
+                    </div>
+                    <div>
+                        <i class="mdi-clipboard-check-multiple mdi text-white fa-2x float-end"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 px-1 col-xl-3">
+            <div class="card shadow-sm" style="background:linear-gradient(-30deg, #6AD5E6,#B1ECEC)">
+                <div class="card-body p-2 d-flex flex-x"> 
+                    <div>
+                        <h3 class="mt-0">254</h3> 
+                        <h5 class="m-0 text-dark" title="Total Tasks">Closed Tasks</h5>
+                    </div>
+                    <div>
+                        <i class="mdi-clipboard-check-multiple mdi text-white fa-2x float-end"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 px-1 col-xl-3">
+            <div class="card shadow-sm" style="background:linear-gradient(-30deg, #6AD5E6,#B1ECEC)">
+                <div class="card-body p-2 d-flex flex-x"> 
+                    <div>
+                        <h3 class="mt-0">254</h3> 
+                        <h5 class="m-0 text-dark" title="Total Tasks">Planed Tasks</h5>
+                    </div>
+                    <div>
+                        <i class="mdi-clipboard-check-multiple mdi text-white fa-2x float-end"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
     <!-- end row --> 
  
     <!-- end row-->
     <div class="row" data-plugin="dragula" data-containers='["handle-dragula-left", "handle-dragula-right", "handle-dragula-bottom-left","handle-dragula-bottom-right"]' data-handleClass="dragula-handle">
-        <div class="col-md-6" id="handle-dragula-left">
-            <div class="bg-dragula card bg-white p-2 p-lg-4">
-                <h5 class="mt-0">OPEN TASKS <span class="dragula-handle float-end"></span></h5>
-                <div  class="py-2">
-                    @for ($key = 0; $key<4; $key++)
-                        <div class="card bg-light shadow-sm border mb-0 mt-2">
-                            <div class="card-body">
-                                <div class="d-flex align-items-start">
-                                    <img src="assets/images/users/avatar-{{ $key+1 }}.jpg" alt="image" class="me-3 d-none d-sm-block avatar-sm rounded-circle">
-                                    <div class="w-100 overflow-hidden">
-                                        <h5 class="mb-1 mt-1">Louis K. Bond</h5>
-                                        <p class="mb-0"> Founder & CEO </p>
-                                    </div> <!-- end w-100 --> 
-                                </div> <!-- end d-flex -->
-                            </div> <!-- end card-body -->
-                        </div> <!-- end col -->  
-                    @endfor
-                </div> <!-- end company-list-1-->
-            </div> <!-- end div.bg-light-->
+        <div class="col-md-6 px-1" id="handle-dragula-left">
+            <div class="list-group border shadow mb-3">
+                <h5  href="#" class="list-group-item list-group-item-action border-bottom bg-light d-flex align-items-center justify-content-between m-0" aria-current="true">
+                    OPEN TASKS <span class="dragula-handle float-end"></span>
+                </h5>
+                <div class="task-scroll">
+                    @for ($key = 0; $key<10; $key++)
+                        <a class="d-flex align-items-center border-bottom list-group-item list-group-item-action">
+                            <div class="w-100 overflow-hidden">
+                                <h5 class="text-secondary mb-1">March moth Logs</h5>
+                                <p class="mb-0"> SIM softwares Supports Dec to Jan</p>
+                            </div> <!-- end w-100 --> 
+                            <div>
+                                <small class="text-success">31/03/2022</small>
+                            </div>
+                        </a>  
+                    @endfor    
+                </div> 
+            </div>
         </div> <!-- end col -->
-        <div class="col-md-6" id="handle-dragula-right">
-            <div class="bg-dragula card bg-white p-2 p-lg-4">
-                <h5 class="mt-0">TODAY TASKS <span class="dragula-handle float-end"></span></h5>
-                <div  class="py-2">
-                    @for ($key = 0; $key<4; $key++)
-                        <div class="card bg-light shadow-sm border mb-0 mt-2">
-                            <div class="card-body">
-                                <div class="d-flex align-items-start">
-                                    <img src="assets/images/users/avatar-{{ $key+1 }}.jpg" alt="image" class="me-3 d-none d-sm-block avatar-sm rounded-circle">
-                                    <div class="w-100 overflow-hidden">
-                                        <h5 class="mb-1 mt-1">Louis K. Bond</h5>
-                                        <p class="mb-0"> Founder & CEO </p>
-                                    </div> <!-- end w-100 -->
-                                    {{-- <span class="dragula-handle"></span> --}}
-                                </div> <!-- end d-flex -->
-                            </div> <!-- end card-body -->
-                        </div> <!-- end col -->  
-                    @endfor
-                </div> <!-- end company-list-1-->
-            </div> <!-- end div.bg-light-->
+        <div class="col-md-6 px-1" id="handle-dragula-right">
+            <div class="list-group border shadow mb-3">
+                <h5  href="#" class="list-group-item list-group-item-action border-bottom bg-light d-flex align-items-center justify-content-between m-0" aria-current="true">
+                    TODAY TASKS <span class="dragula-handle float-end"></span>
+                </h5>
+                <div class="task-scroll">
+                    @for ($key = 0; $key<10; $key++)
+                        <a class="d-flex align-items-center border-bottom list-group-item list-group-item-action">
+                            <div class="w-100 overflow-hidden">
+                                <h5 class="text-secondary mb-1">March moth Logs</h5>
+                                <p class="mb-0"> SIM softwares Supports Dec to Jan</p>
+                            </div> <!-- end w-100 --> 
+                            <div>
+                                <small class="text-success">31/03/2022</small>
+                            </div>
+                        </a>  
+                    @endfor    
+                </div> 
+            </div>
         </div> <!-- end col -->
-        <div class="col-md-6" id="handle-dragula-bottom-left">
-            <div class="bg-dragula card bg-white p-2 p-lg-4">
-                <h5 class="mt-0">CLOSED TASKS <span class="dragula-handle float-end"></span></h5>
-                <div  class="py-2">
-                    @for ($key = 0; $key<4; $key++)
-                        <div class="card bg-light shadow-sm border mb-0 mt-2">
-                            <div class="card-body">
-                                <div class="d-flex align-items-start">
-                                    <img src="assets/images/users/avatar-{{ $key+1 }}.jpg" alt="image" class="me-3 d-none d-sm-block avatar-sm rounded-circle">
-                                    <div class="w-100 overflow-hidden">
-                                        <h5 class="mb-1 mt-1">Louis K. Bond</h5>
-                                        <p class="mb-0"> Founder & CEO </p>
-                                    </div> <!-- end w-100 -->
-                                    {{-- <span class="dragula-handle"></span> --}}
-                                </div> <!-- end d-flex -->
-                            </div> <!-- end card-body -->
-                        </div> <!-- end col -->  
-                    @endfor
-                </div> <!-- end company-list-1-->
-            </div> <!-- end div.bg-light-->
+        <div class="col-md-6 px-1" id="handle-dragula-bottom-left">
+            <div class="list-group border shadow mb-3">
+                <h5  href="#" class="list-group-item list-group-item-action border-bottom bg-light d-flex align-items-center justify-content-between m-0" aria-current="true">
+                    CLOSED TASKS <span class="dragula-handle float-end"></span>
+                </h5>
+                <div class="task-scroll">
+                    @for ($key = 0; $key<10; $key++)
+                        <a class="d-flex align-items-center border-bottom list-group-item list-group-item-action">
+                            <div class="w-100 overflow-hidden">
+                                <h5 class="text-secondary mb-1">March moth Logs</h5>
+                                <p class="mb-0"> SIM softwares Supports Dec to Jan</p>
+                            </div> <!-- end w-100 --> 
+                            <div>
+                                <small class="text-success">31/03/2022</small>
+                            </div>
+                        </a>  
+                    @endfor    
+                </div> 
+            </div>
         </div> <!-- end col -->
-        <div class="col-md-6" id="handle-dragula-bottom-right">
-            <div class="bg-dragula card bg-white p-2 p-lg-4">
-                <h5 class="mt-0">PLANED VS DONE <span class="dragula-handle float-end"></span></h5>
-                <div  class="py-2">
-                    @for ($key = 0; $key<4; $key++)
-                        <div class="card bg-light shadow-sm border mb-0 mt-2">
-                            <div class="card-body">
-                                <div class="d-flex align-items-start">
-                                    <img src="assets/images/users/avatar-{{ $key+1 }}.jpg" alt="image" class="me-3 d-none d-sm-block avatar-sm rounded-circle">
-                                    <div class="w-100 overflow-hidden">
-                                        <h5 class="mb-1 mt-1">Louis K. Bond</h5>
-                                        <p class="mb-0"> Founder & CEO </p>
-                                    </div> <!-- end w-100 -->
-                                    {{-- <span class="dragula-handle"></span> --}}
-                                </div> <!-- end d-flex -->
-                            </div> <!-- end card-body -->
-                        </div> <!-- end col -->  
-                    @endfor
-                </div> <!-- end company-list-1-->
-            </div> <!-- end div.bg-light-->
+        <div class="col-md-6 px-1" id="handle-dragula-bottom-right">
+            <div class="list-group border shadow mb-3">
+                <h5  href="#" class="list-group-item list-group-item-action border-bottom bg-light d-flex align-items-center justify-content-between m-0" aria-current="true">
+                    PLANED VS DONE <span class="dragula-handle float-end"></span>
+                </h5>
+                <div class="task-scroll">
+                    @for ($key = 0; $key<10; $key++)
+                        <a class="d-flex align-items-center border-bottom list-group-item list-group-item-action">
+                            <div class="w-100 overflow-hidden">
+                                <h5 class="text-secondary mb-1">March moth Logs</h5>
+                                <p class="mb-0"> SIM softwares Supports Dec to Jan</p>
+                            </div> <!-- end w-100 --> 
+                            <div>
+                                <small class="text-success">31/03/2022</small>
+                            </div>
+                        </a>  
+                    @endfor    
+                </div> 
+            </div>
         </div> <!-- end col -->
     </div> <!-- end row -->
 </div> 
