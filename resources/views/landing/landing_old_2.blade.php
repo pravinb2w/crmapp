@@ -39,29 +39,23 @@
             .rounded-5 {
                 border-radius: 30px !important
             }
-           .carousel-caption {
-               left: 50% !important;
-               top: 50% !important;
-               transform: translate(-50%,-50%) !important;
-               width: 100%;
-               text-align: center !important
-           }
+           
         </style>
     </head>
 
     <body class="loading" data-layout-config='{"darkMode":false}'>
 
         <!-- NAVBAR START -->
-        <nav class="navbar navbar-expand-lg p-0  fixed-top" id="top-navbar-animated">
+        <nav class="navbar navbar-expand-lg p-0 fixed-top" id="top-navbar-animated">
             <div class="container">
                 <!-- logo -->
                 <a href="index.html" class="navbar-brand me-lg-5 ">
-                    <img src="{{ asset('assets/images/logo/logo-color.png') }}"     class="logo-dark" width="300px"  />
+                    <img src="{{ asset('assets/images/logo-white.png') }}" style="filter:brightness(10);transform:scale(.8)" class="logo-dark" width="100px"  />
                 </a>
 
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
                     aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-                    <i class="mdi text-white mdi-menu" style="text-shadow: 0 2px black;"></i>
+                    <i class="mdi mdi-menu"></i>
                 </button>
 
                 <!-- menus -->
@@ -107,66 +101,59 @@
         </nav>
         <!-- NAVBAR END -->
 
-        <!-- START HERO -->  
-        <div id="LandingBannnerSliders" class="carousel slide" data-bs-ride="carousel">
-            <div class="carousel-inner" role="listbox">
-                <div class="carousel-item active">
-                    <div class="slider-img w-100" style="min-height: 70vh;background: linear-gradient( #020202c9 50%, #00d9ff34) , url('https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1115&q=80');background-size:cover"></div>
-                    <div class="carousel-caption">
+        <!-- START HERO --> 
+        
+        <div class="position-relative" style="min-height: 100vh;">
+            <div class="container" style="z-index: 111 !important">
+                <div class="row m-0 align-items-center"style="min-height: 100vh">
+                    <div class="col-md-7 pe-lg-5 my-5 m-md-0 h-100 text-start">
                         <div>
                             <span class="ms-1">Welcome to Brand <span class="badge bg-danger rounded-pill">New</span></span>
                         </div>
                         <h2 class="fw-normal text-white mb-4 mt-3 hero-title">
-                            Phoenix - Customer relationship management system 
+                           Phoenix - Customer relationship management system 
                         </h2>
-                        <p class="mb-4 w-75 mx-auto font-16 text-light">Phoenix CRM is a fully featured  with business or other organization administers its interactions with customers, typically using data analysis to study large amounts of information.</p>
-                        <a href="#" class="btn btn-primary rounded-pill">Get Started</a>
-                    </div>
-                </div>
-
-                <div class="carousel-item">
-                    <div class="slider-img w-100" style="min-height: 70vh;background: linear-gradient( #020202c9 50%, #00d9ff34) , url('https://images.unsplash.com/photo-1599658880436-c61792e70672?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80');background-size:cover"></div>
-                    <div class="carousel-caption">
-                        <div>
-                            <span class="ms-1">Welcome to Brand <span class="badge bg-danger rounded-pill">New</span></span>
-                        </div>
-                        <h2 class="fw-normal text-white mb-4 mt-3 hero-title">
-                            Phoenix - Customer relationship management system 
-                        </h2>
-                        <p class="mb-4  w-75 mx-auto font-16 text-light">Phoenix CRM is a fully featured  with business or other organization administers its interactions with customers, typically using data analysis to study large amounts of information.</p>
+                        <p class="mb-4 font-16 text-light">Phoenix CRM is a fully featured  with business or other organization administers its interactions with customers, typically using data analysis to study large amounts of information.</p>
+                        <div class="d-flex">
                             <a href="#" class="btn btn-primary rounded-pill">Get Started</a>
-                    </div>
-                </div>
-                <div class="carousel-item">
-                    <div class="slider-img w-100" style="min-height: 70vh;background: linear-gradient( #020202c9 50%, #00d9ff34) , url('https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1176&q=80');background-size:cover"></div>
-                    <div class="carousel-caption">
-                        <div>
-                            <span class="ms-1">Welcome to Brand <span class="badge bg-danger rounded-pill">New</span></span>
+                            <a href="#" class="ms-3 btn btn-dark rounded-pill">View Demo</a>
                         </div>
-                        <h2 class="fw-normal text-white mb-4 mt-3 hero-title">
-                            Phoenix - Customer relationship management system 
-                        </h2>
-                        <p class="mb-4  w-75 mx-auto font-16 text-light">Phoenix CRM is a fully featured  with business or other organization administers its interactions with customers, typically using data analysis to study large amounts of information.</p>
-                         <a href="#" class="btn btn-primary rounded-pill">Get Started</a>
+                    </div>
+                    <div class="col-md-5 p-3 border rounded-5 shadow mt-lg-5 my-5 m-md-0" style="backdrop-filter: blur(20px);background:#0000009a !important">
+                        @include('landing.enquiry') 
                     </div>
                 </div>
             </div>
-            <a class="carousel-control-prev" href="#LandingBannnerSliders" role="button" data-bs-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Previous</span>
-            </a>
-            <a class="carousel-control-next" href="#LandingBannnerSliders" role="button" data-bs-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Next</span>
-            </a>
-        </div> 
+            <div id="LandingBannnerSlider" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-inner" role="listbox">
+                    <div class="carousel-item active">
+                        <div class="slider-img w-100" style="min-height: 100vh;background: linear-gradient(#59A0BE, #000000cc) , url('https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1115&q=80');background-size:cover"></div>
+                    </div>
+    
+                    <div class="carousel-item">
+                        <div class="slider-img w-100" style="min-height: 100vh;background: linear-gradient(#59A0BE, #000000cc) , url('https://images.unsplash.com/photo-1599658880436-c61792e70672?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80');background-size:cover"></div>
+                    </div>
+                    <div class="carousel-item">
+                        <div class="slider-img w-100" style="min-height: 100vh;background: linear-gradient(#59A0BE, #000000cc) , url('https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1176&q=80');background-size:cover"></div>
+                    </div>
+                </div>
+                {{-- <a class="carousel-control-prev" href="#LandingBannnerSlider" role="button" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </a>
+                <a class="carousel-control-next" href="#LandingBannnerSlider" role="button" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </a> --}}
+            </div>
+        </div>
         <!-- END HERO -->
          <!-- START FEATURES 2 -->
-      
          <section class="py-5">
             <div class="container"> 
                 <div class="row pb-3 pt-5 align-items-center">
                     <div class="col-lg-6 col-md-5">
+                        
                         <h3 class="aos-init" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="1000">Who We are?</h3>
                         <div class="mt-4">
                             <p class="text-muted mb-3 aos-init"data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="1200">Phoenix  CRM was originally designed to minimize the pain points of managing Small and Medium-Sized Companies with regards to Clients, Employees, and Finances.</p>
@@ -174,7 +161,9 @@
                             <p class="text-muted mb-3 aos-init"data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="1600"> Hence, we produced a system that will help them to overcome all these growth hurdles in their business and help them to reach the next level in their Business.</p>
                             <p class="text-muted mb-3 aos-init"data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="1800"> Phoenix  CRM CRM(solidperformers.com) is owned by Phoenix  CRM Private Limited. We are a B2B Platform offering solutions only to Corporate Businesses of all sizes.</p>
                         </div>
+
                         <a href="#" class="btn btn-primary rounded-pill mt-3 aos-init" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="2000">Know More <i class="mdi mdi-arrow-right ms-1"></i></a>
+
                     </div>
                     <div class="col-lg-5 col-md-6 offset-md-1">
                         <div class="aos-init"  data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="2000" >
@@ -337,10 +326,10 @@
                 </div>
             </div>
         </section>
-        <footer class="py-5 text-center " style="background: linear-gradient(#020202e0 50%, #00d9ff34) , url('https://images.unsplash.com/photo-1587560699334-cc4ff634909a?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80');background-size:cover;backdrop-filter:blur(5px)">
+        <footer class="py-5 text-center " style="background: linear-gradient(#02020285, #000000) , url('https://images.unsplash.com/photo-1587560699334-cc4ff634909a?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80');background-size:cover">
             <div class="container">
-                <div class="row justify-content-center align-items-center" >
-                    <div class="col-md-6 text-center">
+                <div class="row justify-content-center" >
+                    <div class="col-md-4 text-center">
                         {{-- <img src="assets/images/logo.png" alt="" class="logo-dark" height="18" /> --}}
                         
                         <div class="aos-init"  data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="1400">
@@ -368,11 +357,6 @@
                             </ul>
                         </div>
                     </div>  
-                    <div class="col-md-6">
-                        <div class="col-lg-8 mx-auto">
-                            @include('landing.enquiry') 
-                        </div>
-                    </div>
                     <div class="col-12 text-center">
                         <div class="aos-init"  data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="2400">
                             <ul class="list-unstyled justify-content-center d-flex ps-0 mb-0 mt-3">
