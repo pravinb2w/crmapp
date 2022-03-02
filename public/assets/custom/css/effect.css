@@ -13,7 +13,7 @@
   }
 }
 
-.btn-primary {
+/* .btn-primary {
   background-image: linear-gradient(to right, #00c6ff 0%, #006BDF 51%, #00c6ff 100%);
   background-size: 200% auto;
   color: white !important;
@@ -42,7 +42,7 @@
 .btn-dark:hover {
   background-position: right center;
   transition: 0.5s;
-}
+} */
 #LandingBannnerSlider {
   position: absolute;
   width: 100%;
