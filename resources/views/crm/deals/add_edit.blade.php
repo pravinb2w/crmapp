@@ -5,7 +5,7 @@
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <form class="form-horizontal" id="deals-form" method="POST" action="{{ route('deals.save') }}" autocomplete="off">
-
+            @csrf
         <div class="modal-body d-flex justify-content-center align-items-center h-100 p-3">
             <div class="w-100">
                 <div class="row">

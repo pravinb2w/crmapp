@@ -52,7 +52,7 @@
 
 <script>
     $('#account_form').submit(function(e) {
-        e.preventDefault();
+        e.preventDefault(); 
        
         let formData = new FormData(this);
         $('#error').html("");

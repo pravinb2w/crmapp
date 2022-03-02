@@ -197,11 +197,14 @@ class ActivityController extends Controller
         $id = $request->id;
         $page_type = $request->page_type;
         $lead_id = $request->lead_id;
+        $deal_id = $request->deal_id;
+
         $role = Activity::find($id);
         $role->done_by = Auth::id();
         $role->done_at = date('Y-m-d H:i:s');
         $role->update();
         $update_msg = 'Updated successfully';
-        return response()->json(['error'=>[$update_msg], 'status' => '0', 'page_type' => $page_type, 'lead_id' => $lead_id]);
+        return response()->json(['error'=>[$update_msg], 'status' => '0', 'page_type' => $page_type, 
+                                'lead_id' => $lead_id, 'deal_id' => $deal_id]);
     }
 }

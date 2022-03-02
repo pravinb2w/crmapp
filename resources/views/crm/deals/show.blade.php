@@ -1,7 +1,66 @@
 @extends('crm.layouts.template')
 
 @section('content')
+<link href="{{ asset('assets/css/vendor/simplemde.min.css') }}" rel="stylesheet" type="text/css" />
+<style>
+    .CodeMirror, .editor-toolbar, #notes {
+        background: rgb(255, 252, 220);
+    }
+    .notes-pane {
+        position: absolute;
+        bottom: 46px;
+        right: 8px;
+        z-index: 9;
+    }
+/* HIDE RADIO */
+[type=radio] { 
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
 
+/* IMAGE STYLES */
+[type=radio] + i {
+  cursor: pointer;
+}
+
+/* CHECKED STYLES */
+[type=radio]:checked + i {
+  outline: 2px solid #10b9f1;
+}
+
+form#activites-form>div>label>i {
+    padding: 5px;
+    border: 0.5px solid #ddd;
+    font-size: 20px;
+}
+#activites-form {
+    padding:15px;
+}
+.timeinput {
+    display: inline-flex;
+    width: 100%;
+}
+.timeinput > span {
+    padding: 10px;
+}
+.w-35 {
+    width: 35% !important;
+}
+.w-80 {
+    width: 80% !important;
+}
+
+.timeline-item-left>.timeline-desk>.timeline-box {
+    background: rgb(255, 252, 220);
+}
+.dropdown {
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+</style>
 <div class="container-fluid">
                         
     <!-- start page title -->
@@ -22,7 +81,7 @@
 
     <div class="row card p-4 mb-3">
         <div class="col-12">
-            @include('crm.deals._pipeline_view')
+            @include('crm.deals._info')
         </div>
     </div>
     <div class="card shadow-sm">
@@ -39,36 +98,14 @@
                     <span >Activity</span>
                 </a>
             </li>
-            <li class="nav-item">
-                <a href="#Propose" data-bs-toggle="tab" aria-expanded="false" class="nav-link rounded-0">
-                    <i class="uil  uil-schedule"></i>
-                    <span>Propose times</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="#Call" data-bs-toggle="tab" aria-expanded="false" class="nav-link rounded-0">
-                    <i class="uil uil-forwaded-call"></i>
-                    <span>Call</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="#Email" data-bs-toggle="tab" aria-expanded="true" class="nav-link rounded-0">
-                    <i class="uil uil-envelope-alt"></i>
-                    <span>Email</span>
-                </a>
-            </li>
+            
             <li class="nav-item">
                 <a href="#Files" data-bs-toggle="tab" aria-expanded="false" class="nav-link rounded-0">
                     <i class="uil-files-landscapes-alt uil"></i>
                     <span>Files</span>
                 </a>
             </li>
-            <li class="nav-item">
-                <a href="#Documents" data-bs-toggle="tab" aria-expanded="false" class="nav-link rounded-0">
-                    <i class="uil uil-file-alt"></i>
-                    <span>Documents</span>
-                </a>
-            </li>
+           
             <li class="nav-item">
                 <a href="#Invoices" data-bs-toggle="tab" aria-expanded="false" class="nav-link rounded-0">
                     <i class="uil uil-invoice"></i>
@@ -79,29 +116,23 @@
         
         <div class="tab-content p-3">
             <div class="tab-pane active" id="Notes">
-                <textarea name="" id="" cols="30" placeholder="Take a note's..." class="form-control" rows="10"></textarea>
+                @include('crm.deals._note_form')
             </div>
             <div class="tab-pane show" id="Activity">
-                <p>Activity</p>
-            </div>
-            <div class="tab-pane" id="Propose">
-                <p>Propose times</p>
-            </div>
-            <div class="tab-pane show" id="Call">
-                <p>Call</p>
-            </div>
-            <div class="tab-pane" id="Email">
-                <p>Email times</p>
-            </div>
-            <div class="tab-pane" id="Files">
-                <p>Files</p>
-            </div>
-            <div class="tab-pane" id="Documents">
-                <p>Documents times</p>
-            </div>
+                @include('crm.deals._activity_form')
+            </div> 
+            <div class="tab-pane show" id="Files">
+                @include('crm.deals._file_form')
+            </div> 
+            
             <div class="tab-pane" id="Invoices">
                 <p>Invoices</p>
             </div>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-body" id="lead_timeline">
+            @include('crm.deals._timeline')
         </div>
     </div>
 </div>

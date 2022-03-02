@@ -410,9 +410,14 @@ function mark_as_done(page_type, id, lead_id='') {
                                 response.error.forEach(display_errors);
                             } else {
                                 if( response.page_type == 'planned') {
-                                    refresh_lead_timeline('planned', response.lead_id);
-                                    refresh_lead_timeline('done', response.lead_id);
-
+                                    if( response.lead_id ) {
+                                        refresh_lead_timeline('planned', response.lead_id);
+                                        refresh_lead_timeline('done', response.lead_id);
+                                    }
+                                    if( response.deal_id ) {
+                                        refresh_lead_timeline('planned', response.deal_id, 'all');
+                                        refresh_lead_timeline('done', response.deal_id, 'all');
+                                    }
                                 } else {
                                     $('#error').addClass('alert alert-success');
                                     response.error.forEach(display_errors);
@@ -551,4 +556,97 @@ function mark_as_done(page_type, id, lead_id='') {
         return false;
     }
 
+    function refresh_deal_timeline(type, deal_id, done_type = '') {
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        $.ajax({
+            url: "{{ route('deals.refresh-timeline') }}",
+            method:'POST',
+            data: {type:type, deal_id:deal_id, done_type:done_type},
+            success:function(response){
+               $('#'+type).html(response);
+            }      
+        });
+
+    }
+
+    function insert_deal_notes() {
+        
+        var form_data = $('#deal-insert-notes').serialize();
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        $.ajax({
+            url: "{{ route('deals.save-notes') }}",
+            type: 'POST',
+            data: form_data,
+            beforeSend: function() {
+                $('#error').removeClass('alert alert-danger');
+                $('#error').html('');
+                $('#error').removeClass('alert alert-success');
+                // $('#save').html('Loading...');
+            },
+            success: function(response) {
+                if(response.error.length > 0 && response.status == "1" ) {
+                    $('#error').addClass('alert alert-danger');
+                    response.error.forEach(display_errors);
+                    
+                } else {
+                    $('#notes').val('');
+                    $('#error').addClass('alert alert-success');
+                    $('#error').fadeOut(1000);
+                    response.error.forEach(display_errors);
+                    if( response.type  && response.deal_id ) {
+                        refresh_deal_timeline(response.type, response.deal_id, 'all');
+                    }
+                }
+            }            
+        });
+    }
+
+    
+    function insert_deal_files() {
+        
+        let formData = new FormData(document.getElementById('deal-insert-files'));
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        $.ajax({
+            url: "{{ route('deals.save-files') }}",
+            type: 'POST',
+            data: formData,
+            contentType: false,
+            processData: false,
+            beforeSend: function() {
+                $('#error').removeClass('alert alert-danger');
+                $('#error').html('');
+                $('#error').removeClass('alert alert-success');
+                // $('#save').html('Loading...');
+            },
+            success: function(response) {
+                if(response.error.length > 0 && response.status == "1" ) {
+                    $('#error').addClass('alert alert-danger');
+                    response.error.forEach(display_errors);
+                    
+                } else {
+                    $('#notes').val('');
+                    $('#error').addClass('alert alert-success');
+                    $('#error').fadeOut(1000);
+                    response.error.forEach(display_errors);
+                    if( response.type  && response.deal_id ) {
+                        refresh_deal_timeline(response.type, response.deal_id, 'all');
+                    }
+                }
+            }            
+        });
+    }
+
 </script>
+@include('crm.layouts._custom_script')

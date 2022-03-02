@@ -95,4 +95,19 @@ class Deal extends Model implements Auditable
     {
         return $this->hasMany(DealPipline::class, 'deal_id');
     }
+
+    public function planned_activity()
+    {
+        return $this->hasMany(Activity::class, 'deal_id')->whereNull('activities.done_at')->where('status', 1)->orderBy('activities.created_at', 'desc');
+    }
+
+    public function done_activity()
+    {
+        return $this->hasMany(Activity::class, 'deal_id')->whereNotNull('activities.done_at')->where('status', 1)->orderBy('activities.done_at', 'desc');
+    }
+
+    public function files()
+    {
+        return $this->hasMany(DealDocument::class, 'deal_id')->where('status', 1)->orderBy('deal_documents.created_at', 'desc');
+    }
 }

@@ -16,6 +16,7 @@ class Note extends Model implements Auditable
     protected $fillable = [
         'notes',
         'lead_id',
+        'deal_id',
         'customer_id',
         'user_id',
         'updated_by',

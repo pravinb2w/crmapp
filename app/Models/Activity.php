@@ -18,6 +18,7 @@ class Activity extends Model implements Auditable
         'activity_type',
         'notes',
         'lead_id',
+        'deal_id',
         'customer_id',
         'user_id',
         'started_at',

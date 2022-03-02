@@ -15,6 +15,7 @@ use App\Models\Product;
 use App\Models\Activity;
 use App\Models\DealPipline;
 use App\Models\DealProduct;
+use App\Models\DealDocument;
 
 class DealsController extends Controller
 {
@@ -91,6 +92,7 @@ class DealsController extends Controller
     {
         $id = $request->id;
         $info = Deal::find($id);
+        $users = User::whereNotNull('role_id')->get();
         $stage = DealStage::orderBy('order_by', 'asc')->get();
         $completed_stage = [];
         $pipeline = [];
@@ -100,7 +102,8 @@ class DealsController extends Controller
                 $pipeline[] = array( 'id' => $value->id, 'stage_id' => $value->stage_id, 'completed_at' => $value->completed_at, 'created_at' => $value->created_at);
             }
         }
-        $params = ['id' => $id, 'info' => $info, 'stage' => $stage, 'completed_stage' => $completed_stage, 'pipeline' => $pipeline ];
+        $params = ['id' => $id, 'deal_id' => $id, 'info' => $info, 'stage' => $stage, 'completed_stage' => $completed_stage, 
+                    'pipeline' => $pipeline, 'users' => $users ];
 
         return view('crm.deals.show', $params);
     }
@@ -276,5 +279,197 @@ class DealsController extends Controller
         $leadtype->update();
         $update_msg = 'Updated successfully';
         return response()->json(['error'=>[$update_msg], 'status' => '0']);
+    }
+
+    public function refresh_timeline(Request $request) {
+        $type = $request->type;
+        $deal_id = $request->deal_id;
+        $done_type = $request->done_type;
+
+        $info = Deal::with(['planned_activity','done_activity', 'notes', 'files'])->find($deal_id);
+
+        return view('crm.deals._'.$type.'_pane', ['info' => $info, 'done_type' => $done_type, 'deal_id' => $deal_id]);
+    }
+
+    public function notes_save(Request $request) {
+        $id = $request->id;
+        
+        $role_validator   = [
+            'notes'      => [ 'required', 'string', 'max:255'],
+            'deal_id'      => [ 'required', 'string', 'max:255'],
+        ];
+        //Validate the product
+        $validator                     = Validator::make( $request->all(), $role_validator );
+        
+        if ($validator->passes()) {
+            $deal_id  = $request->deal_id;
+            $deal_info = Deal::find($deal_id);
+            $notes = $request->notes;
+
+            $ins['status'] = isset($request->status) ? $request->status: 1;
+            $ins['notes'] = $request->notes ?? null;
+            $ins['deal_id'] = $request->deal_id ?? null;
+            $ins['customer_id'] = $deal_info->customer_id ?? null;
+            $ins['user_id'] = Auth::id();
+            if( isset($id) && !empty($id) ) {
+                $act = Note::find($id);
+                $act->status = isset($request->status) ? 1 : 0;
+                $act->notes = $request->notes ?? null;
+                $act->deal_id = $request->deal_id ?? null;
+                $act->customer_id = $request->customer_id ?? null;
+                $act->user_id = Auth::id();
+                $act->updated_by = Auth::id();
+                $act->update();
+                $success = 'Notes updated successfully';
+
+            } else {
+                $ins['added_by'] = Auth::id();
+                Note::create($ins);
+                $success = 'Notes added successfully';
+            }
+            return response()->json(['error'=>[$success], 'status' => '0', 'deal_id' => $deal_id, 'type' => 'done']);
+        }
+        return response()->json(['error'=>$validator->errors()->all(), 'status' => '1']);
+    }
+
+    public function files_save(Request $request) {
+
+        $role_validator   = [
+            'deal_file'      => [ 'required'],
+        ];
+        //Validate the product
+        $validator                     = Validator::make( $request->all(), $role_validator );
+        
+        if ($validator->passes()) {
+            $deal_id = $request->deal_id;
+
+            if( $request->hasFile( 'deal_file' ) ) {
+                $file                       = $request->file( 'deal_file' )->store( 'deal', 'public' );
+                $ins['document']            = $file;
+                $ins['deal_id']             = $deal_id;
+                $ins['added_by']            = Auth::id();
+                DealDocument::create($ins);
+                $success = 'Files added successfully';
+                return response()->json(['error'=>[$success], 'status' => '0', 'deal_id' => $deal_id, 'type' => 'done']);
+            }
+            
+        }
+        return response()->json(['error'=>$validator->errors()->all(), 'status' => '1']);
+    }
+
+    public function activity_save(Request $request) {
+        $id = $request->id;
+        
+        $role_validator   = [
+            'activity_title'      => [ 'required', 'string', 'max:255'],
+            'activity_type'      => [ 'required', 'string', 'max:255'],
+            'start_date'      => [ 'required', 'string', 'max:255'],
+            'start_time'      => [ 'required', 'string', 'max:255'],
+            'due_time'      => [ 'required', 'string', 'max:255'],
+            'due_date'      => [ 'required', 'string', 'max:255'],
+            'deal_id'      => [ 'required', 'string', 'max:255'],
+        ];
+        //Validate the product
+        $validator                     = Validator::make( $request->all(), $role_validator );
+        
+        if ($validator->passes()) {
+            $deal_id  = $request->deal_id;
+            $deal_info = Lead::find($deal_id);
+            $start_date = $request->start_date;
+            $start_date = date('Y-m-d', strtotime($start_date));
+            $start_date = $start_date.' '.$request->start_time.':00';
+            $started_at = date('Y-m-d H:i:s', strtotime($start_date));
+
+            $due_date = $request->due_date;
+            $due_date = date('Y-m-d', strtotime($due_date));
+            $due_date = $due_date.' '.$request->due_time.':00';
+            $due_at = date('Y-m-d H:i:s', strtotime($due_date));
+
+            $ins['status'] = 1;
+            $ins['subject'] = $request->activity_title;
+            $ins['activity_type'] = $request->activity_type;
+            $ins['notes'] = $request->notes ?? null;
+            $ins['deal_id'] = $request->deal_id ?? null;
+            $ins['customer_id'] = $deal_info->customer_id ?? null;
+            $ins['started_at'] = $started_at;
+            $ins['due_at'] = $due_at;
+            $ins['user_id'] = $request->user_id;
+
+            if( isset($id) && !empty($id) ) {
+                $act = Activity::find($id);
+                $act->status = 1;
+                $act->subject = $request->activity_title;
+                $act->activity_type = $request->activity_type;
+                $act->notes = $request->notes ?? null;
+                $act->deal_id = $request->deal_id ?? null;
+                $act->customer_id = $request->customer_id ?? null;
+                $act->started_at = $started_at;
+                $act->due_at = $due_at;
+                $act->user_id = $request->user_id;
+                $act->updated_by = Auth::id();
+                $act->update();
+            } else {
+                $ins['added_by'] = Auth::id();
+                Activity::create($ins);
+                $success = 'Acitivity added successfully';
+            }
+            return response()->json(['error'=>[$success], 'status' => '0', 'deal_id' => $deal_id, 'type' => 'planned']);
+        }
+        return response()->json(['error'=>$validator->errors()->all(), 'status' => '1']);
+    }
+
+    public function make_stage_completed(Request $request) {
+        
+        $stage_id   = $request->stage_id;
+        $deal_id    = $request->deal_id;
+
+        $deal_info  = Deal::find( $deal_id );
+        $deal_stage_info = DealStage::find($deal_info->current_stage_id);
+        $new_stage_info = DealStage::find($stage_id);
+
+        $stage = DealStage::orderBy('order_by', 'asc')->get();
+        $all_stages = DealStage::where('order_by', '>', $deal_stage_info->order_by )->where('order_by', '<=', $new_stage_info->order_by )->orderBy('order_by', 'asc')->get();
+        
+        //condition 1 -> change current stage to completed from pending
+        $pipe = DealPipline::where('deal_id', $deal_id)->where('status', 'pending')->first();
+        $pipe->status = 'completed';
+        $pipe->completed_at = date('Y-m-d H:i:s');
+        $pipe->update();
+
+        $deal_info->current_stage_id = $stage_id;
+        $deal_info->update();
+        //condition 2 -> 
+        //insert in pipeline
+        if( isset($all_stages) && !empty($all_stages)) {
+            foreach ($all_stages as $key => $value) {
+                $status                 = 'completed';
+                $completed_at           = date('Y-m-d H:i:s');
+                if( $value->id == $stage_id ) {
+                    $status             = 'pending';
+                    $completed_at       = null;
+                }
+                $sins                   = [];
+                $sins['deal_id']        = $deal_id;
+                $sins['stage_id']       = $value->id;
+                $sins['status']         = $status;
+                $sins['completed_at']   = $completed_at;
+                $sins['added_by']       = Auth::id();
+                DealPipline::create($sins);
+            }
+        }
+
+        $info = Deal::find( $deal_id );
+        $completed_stage = [];
+        $pipeline = [];
+        if( isset( $info->pipeline ) && !empty($info->pipeline ) ) {
+            foreach ($info->pipeline as $key => $value) {
+                $completed_stage[] = $value->stage_id;
+                $pipeline[] = array( 'id' => $value->id, 'stage_id' => $value->stage_id, 'completed_at' => $value->completed_at, 'created_at' => $value->created_at);
+            }
+        }
+        $line = view('crm.deals._pipeline_view', ['info' => $info, 'stage' => $stage, 
+                        'completed_stage' => $completed_stage, 'pipeline' => $pipeline]);
+        return response()->json(['error'=> '', 'status' => '0', 'view' => $line ]);
+
     }
 }

@@ -110,6 +110,13 @@ Route::middleware([SetViewVariable::class, 'auth'])->group(function(){
         Route::post('/status', [App\Http\Controllers\DealsController::class, 'change_status'])->name('deals.status');
         Route::post('/list', [App\Http\Controllers\DealsController::class, 'ajax_list'])->name('deals.list');
         Route::post('/product/list', [App\Http\Controllers\DealsController::class, 'product_list'])->name('deals.product-list'); 
+        Route::post('/activity/save', [App\Http\Controllers\DealsController::class, 'activity_save'])->name('deals.save-activity');
+        Route::post('/notes/save', [App\Http\Controllers\DealsController::class, 'notes_save'])->name('deals.save-notes');
+        Route::post('/refresh/timeline', [App\Http\Controllers\DealsController::class, 'refresh_timeline'])->name('deals.refresh-timeline');
+        Route::post('/activity/delete', [App\Http\Controllers\DealsController::class, 'delete_activity'])->name('deals.activity-delete');
+        Route::post('/mark_as_done', [App\Http\Controllers\DealsController::class, 'mark_as_done'])->name('deals.mark_as_done');
+        Route::post('/files/save', [App\Http\Controllers\DealsController::class, 'files_save'])->name('deals.save-files');
+        Route::post('/stage/complete', [App\Http\Controllers\DealsController::class, 'make_stage_completed'])->name('deals.make_stage_completed');
 
     });
     //tasks route
