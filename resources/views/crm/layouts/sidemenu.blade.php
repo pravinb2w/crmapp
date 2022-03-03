@@ -79,11 +79,24 @@
                     </ul>
                 </div>
             </li>
+
             <li class="side-nav-item">
-                <a href="{{ route('customers') }}" class="side-nav-link">
+                <a data-bs-toggle="collapse" href="#sidebarEmail" aria-expanded="false" aria-controls="sidebarEmail" class="side-nav-link">
                     <i class="mdi mdi-account-tie"></i>
-                    <span> Customers </span>
+                    <span> People </span>
+                    <span class="menu-arrow"></span>
                 </a>
+                <div class="collapse" id="sidebarEmail">
+                    <ul class="side-nav-second-level">
+                        <li>
+                            <a href="{{ route('customers') }}">Customers</a>
+                        </li>
+                        <li>
+                            <a href="{{ route('organizations') }}">Organizations</a>
+                        </li>
+                       
+                    </ul>
+                </div>
             </li>
 
             <li class="side-nav-item">

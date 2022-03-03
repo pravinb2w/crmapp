@@ -59,6 +59,9 @@
                     if( page_type == 'lead_delete') {
                         var page_url = 'lead_delete';
                         page_type = 'leads';
+                    } else if( page_type == 'deal_delete' ) {
+                        var page_url = 'deal_delete';
+                        page_type = 'deals';
                     }
                     var ajax_url = set_delete_url(page_type);
                     $.ajaxSetup({
@@ -374,6 +377,14 @@ function leade_deal_set(id, lead_type ) {
                 if( response.type == 'lead') {
                     $('#lead_id').val(response.id);
                 } 
+                if( response.type == 'deal') {
+                    $('#deal_id').val(response.id);
+                } 
+                if( response.customer ) {
+                    $('#customer').val(response.customer);
+                    $('#customer_id').val(response.customer_id);
+
+                }
                 $('#lead-result').hide();
             }
         }      
@@ -381,55 +392,55 @@ function leade_deal_set(id, lead_type ) {
 }
 
 function mark_as_done(page_type, id, lead_id='') {
-        var ttt = 'You are trying to complete Activity';
+    var ttt = 'You are trying to complete Activity';
 
-        Swal.fire({
-            title: 'Are you sure?',
-            text: ttt,
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes, do it!'
-            }).then((result) => {
-                /* Read more about isConfirmed, isDenied below */
-                if (result.isConfirmed) {
-                    var ajax_url = "{{ route('activities.mark_as_done') }}";
-                    $.ajaxSetup({
-                        headers: {
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                        }
-                    });
-                    $.ajax({
-                        url: ajax_url,
-                        method:'POST',
-                        data: {page_type:page_type, id:id, lead_id:lead_id},
-                        success:function(response){
-                            if(response.error.length > 0 && response.status == "1" ) {
-                                $('#error').addClass('alert alert-danger');
-                                response.error.forEach(display_errors);
-                            } else {
-                                if( response.page_type == 'planned') {
-                                    if( response.lead_id ) {
-                                        refresh_lead_timeline('planned', response.lead_id);
-                                        refresh_lead_timeline('done', response.lead_id);
-                                    }
-                                    if( response.deal_id ) {
-                                        refresh_lead_timeline('planned', response.deal_id, 'all');
-                                        refresh_lead_timeline('done', response.deal_id, 'all');
-                                    }
-                                } else {
-                                    $('#error').addClass('alert alert-success');
-                                    response.error.forEach(display_errors);
-                                    ReloadDataTableModal(page_type+'-datatable');
+    Swal.fire({
+        title: 'Are you sure?',
+        text: ttt,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, do it!'
+        }).then((result) => {
+            /* Read more about isConfirmed, isDenied below */
+            if (result.isConfirmed) {
+                var ajax_url = "{{ route('activities.mark_as_done') }}";
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+                $.ajax({
+                    url: ajax_url,
+                    method:'POST',
+                    data: {page_type:page_type, id:id, lead_id:lead_id},
+                    success:function(response){
+                        if(response.error.length > 0 && response.status == "1" ) {
+                            $('#error').addClass('alert alert-danger');
+                            response.error.forEach(display_errors);
+                        } else {
+                            if( response.page_type == 'planned') {
+                                if( response.lead_id ) {
+                                    refresh_lead_timeline('planned', response.lead_id);
+                                    refresh_lead_timeline('done', response.lead_id);
                                 }
+                                if( response.deal_id ) {
+                                    refresh_deal_timeline('planned', response.deal_id, 'all');
+                                    refresh_deal_timeline('done', response.deal_id, 'all');
+                                }
+                            } else {
+                                $('#error').addClass('alert alert-success');
+                                response.error.forEach(display_errors);
+                                ReloadDataTableModal(page_type+'-datatable');
                             }
-                        }      
-                    });
-                    Swal.fire('Updated!', '', 'success')
-                } 
-            })
-            return false;
+                        }
+                    }      
+                });
+                Swal.fire('Updated!', '', 'success')
+            } 
+        })
+        return false;
     }
 
     function refresh_lead_timeline(type, lead_id) {

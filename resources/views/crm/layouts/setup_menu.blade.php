@@ -7,8 +7,7 @@
         Roles</a>
     <a href="{{ route('teams') }}" class="list-group-item list-group-item-action {{ Request::segment(2) == 'teams' ? 'active' : '' }}">
         Teams</a>
-    <a href="{{ route('organizations') }}" class="list-group-item list-group-item-action {{ Request::segment(2) == 'organizations' ? 'active' : '' }}">
-        Organizations</a>
+    
     <a href="{{ route('country') }}" class="list-group-item list-group-item-action {{ Request::segment(2) == 'country' ? 'active' : '' }}">
         Country</a>
     <a href="{{ route('leadsource') }}" class="list-group-item list-group-item-action {{ Request::segment(2) == 'leadsource' ? 'active' : '' }}">

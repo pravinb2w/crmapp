@@ -51,6 +51,8 @@ Route::middleware([SetViewVariable::class, 'auth'])->group(function(){
     Route::prefix('activities')->group(function () {
         Route::get('/', [App\Http\Controllers\ActivityController::class, 'index'])->name('activities');
         Route::post('/add', [App\Http\Controllers\ActivityController::class, 'add_edit'])->name('activities.add');
+        Route::post('/edit', [App\Http\Controllers\ActivityController::class, 'add_edit_modal'])->name('activities.edit');
+
         Route::post('/save', [App\Http\Controllers\ActivityController::class, 'save'])->name('activities.save');
         Route::post('/list', [App\Http\Controllers\ActivityController::class, 'ajax_list'])->name('activities.list');
         Route::post('/delete', [App\Http\Controllers\ActivityController::class, 'delete'])->name('activities.delete');
@@ -98,7 +100,6 @@ Route::middleware([SetViewVariable::class, 'auth'])->group(function(){
         Route::post('/refresh/timeline', [App\Http\Controllers\LeadController::class, 'refresh_timeline'])->name('leads.refresh-timeline');
         Route::post('/activity/delete', [App\Http\Controllers\LeadController::class, 'delete_activity'])->name('leads.activity-delete');
         Route::post('/mark_as_done', [App\Http\Controllers\LeadController::class, 'mark_as_done'])->name('leads.mark_as_done');
-
     });
     //deals route
     Route::prefix('deals')->group(function () {
@@ -129,7 +130,15 @@ Route::middleware([SetViewVariable::class, 'auth'])->group(function(){
         Route::post('/status', [App\Http\Controllers\TaskController::class, 'change_status'])->name('tasks.status');
     });
 
-
+    Route::prefix('organizations')->group(function () {
+        Route::get('/', [App\Http\Controllers\OrganizationController::class, 'index'])->name('organizations');
+        Route::post('/add', [App\Http\Controllers\OrganizationController::class, 'add_edit'])->name('organizations.add');
+        Route::post('/view', [App\Http\Controllers\OrganizationController::class, 'view'])->name('organizations.view');
+        Route::post('/save', [App\Http\Controllers\OrganizationController::class, 'save'])->name('organizations.save');
+        Route::post('/list', [App\Http\Controllers\OrganizationController::class, 'ajax_list'])->name('organizations.list');
+        Route::post('/delete', [App\Http\Controllers\OrganizationController::class, 'delete'])->name('organizations.delete');
+        Route::post('/status', [App\Http\Controllers\OrganizationController::class, 'change_status'])->name('organizations.status');
+    });
 
     Route::prefix('settings')->group(function () {
         Route::get('/', [App\Http\Controllers\SettingController::class, 'index'])->name('settings');
@@ -219,13 +228,7 @@ Route::middleware([SetViewVariable::class, 'auth'])->group(function(){
         Route::post('/country/delete', [App\Http\Controllers\CountryController::class, 'delete'])->name('country.delete');
         Route::post('/country/status', [App\Http\Controllers\CountryController::class, 'change_status'])->name('country.status');
  
-        Route::get('/organizations', [App\Http\Controllers\OrganizationController::class, 'index'])->name('organizations');
-        Route::post('/organizations/add', [App\Http\Controllers\OrganizationController::class, 'add_edit'])->name('organizations.add');
-        Route::post('/organizations/view', [App\Http\Controllers\OrganizationController::class, 'view'])->name('organizations.view');
-        Route::post('/organizations/save', [App\Http\Controllers\OrganizationController::class, 'save'])->name('organizations.save');
-        Route::post('/organizations/list', [App\Http\Controllers\OrganizationController::class, 'ajax_list'])->name('organizations.list');
-        Route::post('/organizations/delete', [App\Http\Controllers\OrganizationController::class, 'delete'])->name('organizations.delete');
-        Route::post('/organizations/status', [App\Http\Controllers\OrganizationController::class, 'change_status'])->name('organizations.status');
+        
 
         Route::get('/teams', [App\Http\Controllers\TeamController::class, 'index'])->name('teams');
         Route::post('/teams/add', [App\Http\Controllers\TeamController::class, 'add_edit'])->name('teams.add');

@@ -86,6 +86,11 @@ class Activity extends Model implements Auditable
         return $this->belongsTo(Lead::class, 'lead_id', 'id');
     }
 
+    public function deal()
+    {
+        return $this->belongsTo(Deal::class, 'deal_id', 'id');
+    }
+
     public function doneBy()
     {
         return $this->hasOne(User::class, 'id', 'done_by');

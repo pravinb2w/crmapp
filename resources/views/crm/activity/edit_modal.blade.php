@@ -135,15 +135,18 @@
                                 @endif
                             </select>
                         </div>
-                        <div class="form-group mt-3">
+                        <input type="hidden" name="lead_id" value="{{ $lead_id }}">
+                        <input type="hidden" name="deal_id" value="{{ $deal_id }}">
+
+                        {{-- <div class="form-group mt-3">
                             <span><i class="dripicons-user"></i></span>
                             <label for="name" class="col-form-label"> Lead / Deal </label>                   
                             <input type="text" name="lead_deal" id="lead_deal" value="{{ $info->lead->lead_subject ?? '' }}" class="form-control" autocomplete="off">
                             <input type="hidden" name="lead_id" id="lead_id" value="{{ $info->lead_id ?? '' }}">
-                            <input type="hidden" name="deal_id" id="deal_id" value="{{ $info->deal_id ?? '' }}">
+                            <input type="hidden" name="deal_id" id="deal_id">
                             <div id="lead-result" class="typeahead-custom"></div>
                             
-                        </div>
+                        </div> --}}
                         <div class="form-group mt-3">
                             <span><i class="dripicons-user"></i></span>
                             <label for="name" class="col-form-label">Customer </label>                   
@@ -218,6 +221,9 @@
 
         $("#activites-form").validate({
             submitHandler:function(form) {
+                var page_type = '{{ $page_type }}';
+                var lead_id = '{{ $lead_id }}';
+                var deal_id = '{{ $deal_id }}';
                 $.ajax({
                     url: form.action,
                     type: form.method,
@@ -239,7 +245,12 @@
                             setTimeout(function(){
                                 $('#Mymodal').modal('hide');
                             },100);
-                            ReloadDataTableModal('activities-datatable');
+                            if( lead_id != '' && lead_id != undefined && lead_id != null ) {
+                                refresh_lead_timeline(page_type, lead_id);
+                            }
+                            if( deal_id != '' && deal_id != undefined && deal_id != null ) {
+                                refresh_deal_timeline(page_type, deal_id);
+                            }
                         }
                     }            
                 });

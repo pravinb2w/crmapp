@@ -26,7 +26,8 @@
                     <i class="mdi mdi-dots-vertical"></i>
                 </button>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <a class="dropdown-item" href="#">Delete</a>
+                    <a class="dropdown-item" href="#" onclick="return common_soft_delete('deal_delete', '{{ $info->id }}')">Delete</a>
+                    {{-- <a class="dropdown-item" href="#">Convert to Lead</a> --}}
                 </div>
             </div>
         </div>

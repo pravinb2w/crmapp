@@ -15,18 +15,14 @@
                         <li class="breadcrumb-item active">Organizations</li>
                     </ol>
                 </div>
-                <h4 class="page-title">Settings </h4>
+                <h4 class="page-title">Organizations </h4>
             </div>
         </div>
     </div>     
     <!-- end page title --> 
     <div class="row">
-        <div class="col-lg-2">
-            <div>
-                @include('crm.layouts.setup_menu')             
-            </div>
-        </div>
-        <div class="col-lg-10">
+        
+        <div class="col-lg-12">
             <div class="card">
                 <div class="card-body">
                     {{-- <h4 class="header-title">Personal Preference</h4> --}}

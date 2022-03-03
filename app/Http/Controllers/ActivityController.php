@@ -75,7 +75,7 @@ class ActivityController extends Controller
                 </div>';
                 $nested_data[ 'subject' ]           = ucwords($activities->subject);
                 $nested_data[ 'type' ]              = ucfirst($activities->activity_type);
-                $nested_data[ 'lead' ]              = $activities->lead->lead_subject ?? $activities->lead->lead_description ?? '';
+                $nested_data[ 'lead' ]              = $activities->lead->lead_subject ?? $activities->lead->lead_description ?? $activities->deal->deal_title ?? '';
                 $nested_data[ 'customer' ]          = $activities->customer->first_name ?? '';
                 $nested_data[ 'startAt' ]           = date('d M Y H:i A', strtotime($activities->started_at ) );
                 $nested_data[ 'dueAt' ]             = date('d M Y H:i A', strtotime($activities->due_at ) );
@@ -109,7 +109,7 @@ class ActivityController extends Controller
         $customers = Customer::all();
         $params = ['modal_title' => $modal_title, 'id' => $id ?? '', 'info' => $info ?? '', 'users' => $users, 'customers' => $customers];
         return view('crm.activity.add_edit', $params);
-       
+        
     }
 
     public function save(Request $request)
@@ -138,23 +138,27 @@ class ActivityController extends Controller
             $due_date = date('Y-m-d', strtotime($due_date));
             $due_date = $due_date.' '.$request->due_time.':00';
             $due_at = date('Y-m-d H:i:s', strtotime($due_date));
-
-            $ins['status'] = isset($request->status) ? 1 : 0;
+            
+            $status = isset($request->status) ? 1 : 0;
+            $ins['status'] = isset($request->status) ? $status : 1;
             $ins['subject'] = $request->activity_title;
             $ins['activity_type'] = $request->activity_type;
             $ins['notes'] = $request->notes ?? null;
             $ins['lead_id'] = $request->lead_id ?? null;
+            $ins['deal_id'] = $request->deal_id ?? null;
             $ins['customer_id'] = $request->customer_id ?? null;
             $ins['started_at'] = $started_at;
             $ins['due_at'] = $due_at;
             $ins['user_id'] = $request->user_id;
+            
             if( isset($id) && !empty($id) ) {
                 $act = Activity::find($id);
-                $act->status = isset($request->status) ? 1 : 0;
+                $act->status = isset($request->status) ? $status : 1;
                 $act->subject = $request->activity_title;
                 $act->activity_type = $request->activity_type;
                 $act->notes = $request->notes ?? null;
                 $act->lead_id = $request->lead_id ?? null;
+                $act->deal_id = $request->deal_id ?? null;
                 $act->customer_id = $request->customer_id ?? null;
                 $act->started_at = $started_at;
                 $act->due_at = $due_at;
@@ -206,5 +210,24 @@ class ActivityController extends Controller
         $update_msg = 'Updated successfully';
         return response()->json(['error'=>[$update_msg], 'status' => '0', 'page_type' => $page_type, 
                                 'lead_id' => $lead_id, 'deal_id' => $deal_id]);
+    }
+
+    public function add_edit_modal(Request $request) {
+        if (! $request->ajax()) {
+            return response('Forbidden.', 403);
+        }
+        $page_type = $request->page_type;
+        $activity_id = $request->activity_id;
+        $lead_id = $request->lead_id;
+        $deal_id = $request->deal_id;
+
+        $info = Activity::find($activity_id);
+        $modal_title = 'Update Activity';
+        $users = User::whereNotNull('role_id')->get();
+        $customers = Customer::all();
+        $params = ['modal_title' => $modal_title, 'id' => $id ?? '', 'info' => $info ?? '', 'users' => $users, 
+                    'customers' => $customers, 'lead_id' => $lead_id, 'deal_id' => $deal_id, 'page_type' => $page_type ];
+        return view('crm.activity.edit_modal', $params);
+       
     }
 }

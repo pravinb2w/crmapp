@@ -374,7 +374,7 @@ class DealsController extends Controller
         
         if ($validator->passes()) {
             $deal_id  = $request->deal_id;
-            $deal_info = Lead::find($deal_id);
+            $deal_info = Deal::find($deal_id);
             $start_date = $request->start_date;
             $start_date = date('Y-m-d', strtotime($start_date));
             $start_date = $start_date.' '.$request->start_time.':00';
@@ -470,6 +470,6 @@ class DealsController extends Controller
         $line = view('crm.deals._pipeline_view', ['info' => $info, 'stage' => $stage, 
                         'completed_stage' => $completed_stage, 'pipeline' => $pipeline]);
         return response()->json(['error'=> '', 'status' => '0', 'view' => $line ]);
-
+        
     }
 }

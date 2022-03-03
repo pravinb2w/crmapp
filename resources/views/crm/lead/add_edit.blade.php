@@ -35,7 +35,7 @@
                         <input type="text" name="lead_value" id="lead_value" value="{{ $info->lead_value ?? '' }}" class="form-control" autocomplete="off">
                     </div>
                     <div class="col-6 mt-1">
-                        <label for="lead_type" class="col-form-label"> Lead Type </label>
+                        <label for="lead_type" class="col-form-label"> Lead Stage </label>
                         <select name="lead_type" id="lead_type" class="form-control">
                             <option value="">--select--</option>
                             @if( isset($leadtype) && !empty($leadtype))

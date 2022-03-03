@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Lead;
+use App\Models\Deal;
 use App\Models\User;
 use App\Models\Customer;
 use App\Models\LeadSource;
@@ -108,12 +109,24 @@ class LeadController extends Controller
         $query              = $request->org;
         $list               = Lead::search( $query )
                                 ->get();
+
+        $dlist              = Deal::search( $query )
+                                ->get();
         $data = [];
         if( isset($list) && !empty($list) ) {
             foreach($list as $list){
                 $tmp['type'] = 'lead';
                 $tmp['id'] = $list->id;
                 $tmp['name'] = $list->lead_title ?? $list->lead_subject;
+                $data[] = $tmp;
+            }
+        }
+
+        if( isset($dlist) && !empty($dlist) ) {
+            foreach($dlist as $dlist){
+                $tmp['type'] = 'deal';
+                $tmp['id'] = $dlist->id;
+                $tmp['name'] = $dlist->deal_title;
                 $data[] = $tmp;
             }
         }
@@ -132,13 +145,15 @@ class LeadController extends Controller
 
         if( isset($type) && $type == 'lead') {
             $info = Lead::find($id);
-        } else {
-
+        } else if( isset($type) && $type == 'deal') {
+            $info = Deal::find($id);
         }
 
-        $params['name'] = $info->lead_title ?? $info->lead_subject;
+        $params['name'] = $info->lead_title ?? $info->lead_subject ?? $info->deal_title;
         $params['id'] = $id;
         $params['type'] = $type;
+        $params['customer'] = $info->customer->first_name;
+        $params['customer_id'] = $info->customer_id;
 
         return response()->json($params);
     }
@@ -161,6 +176,9 @@ class LeadController extends Controller
         if ($validator->passes()) {
             $lead_id  = $request->lead_id;
             $lead_info = Lead::find($lead_id);
+            $deal_id  = $request->deal_id;
+            $deal_info = Deal::find($deal_id);
+
             $start_date = $request->start_date;
             $start_date = date('Y-m-d', strtotime($start_date));
             $start_date = $start_date.' '.$request->start_time.':00';
@@ -176,11 +194,12 @@ class LeadController extends Controller
             $ins['activity_type'] = $request->activity_type;
             $ins['notes'] = $request->notes ?? null;
             $ins['lead_id'] = $request->lead_id ?? null;
-            $ins['customer_id'] = $lead_info->customer_id ?? null;
+            $ins['deal_id'] = $request->deal_id ?? null;
+            $ins['customer_id'] = $lead_info->customer_id ?? $deal_info->customer_id ?? $request->customer_id ?? null;
             $ins['started_at'] = $started_at;
             $ins['due_at'] = $due_at;
             $ins['user_id'] = $request->user_id;
-
+            
             if( isset($id) && !empty($id) ) {
                 $act = Activity::find($id);
                 $act->status = 1;
@@ -188,7 +207,8 @@ class LeadController extends Controller
                 $act->activity_type = $request->activity_type;
                 $act->notes = $request->notes ?? null;
                 $act->lead_id = $request->lead_id ?? null;
-                $act->customer_id = $request->customer_id ?? null;
+                $act->deal_id = $request->deal_id ?? null;
+                $act->customer_id = $lead_info->customer_id ?? $deal_info->customer_id ?? $request->customer_id ?? null;
                 $act->started_at = $started_at;
                 $act->due_at = $due_at;
                 $act->user_id = $request->user_id;
