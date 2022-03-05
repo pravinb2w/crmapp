@@ -383,7 +383,6 @@ function leade_deal_set(id, lead_type ) {
                 if( response.customer ) {
                     $('#customer').val(response.customer);
                     $('#customer_id').val(response.customer_id);
-
                 }
                 $('#lead-result').hide();
             }

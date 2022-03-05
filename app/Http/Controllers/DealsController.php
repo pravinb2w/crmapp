@@ -429,7 +429,7 @@ class DealsController extends Controller
 
         $stage = DealStage::orderBy('order_by', 'asc')->get();
         $all_stages = DealStage::where('order_by', '>', $deal_stage_info->order_by )->where('order_by', '<=', $new_stage_info->order_by )->orderBy('order_by', 'asc')->get();
-        
+        // 
         //condition 1 -> change current stage to completed from pending
         $pipe = DealPipline::where('deal_id', $deal_id)->where('status', 'pending')->first();
         $pipe->status = 'completed';
@@ -467,9 +467,8 @@ class DealsController extends Controller
                 $pipeline[] = array( 'id' => $value->id, 'stage_id' => $value->stage_id, 'completed_at' => $value->completed_at, 'created_at' => $value->created_at);
             }
         }
-        $line = view('crm.deals._pipeline_view', ['info' => $info, 'stage' => $stage, 
-                        'completed_stage' => $completed_stage, 'pipeline' => $pipeline]);
-        return response()->json(['error'=> '', 'status' => '0', 'view' => $line ]);
+        return view('crm.deals._pipeline_view', ['info' => $info, 'stage' => $stage, 
+                        'completed_stage' => $completed_stage, 'pipeline' => $pipeline, 'id' => $deal_id]);
         
     }
 }

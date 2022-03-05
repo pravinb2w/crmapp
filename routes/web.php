@@ -139,7 +139,7 @@ Route::middleware([SetViewVariable::class, 'auth'])->group(function(){
         Route::post('/delete', [App\Http\Controllers\OrganizationController::class, 'delete'])->name('organizations.delete');
         Route::post('/status', [App\Http\Controllers\OrganizationController::class, 'change_status'])->name('organizations.status');
     });
-
+    
     Route::prefix('settings')->group(function () {
         Route::get('/', [App\Http\Controllers\SettingController::class, 'index'])->name('settings');
         //users route

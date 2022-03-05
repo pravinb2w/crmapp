@@ -21,7 +21,7 @@
         <div class="col-12">
             <div class="board">
                 <div class="tasks" data-plugin="dragula" data-containers='["task-list-one", "task-list-two", "task-list-three", "task-list-four", "task-list-five"]'>
-                    <h5 class="mt-0 task-header">Qualified </h5>
+                    <h6 class="mt-0 task-header">Qualified </h6>
                     
                     <div id="task-list-one" class="task-list-items">
 
@@ -31,9 +31,9 @@
                                 <small class="float-end text-muted">18 Jul 2018</small>
                                 <span class="badge bg-danger">High</span>
 
-                                <h5 class="mt-2 mb-2">
+                                <h6 class="mt-2 mb-2">
                                     <a href="#" data-bs-toggle="modal" data-bs-target="#task-detail-modal" class="text-body">iOS App home page</a>
-                                </h5>
+                                </h6>
 
                                 <p class="mb-0">
                                     <span class="pe-2 text-nowrap mb-2 d-inline-block">
@@ -76,9 +76,9 @@
                                 <small class="float-end text-muted">18 Jul 2018</small>
                                 <span class="badge bg-secondary text-light">Medium</span>
 
-                                <h5 class="mt-2 mb-2">
+                                <h6 class="mt-2 mb-2">
                                     <a href="#" data-bs-toggle="modal" data-bs-target="#task-detail-modal" class="text-body">Topnav layout design</a>
-                                </h5>
+                                </h6>
 
                                 <p class="mb-0">
                                     <span class="pe-2 text-nowrap mb-2 d-inline-block">
@@ -121,9 +121,9 @@
                                 <small class="float-end text-muted">11 Jul 2018</small>
                                 <span class="badge bg-success">Low</span>
 
-                                <h5 class="mt-2 mb-2">
+                                <h6 class="mt-2 mb-2">
                                     <a href="#" data-bs-toggle="modal" data-bs-target="#task-detail-modal" class="text-body">Invite user to a project</a>
-                                </h5>
+                                </h6>
 
                                 <p class="mb-0">
                                     <span class="pe-2 text-nowrap mb-2 d-inline-block">
@@ -163,7 +163,7 @@
                     </div> <!-- end company-list-1-->
                 </div> 
                 <div class="tasks">
-                    <h5 class="mt-0 task-header text-uppercase">Contact Made</h5>
+                    <h6 class="mt-0 task-header text-uppercase">Contact Made</h6>
                     
                     <div id="task-list-two" class="task-list-items">
 
@@ -173,9 +173,9 @@
                                 <small class="float-end text-muted">22 Jun 2018</small>
                                 <span class="badge bg-secondary text-light">Medium</span>
 
-                                <h5 class="mt-2 mb-2">
+                                <h6 class="mt-2 mb-2">
                                     <a href="#" data-bs-toggle="modal" data-bs-target="#task-detail-modal" class="text-body">Write a release note</a>
-                                </h5>
+                                </h6>
 
                                 <p class="mb-0">
                                     <span class="pe-2 text-nowrap mb-2 d-inline-block">
@@ -218,9 +218,9 @@
                                 <small class="float-end text-muted">19 Jun 2018</small>
                                 <span class="badge bg-success">Low</span>
 
-                                <h5 class="mt-2 mb-2">
+                                <h6 class="mt-2 mb-2">
                                     <a href="#" data-bs-toggle="modal" data-bs-target="#task-detail-modal" class="text-body">Enable analytics tracking</a>
-                                </h5>
+                                </h6>
 
                                 <p class="mb-0">
                                     <span class="pe-2 text-nowrap mb-2 d-inline-block">
@@ -260,7 +260,7 @@
                     </div> <!-- end company-list-2-->
                 </div> 
                 <div class="tasks">
-                    <h5 class="mt-0 task-header text-uppercase">Demo Schedulded</h5>
+                    <h6 class="mt-0 task-header text-uppercase">Demo Schedulded</h6>
                     <div id="task-list-three" class="task-list-items">
 
                         <!-- Task Item -->
@@ -269,9 +269,9 @@
                                 <small class="float-end text-muted">2 May 2018</small>
                                 <span class="badge bg-danger">High</span>
 
-                                <h5 class="mt-2 mb-2">
+                                <h6 class="mt-2 mb-2">
                                     <a href="#" data-bs-toggle="modal" data-bs-target="#task-detail-modal" class="text-body">Kanban board design</a>
-                                </h5>
+                                </h6>
 
                                 <p class="mb-0">
                                     <span class="pe-2 text-nowrap mb-2 d-inline-block">
@@ -314,9 +314,9 @@
                                 <small class="float-end text-muted">7 May 2018</small>
                                 <span class="badge bg-secondary text-light">Medium</span>
 
-                                <h5 class="mt-2 mb-2">
+                                <h6 class="mt-2 mb-2">
                                     <a href="#" data-bs-toggle="modal" data-bs-target="#task-detail-modal" class="text-body">Code HTML email template</a>
-                                </h5>
+                                </h6>
 
                                 <p class="mb-0">
                                     <span class="pe-2 text-nowrap mb-2 d-inline-block">
@@ -359,9 +359,9 @@
                                 <small class="float-end text-muted">8 Jul 2018</small>
                                 <span class="badge bg-secondary text-light">Medium</span>
 
-                                <h5 class="mt-2 mb-2">
+                                <h6 class="mt-2 mb-2">
                                     <a href="#" data-bs-toggle="modal" data-bs-target="#task-detail-modal" class="text-body">Brand logo design</a>
-                                </h5>
+                                </h6>
 
                                 <p class="mb-0">
                                     <span class="pe-2 text-nowrap mb-2 d-inline-block">
@@ -404,9 +404,9 @@
                                 <small class="float-end text-muted">22 Jul 2018</small>
                                 <span class="badge bg-danger">High</span>
 
-                                <h5 class="mt-2 mb-2">
+                                <h6 class="mt-2 mb-2">
                                     <a href="#" data-bs-toggle="modal" data-bs-target="#task-detail-modal" class="text-body">Improve animation loader</a>
-                                </h5>
+                                </h6>
 
                                 <p class="mb-0">
                                     <span class="pe-2 text-nowrap mb-2 d-inline-block">
@@ -446,7 +446,7 @@
                     </div> <!-- end company-list-3-->
                 </div> 
                 <div class="tasks">
-                    <h5 class="mt-0 task-header text-uppercase">Proposal Made</h5>
+                    <h6 class="mt-0 task-header text-uppercase">Proposal Made</h6>
                     <div id="task-list-four" class="task-list-items">
 
                         <!-- Task Item -->
@@ -455,9 +455,9 @@
                                 <small class="float-end text-muted">16 Jul 2018</small>
                                 <span class="badge bg-success">Low</span>
 
-                                <h5 class="mt-2 mb-2">
+                                <h6 class="mt-2 mb-2">
                                     <a href="#" data-bs-toggle="modal" data-bs-target="#task-detail-modal" class="text-body">Dashboard design</a>
-                                </h5>
+                                </h6>
 
                                 <p class="mb-0">
                                     <span class="pe-2 text-nowrap mb-2 d-inline-block">
@@ -497,7 +497,7 @@
                     </div> <!-- end company-list-4-->
                 </div> 
                 <div class="tasks">
-                    <h5 class="mt-0 task-header text-uppercase">Negation Started</h5>
+                    <h6 class="mt-0 task-header text-uppercase">Negation Started</h6>
                     <div id="task-list-five" class="task-list-items">
 
                         <!-- Task Item -->
@@ -506,9 +506,9 @@
                                 <small class="float-end text-muted">16 Jul 2018</small>
                                 <span class="badge bg-success">Low</span>
 
-                                <h5 class="mt-2 mb-2">
+                                <h6 class="mt-2 mb-2">
                                     <a href="#" data-bs-toggle="modal" data-bs-target="#task-detail-modal" class="text-body">Dashboard design</a>
-                                </h5>
+                                </h6>
 
                                 <p class="mb-0">
                                     <span class="pe-2 text-nowrap mb-2 d-inline-block">

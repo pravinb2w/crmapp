@@ -29,11 +29,8 @@ function make_stage_completed(stage_id, deal_id ){
                         $('.pipeline-loader').show();
                     },
                     success: function(response) {
-                        if(response.status == "1" ) {
-                        } else {
-                            $('#pipline-view').html(response.view);
-                            $('.pipeline-loader').hide();
-                        }
+                        $('#pipline-view').html(response);
+                        $('.pipeline-loader').hide();
                     }            
                 });
                 Swal.fire('Updated!', '', 'success')
