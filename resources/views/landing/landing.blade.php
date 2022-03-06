@@ -19,8 +19,65 @@
         <link href="{{ asset('assets/css/app-creative-dark.min.css') }}" rel="stylesheet" type="text/css" id="dark-style" />        
 
         <style>
+            .btn-primary {
+                background-image: linear-gradient(to right, #00c6ff 0%, #006BDF 51%, #00c6ff 100%);
+                background-size: 200% auto;
+                color: white !important;
+                box-shadow: 2px 4px 10px 0px rgb(0 0 0 / 20%);
+                transition: all .5s !important;
+                font-weight: 500 !important;
+                padding: 11px 25px !important;
+                font-size: 1rem !important;
+                }
+                .btn-primary:hover {
+                background-position: right center;
+                transition: 0.5s;
+                }
+
+                .btn-dark {
+                background-image: linear-gradient(to right, #517fa4 0%, #243949 51%, #517fa4 100%);
+                background-size: 200% auto;
+                color: white !important;
+                box-shadow: 2px 4px 10px 0px rgb(0 0 0 / 20%);
+                transition: all .5s !important;
+                font-weight: 500 !important;
+                padding: 11px 25px !important;
+                font-size: 1rem !important;
+
+                }
+                .btn-dark:hover {
+                background-position: right center;
+                transition: 0.5s;
+                }
+            @media screen and (max-width: 980px) {
+                .contact-card {
+                    position: unset !important;
+                    transform: translate(0,0) !important;
+                    width: 100% !important;
+                }
+                .padding-left-250 {
+                    padding-left: 35px !important
+                }
+            }
+            .contact-card {
+                transform: translate(-240px,80px);
+                z-index: 1;
+                color: white;
+                width: 450px;
+                top:0%;
+                left: 0%
+            }
+            .padding-left-250 {
+                padding:35px 35px 35px 250px ;
+            }
             .bg-trans {
                 background:  transparent !important;
+            }
+            .fa-lg {
+                font-size: 28px;
+                padding: 5px;
+                border: 2px solid;
+                margin-right: 15px
             }
             .border-bottom-input {
                 border-top: none !important;
@@ -52,10 +109,10 @@
     <body class="loading" data-layout-config='{"darkMode":false}'>
 
         <!-- NAVBAR START -->
-        <nav class="navbar navbar-expand-lg p-0  fixed-top" id="top-navbar-animated">
+        <nav class="navbar navbar-expand-lg p-0 bg-dark-50 sticky-top w-100" id="top-navbar-animated">
             <div class="container">
                 <!-- logo -->
-                <a href="index.html" class="navbar-brand me-lg-5 ">
+                <a href="#" class="navbar-brand me-lg-5 ">
                     <img src="{{ asset('assets/images/logo/logo-color.png') }}"     class="logo-dark" width="300px"  />
                 </a>
 
@@ -96,7 +153,7 @@
                         </li>
                         <li class="nav-item me-0 ms-3">
                             <a href="https://themes.getbootstrap.com/product/hyper-responsive-admin-dashboard-template/" target="_blank" class="nav-link d-lg-none">Purchase now</a>
-                            <a href="login" target="_blank" class="btn btn-sm btn-dark rounded-pill d-none d-lg-inline-flex">
+                            <a href="login" target="_blank" class="btn btn-sm btn-primary rounded-pill d-none d-lg-inline-flex">
                                 <i class="mdi mdi-login-variant me-2"></i> LOGIN
                             </a>
                         </li>
@@ -260,7 +317,7 @@
                 <h3 data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="1000"  class="aos-init text-white display-5">Want to try CRM Software for Free?</h3>
                 <p  data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="1400" class="text-light my-4 mt-3 lead">Close more deals than ever, automatice lead captures,in-built phone,smart alerts with push notifcations.</p>
                 <div class="aos-init " data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="1800" >
-                    <a href="#" class="aos-init btn btn-dark px-md-5 py-2 rounded-pill"><b>Register Now !</b></a>
+                    <a href="#" class="aos-init btn btn-success px-md-5 py-2 rounded-pill"><b>Register Now !</b></a>
                 </div>
             </div>
         </section>
@@ -315,6 +372,51 @@
                 </div>
             </div>
         </section> 
+
+        <section class="container py-5"> 
+            <div class="row align-items-center">
+                <div class="col-lg-9 h-100 ms-auto position-relative p-0">
+                    <div class="card position-absolute contact-card rounded-5" style="background: linear-gradient( #020202c9 50%, #00d9ff34) , url('https://poetsandquants.com/wp-content/uploads/sites/5/2021/12/analytics.jpg');background-size:cover">
+                        <div class="card-body p-4">
+                            <h1>Request a call back</h1>
+                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Beatae optio, maxime illo nisi distinctio, error temporibus</p>
+                            <div class="py-4">
+                                <div class="d-flex align-items-center mb-3">
+                                    <div class="text-primary mdi mdi-phone-in-talk fa-lg"></div>
+                                    <div>
+                                        <strong>Call US</strong>
+                                        <div>+91 98745 61230</div>
+                                    </div>
+                                </div>
+                                <div class="d-flex align-items-center mb-3">
+                                    <div class="text-primary mdi mdi-email fa-lg"></div>
+                                    <div>
+                                        <strong>Mail US</strong>
+                                        <div>info@phoenix.crm.com </div>
+                                    </div>
+                                </div>
+                                <div class="d-flex align-items-center">
+                                    <div class="text-primary mdi mdi-map-marker fa-lg"></div>
+                                    <div>
+                                        <strong>Call US</strong>
+                                        <div>N.34/21 , New street , chennai-60001</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card h-100 padding-left-250" style="min-height: 80vh">
+                        <div class="card-body py-lg-5">
+                            <div class="px-2">
+                                <h3 class="h3">CONTACT US</h3>
+                                <p>Enter your details to receive a call back from us</p>
+                            </div>
+                            @include('landing.enquiry')
+                        </div>
+                    </div> 
+                </div>
+            </div>
+        </section>
           
         <section class="py-5 bg-light">
             <div class="container">
@@ -330,7 +432,7 @@
                                 <input class="form-control  border-0 rounded-0  w-100 p-3" type="text" id="subject" placeholder="Enter your e   mail...">
                             </div>
                             <div class="">
-                                <button type="submit" class=" border-0 rounded-0 btn btn-primary p-3">Subscribe</button>
+                                <button type="submit" class=" border-0 rounded-0 btn h-100 btn-primary p-3">Subscribe</button>
                             </div>
                         </div>
                     </div>
@@ -340,7 +442,7 @@
         <footer class="py-5 text-center " style="background: linear-gradient(#020202e0 50%, #00d9ff34) , url('https://images.unsplash.com/photo-1587560699334-cc4ff634909a?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80');background-size:cover;backdrop-filter:blur(5px)">
             <div class="container">
                 <div class="row justify-content-center align-items-center" >
-                    <div class="col-md-6 text-center">
+                    <div class="col-md-12 text-center">
                         {{-- <img src="assets/images/logo.png" alt="" class="logo-dark" height="18" /> --}}
                         
                         <div class="aos-init"  data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="1400">
@@ -368,11 +470,7 @@
                             </ul>
                         </div>
                     </div>  
-                    <div class="col-md-6">
-                        <div class="col-lg-8 mx-auto">
-                            @include('landing.enquiry') 
-                        </div>
-                    </div>
+                    
                     <div class="col-12 text-center">
                         <div class="aos-init"  data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="2400">
                             <ul class="list-unstyled justify-content-center d-flex ps-0 mb-0 mt-3">

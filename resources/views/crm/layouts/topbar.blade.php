@@ -106,18 +106,18 @@
     </button>
     <div class="d-none d-lg-block  mt-md-3 text-center">
         <div class="btn-group">
-            <a class="btn-sm btn" href="">Deals</a>
+            <a class="btn-sm btn" href="{{ route('deals') }}">Deals</a>
             <a class="btn-sm btn poniter-0" href="#">|</a>
-            <a class="btn-sm btn" href="">Contacts</a>
-            <a class="btn-sm btn poniter-0" href="#">|</a>
-
-            <a class="btn-sm btn" href="">Organization</a>
+            <a class="btn-sm btn" href="#">Contacts</a>
             <a class="btn-sm btn poniter-0" href="#">|</a>
 
-            <a class="btn-sm btn" href="">Activities</a>
+            <a class="btn-sm btn" href="{{ route('organizations') }}">Organization</a>
             <a class="btn-sm btn poniter-0" href="#">|</a>
 
-            <a class="btn-sm btn" href="">Notes</a>
+            <a class="btn-sm btn" href="#">Activities</a>
+            <a class="btn-sm btn poniter-0" href="#">|</a>
+
+            <a class="btn-sm btn" href="#">Notes</a>
         </div>
     </div>
 </div>

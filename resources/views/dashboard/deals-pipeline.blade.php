@@ -20,14 +20,14 @@
     <div class="row">
         <div class="col-12">
             <div class="board">
-                <div class="tasks" data-plugin="dragula" data-containers='["task-list-one", "task-list-two", "task-list-three", "task-list-four", "task-list-five"]'>
-                    <h6 class="mt-0 task-header">Qualified </h6>
+                <div class="tasks p-0" data-plugin="dragula" data-containers='["task-list-one", "task-list-two", "task-list-three", "task-list-four", "task-list-five"]'>
+                    <h6 class="m-0 task-header bg-success text-white">Qualified </h6>
                     
-                    <div id="task-list-one" class="task-list-items">
+                    <div id="task-list-one" class="task-list-items px-0">
 
                         <!-- Task Item -->
-                        <div class="card mb-0">
-                            <div class="card-body p-3">
+                        <div class="card m-1">
+                            <div class="card-body p-2">
                                 <small class="float-end text-muted">18 Jul 2018</small>
                                 <span class="badge bg-danger">High</span>
 
@@ -71,8 +71,8 @@
                         <!-- Task Item End -->
 
                         <!-- Task Item -->
-                        <div class="card mb-0">
-                            <div class="card-body p-3">
+                        <div class="card m-1">
+                            <div class="card-body p-2">
                                 <small class="float-end text-muted">18 Jul 2018</small>
                                 <span class="badge bg-secondary text-light">Medium</span>
 
@@ -116,8 +116,8 @@
                         <!-- Task Item End -->
 
                         <!-- Task Item -->
-                        <div class="card mb-0">
-                            <div class="card-body p-3">
+                        <div class="card m-1">
+                            <div class="card-body p-2">
                                 <small class="float-end text-muted">11 Jul 2018</small>
                                 <span class="badge bg-success">Low</span>
 
@@ -162,14 +162,14 @@
                         
                     </div> <!-- end company-list-1-->
                 </div> 
-                <div class="tasks">
-                    <h6 class="mt-0 task-header text-uppercase">Contact Made</h6>
+                <div class="tasks p-0">
+                    <h6 class="m-0 task-header text-uppercase bg-warning text-white">Contact Made</h6>
                     
-                    <div id="task-list-two" class="task-list-items">
+                    <div id="task-list-two" class="task-list-items px-0">
 
                         <!-- Task Item -->
-                        <div class="card mb-0">
-                            <div class="card-body p-3">
+                        <div class="card m-1">
+                            <div class="card-body p-2">
                                 <small class="float-end text-muted">22 Jun 2018</small>
                                 <span class="badge bg-secondary text-light">Medium</span>
 
@@ -213,8 +213,8 @@
                         <!-- Task Item End -->
 
                         <!-- Task Item -->
-                        <div class="card mb-0">
-                            <div class="card-body p-3">
+                        <div class="card m-1">
+                            <div class="card-body p-2">
                                 <small class="float-end text-muted">19 Jun 2018</small>
                                 <span class="badge bg-success">Low</span>
 
@@ -259,13 +259,13 @@
 
                     </div> <!-- end company-list-2-->
                 </div> 
-                <div class="tasks">
-                    <h6 class="mt-0 task-header text-uppercase">Demo Schedulded</h6>
-                    <div id="task-list-three" class="task-list-items">
+                <div class="tasks p-0">
+                    <h6 class="m-0 task-header text-uppercase bg-info text-white">Demo Schedulded</h6>
+                    <div id="task-list-three" class="task-list-items px-0">
 
                         <!-- Task Item -->
-                        <div class="card mb-0">
-                            <div class="card-body p-3">
+                        <div class="card m-1">
+                            <div class="card-body p-2">
                                 <small class="float-end text-muted">2 May 2018</small>
                                 <span class="badge bg-danger">High</span>
 
@@ -309,8 +309,8 @@
                         <!-- Task Item End -->
 
                         <!-- Task Item -->
-                        <div class="card mb-0">
-                            <div class="card-body p-3">
+                        <div class="card m-1">
+                            <div class="card-body p-2">
                                 <small class="float-end text-muted">7 May 2018</small>
                                 <span class="badge bg-secondary text-light">Medium</span>
 
@@ -354,8 +354,8 @@
                         <!-- Task Item End -->
 
                         <!-- Task Item -->
-                        <div class="card mb-0">
-                            <div class="card-body p-3">
+                        <div class="card m-1">
+                            <div class="card-body p-2">
                                 <small class="float-end text-muted">8 Jul 2018</small>
                                 <span class="badge bg-secondary text-light">Medium</span>
 
@@ -399,8 +399,8 @@
                         <!-- Task Item End -->
 
                         <!-- Task Item -->
-                        <div class="card mb-0">
-                            <div class="card-body p-3">
+                        <div class="card m-1">
+                            <div class="card-body p-2">
                                 <small class="float-end text-muted">22 Jul 2018</small>
                                 <span class="badge bg-danger">High</span>
 
@@ -445,13 +445,13 @@
 
                     </div> <!-- end company-list-3-->
                 </div> 
-                <div class="tasks">
-                    <h6 class="mt-0 task-header text-uppercase">Proposal Made</h6>
-                    <div id="task-list-four" class="task-list-items">
+                <div class="tasks p-0">
+                    <h6 class="m-0 task-header text-uppercase bg-primary text-white">Proposal Made</h6>
+                    <div id="task-list-four" class="task-list-items px-0">
 
                         <!-- Task Item -->
-                        <div class="card mb-0">
-                            <div class="card-body p-3">
+                        <div class="card m-1">
+                            <div class="card-body p-2">
                                 <small class="float-end text-muted">16 Jul 2018</small>
                                 <span class="badge bg-success">Low</span>
 
@@ -496,13 +496,13 @@
                         
                     </div> <!-- end company-list-4-->
                 </div> 
-                <div class="tasks">
-                    <h6 class="mt-0 task-header text-uppercase">Negation Started</h6>
-                    <div id="task-list-five" class="task-list-items">
+                <div class="tasks p-0">
+                    <h6 class="m-0 task-header text-uppercase bg-danger text-white">Negation Started</h6>
+                    <div id="task-list-five" class="task-list-items px-0">
 
                         <!-- Task Item -->
-                        <div class="card mb-0">
-                            <div class="card-body p-3">
+                        <div class="card m-1">
+                            <div class="card-body p-2">
                                 <small class="float-end text-muted">16 Jul 2018</small>
                                 <span class="badge bg-success">Low</span>
 

@@ -100,12 +100,12 @@
             </li>
 
             <li class="side-nav-item">
-                <a data-bs-toggle="collapse" href="#sidebarEmail" aria-expanded="false" aria-controls="sidebarEmail" class="side-nav-link">
+                <a data-bs-toggle="collapse" href="#sidebarEmail_new" aria-expanded="false" aria-controls="sidebarEmail_new" class="side-nav-link">
                     <i class="mdi mdi-sale"></i>
                     <span> Sales </span>
                     <span class="menu-arrow"></span>
                 </a>
-                <div class="collapse" id="sidebarEmail">
+                <div class="collapse" id="sidebarEmail_new">
                     <ul class="side-nav-second-level">
                         <li>
                             <a href="{{ route('leads') }}">Leads</a>
