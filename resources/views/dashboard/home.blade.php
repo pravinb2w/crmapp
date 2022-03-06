@@ -220,7 +220,7 @@
         <div class="col-md-6 px-1" id="handle-dragula-right">
             <div class="card">
                 <div class="card-body">
-                    <h4 class="header-title"> Overall Activities <span class="dragula-handle float-end"></span></h4>
+                    <h4 class="header-title"> Closing of the Week <span class="dragula-handle float-end"></span></h4>
                     <select name="" id="" class="bar-select">
                         <option value="">-select -</option>
                         <option value="tasks"> Planned</option>
@@ -350,7 +350,7 @@
                     <h4 class="header-title">Planned vs Done <span class="dragula-handle float-end"></span></h4>
                     <select name="" id="" class="bar-select">
                         <option value="Leads">Leads</option>
-                        <option value="tasks"> Deals</option>
+                        <option value="tasks"> Collection</option>
                         <option value="leads"> Tasks </option>
                     </select>
                     <div dir="ltr">

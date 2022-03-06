@@ -6,71 +6,7 @@
         </div>
         <div class="modal-body" style="max-height: 95vh;overflow:auto">
             <link href="{{ asset('assets/css/vendor/simplemde.min.css') }}" rel="stylesheet" type="text/css" />
-            <style>
-                .CodeMirror, .editor-toolbar {
-                    background: rgb(255, 252, 220);
-                }
-                .notes-pane {
-                    position: absolute;
-                    bottom: 46px;
-                    right: 8px;
-                    z-index: 9;
-                }
-                /* HIDE RADIO */
-                [type=radio] { 
-                position: absolute;
-                opacity: 0;
-                width: 0;
-                height: 0;
-                }
-
-                /* IMAGE STYLES */
-                [type=radio] + i {
-                cursor: pointer;
-                }
-
-                /* CHECKED STYLES */
-                [type=radio]:checked + i {
-                outline: 2px solid #10b9f1;
-                }
-
-                #activitiy-icon>div>label>i {
-                    padding: 5px;
-                    border: 0.5px solid #ddd;
-                    font-size: 20px;
-                }
-                #lead-activity {
-                    padding:15px;
-                }
-                .timeinput {
-                    display: inline-flex;
-                    width: 100%;
-                }
-                .timeinput > span {
-                    padding: 10px;
-                }
-                .w-35 {
-                    width: 35% !important;
-                }
-                .w-80 {
-                    width: 80% !important;
-                }
-                .w-20 {
-                    width: 20% !important;
-                }
-
-                .timeline-item-left>.timeline-desk>.timeline-box {
-                    background: rgb(255, 252, 220);
-                }
-                .dropdown {
-                    position: absolute;
-                    right: 0;
-                    top: 0;
-                }
-                .editor-statusbar {
-                    display: none;
-                }
-            </style>
+            
             <div class="row m-0">
                 <div class="col-12" id="error">
                 </div>
@@ -114,6 +50,7 @@
                             </div>
                         </div>
                         <input type="hidden" name="id" value="{{ $info->id ?? '' }}">
+                        <input type="hidden" name="from" id="from" value="{{ $from ?? '' }}">
                         <div class="form-group mt-3 text-end">
                             <button type="button" class="btn btn-light me-2" data-bs-dismiss="modal" aria-label="Close"> Cancel</button>
                             <button type="submit"  class="btn btn-info"> Save </button>
@@ -159,6 +96,7 @@
                     $('#save').html('Loading...');
                 },
                 success: function(response) {
+                    var from = $('#from').val();
                     $('#save').html('Save');
                     if(response.error.length > 0 && response.status == "1" ) {
                         $('#error').addClass('alert alert-danger');
@@ -169,7 +107,11 @@
                         setTimeout(function(){
                             $('#Mymodal').modal('hide');
                         },100);
-                        ReloadDataTableModal('notes-datatable');
+                        if( from == 'dashboard' ) {
+                            window.location.href="{{ route('notes') }}";
+                        } else {
+                            ReloadDataTableModal('notes-datatable');
+                        }
                     }
                 }            
             });

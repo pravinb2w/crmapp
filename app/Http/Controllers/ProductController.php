@@ -88,13 +88,14 @@ class ProductController extends Controller
             return response('Forbidden.', 403);
         }
         $id = $request->id;
+        $from = $request->from;
         $modal_title = 'Add Products';
         $product_code = CommonHelper::get_product_code();
         if( isset( $id ) && !empty($id) ) {
             $info = Product::find($id);
             $modal_title = 'Update Product';
         }
-        $params = ['modal_title' => $modal_title, 'id' => $id ?? '', 'info' => $info ?? '', 'product_code' => $product_code];
+        $params = ['modal_title' => $modal_title, 'id' => $id ?? '', 'info' => $info ?? '', 'product_code' => $product_code, 'from' => $from];
         return view('crm.products.add_edit', $params);
         echo json_encode(['view' => $view]);
         return true;

@@ -62,14 +62,7 @@
                 .timeline-item-left>.timeline-desk>.timeline-box {
                     background: rgb(255, 252, 220);
                 }
-                .dropdown {
-                    position: absolute;
-                    right: 0;
-                    top: 0;
-                }
-                .editor-statusbar {
-                    display: none;
-                }
+               
             </style>
             <div class="row m-0">
                 <div class="col-12" id="error">
@@ -156,6 +149,7 @@
                             <textarea name="notes" id="notes" cols="30" rows="1">{{ $info->notes ?? '' }}</textarea>
                         </div>
                         <input type="hidden" name="id" value="{{ $info->id ?? '' }}">
+                        <input type="hidden" name="from" id="from" value="{{ $from ?? '' }}">
                         <div class="form-group mt-3 text-end">
                             <button type="button" class="btn btn-light me-2" data-bs-dismiss="modal" aria-label="Close"> Cancel</button>
                             <button type="submit"  class="btn btn-info"> Save </button>
@@ -229,6 +223,7 @@
                         $('#save').html('Loading...');
                     },
                     success: function(response) {
+                        var from = $('#from').val();
                         $('#save').html('Save');
                         if(response.error.length > 0 && response.status == "1" ) {
                             $('#error').addClass('alert alert-danger');
@@ -239,7 +234,12 @@
                             setTimeout(function(){
                                 $('#Mymodal').modal('hide');
                             },100);
-                            ReloadDataTableModal('activities-datatable');
+                            if( from == 'dashboard' ) {
+                                window.location.href="{{ route('activities') }}";
+                            } else {
+                                ReloadDataTableModal('activities-datatable');
+                            }
+                            
                         }
                     }            
                 });

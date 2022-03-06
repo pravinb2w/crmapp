@@ -89,12 +89,13 @@ class CustomerController extends Controller
             return response('Forbidden.', 403);
         }
         $id = $request->id;
+        $from = $request->from;
         $modal_title = 'Add Customer';
         if( isset( $id ) && !empty($id) ) {
             $info = Customer::with(['secondary_email', 'secondary_mobile'])->find($id);
             $modal_title = 'Update Customer';
         }
-        $params = ['modal_title' => $modal_title, 'id' => $id ?? '', 'info' => $info ?? ''];
+        $params = ['modal_title' => $modal_title, 'id' => $id ?? '', 'info' => $info ?? '', 'from' => $from];
         return view('crm.customers.add_edit', $params);
         echo json_encode(['view' => $view]);
         return true;
@@ -185,23 +186,27 @@ class CustomerController extends Controller
             $secondary_phone = $request->secondary_phone;
             if( isset( $secondary_phone ) && !empty( $secondary_phone ) ) {
                 foreach ($secondary_phone as $value) {
-                    $cust['mobile_no'] = $value;
-                    $cust['customer_id'] = $customer_id;
-                    $cust['description'] = 'manual';
-                    $cust['status'] = 1;
-                    $cust['added_by'] = Auth::id();
-                    CustomerMobile::create($cust);
+                    if(!empty($value)) {
+                        $cust['mobile_no'] = $value;
+                        $cust['customer_id'] = $customer_id;
+                        $cust['description'] = 'manual';
+                        $cust['status'] = 1;
+                        $cust['added_by'] = Auth::id();
+                        CustomerMobile::create($cust);
+                    }
                 }
             }
             $secondary_email = $request->secondary_email;
             if( isset( $secondary_email ) && !empty( $secondary_email ) ) {
                 foreach ($secondary_email as $value) {
-                    $cust1['email'] = $value;
-                    $cust1['customer_id'] = $customer_id;
-                    $cust1['description'] = 'manual';
-                    $cust1['status'] = 1;
-                    $cust1['added_by'] = Auth::id();
-                    CustomerEmail::create($cust1);
+                    if( !empty( $value ) ) {
+                        $cust1['email'] = $value;
+                        $cust1['customer_id'] = $customer_id;
+                        $cust1['description'] = 'manual';
+                        $cust1['status'] = 1;
+                        $cust1['added_by'] = Auth::id();
+                        CustomerEmail::create($cust1);
+                    }
                 }
             }
             return response()->json(['error'=>[$success], 'status' => '0']);

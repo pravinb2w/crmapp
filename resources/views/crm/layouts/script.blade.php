@@ -24,7 +24,7 @@
         $('#error').append('<div>'+item+'</div>');
     }
 
-    function get_add_modal(page_type, id = '') {
+    function get_add_modal(page_type, id = '', from = '') {
         var ajax_url = set_add_url(page_type);
         $.ajaxSetup({
             headers: {
@@ -34,7 +34,7 @@
         $.ajax({
             url: ajax_url,
             method:'POST',
-            data: {page_type:page_type, id:id},
+            data: {page_type:page_type, id:id,from:from},
             // dataType:'json',
             success:function(res){
                 $('#Mymodal').html(res);

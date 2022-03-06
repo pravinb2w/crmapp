@@ -113,7 +113,7 @@ class DealsController extends Controller
             return response('Forbidden.', 403);
         }
         $id = $request->id;
-
+        $from = $request->from;
         $lead_id = $request->lead_id;
         $modal_title = 'Add Deal';
         $stage = DealStage::orderBy('order_by', 'asc')->get();
@@ -128,7 +128,7 @@ class DealsController extends Controller
             $modal_title = 'Update Deal';
         }
         $params = ['modal_title' => $modal_title, 'id' => $id ?? '', 'info' => $info ?? '', 'lead_id' => $lead_id,
-                    'lead_info' => $lead_info ?? '', 'stage' => $stage ?? '', 'users' => $users, 'list' => $list ];
+                    'lead_info' => $lead_info ?? '', 'stage' => $stage ?? '', 'users' => $users, 'list' => $list, 'from' => $from ];
         return view('crm.deals.add_edit', $params);
         
     }

@@ -90,6 +90,7 @@ class NoteController extends Controller
             return response('Forbidden.', 403);
         }
         $id = $request->id;
+        $from = $request->from;
         $modal_title = 'Add Note';
         if( isset( $id ) && !empty($id) ) {
             $info = Note::find($id);
@@ -97,7 +98,7 @@ class NoteController extends Controller
         }
         $users = User::whereNotNull('role_id')->get();
         
-        $params = ['modal_title' => $modal_title, 'id' => $id ?? '', 'info' => $info ?? '', 'users' => $users];
+        $params = ['modal_title' => $modal_title, 'id' => $id ?? '', 'info' => $info ?? '', 'users' => $users, 'from' => $from];
         return view('crm.note.add_edit', $params);
        
     }

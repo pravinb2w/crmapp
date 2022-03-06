@@ -100,6 +100,7 @@ class ActivityController extends Controller
             return response('Forbidden.', 403);
         }
         $id = $request->id;
+        $from = $request->from;
         $modal_title = 'Add Activity';
         if( isset( $id ) && !empty($id) ) {
             $info = Activity::find($id);
@@ -107,7 +108,8 @@ class ActivityController extends Controller
         }
         $users = User::whereNotNull('role_id')->get();
         $customers = Customer::all();
-        $params = ['modal_title' => $modal_title, 'id' => $id ?? '', 'info' => $info ?? '', 'users' => $users, 'customers' => $customers];
+        $params = ['modal_title' => $modal_title, 'id' => $id ?? '', 'info' => $info ?? '', 'users' => $users, 
+                'customers' => $customers, 'from' => $from];
         return view('crm.activity.add_edit', $params);
         
     }

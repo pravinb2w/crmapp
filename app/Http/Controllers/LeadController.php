@@ -289,6 +289,7 @@ class LeadController extends Controller
             return response('Forbidden.', 403);
         }
         $id = $request->id;
+        $from = $request->from;
         $modal_title = 'Add Lead';
         $leadsource = LeadSource::all();
         $leadtype = LeadType::all();
@@ -299,7 +300,7 @@ class LeadController extends Controller
             $modal_title = 'Update Lead';
         }
         $params = ['modal_title' => $modal_title, 'id' => $id ?? '', 'info' => $info ?? '', 'leadsource' => $leadsource ?? '', 
-                    'leadtype' => $leadtype ?? '', 'users' => $users];
+                    'leadtype' => $leadtype ?? '', 'users' => $users, 'from' => $from];
         return view('crm.lead.add_edit', $params);
         echo json_encode(['view' => $view]);
         return true;

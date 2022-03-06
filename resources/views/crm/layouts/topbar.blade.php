@@ -17,39 +17,36 @@
             </a>
             <div class="dropdown-menu dropdown-menu-end dropdown-menu-animated dropdown-md p-0">
                 <!-- item-->
-                <a href="javascript:void(0);" class="dropdown-item notify-item">
-                    <i class="dripicons-plus"></i>
-                    <span class="align-middle">Add Enquiry</span>
-                </a>
-                <a href="javascript:void(0);" class="dropdown-item notify-item">
+                
+                <a href="javascript:void(0);" class="dropdown-item notify-item" onclick="return get_add_modal('deals', '', 'dashboard');">
                     <i class="dripicons-plus"></i>
                     <span class="align-middle">Add Deals</span>
                 </a>
-                <a href="javascript:void(0);" class="dropdown-item notify-item">
+                <a href="javascript:void(0);" class="dropdown-item notify-item" onclick="return get_add_modal('leads', '', 'dashboard');">
                     <i class="dripicons-plus"></i>
                     <span class="align-middle">Add Leads</span>
                 </a>
-                <a href="javascript:void(0);" class="dropdown-item notify-item">
+                <a href="javascript:void(0);" class="dropdown-item notify-item" onclick="return get_add_modal('activities', '', 'dashboard');">
                     <i class="dripicons-plus"></i>
                     <span class="align-middle">Add Activity</span>
                 </a>
-                <a href="javascript:void(0);" class="dropdown-item notify-item">
+                <a href="javascript:void(0);" class="dropdown-item notify-item" onclick="return get_add_modal('tasks', '', 'dashboard');">
                     <i class="dripicons-plus"></i>
                     <span class="align-middle">Add Tasks</span>
                 </a>
-                <a href="javascript:void(0);" class="dropdown-item notify-item">
+                <a href="javascript:void(0);" class="dropdown-item notify-item" onclick="return get_add_modal('notes', '', 'dashboard');">
                     <i class="dripicons-plus"></i>
                     <span class="align-middle">Add Notes</span>
                 </a>
-                <a href="javascript:void(0);" class="dropdown-item notify-item">
+                <a href="javascript:void(0);" class="dropdown-item notify-item" onclick="return get_add_modal('products', '', 'dashboard');">
                     <i class="dripicons-plus"></i>
                     <span class="align-middle">Add Product</span>
                 </a>
-                <a href="javascript:void(0);" class="dropdown-item notify-item">
+                <a href="javascript:void(0);" class="dropdown-item notify-item" onclick="return get_add_modal('organizations', '', 'dashboard');" >
                     <i class="dripicons-plus"></i>
                     <span class="align-middle">Add Organization</span>
                 </a>
-                <a href="javascript:void(0);" class="dropdown-item notify-item">
+                <a href="javascript:void(0);" class="dropdown-item notify-item" onclick="return get_add_modal('customers', '', 'dashboard');">
                     <i class="dripicons-plus"></i>
                     <span class="align-middle">Add Contact</span>
                 </a>
@@ -108,16 +105,16 @@
         <div class="btn-group">
             <a class="btn-sm btn" href="{{ route('deals') }}">Deals</a>
             <a class="btn-sm btn poniter-0" href="#">|</a>
-            <a class="btn-sm btn" href="#">Contacts</a>
+            <a class="btn-sm btn" href="{{ route('customers') }}">Contacts</a>
             <a class="btn-sm btn poniter-0" href="#">|</a>
 
             <a class="btn-sm btn" href="{{ route('organizations') }}">Organization</a>
             <a class="btn-sm btn poniter-0" href="#">|</a>
 
-            <a class="btn-sm btn" href="#">Activities</a>
+            <a class="btn-sm btn" href="{{ route('activities') }}">Activities</a>
             <a class="btn-sm btn poniter-0" href="#">|</a>
 
-            <a class="btn-sm btn" href="#">Notes</a>
+            <a class="btn-sm btn " href="{{ route('notes') }}">Notes</a>
         </div>
     </div>
 </div>

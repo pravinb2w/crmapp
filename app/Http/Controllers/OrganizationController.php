@@ -87,13 +87,14 @@ class OrganizationController extends Controller
             return response('Forbidden.', 403);
         }
         $id = $request->id;
+        $from = $request->from;
         $modal_title = 'Add Organization';
 
         if( isset( $id ) && !empty($id) ) {
             $info = Organization::find($id);
             $modal_title = 'Update Organization';
         }
-        $params = ['modal_title' => $modal_title, 'id' => $id ?? '', 'info' => $info ?? ''];
+        $params = ['modal_title' => $modal_title, 'id' => $id ?? '', 'info' => $info ?? '', 'from' => $from];
         return view('crm.organization.add_edit', $params);
         echo json_encode(['view' => $view]);
         return true;
