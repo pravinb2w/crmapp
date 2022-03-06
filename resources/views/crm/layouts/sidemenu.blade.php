@@ -53,9 +53,6 @@
                             <a href="{{ route('dashboard') }}">Main</a>
                         </li>
                         <li>
-                            <a href="{{ route('deals-dashboard') }}">Deals</a>
-                        </li>
-                        <li>
                             <a href="{{ route('deals-pipeline') }}">Deals pipelines</a>
                         </li>
                     </ul>
