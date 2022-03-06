@@ -50,10 +50,10 @@
                 <div class="collapse" id="sidebarEcommerce">
                     <ul class="side-nav-second-level">
                         <li>
-                            <a href="{{ route('dashboard') }}">Main</a>
+                            <a href="{{ route('dashboard') }}">CRM</a>
                         </li>
                         <li>
-                            <a href="{{ route('deals-pipeline') }}">Deals pipelines</a>
+                            <a href="{{ route('deals-pipeline') }}">Deals</a>
                         </li>
                     </ul>
                 </div>
