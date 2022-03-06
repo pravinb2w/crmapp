@@ -85,7 +85,7 @@
   transition: all .5s;
 }
 #top-navbar-animated  .nav-item:hover .nav-link{
-  color: white !important;
+  color: #000000 !important;
 }
 
 #top-navbar-animated .nav-link.active::after {

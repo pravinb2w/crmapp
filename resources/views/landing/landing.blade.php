@@ -77,7 +77,8 @@
                 font-size: 28px;
                 padding: 5px;
                 border: 2px solid;
-                margin-right: 15px
+                margin-right: 15px;
+                border-radius: 10px
             }
             .border-bottom-input {
                 border-top: none !important;
@@ -373,52 +374,54 @@
             </div>
         </section> 
 
-        <section class="container py-5"> 
-            <div class="row align-items-center">
-                <div class="col-lg-9 h-100 ms-auto position-relative p-0">
-                    <div class="card position-absolute contact-card rounded-5" style="background: linear-gradient( #020202c9 50%, #00d9ff34) , url('https://poetsandquants.com/wp-content/uploads/sites/5/2021/12/analytics.jpg');background-size:cover">
-                        <div class="card-body p-4">
-                            <h1>Request a call back</h1>
-                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Beatae optio, maxime illo nisi distinctio, error temporibus</p>
-                            <div class="py-4">
-                                <div class="d-flex align-items-center mb-3">
-                                    <div class="text-primary mdi mdi-phone-in-talk fa-lg"></div>
-                                    <div>
-                                        <strong>Call US</strong>
-                                        <div>+91 98745 61230</div>
+        <section class=" py-5 bg-light"> 
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-lg-9 h-100 ms-auto position-relative p-0">
+                        <div class="card position-absolute contact-card rounded-5"  style="background: linear-gradient( #020202c9 50%, #00d9ff34) , url('https://poetsandquants.com/wp-content/uploads/sites/5/2021/12/analytics.jpg');background-size:cover">
+                            <div class="card-body p-4">
+                                <h1>Request a call back</h1>
+                                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Beatae optio, maxime illo nisi distinctio, error temporibus</p>
+                                <div class="py-4">
+                                    <div class="d-flex align-items-center mb-3">
+                                        <div class="text-primary mdi mdi-phone-in-talk fa-lg"></div>
+                                        <div>
+                                            <strong>Call US</strong>
+                                            <div>+91 98745 61230</div>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="d-flex align-items-center mb-3">
-                                    <div class="text-primary mdi mdi-email fa-lg"></div>
-                                    <div>
-                                        <strong>Mail US</strong>
-                                        <div>info@phoenix.crm.com </div>
+                                    <div class="d-flex align-items-center mb-3">
+                                        <div class="text-primary mdi mdi-email fa-lg"></div>
+                                        <div>
+                                            <strong>Mail US</strong>
+                                            <div>info@phoenix.crm.com </div>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="d-flex align-items-center">
-                                    <div class="text-primary mdi mdi-map-marker fa-lg"></div>
-                                    <div>
-                                        <strong>Call US</strong>
-                                        <div>N.34/21 , New street , chennai-60001</div>
+                                    <div class="d-flex align-items-center">
+                                        <div class="text-primary mdi mdi-map-marker fa-lg"></div>
+                                        <div>
+                                            <strong>Call US</strong>
+                                            <div>N.34/21 , New street , chennai-60001</div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                        <div class="card h-100 padding-left-250" style="min-height: 80vh">
+                            <div class="card-body py-lg-5" >
+                                <div class="px-2">
+                                    <h3 class="h3">CONTACT US</h3>
+                                    <p>Enter your details to receive a call back from us</p>
+                                </div>
+                                @include('landing.enquiry')
+                            </div>
+                        </div> 
                     </div>
-                    <div class="card h-100 padding-left-250" style="min-height: 80vh">
-                        <div class="card-body py-lg-5">
-                            <div class="px-2">
-                                <h3 class="h3">CONTACT US</h3>
-                                <p>Enter your details to receive a call back from us</p>
-                            </div>
-                            @include('landing.enquiry')
-                        </div>
-                    </div> 
                 </div>
             </div>
         </section>
           
-        <section class="py-5 bg-light">
+        <section class="py-5">
             <div class="container">
                 <div class="row align-items-center m-0">
                     <div class="col-md">
@@ -429,7 +432,7 @@
                     <div class="col-md-6">
                         <div class="btn-group border shadow-sm rounded w-100 aos-init" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="1200">
                             <div class="w-100 bg-white">
-                                <input class="form-control  border-0 rounded-0  w-100 p-3" type="text" id="subject" placeholder="Enter your e   mail...">
+                                <input class="form-control  border-0 rounded-0  w-100 p-3" type="text" id="subject" placeholder="Enter your email...">
                             </div>
                             <div class="">
                                 <button type="submit" class=" border-0 rounded-0 btn h-100 btn-primary p-3">Subscribe</button>
