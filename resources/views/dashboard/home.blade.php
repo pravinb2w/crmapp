@@ -112,7 +112,6 @@
         </div>
     </div>
     <!-- end row --> 
- 
     <!-- end row-->
     <div class="row" data-plugin="dragula" data-containers='["handle-dragula-left", "handle-dragula-right", "handle-dragula-bottom-left","handle-dragula-bottom-right"]' data-handleClass="dragula-handle">
         <div class="col-lg-6" id="handle-dragula-left">
