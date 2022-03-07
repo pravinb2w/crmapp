@@ -247,6 +247,10 @@ Route::middleware([SetViewVariable::class, 'auth'])->group(function(){
         Route::post('/teams/status', [App\Http\Controllers\TeamController::class, 'change_status'])->name('teams.status');
 
     });
-
+    
+    Route::get('invoice', function () {
+        return view('invoice');
+    });
 
 });
+
