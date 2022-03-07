@@ -122,7 +122,8 @@ Route::middleware([SetViewVariable::class, 'auth'])->group(function(){
         Route::post('/files/save', [App\Http\Controllers\DealsController::class, 'files_save'])->name('deals.save-files');
         Route::post('/stage/complete', [App\Http\Controllers\DealsController::class, 'make_stage_completed'])->name('deals.make_stage_completed');
         Route::post('/finalize', [App\Http\Controllers\DealsController::class, 'deal_finalize'])->name('deals.finalize');
-
+        Route::post('/insert/invoice', [App\Http\Controllers\DealsController::class, 'insert_invoice'])->name('deals.save-invoice');
+        Route::post('/get/items', [App\Http\Controllers\DealsController::class, 'invoice_product_list'])->name('invoices.add_items');
     });
     //tasks route
     Route::prefix('tasks')->group(function () {
@@ -236,8 +237,6 @@ Route::middleware([SetViewVariable::class, 'auth'])->group(function(){
         Route::post('/country/delete', [App\Http\Controllers\CountryController::class, 'delete'])->name('country.delete');
         Route::post('/country/status', [App\Http\Controllers\CountryController::class, 'change_status'])->name('country.status');
  
-        
-
         Route::get('/teams', [App\Http\Controllers\TeamController::class, 'index'])->name('teams');
         Route::post('/teams/add', [App\Http\Controllers\TeamController::class, 'add_edit'])->name('teams.add');
         Route::post('/teams/view', [App\Http\Controllers\TeamController::class, 'view'])->name('teams.view');

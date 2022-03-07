@@ -64,6 +64,15 @@
         <button type="submit" class="btn btn-success"> Save </button>
     </div>
 </form>
+<script>
+    $(document).ready(function(){
+        $('.datepicker').datepicker({
+            format: 'dd-mm-yyyy',
+            // endDate: '+0d',
+            autoclose: true
+        });
+    });
+</script>
 @section('add_on_script')
 <script>
     $('.activity-title').click(function(){  

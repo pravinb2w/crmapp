@@ -90,6 +90,11 @@ class Deal extends Model implements Auditable
     {
         return $this->hasMany(DealProduct::class, 'deal_id')->orderBy('deal_products.created_at', 'asc');
     }
+
+    public function invoice()
+    {
+        return $this->hasMany(Invoice::class, 'deal_id')->orderBy('invoices.created_at', 'asc');
+    }
     
     public function pipeline()
     {

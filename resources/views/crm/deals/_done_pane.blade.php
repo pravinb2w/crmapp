@@ -22,9 +22,9 @@
     <label for="" class="@if( isset( $done_type ) && $done_type == 'files' ) badge badge-info-lighten @endif px-2">
         <a href="javascript:;" onclick="refresh_deal_timeline('done','{{ $deal_id }}', 'files');">Files</a> 
     </label>
-    {{-- <label for="" class="@if( isset( $done_type ) && $done_type == 'logs' ) badge badge-info-lighten @endif px-2">
-        <a href="javascript:;" onclick="refresh_deal_timeline('done','{{ $deal_id }}', 'logs');">Log</a> 
-    </label> --}}
+    <label for="" class="@if( isset( $done_type ) && $done_type == 'invoice' ) badge badge-info-lighten @endif px-2">
+        <a href="javascript:;" onclick="refresh_deal_timeline('done','{{ $deal_id }}', 'invoice');">Invoice</a> 
+    </label> 
 </div>
 <div class="border-start py-0 p-3" id="done-pane">
     
@@ -45,9 +45,9 @@
                     }
                 }
             }
-            if( isset( $done_type ) && ( $done_type == 'all' || $done_type == 'notes') ) {
+            if( isset( $done_type ) && ( $done_type == 'all' || $done_type == 'notes' || $done_type == 'invoice') ) {
 
-                if( isset( $info->notes ) && !empty($info->notes ) ){
+                if( isset( $info->notes ) && !empty($info->notes ) && ($done_type == 'notes' || $done_type == 'all' ) ){
                     foreach ($info->notes as $ionotes){
                         $tmp['activity_type'] = '';
                         $tmp['subject'] = $ionotes->notes;
@@ -56,6 +56,18 @@
                         $tmp['done_at'] = Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $ionotes->updated_at)->format('Y-m-d H:i:s');
                         $tmp['done_by'] = $ionotes->updatedBy;
                         $tmp['added'] = $ionotes->added;
+                        $list[] = $tmp;
+                    }
+                }
+                if( isset( $info->invoice ) && !empty($info->invoice) && ($done_type == 'invoice' || $done_type == 'all') ) {
+                    foreach ($info->invoice as $key => $value) {
+                        $tmp['activity_type'] = 'invoice';
+                        $tmp['subject'] = 'Invoice Created';
+                        $tmp['deal_id'] = $value->deal_id;
+                        $tmp['id'] = $value->id;
+                        $tmp['done_at'] = Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $value->created_at)->format('Y-m-d H:i:s');
+                        $tmp['done_by'] = '';
+                        $tmp['added'] = $value->added;
                         $list[] = $tmp;
                     }
                 }
@@ -136,6 +148,11 @@
                                 </button>
                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                     <a class="dropdown-item" href="#"  onclick="change_activity_status('{{ $info->id }}','{{ $litem['id'] }}', 'done')">Delete</a>
+                                    @if($litem['activity_type'] == 'invoice')
+                                    <a class="dropdown-item" href="#"  onclick="submit_approve_invoice('{{ $info->id }}','{{ $litem['id'] }}', 'done')">Submit for Approval</a>
+                                    <a class="dropdown-item" href="#"  onclick="unlink_invoice('{{ $info->id }}','{{ $litem['id'] }}', 'done')">Unlink from Deal</a>
+                                    <a class="dropdown-item" href="#"  onclick="download_invoice('{{ $info->id }}','{{ $litem['id'] }}', 'done')">Download Pdf</a>
+                                    @endif
                                 </div>
                             </div>
                             <div class="text-danger">

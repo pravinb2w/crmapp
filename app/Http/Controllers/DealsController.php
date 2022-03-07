@@ -15,7 +15,10 @@ use App\Models\Product;
 use App\Models\Activity;
 use App\Models\DealPipline;
 use App\Models\DealProduct;
+use CommonHelper;
 use App\Models\DealDocument;
+use App\Models\InvoiceItem;
+use App\Models\Invoice;
 
 class DealsController extends Controller
 {
@@ -94,6 +97,9 @@ class DealsController extends Controller
         $info = Deal::find($id);
         $users = User::whereNotNull('role_id')->get();
         $stage = DealStage::orderBy('order_by', 'asc')->get();
+        $product_list = Product::all();
+        $invoice_no = CommonHelper::get_invoice_code();
+        
         $completed_stage = [];
         $pipeline = [];
         if( isset( $info->pipeline ) && !empty($info->pipeline ) ) {
@@ -103,7 +109,7 @@ class DealsController extends Controller
             }
         }
         $params = ['id' => $id, 'deal_id' => $id, 'info' => $info, 'stage' => $stage, 'completed_stage' => $completed_stage, 
-                    'pipeline' => $pipeline, 'users' => $users ];
+                    'pipeline' => $pipeline, 'users' => $users, 'product_list' => $product_list, 'invoice_no' => $invoice_no ];
 
         return view('crm.deals.show', $params);
     }
@@ -502,6 +508,62 @@ class DealsController extends Controller
         }
         return view('crm.deals._info', ['info' => $info, 'stage' => $stage, 
                         'completed_stage' => $completed_stage, 'pipeline' => $pipeline, 'id' => $id]);
+
+    }
+
+    function invoice_product_list(Request $request) {
+        $limit  = $request->limit;
+        $product_list = Product::all();
+        $params = ['limit' => $limit, 'product_list' => $product_list ];
+        return view('crm.invoice._items', $params );
+    }
+
+    public function insert_invoice(Request $request) {
+
+        $deal_id = $request->deal_id;
+        $customer_id = $request->customer_id;
+        $address = $request->address;
+        $email = $request->email;
+        $invoice_no = $request->invoice_no;
+        $issue_date = $request->issue_date;
+        $due_date = $request->due_date;
+        $currency = $request->currency;
+        $limit = $request->limit;
+        $total_cost = $request->total_cost;
+
+        //insert in invoice
+        $ins['deal_id'] = $deal_id;
+        $ins['invoice_no'] = $invoice_no;
+        $ins['issue_date'] = date('Y-m-d', strtotime($issue_date));
+        $ins['due_date'] = date('Y-m-d', strtotime($due_date));
+        $ins['customer_id'] = $customer_id;
+        $ins['address'] = $address;
+        $ins['email'] = $email;
+        // $ins['subtotal'] = 
+        // $ins['tax'] = 
+        // $ins['discount'] = 
+        $ins['total'] = $total_cost;
+        $ins['status'] = 0;
+        $ins['added_by'] = Auth::id();
+
+        $invoice_id = Invoice::create($ins)->id;
+
+        $up_data = [];
+        for ($i=0; $i < $limit; $i++) { 
+            $ups['invoice_id'] = $invoice_id;
+            $ups['product_id'] = $_POST['item_'.$i] ?? '';
+            $ups['description'] = $_POST['description_'.$i] ?? '';
+            $ups['qty'] = $_POST['quantity_'.$i] ?? '';
+            $ups['unit_price'] = $_POST['unit_price_'.$i] ?? '';
+            $ups['discount'] = ( !empty($_POST['discount_'.$i]) ? $_POST['discount_'.$i]: 0);
+            $ups['tax'] = (!empty($_POST['tax_'.$i]) ? $_POST['tax_'.$i] : 0);
+            $ups['amount'] = $_POST['amount_'.$i] ?? 0;
+
+            InvoiceItem::create($ups);
+            $up_data[] = $ups;
+        }
+        $success = 'Invoice added successfully';
+        return response()->json(['error'=>[$success], 'status' => '0', 'deal_id' => $deal_id, 'type' => 'done']);
 
     }
 }

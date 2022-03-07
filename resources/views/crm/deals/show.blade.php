@@ -126,7 +126,7 @@ form#activites-form>div>label>i {
             </div> 
             
             <div class="tab-pane" id="Invoices">
-                <p>Invoices</p>
+                @include('crm.deals._invoice_form')
             </div>
         </div>
     </div>
@@ -178,6 +178,52 @@ form#activites-form>div>label>i {
            })
            return false;
     }
+
+    function get_add_items() {
+        var limit = $('#limit').val();
+        limit = parseInt(limit);
+        limit++;
+        $('#limit').val(limit);
+        $.ajaxSetup({
+                       headers: {
+                           'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                       }
+                   });
+        $.ajax({
+            url: "{{ route('invoices.add_items') }}",
+            type: 'POST',
+            data: {limit:limit},
+            success: function(response) {
+                $('#invoice-items').append(response);
+            }            
+        });
+    }
+
+    function remove_items(limit) {
+        $('#add-product-tab_'+limit).remove();
+    }
+
+    function get_total(limit) {
+        total = 0;
+        $('.calc').each(function() {
+            amount = 0;
+            price = $(this).find( '#unit_price' ).val();
+            qty = $(this).find( '#qty' ).val();
+            if( isNaN(price) || price == '' || price == undefined ){price=0;}
+            if( isNaN(qty) || qty == '' || qty == undefined ){qty=0;}
+
+            amount = parseInt(price) * parseInt(qty);
+            total += amount;
+            $(this).find('#amount').val(amount);
+
+        });
+        $('#subtotal').html(total);
+        $('#total_cost').val(total);
+
+    }
+
+     
+
 </script>
 
 @endsection 

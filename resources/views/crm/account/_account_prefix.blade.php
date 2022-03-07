@@ -36,7 +36,7 @@
         </tbody>
     </table>
 
-    <div class="row mb-3">
+    {{-- <div class="row mb-3">
         <div class="col-12 mb-3 text-end">
             
         </div>
@@ -67,7 +67,7 @@
                 </div>
             @endif
         </div>
-    </div> 
+    </div>  --}}
 </form> 
 <script>
 
@@ -86,7 +86,7 @@ $("#addprefRow").click(function () {
         <tr id="inputFormRow">
             <td style="padding: 0 !important"><input type="text" name="prefix_field[]" value="" class="form-control m-input" placeholder="Prefix Field" autocomplete="off" required></td>
             <td style="padding: 0 !important"><input type="text" name="prefix_value[]" value="" class="form-control m-input" placeholder="PH/DL/LD" autocomplete="off" required</td>
-            <td class="text-center" style="padding: 0 !important"><button id="removeprefRow" type="button" class="btn btn-danger"><i class="mdi mdi-trash-can"></i></button></td>
+            <td class="text-center" style="padding: 0 !important"><button id="removeprefRow" type="button" class="btn btn-danger">Remove</button></td>
         </tr>
     `);
 });
