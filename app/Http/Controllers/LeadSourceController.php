@@ -42,11 +42,11 @@ class LeadSourceController extends Controller
         $total_list         = LeadSource::count();
         // DB::enableQueryLog();
         if( $order != 'id') {
-            $list               = LeadSource::orderBy($order, $dir)
+            $list               = LeadSource::skip($start)->take($limit)->orderBy($order, $dir)
                                 ->search( $search )
                                 ->get();
         } else {
-            $list               = LeadSource::Latests()
+            $list               = LeadSource::skip($start)->take($limit)->Latests()
                                 ->search( $search )
                                 ->get();
         }
@@ -66,7 +66,9 @@ class LeadSourceController extends Controller
                 if( $leadsource->status == 1 ) {
                     $leadsource_status                     = '<div class="badge bg-success" role="button" onclick="change_status(\'leadsource\','.$leadsource->id.', 0)"> Active </div>';
                 }
-                $action = '<a href="javascript:void(0);" class="action-icon" onclick="return get_add_modal(\'leadsource\', '.$leadsource->id.')"> <i class="mdi mdi-square-edit-outline"></i></a>
+                $action = '
+                <a href="javascript:void(0);" class="action-icon" onclick="return view_modal(\'leadsource\', '.$leadsource->id.')"> <i class="mdi mdi-eye"></i></a>
+                <a href="javascript:void(0);" class="action-icon" onclick="return get_add_modal(\'leadsource\', '.$leadsource->id.')"> <i class="mdi mdi-square-edit-outline"></i></a>
                 <a href="javascript:void(0);" class="action-icon" onclick="return common_soft_delete(\'leadsource\', '.$leadsource->id.')"> <i class="mdi mdi-delete"></i></a>';
 
                 $nested_data[ 'id' ]                = '<div class="form-check">
@@ -103,6 +105,17 @@ class LeadSourceController extends Controller
         return view('crm.leadsource.add_edit', $params);
         echo json_encode(['view' => $view]);
         return true;
+    }
+
+    public function view(Request $request) {
+        if (! $request->ajax()) {
+            return response('Forbidden.', 403);
+        }
+        $id = $request->id;
+        $modal_title = 'Lead Source Info';
+        $info = LeadSource::find($id);
+        $params = ['modal_title' => $modal_title, 'id' => $id ?? '', 'info' => $info ?? ''];
+        return view('crm.leadsource.view', $params);
     }
 
     public function save(Request $request)

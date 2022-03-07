@@ -34,11 +34,11 @@ class ProductController extends Controller
         $total_list         = Product::count();
         // DB::enableQueryLog();
         if( $order != 'id') {
-            $list               = Product::whereRaw('created_at')->orderBy($order, $dir)
+            $list               = Product::skip($start)->take($limit)->whereRaw('created_at')->orderBy($order, $dir)
                                 ->search( $search )
                                 ->get();
         } else {
-            $list               = Product::whereRaw('created_at')->Latests()
+            $list               = Product::skip($start)->take($limit)->whereRaw('created_at')->Latests()
                                 ->search( $search )
                                 ->get();
         }
@@ -58,7 +58,9 @@ class ProductController extends Controller
                 if( $products->status == 1 ) {
                     $products_status                     = '<div class="badge bg-success" role="button" onclick="change_status(\'products\','.$products->id.', 0)"> Active </div>';
                 }
-                $action = '<a href="javascript:void(0);" class="action-icon" onclick="return get_add_modal(\'products\', '.$products->id.')"> <i class="mdi mdi-square-edit-outline"></i></a>
+                $action = '
+                <a href="javascript:void(0);" class="action-icon" onclick="return view_modal(\'products\', '.$products->id.')"> <i class="mdi mdi-eye"></i></a>
+                <a href="javascript:void(0);" class="action-icon" onclick="return get_add_modal(\'products\', '.$products->id.')"> <i class="mdi mdi-square-edit-outline"></i></a>
                 <a href="javascript:void(0);" class="action-icon" onclick="return common_soft_delete(\'products\', '.$products->id.')"> <i class="mdi mdi-delete"></i></a>';
 
                 $nested_data[ 'id' ]                = '<div class="form-check">
@@ -97,8 +99,18 @@ class ProductController extends Controller
         }
         $params = ['modal_title' => $modal_title, 'id' => $id ?? '', 'info' => $info ?? '', 'product_code' => $product_code, 'from' => $from];
         return view('crm.products.add_edit', $params);
-        echo json_encode(['view' => $view]);
-        return true;
+        
+    }
+
+    public function view(Request $request) {
+        if (! $request->ajax()) {
+            return response('Forbidden.', 403);
+        }
+        $id = $request->id;
+        $modal_title = 'Product Info';
+        $info = Product::find($id);
+        $params = ['modal_title' => $modal_title, 'id' => $id ?? '', 'info' => $info ?? ''];
+        return view('crm.products.view', $params);
     }
 
     public function save(Request $request)

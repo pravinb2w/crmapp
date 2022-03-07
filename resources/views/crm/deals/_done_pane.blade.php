@@ -83,6 +83,28 @@
                 $tmp['done_at'] = Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $info->created_at)->format('Y-m-d H:i:s');
                 $tmp['added'] = $info->added;
                 $list[] = $tmp;
+
+                if( isset($info->won_at) && !empty($info->won_at) ) {
+                    $tmp['activity_type'] = 'Deal';
+                    $tmp['subject'] = 'Deal Won';
+                    $tmp['deal_id'] = $info->id;
+                    $tmp['id'] = '';
+                    $tmp['done_at'] = Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $info->won_at)->format('Y-m-d H:i:s');
+                    $tmp['added'] = $info->added;
+                    $list[] = $tmp;
+                }
+
+                if( isset($info->loss_at) && !empty($info->loss_at) ) {
+                    $tmp['activity_type'] = 'Deal';
+                    $tmp['subject'] = 'Deal Loss';
+                    $tmp['deal_id'] = $info->id;
+                    $tmp['id'] = '';
+                    $tmp['done_at'] = Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $info->loss_at)->format('Y-m-d H:i:s');
+                    $tmp['added'] = $info->added;
+                    $list[] = $tmp;
+                }
+                
+
             }
             foreach ($list as $key => $part) {
                 $sort[$key] = strtotime($part['done_at']);

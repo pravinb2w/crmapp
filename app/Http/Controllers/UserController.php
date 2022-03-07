@@ -38,11 +38,11 @@ class UserController extends Controller
         $total_list         = User::whereNotNull('role_id')->count();
         // DB::enableQueryLog();
         if( $order != 'id') {
-            $list               = User::whereNotNull('role_id')->orderBy($order, $dir)
+            $list               = User::skip($start)->take($limit)->whereNotNull('role_id')->orderBy($order, $dir)
                                 ->search( $search )
                                 ->get();
         } else {
-            $list               = User::whereNotNull('role_id')->Latests()
+            $list               = User::skip($start)->take($limit)->whereNotNull('role_id')->Latests()
                                 ->search( $search )
                                 ->get();
         }
@@ -62,7 +62,8 @@ class UserController extends Controller
                 if( $users->status == 1 ) {
                     $users_status                     = '<div class="badge bg-success" role="button" onclick="change_status(\'users\','.$users->id.', 0)"> Active </div>';
                 }
-                $action = '<a href="javascript:void(0);" class="action-icon"> <i class="mdi mdi-eye"></i></a>
+                $action = '
+                <a href="javascript:void(0);" class="action-icon" onclick="return view_modal(\'users\', '.$users->id.')"> <i class="mdi mdi-eye"></i></a>
                 <a href="javascript:void(0);" class="action-icon" onclick="return get_add_modal(\'users\', '.$users->id.')"> <i class="mdi mdi-square-edit-outline"></i></a>
                 <a href="javascript:void(0);" class="action-icon" onclick="return common_soft_delete(\'users\', '.$users->id.')"> <i class="mdi mdi-delete"></i></a>';
 
@@ -102,6 +103,17 @@ class UserController extends Controller
         $params = ['modal_title' => $modal_title, 'id' => $id ?? '', 'info' => $info ?? '', 'roles' => $roles];
         return view('crm.user.add_edit', $params);
        
+    }
+
+    public function view(Request $request) {
+        if (! $request->ajax()) {
+            return response('Forbidden.', 403);
+        }
+        $id = $request->id;
+        $modal_title = 'User Info';
+        $info = User::find($id);
+        $params = ['modal_title' => $modal_title, 'id' => $id ?? '', 'info' => $info ?? ''];
+        return view('crm.user.view', $params);
     }
 
     public function save(Request $request)

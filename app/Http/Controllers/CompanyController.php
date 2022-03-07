@@ -39,7 +39,7 @@ class CompanyController extends Controller
                                 ->search( $search )
                                 ->get();
         } else {
-            $list               = CompanySettings::whereNotNull('created_at')->Latests()
+            $list               = CompanySettings::skip($start)->take($limit)->whereNotNull('created_at')->Latests()
                                 ->search( $search )
                                 ->get();
         }

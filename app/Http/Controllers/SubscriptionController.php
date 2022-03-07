@@ -34,11 +34,11 @@ class SubscriptionController extends Controller
         $total_list         = Subscription::count();
         // DB::enableQueryLog();
         if( $order != 'id') {
-            $list               = Subscription::orderBy($order, $dir)
+            $list               = Subscription::skip($start)->take($limit)->orderBy($order, $dir)
                                 ->search( $search )
                                 ->get();
         } else {
-            $list               = Subscription::Latests()
+            $list               = Subscription::skip($start)->take($limit)->Latests()
                                 ->search( $search )
                                 ->get();
         }
@@ -96,8 +96,18 @@ class SubscriptionController extends Controller
         }
         $params = ['modal_title' => $modal_title, 'id' => $id ?? '', 'info' => $info ?? ''];
         return view('crm.subscription.add_edit', $params);
-        echo json_encode(['view' => $view]);
-        return true;
+        
+    }
+
+    public function view(Request $request) {
+        if (! $request->ajax()) {
+            return response('Forbidden.', 403);
+        }
+        $id = $request->id;
+        $modal_title = 'Subscription Info';
+        $info = Subscription::find($id);
+        $params = ['modal_title' => $modal_title, 'id' => $id ?? '', 'info' => $info ?? ''];
+        return view('crm.subscription.view', $params);
     }
 
     public function save(Request $request)
@@ -180,16 +190,4 @@ class SubscriptionController extends Controller
         return response()->json(['error'=>[$delete_msg], 'status' => '0']);
     }
 
-    public function view(Request $request) {
-        if (! $request->ajax()) {
-            return response('Forbidden.', 403);
-        }
-        $id = $request->id;
-        $modal_title = 'Subscription Info';
-        $info = Subscription::find($id);
-        $params = ['modal_title' => $modal_title, 'id' => $id ?? '', 'info' => $info ?? ''];
-        return view('crm.subscription.view', $params);
-        echo json_encode(['view' => $view]);
-        return true;
-    }
 }

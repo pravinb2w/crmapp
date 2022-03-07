@@ -33,11 +33,11 @@ class CountryController extends Controller
         $total_list         = Country::count();
         // DB::enableQueryLog();
         if( $order != 'id') {
-            $list               = Country::whereRaw('created_at')->orderBy($order, $dir)
+            $list               = Country::skip($start)->take($limit)->whereRaw('created_at')->orderBy($order, $dir)
                                 ->search( $search )
                                 ->get();
         } else {
-            $list               = Country::whereRaw('created_at')->Latests()
+            $list               = Country::skip($start)->take($limit)->whereRaw('created_at')->Latests()
                                 ->search( $search )
                                 ->get();
         }
@@ -57,7 +57,9 @@ class CountryController extends Controller
                 if( $county->status == 1 ) {
                     $county_status                     = '<div class="badge bg-success" role="button" onclick="change_status(\'country\','.$county->id.', 0)"> Active </div>';
                 }
-                $action = '<a href="javascript:void(0);" class="action-icon" onclick="return get_add_modal(\'country\', '.$county->id.')"> <i class="mdi mdi-square-edit-outline"></i></a>
+                $action = '
+                <a href="javascript:void(0);" class="action-icon" onclick="return view_modal(\'country\', '.$county->id.')"> <i class="mdi mdi-eye"></i></a>
+                <a href="javascript:void(0);" class="action-icon" onclick="return get_add_modal(\'country\', '.$county->id.')"> <i class="mdi mdi-square-edit-outline"></i></a>
                 <a href="javascript:void(0);" class="action-icon" onclick="return common_soft_delete(\'country\', '.$county->id.')"> <i class="mdi mdi-delete"></i></a>';
 
                 $nested_data[ 'id' ]                = '<div class="form-check">
@@ -97,6 +99,17 @@ class CountryController extends Controller
         return view('crm.country.add_edit', $params);
         echo json_encode(['view' => $view]);
         return true;
+    }
+
+    public function view(Request $request) {
+        if (! $request->ajax()) {
+            return response('Forbidden.', 403);
+        }
+        $id = $request->id;
+        $modal_title = 'Country Info';
+        $info = Country::find($id);
+        $params = ['modal_title' => $modal_title, 'id' => $id ?? '', 'info' => $info ?? ''];
+        return view('crm.country.view', $params);
     }
 
     public function save(Request $request)

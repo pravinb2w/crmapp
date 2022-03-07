@@ -54,6 +54,7 @@ Route::middleware([SetViewVariable::class, 'auth'])->group(function(){
         Route::post('/edit', [App\Http\Controllers\ActivityController::class, 'add_edit_modal'])->name('activities.edit');
 
         Route::post('/save', [App\Http\Controllers\ActivityController::class, 'save'])->name('activities.save');
+        Route::post('/view', [App\Http\Controllers\ActivityController::class, 'view'])->name('activities.view');
         Route::post('/list', [App\Http\Controllers\ActivityController::class, 'ajax_list'])->name('activities.list');
         Route::post('/delete', [App\Http\Controllers\ActivityController::class, 'delete'])->name('activities.delete');
         Route::post('/status', [App\Http\Controllers\ActivityController::class, 'change_status'])->name('activities.status');
@@ -64,6 +65,7 @@ Route::middleware([SetViewVariable::class, 'auth'])->group(function(){
         Route::get('/', [App\Http\Controllers\NoteController::class, 'index'])->name('notes');
         Route::post('/add', [App\Http\Controllers\NoteController::class, 'add_edit'])->name('notes.add');
         Route::post('/save', [App\Http\Controllers\NoteController::class, 'save'])->name('notes.save');
+        Route::post('/view', [App\Http\Controllers\NoteController::class, 'view'])->name('notes.view');
         Route::post('/list', [App\Http\Controllers\NoteController::class, 'ajax_list'])->name('notes.list');
         Route::post('/delete', [App\Http\Controllers\NoteController::class, 'delete'])->name('notes.delete');
         Route::post('/status', [App\Http\Controllers\NoteController::class, 'change_status'])->name('notes.status');
@@ -82,6 +84,7 @@ Route::middleware([SetViewVariable::class, 'auth'])->group(function(){
         Route::get('/', [App\Http\Controllers\ProductController::class, 'index'])->name('products');
         Route::post('/add', [App\Http\Controllers\ProductController::class, 'add_edit'])->name('products.add');
         Route::post('/save', [App\Http\Controllers\ProductController::class, 'save'])->name('products.save');
+        Route::post('/view', [App\Http\Controllers\ProductController::class, 'view'])->name('products.view');
         Route::post('/list', [App\Http\Controllers\ProductController::class, 'ajax_list'])->name('products.list');
         Route::post('/delete', [App\Http\Controllers\ProductController::class, 'delete'])->name('products.delete');
         Route::post('/status', [App\Http\Controllers\ProductController::class, 'change_status'])->name('products.status');
@@ -118,6 +121,7 @@ Route::middleware([SetViewVariable::class, 'auth'])->group(function(){
         Route::post('/mark_as_done', [App\Http\Controllers\DealsController::class, 'mark_as_done'])->name('deals.mark_as_done');
         Route::post('/files/save', [App\Http\Controllers\DealsController::class, 'files_save'])->name('deals.save-files');
         Route::post('/stage/complete', [App\Http\Controllers\DealsController::class, 'make_stage_completed'])->name('deals.make_stage_completed');
+        Route::post('/finalize', [App\Http\Controllers\DealsController::class, 'deal_finalize'])->name('deals.finalize');
 
     });
     //tasks route
@@ -125,6 +129,7 @@ Route::middleware([SetViewVariable::class, 'auth'])->group(function(){
         Route::get('/', [App\Http\Controllers\TaskController::class, 'index'])->name('tasks');
         Route::post('/add', [App\Http\Controllers\TaskController::class, 'add_edit'])->name('tasks.add');
         Route::post('/save', [App\Http\Controllers\TaskController::class, 'save'])->name('tasks.save');
+        Route::post('/view', [App\Http\Controllers\TaskController::class, 'view'])->name('tasks.view');
         Route::post('/list', [App\Http\Controllers\TaskController::class, 'ajax_list'])->name('tasks.list');
         Route::post('/delete', [App\Http\Controllers\TaskController::class, 'delete'])->name('tasks.delete');
         Route::post('/status', [App\Http\Controllers\TaskController::class, 'change_status'])->name('tasks.status');
@@ -139,12 +144,13 @@ Route::middleware([SetViewVariable::class, 'auth'])->group(function(){
         Route::post('/delete', [App\Http\Controllers\OrganizationController::class, 'delete'])->name('organizations.delete');
         Route::post('/status', [App\Http\Controllers\OrganizationController::class, 'change_status'])->name('organizations.status');
     });
-    
+
     Route::prefix('settings')->group(function () {
         Route::get('/', [App\Http\Controllers\SettingController::class, 'index'])->name('settings');
         //users route
         Route::get('/users', [App\Http\Controllers\UserController::class, 'index'])->name('users');
         Route::post('/users/add', [App\Http\Controllers\UserController::class, 'add_edit'])->name('users.add');
+        Route::post('/users/view', [App\Http\Controllers\UserController::class, 'view'])->name('users.view');
         Route::post('/users/save', [App\Http\Controllers\UserController::class, 'save'])->name('users.save');
         Route::post('/users/list', [App\Http\Controllers\UserController::class, 'ajax_list'])->name('users.list');
         Route::post('/users/delete', [App\Http\Controllers\UserController::class, 'delete'])->name('users.delete');
@@ -152,12 +158,14 @@ Route::middleware([SetViewVariable::class, 'auth'])->group(function(){
         //roles route
         Route::get('/roles', [App\Http\Controllers\RoleController::class, 'index'])->name('roles');
         Route::post('/roles/add', [App\Http\Controllers\RoleController::class, 'add_edit'])->name('roles.add');
+        Route::post('/roles/view', [App\Http\Controllers\RoleController::class, 'view'])->name('roles.view');
         Route::post('/roles/save', [App\Http\Controllers\RoleController::class, 'save'])->name('roles.save');
         Route::post('/roles/list', [App\Http\Controllers\RoleController::class, 'ajax_list'])->name('roles.list');
         Route::post('/roles/delete', [App\Http\Controllers\RoleController::class, 'delete'])->name('roles.delete');
         Route::post('/roles/status', [App\Http\Controllers\RoleController::class, 'change_status'])->name('roles.status');
         //permission route
         Route::get('/permissions', [App\Http\Controllers\PermissionController::class, 'index'])->name('permissions');
+        Route::post('/permissions/view', [App\Http\Controllers\PermissionController::class, 'view'])->name('permissions.view');
         Route::post('/permissions/add', [App\Http\Controllers\PermissionController::class, 'add_edit'])->name('permissions.add');
         Route::post('/permissions/save', [App\Http\Controllers\PermissionController::class, 'save'])->name('permissions.save');
         Route::post('/permissions/list', [App\Http\Controllers\PermissionController::class, 'ajax_list'])->name('permissions.list');

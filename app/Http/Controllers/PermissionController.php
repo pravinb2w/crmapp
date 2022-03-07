@@ -35,11 +35,11 @@ class PermissionController extends Controller
         $total_list         = Permission::count();
         // DB::enableQueryLog();
         if( $order != 'id') {
-            $list           = Permission::whereRaw('created_at')->orderBy($order, $dir)
+            $list           = Permission::skip($start)->take($limit)->whereRaw('created_at')->orderBy($order, $dir)
                                 ->search( $search )
                                 ->get();
         } else {
-            $list           = Permission::whereRaw('created_at')->Latests()
+            $list           = Permission::skip($start)->take($limit)->whereRaw('created_at')->Latests()
                                 ->search( $search )
                                 ->get();
         }

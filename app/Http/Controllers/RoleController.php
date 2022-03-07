@@ -34,11 +34,11 @@ class RoleController extends Controller
         $total_list         = Role::count();
         // DB::enableQueryLog();
         if( $order != 'id') {
-            $list               = Role::orderBy($order, $dir)
+            $list               = Role::skip($start)->take($limit)->orderBy($order, $dir)
                                 ->search( $search )
                                 ->get();
         } else {
-            $list               = Role::Latests()
+            $list               = Role::skip($start)->take($limit)->Latests()
                                 ->search( $search )
                                 ->get();
         }
@@ -58,7 +58,8 @@ class RoleController extends Controller
                 if( $roles->status == '1' ) {
                     $roles_status                     = '<div class="badge bg-success"> Active </div>';
                 }
-                $action = '<a href="javascript:void(0);" class="action-icon"> <i class="mdi mdi-eye"></i></a>
+                $action = '
+                <a href="javascript:void(0);" class="action-icon" onclick="return view_modal(\'roles\', '.$roles->id.')"> <i class="mdi mdi-eye"></i></a>
                 <a href="javascript:void(0);" class="action-icon" onclick="return get_add_modal(\'roles\', '.$roles->id.')"> <i class="mdi mdi-square-edit-outline"></i></a>
                 <a href="javascript:void(0);" class="action-icon" onclick="return common_soft_delete(\'roles\', '.$roles->id.')"> <i class="mdi mdi-delete"></i></a>';
 
@@ -97,6 +98,17 @@ class RoleController extends Controller
         return view('crm.roles.add_edit', $params);
         echo json_encode(['view' => $view]);
         return true;
+    }
+
+    public function view(Request $request) {
+        if (! $request->ajax()) {
+            return response('Forbidden.', 403);
+        }
+        $id = $request->id;
+        $modal_title = 'Role Info';
+        $info = Role::find($id);
+        $params = ['modal_title' => $modal_title, 'id' => $id ?? '', 'info' => $info ?? ''];
+        return view('crm.roles.view', $params);
     }
 
     public function save(Request $request)

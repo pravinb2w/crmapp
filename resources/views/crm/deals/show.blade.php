@@ -80,7 +80,7 @@ form#activites-form>div>label>i {
     </div>  
 
     <div class="row card p-4 mb-3">
-        <div class="col-12">
+        <div class="col-12" id="deal_info">
             @include('crm.deals._info')
         </div>
     </div>
@@ -136,6 +136,48 @@ form#activites-form>div>label>i {
         </div>
     </div>
 </div>
+<script>
+    function deal_finalize(status, id) {
+        var comman;
+        status = parseInt(status);
+        if( status == 1 ) {
+            comman = 'You are trying to reopen Deals';
+        } else if( status == 2 ) {
+            comman  = 'You are trying to Won Deals';
+        } else {
+            comman  = 'You are trying to Loss Deals';
+        }
 
+       Swal.fire({
+           title: 'Are you sure?',
+           text: comman,
+           icon: 'warning',
+           showCancelButton: true,
+           confirmButtonColor: '#3085d6',
+           cancelButtonColor: '#d33',
+           confirmButtonText: 'Yes, do it!'
+           }).then((result) => {
+               /* Read more about isConfirmed, isDenied below */
+               if (result.isConfirmed) {
+                   var ajax_url = "{{ route('deals.finalize') }}";
+                   $.ajaxSetup({
+                       headers: {
+                           'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                       }
+                   });
+                   $.ajax({
+                       url: ajax_url,
+                       method:'POST',
+                       data: {status:status, id:id},
+                       success:function(response){
+                           $('#deal_info').html(response);
+                       }      
+                   });
+                   Swal.fire('Updated!', '', 'success')
+               } 
+           })
+           return false;
+    }
+</script>
 
 @endsection 

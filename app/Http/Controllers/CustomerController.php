@@ -35,11 +35,11 @@ class CustomerController extends Controller
         $total_list         = Customer::count();
         // DB::enableQueryLog();
         if( $order != 'id') {
-            $list               = Customer::orderBy($order, $dir)
+            $list               = Customer::skip($start)->take($limit)->orderBy($order, $dir)
                                 ->search( $search )
                                 ->get();
         } else {
-            $list               = Customer::Latests()
+            $list               = Customer::skip($start)->take($limit)->Latests()
                                 ->search( $search )
                                 ->get();
         }
@@ -59,7 +59,9 @@ class CustomerController extends Controller
                 if( $customers->status == 1 ) {
                     $customers_status                     = '<div class="badge bg-success" role="button" onclick="change_status(\'customers\','.$customers->id.', 0)"> Active </div>';
                 }
-                $action = '<a href="javascript:void(0);" class="action-icon" onclick="return get_add_modal(\'customers\', '.$customers->id.')"> <i class="mdi mdi-square-edit-outline"></i></a>
+                $action = '
+                <a href="javascript:void(0);" class="action-icon" onclick="return view_modal(\'customers\', '.$customers->id.')"> <i class="mdi mdi-eye"></i></a>
+                <a href="javascript:void(0);" class="action-icon" onclick="return get_add_modal(\'customers\', '.$customers->id.')"> <i class="mdi mdi-square-edit-outline"></i></a>
                 <a href="javascript:void(0);" class="action-icon" onclick="return common_soft_delete(\'customers\', '.$customers->id.')"> <i class="mdi mdi-delete"></i></a>';
 
                 $nested_data[ 'id' ]                = '<div class="form-check">
@@ -99,6 +101,18 @@ class CustomerController extends Controller
         return view('crm.customers.add_edit', $params);
         echo json_encode(['view' => $view]);
         return true;
+    }
+
+    public function view(Request $request) {
+        if (! $request->ajax()) {
+            return response('Forbidden.', 403);
+        }
+        $id = $request->id;
+        $modal_title = 'Customer Info';
+        $info = Customer::with(['secondary_email', 'secondary_mobile'])->find($id);
+        $params = ['modal_title' => $modal_title, 'id' => $id ?? '', 'info' => $info ?? ''];
+        return view('crm.customers.view', $params);
+        
     }
 
     public function autocomplete_organization(Request $request) {

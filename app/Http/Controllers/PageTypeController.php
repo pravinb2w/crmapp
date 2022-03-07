@@ -34,11 +34,11 @@ class PageTypeController extends Controller
         $total_list         = PageType::count();
         // DB::enableQueryLog();
         if( $order != 'id') {
-            $list               = PageType::whereRaw('created_at')->orderBy($order, $dir)
+            $list               = PageType::skip($start)->take($limit)->whereRaw('created_at')->orderBy($order, $dir)
                                 ->search( $search )
                                 ->get();
         } else {
-            $list               = PageType::whereRaw('created_at')->Latests()
+            $list               = PageType::skip($start)->take($limit)->whereRaw('created_at')->Latests()
                                 ->search( $search )
                                 ->get();
         }
@@ -58,7 +58,9 @@ class PageTypeController extends Controller
                 if( $pagetype->status == 1 ) {
                     $pagetype_status                     = '<div class="badge bg-success" role="button" onclick="change_status(\'pagetype\','.$pagetype->id.', 0)"> Active </div>';
                 }
-                $action = '<a href="javascript:void(0);" class="action-icon" onclick="return get_add_modal(\'pagetype\', '.$pagetype->id.')"> <i class="mdi mdi-square-edit-outline"></i></a>
+                $action = '
+                <a href="javascript:void(0);" class="action-icon" onclick="return view_modal(\'pagetype\', '.$pagetype->id.')"> <i class="mdi mdi-eye"></i></a>
+                <a href="javascript:void(0);" class="action-icon" onclick="return get_add_modal(\'pagetype\', '.$pagetype->id.')"> <i class="mdi mdi-square-edit-outline"></i></a>
                 <a href="javascript:void(0);" class="action-icon" onclick="return common_soft_delete(\'pagetype\', '.$pagetype->id.')"> <i class="mdi mdi-delete"></i></a>';
 
                 $nested_data[ 'id' ]                = '<div class="form-check">
@@ -97,6 +99,17 @@ class PageTypeController extends Controller
         return view('crm.pagetype.add_edit', $params);
         echo json_encode(['view' => $view]);
         return true;
+    }
+
+    public function view(Request $request) {
+        if (! $request->ajax()) {
+            return response('Forbidden.', 403);
+        }
+        $id = $request->id;
+        $modal_title = 'Page Type Info';
+        $info = PageType::find($id);
+        $params = ['modal_title' => $modal_title, 'id' => $id ?? '', 'info' => $info ?? ''];
+        return view('crm.pagetype.view', $params);
     }
 
     public function save(Request $request)

@@ -33,11 +33,11 @@ class OrganizationController extends Controller
         $total_list         = Organization::count();
         // DB::enableQueryLog();
         if( $order != 'id') {
-            $list               = Organization::orderBy($order, $dir)
+            $list               = Organization::skip($start)->take($limit)->orderBy($order, $dir)
                                 ->search( $search )
                                 ->get();
         } else {
-            $list               = Organization::Latests()
+            $list               = Organization::skip($start)->take($limit)->Latests()
                                 ->search( $search )
                                 ->get();
         }
@@ -57,7 +57,9 @@ class OrganizationController extends Controller
                 if( $organizations->status == 1 ) {
                     $organizations_status                     = '<div class="badge bg-success" role="button" onclick="change_status(\'organizations\','.$organizations->id.', 0)"> Active </div>';
                 }
-                $action = '<a href="javascript:void(0);" class="action-icon" onclick="return get_add_modal(\'organizations\', '.$organizations->id.')"> <i class="mdi mdi-square-edit-outline"></i></a>
+                $action = '
+                <a href="javascript:void(0);" class="action-icon" onclick="return view_modal(\'organizations\', '.$organizations->id.')"> <i class="mdi mdi-eye"></i></a>
+                <a href="javascript:void(0);" class="action-icon" onclick="return get_add_modal(\'organizations\', '.$organizations->id.')"> <i class="mdi mdi-square-edit-outline"></i></a>
                 <a href="javascript:void(0);" class="action-icon" onclick="return common_soft_delete(\'organizations\', '.$organizations->id.')"> <i class="mdi mdi-delete"></i></a>';
 
                 $nested_data[ 'id' ]                = '<div class="form-check">
@@ -96,8 +98,17 @@ class OrganizationController extends Controller
         }
         $params = ['modal_title' => $modal_title, 'id' => $id ?? '', 'info' => $info ?? '', 'from' => $from];
         return view('crm.organization.add_edit', $params);
-        echo json_encode(['view' => $view]);
-        return true;
+    }
+
+    public function view(Request $request) {
+        if (! $request->ajax()) {
+            return response('Forbidden.', 403);
+        }
+        $id = $request->id;
+        $modal_title = 'Organization Info';
+        $info = Organization::find($id);
+        $params = ['modal_title' => $modal_title, 'id' => $id ?? '', 'info' => $info ?? ''];
+        return view('crm.organization.view', $params);
     }
 
     public function save(Request $request)

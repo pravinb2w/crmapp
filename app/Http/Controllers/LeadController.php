@@ -39,11 +39,11 @@ class LeadController extends Controller
         $total_list         = lead::count();
         // DB::enableQueryLog();
         if( $order != 'id') {
-            $list               = lead::orderBy($order, $dir)
+            $list               = lead::skip($start)->take($limit)->orderBy($order, $dir)
                                 ->search( $search )
                                 ->get();
         } else {
-            $list               = lead::Latests()
+            $list               = lead::skip($start)->take($limit)->Latests()
                                 ->search( $search )
                                 ->get();
         }

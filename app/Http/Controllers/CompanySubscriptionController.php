@@ -37,11 +37,11 @@ class CompanySubscriptionController extends Controller
         $total_list         = CompanySubscription::count();
         // DB::enableQueryLog();
         if( $order != 'id') {
-            $list               = CompanySubscription::orderBy($order, $dir)
+            $list               = CompanySubscription::skip($start)->take($limit)->orderBy($order, $dir)
                                 ->search( $search )
                                 ->get();
         } else {
-            $list               = CompanySubscription::Latests()
+            $list               = CompanySubscription::skip($start)->take($limit)->Latests()
                                 ->search( $search )
                                 ->get();
         }
@@ -62,7 +62,9 @@ class CompanySubscriptionController extends Controller
                 if( $subscriptions->status == '1' ) {
                     $subscriptions_status                     = '<div class="badge bg-success"> Active </div>';
                 }
-                $action = '<a href="javascript:void(0);" class="action-icon" onclick="return get_add_modal(\'company-subscriptions\', '.$subscriptions->id.')"> <i class="mdi mdi-square-edit-outline"></i></a>
+                $action = '
+                <a href="javascript:void(0);" class="action-icon" onclick="return view_modal(\'company-subscriptions\', '.$subscriptions->id.')"> <i class="mdi mdi-eye"></i></a>
+                <a href="javascript:void(0);" class="action-icon" onclick="return get_add_modal(\'company-subscriptions\', '.$subscriptions->id.')"> <i class="mdi mdi-square-edit-outline"></i></a>
                 <a href="javascript:void(0);" class="action-icon" onclick="return common_soft_delete(\'company-subscriptions\', '.$subscriptions->id.')"> <i class="mdi mdi-delete"></i></a>';
 
                 $nested_data[ 'id' ]                = '<div class="form-check">
@@ -103,8 +105,18 @@ class CompanySubscriptionController extends Controller
         }
         $params = ['modal_title' => $modal_title, 'id' => $id ?? '', 'info' => $info ?? '', 'company' => $company, 'subscriptions' => $subscriptions ];
         return view('crm.company_subscription.add_edit', $params);
-        echo json_encode(['view' => $view]);
-        return true;
+        
+    }
+
+    public function view(Request $request) {
+        if (! $request->ajax()) {
+            return response('Forbidden.', 403);
+        }
+        $id = $request->id;
+        $modal_title = 'Company Subscription Info';
+        $info = CompanySubscription::find($id);
+        $params = ['modal_title' => $modal_title, 'id' => $id ?? '', 'info' => $info ?? ''];
+        return view('crm.company_subscription.view', $params);
     }
 
     public function save(Request $request)
@@ -188,19 +200,6 @@ class CompanySubscriptionController extends Controller
             return response()->json(['error'=>[$success], 'status' => '0']);
         }
         return response()->json(['error'=>$validator->errors()->all(), 'status' => '1']);
-    }
-
-    public function view(Request $request) {
-        if (! $request->ajax()) {
-            return response('Forbidden.', 403);
-        }
-        $id = $request->id;
-        $modal_title = 'Company Subscription Info';
-        $info = CompanySubscription::find($id);
-        $params = ['modal_title' => $modal_title, 'id' => $id ?? '', 'info' => $info ?? ''];
-        return view('crm.subscription.view', $params);
-        echo json_encode(['view' => $view]);
-        return true;
     }
 
     public function delete(Request $request)

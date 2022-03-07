@@ -39,11 +39,11 @@ class DealsController extends Controller
         $total_list         = Deal::count();
         // DB::enableQueryLog();
         if( $order != 'id') {
-            $list           = Deal::orderBy($order, $dir)
+            $list           = Deal::skip($start)->take($limit)->orderBy($order, $dir)
                                 ->search( $search )
                                 ->get();
         } else {
-            $list           = Deal::Latests()
+            $list           = Deal::skip($start)->take($limit)->Latests()
                                 ->search( $search )
                                 ->get();
         }
@@ -470,5 +470,38 @@ class DealsController extends Controller
         return view('crm.deals._pipeline_view', ['info' => $info, 'stage' => $stage, 
                         'completed_stage' => $completed_stage, 'pipeline' => $pipeline, 'id' => $deal_id]);
         
+    }
+
+    public function deal_finalize(Request $request) {
+        
+        $status = $request->status;
+        $id = $request->id;
+        $deal = Deal::find($id);
+        if( $status == 2 ) {
+            $deal->won_at = date('Y-m-d H:i:s');
+        } else if( $status == 3 ) {
+            $deal->loss_at = date('Y-m-d H:i:s');
+        } else if( $status == 1 ) {
+            $deal->won_at = null;
+            $deal->loss_at = null;
+        }
+        $deal->status = $status;
+        $deal->update();
+
+
+        $stage = DealStage::orderBy('order_by', 'asc')->get();
+        // 
+        $info = Deal::find( $id );
+        $completed_stage = [];
+        $pipeline = [];
+        if( isset( $info->pipeline ) && !empty($info->pipeline ) ) {
+            foreach ($info->pipeline as $key => $value) {
+                $completed_stage[] = $value->stage_id;
+                $pipeline[] = array( 'id' => $value->id, 'stage_id' => $value->stage_id, 'completed_at' => $value->completed_at, 'created_at' => $value->created_at);
+            }
+        }
+        return view('crm.deals._info', ['info' => $info, 'stage' => $stage, 
+                        'completed_stage' => $completed_stage, 'pipeline' => $pipeline, 'id' => $id]);
+
     }
 }

@@ -44,6 +44,26 @@
         return false;
     }
 
+    function view_modal(page_type, id = '') {
+        var ajax_url = set_view_url(page_type);
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        $.ajax({
+            url: ajax_url,
+            method:'POST',
+            data: {page_type:page_type, id:id},
+            // dataType:'json',
+            success:function(res){
+                $('#Mymodal').html(res);
+                $('#Mymodal').modal('show');
+            }
+        })
+        return false;
+    }
+
     function common_soft_delete(page_type, id) {
         Swal.fire({
             title: 'Are you sure?',
@@ -184,6 +204,46 @@
             return ajax_url = '{{ route("deals.add") }}';
         }
     }
+
+    function set_view_url(page_type) {
+        if(page_type=='roles') {
+            return ajax_url = '{{ route("roles.view") }}';
+        } else if(page_type=='users') {
+            return ajax_url = '{{ route("users.view") }}';
+        } else if(page_type=='subscriptions') {
+            return ajax_url = '{{ route("subscriptions.view") }}';
+        } else if(page_type=='company-subscriptions') {
+            return ajax_url = '{{ route("company-subscriptions.view") }}';
+        } else if(page_type=='company') {
+            return ajax_url = '{{ route("company.view") }}';
+        } else if(page_type=='pagetype') {
+            return ajax_url = '{{ route("pagetype.view") }}';
+        } else if(page_type=='dealstages') {
+            return ajax_url = '{{ route("dealstages.view") }}';
+        } else if(page_type=='leadtype') {
+            return ajax_url = '{{ route("leadtype.view") }}';
+        } else if(page_type=='leadsource') {
+            return ajax_url = '{{ route("leadsource.view") }}';
+        } else if(page_type=='country') {
+            return ajax_url = '{{ route("country.view") }}';
+        } else if(page_type=='customers') {
+            return ajax_url = '{{ route("customers.view") }}';
+        } else if(page_type=='organizations') {
+            return ajax_url = '{{ route("organizations.view") }}';
+        } else if(page_type=='teams') {
+            return ajax_url = '{{ route("teams.view") }}';
+        } else if(page_type=='products') {
+            return ajax_url = '{{ route("products.view") }}';
+        } else if(page_type=='tasks') {
+            return ajax_url = '{{ route("tasks.view") }}';
+        } else if(page_type=='activities') {
+            return ajax_url = '{{ route("activities.view") }}';
+        } else if(page_type=='notes') {
+            return ajax_url = '{{ route("notes.view") }}';
+        } else if(page_type=='permissions') {
+            return ajax_url = '{{ route("permissions.view") }}';
+        }
+    }
     function set_delete_url(page_type) {
         if(page_type=='roles') {
             return ajax_url = '{{ route("roles.delete") }}';
@@ -270,29 +330,7 @@
         }
     }
 
-    function set_url(page_type) {
-        if(page_type=='roles') {
-            return ajax_url = '{{ route("roles") }}';
-        } else if(page_type=='users') {
-            return ajax_url = '{{ route("users") }}';
-        } else if(page_type=='subscriptions') {
-            return ajax_url = '{{ route("subscriptions") }}';
-        } else if(page_type=='company-subscriptions') {
-            return ajax_url = '{{ route("company-subscriptions") }}';
-        } else if(page_type=='company') {
-            return ajax_url = '{{ route("company") }}';
-        } else if(page_type=='pagetype') {
-            return ajax_url = '{{ route("pagetype") }}';
-        } else if(page_type=='dealstages') {
-            return ajax_url = '{{ route("dealstages") }}';
-        } else if(page_type=='leadtype') {
-            return ajax_url = '{{ route("leadtype") }}';
-        } else if(page_type=='leadsource') {
-            return ajax_url = '{{ route("leadsource") }}';
-        } else if(page_type=='country') {
-            return ajax_url = '{{ route("country") }}';
-        }
-    }
+    
 
     // Restricts input for the given textbox to the given inputFilter.
 function setInputFilter(textbox, inputFilter) {

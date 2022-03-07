@@ -17,10 +17,17 @@
     </div>
     <div class="col-md-6 mb-3">
         <div class="d-flex align-items-center justify-content-end">
-           
-            <div class="btn me-2 btn-success">Won</div>
-            <div class="btn  me-2 btn-danger">Loss</div>
-            <div class="btn  me-2 btn-info">Reopen</div>
+            @if( $info->status == 0 || $info->status == 1 )
+            <div class="btn me-2 btn-success" onclick="return deal_finalize('2', '{{ $info->id }}')">Won</div>
+            <div class="btn  me-2 btn-danger" onclick="return deal_finalize('3', '{{ $info->id }}')">Loss</div>
+            @else
+                @if( $info->status == 2 )
+                    <div class="btn me-2 btn-success" >Won</div>
+                @else
+                    <div class="btn  me-2 btn-danger" >Loss</div>
+                @endif
+            <div class="btn  me-2 btn-info" onclick="return deal_finalize('1', '{{ $info->id }}')">Reopen</div>
+            @endif
             <div class="dropdown">
                 <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <i class="mdi mdi-dots-vertical"></i>

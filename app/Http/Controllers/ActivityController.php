@@ -35,11 +35,11 @@ class ActivityController extends Controller
         $total_list         = Activity::count();
         // DB::enableQueryLog();
         if( $order != 'id') {
-            $list               = Activity::orderBy($order, $dir)
+            $list               = Activity::skip($start)->take($limit)->orderBy($order, $dir)
                                 ->search( $search )
                                 ->get();
         } else {
-            $list               = Activity::Latests()
+            $list               = Activity::skip($start)->take($limit)->Latests()
                                 ->search( $search )
                                 ->get();
         }
@@ -66,7 +66,9 @@ class ActivityController extends Controller
                 if( $activities->status == 1 ) {
                     $activities_status                     = '<div class="badge bg-success" role="button" onclick="change_status(\'activities\','.$activities->id.', 0)"> Active </div>';
                 }
-                $action = '<a href="javascript:void(0);" class="action-icon" onclick="return get_add_modal(\'activities\', '.$activities->id.')"> <i class="mdi mdi-square-edit-outline"></i></a>
+                $action = '
+                <a href="javascript:void(0);" class="action-icon" onclick="return view_modal(\'activities\', '.$activities->id.')"> <i class="mdi mdi-eye"></i></a>
+                <a href="javascript:void(0);" class="action-icon" onclick="return get_add_modal(\'activities\', '.$activities->id.')"> <i class="mdi mdi-square-edit-outline"></i></a>
                 <a href="javascript:void(0);" class="action-icon" onclick="return common_soft_delete(\'activities\', '.$activities->id.')"> <i class="mdi mdi-delete"></i></a>';
 
                 $nested_data[ 'id' ]                = '<div class="form-check">
@@ -112,6 +114,17 @@ class ActivityController extends Controller
                 'customers' => $customers, 'from' => $from];
         return view('crm.activity.add_edit', $params);
         
+    }
+
+    public function view(Request $request) {
+        if (! $request->ajax()) {
+            return response('Forbidden.', 403);
+        }
+        $id = $request->id;
+        $modal_title = 'Acitivity Info';
+        $info = Activity::find($id);
+        $params = ['modal_title' => $modal_title, 'id' => $id ?? '', 'info' => $info ?? ''];
+        return view('crm.activity.view', $params);
     }
 
     public function save(Request $request)

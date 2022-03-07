@@ -33,11 +33,11 @@ class TeamController extends Controller
         $total_list         = Team::count();
         // DB::enableQueryLog();
         if( $order != 'id') {
-            $list               = Team::orderBy($order, $dir)
+            $list               = Team::skip($start)->take($limit)->orderBy($order, $dir)
                                 ->search( $search )
                                 ->get();
         } else {
-            $list               = Team::Latests()
+            $list               = Team::skip($start)->take($limit)->Latests()
                                 ->search( $search )
                                 ->get();
         }
@@ -57,7 +57,9 @@ class TeamController extends Controller
                 if( $teams->status == 1 ) {
                     $teams_status                     = '<div class="badge bg-success" role="button" onclick="change_status(\'teams\','.$teams->id.', 0)"> Active </div>';
                 }
-                $action = '<a href="javascript:void(0);" class="action-icon" onclick="return get_add_modal(\'teams\', '.$teams->id.')"> <i class="mdi mdi-square-edit-outline"></i></a>
+                $action = '
+                <a href="javascript:void(0);" class="action-icon" onclick="return view_modal(\'teams\', '.$teams->id.')"> <i class="mdi mdi-eye"></i></a>
+                <a href="javascript:void(0);" class="action-icon" onclick="return get_add_modal(\'teams\', '.$teams->id.')"> <i class="mdi mdi-square-edit-outline"></i></a>
                 <a href="javascript:void(0);" class="action-icon" onclick="return common_soft_delete(\'teams\', '.$teams->id.')"> <i class="mdi mdi-delete"></i></a>';
 
                 $nested_data[ 'id' ]                = '<div class="form-check">
@@ -94,8 +96,17 @@ class TeamController extends Controller
         }
         $params = ['modal_title' => $modal_title, 'id' => $id ?? '', 'info' => $info ?? ''];
         return view('crm.team.add_edit', $params);
-        echo json_encode(['view' => $view]);
-        return true;
+    }
+
+    public function view(Request $request) {
+        if (! $request->ajax()) {
+            return response('Forbidden.', 403);
+        }
+        $id = $request->id;
+        $modal_title = 'Team Info';
+        $info = Team::find($id);
+        $params = ['modal_title' => $modal_title, 'id' => $id ?? '', 'info' => $info ?? ''];
+        return view('crm.team.view', $params);
     }
 
     public function save(Request $request)
