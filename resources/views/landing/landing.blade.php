@@ -16,7 +16,9 @@
         <link href="{{ asset('assets/custom/css/effect.css' ) }}" rel="stylesheet" type="text/css" />
         <link href="{{ asset('assets/css/app-creative.min.css') }}" rel="stylesheet" type="text/css" id="light-style" />
         <link href="{{ asset('assets/css/app-creative-dark.min.css') }}" rel="stylesheet" type="text/css" id="dark-style" />        
-        <link rel="stylesheet" href="https://getbootstrap.com/docs/5.1/examples/cover/cover.css">
+        @if (empty($result))
+            <link rel="stylesheet" href="https://getbootstrap.com/docs/5.1/examples/cover/cover.css">
+        @endif
         <style>
             .btn-primary {
                 background-image: linear-gradient(to right, #00c6ff 0%, #006BDF 51%, #00c6ff 100%);
@@ -160,9 +162,9 @@
                                         <span class="ms-1">Welcome to Brand <span class="badge bg-danger rounded-pill">New</span></span>
                                     </div>
                                     <h2 class="fw-normal text-white mb-4 mt-3 hero-title">
-                                    {{ $banner->title }}
+                                        {{ $banner->title }}
                                     </h2>
-                                    <p class="mb-4  w-75 mx-auto font-16 text-light">Phoenix CRM is a fully featured  with business or other organization administers its interactions with customers, typically using data analysis to study large amounts of information.</p>
+                                    <p class="mb-4  w-75 mx-auto font-16 text-light">{{ $banner->content }}</p>
                                     <a href="#" class="btn btn-primary rounded-pill">Get Started</a>
                                 </div>
                             </div>
