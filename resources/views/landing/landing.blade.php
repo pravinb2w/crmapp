@@ -512,10 +512,10 @@
         </body>
         @else 
         <body class="h-100">
-            <div class="cover-container d-flex w-100 h-100 p-3 mx-auto justify-content-center align-items-center text-center" style="min-height: 100vh">
-                <main class="px-3">
-                    <h1>There is no, <br> Published landing page !</h1>
-                    <p class="lead">If you want to publish a landing page ? Please login to use ..!</p>
+            <div class="container d-flex w-100 h-100 p-3 mx-auto justify-content-center align-items-center text-center" style="min-height: 100vh">
+                <main class="px-4">
+                    <h1>There is no, <br> Published landing page here!</h1>
+                    <p class="lead">You need to publish a landing page ? Please click the login button ..!</p>
                     <p class="lead">
                         <a href="{{ route('login') }}" class="btn btn-lg btn-primary gradient rounded-pill fw-bold border-white bg-white">Login</a>
                     </p>
