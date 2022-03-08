@@ -13,9 +13,11 @@ use App\Http\Middleware\SetViewVariable;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-Route::get('/', [App\Http\Controllers\LandingController::class, 'index']);
-Route::post('/enquiry', [App\Http\Controllers\LandingController::class, 'enquiry_save'])->name('enquiry.save');
+Route::get('/', function () {
+    return  redirect(route('landing.index'));
+});
+Route::get('/crm/{permalink?}', [App\Http\Controllers\LandingController::class, 'index'])->name('landing.index');
+Route::post('/enquiry', [App\Http\Controllers\LandingController::class, 'enquiry_save'])->name('enquiry.save'); 
 
 Auth::routes();
 Route::middleware([SetViewVariable::class, 'auth'])->group(function(){
@@ -72,7 +74,7 @@ Route::middleware([SetViewVariable::class, 'auth'])->group(function(){
     });
     //pages route
     Route::prefix('pages')->group(function () {
-        Route::get('/', [App\Http\Controllers\CmsController::class, 'index'])->name('pages');
+        Route::get('/', [App\Http\Controllers\CmsController::class, 'index'])->name('pages');         
         Route::get('/add/{id?}', [App\Http\Controllers\CmsController::class, 'add'])->name('pages.add');
         Route::post('/save/{type?}', [App\Http\Controllers\CmsController::class, 'save'])->name('pages.save');
         Route::post('/list', [App\Http\Controllers\CmsController::class, 'ajax_list'])->name('pages.list');

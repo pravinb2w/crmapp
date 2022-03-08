@@ -3,7 +3,6 @@
 @section('content')
 
 <div class="container-fluid">
-                        
     <!-- start page title -->
     <div class="row">
         <div class="col-12">
@@ -19,6 +18,7 @@
             </div>
         </div>
         <div class="col-12">
+             
             <div class="card">
                 
                 <div class="card-body"> 
@@ -34,65 +34,46 @@
                                             <label class="form-check-label" for="customCheck1">&nbsp;<label>
                                         </div>
                                     </th>
-                                    <th class="all">First name</th>
-                                    <th>Last name</th>
-                                    <th>organization</th>
+                                    <th class="all">Page Name</th>
+                                    <th>Page Logo</th>
+                                    <th>Created at</th>
                                     <th>Status</th>
                                     <th style="width: 120px;">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <th class="all" style="width: 20px;">
-                                        <div class="form-check">
-                                            <input type="checkbox" class="form-check-input" id="customCheck1">
-                                            <label class="form-check-label" for="customCheck1">&nbsp;<label>
-                                        </div>
-                                    </th>
-                                    <td>Mani</td>
-                                    <td>Kannan</td>
-                                    <td>Pixel studio</td>
-                                    <td><div class="badge bg-success"> Active </div></td>
-                                    <td>
-                                        <a href="#" class="action-icon"><i class="mdi mdi-eye"></i></a>
-                                        <a href="#" class="action-icon"><i class="mdi mdi-square-edit-outline"></i></a>
-                                        <a href="#" class="action-icon"><i class="mdi mdi-delete"></i> </a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th class="all" style="width: 20px;">
-                                        <div class="form-check">
-                                            <input type="checkbox" class="form-check-input" id="customCheck1">
-                                            <label class="form-check-label" for="customCheck1">&nbsp;<label>
-                                        </div>
-                                    </th>
-                                    <td>Prabhu</td>
-                                    <td>Kannan</td>
-                                    <td>Mj studio</td>
-                                    <td><div class="badge bg-success"> Active </div></td>
-                                    <td>
-                                        <a href="#" class="action-icon"><i class="mdi mdi-eye"></i></a>
-                                        <a href="#" class="action-icon"><i class="mdi mdi-square-edit-outline"></i></a>
-                                        <a href="#" class="action-icon"><i class="mdi mdi-delete"></i> </a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th class="all" style="width: 20px;">
-                                        <div class="form-check">
-                                            <input type="checkbox" class="form-check-input" id="customCheck1">
-                                            <label class="form-check-label" for="customCheck1">&nbsp;<label>
-                                        </div>
-                                    </th>
-                                    <td>Prabhu</td>
-                                    <td>Kannan</td>
-                                    <td>Mj studio</td>
-                                    <td><div class="badge bg-danger"> Deactive </div></td>
-                                    <td>
-                                        <a href="#" class="action-icon"><i class="mdi mdi-eye"></i></a>
-                                        <a href="#" class="action-icon"><i class="mdi mdi-square-edit-outline"></i></a>
-                                        <a href="#" class="action-icon"><i class="mdi mdi-delete"></i> </a>
-                                    </td>
-                                </tr>
+                                @if ($result)
+                                    @foreach ($result as $row)
+                                        <tr>
+                                            <th class="all" style="width: 20px;">
+                                                <div class="form-check">
+                                                    <input type="checkbox" class="form-check-input" id="customCheck1">
+                                                    <label class="form-check-label" for="customCheck1">&nbsp;<label>
+                                                </div>
+                                            </th>
+                                            <td>{{ $row->page_title }}</td>
+                                            <td><img src="{{ asset('storage/'.$row->page_logo) }} "  height="40px" alt=""></td>
+                                            <td>{{ $row->created_at }}</td>
+                                            <td>
+                                                <div>
+                                                    <div>
+                                                        <input type="checkbox" name="status" id="switch3" data-switch="primary"
+                                                            @if ($row->status == 1)
+                                                                checked
+                                                            @endif
+                                                         >
+                                                        <label for="switch3" data-on-label="" data-off-label=""></label>
+                                                    </div>  
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <a href="#" class="action-icon"><i class="mdi mdi-eye"></i></a>
+                                                <a href="#" class="action-icon"><i class="mdi mdi-square-edit-outline"></i></a>
+                                                <a href="#" class="action-icon"><i class="mdi mdi-delete"></i> </a>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                @endif                                 
                             </tbody>
                         </table>
                     </div>

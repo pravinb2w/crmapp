@@ -12,6 +12,8 @@ class LandingPages extends Model
         "page_type",
         "page_title",
         "page_logo",
+        "permalink",
+
     ];
     public function LandingPageSocialMedias() {
         return $this->hasMany(LandingPageSocialMedias::class, 'page_id', 'id');

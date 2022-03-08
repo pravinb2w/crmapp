@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
     <head>
         <meta charset="utf-8" />
         <title>Phonix CRM</title>
@@ -106,9 +105,9 @@
            }
         </style>
     </head>
-
+    
     <body class="loading" data-layout-config='{"darkMode":false}'>
-
+  
         <!-- NAVBAR START -->
         <nav class="navbar navbar-expand-lg p-0 bg-dark-50 sticky-top w-100" id="top-navbar-animated">
             <div class="container">
@@ -124,33 +123,17 @@
 
                 <!-- menus -->
                 <div class="collapse navbar-collapse" id="navbarNavDropdown">
-                    {{-- <ul class="navbar-nav mx-auto py-2 align-items-center"> 
-                        <li class="nav-item mx-lg-1 text-center">
-                            <a href="javascript: void(0);" class="social-list-item border text-white"><i class="mdi mdi-facebook"></i></a>
-                        </li>
-                        <li class="nav-item mx-lg-1 text-center">
-                            <a href="javascript: void(0);" class="social-list-item border text-white"><i class="mdi mdi-instagram"></i></a>
-                        </li>
-                        <li class="nav-item mx-lg-1 text-center">
-                            <a href="javascript: void(0);" class="social-list-item border text-white"><i class="mdi mdi-twitter"></i></a>
-                        </li>
-                        <li class="nav-item mx-lg-1 text-center">
-                            <a href="javascript: void(0);" class="social-list-item border text-white"><i class="mdi mdi-google"></i></a>
-                        </li>  
-                    </ul>  --}}
-                    <!-- left menu -->
+          
                     <ul class="navbar-nav ms-auto py-2 align-items-center"> 
+                    
                         <li class="nav-item mx-lg-1">
                             <a class="nav-link text-white active" href="#">Home</a>
                         </li>
                         <li class="nav-item mx-lg-1">
-                            <a class="nav-link" href="#">About</a>
+                            <a class="nav-link text-white" href="#about-us">About</a>
                         </li>
                         <li class="nav-item mx-lg-1">
-                            <a class="nav-link" href="#">Blog</a>
-                        </li>
-                        <li class="nav-item mx-lg-1">
-                            <a class="nav-link" href="#">Contact us</a>
+                            <a class="nav-link text-white" href="#contact-us">contact</a>
                         </li>
                         <li class="nav-item me-0 ms-3">
                             <a href="https://themes.getbootstrap.com/product/hyper-responsive-admin-dashboard-template/" target="_blank" class="nav-link d-lg-none">Purchase now</a>
@@ -168,46 +151,23 @@
         <!-- START HERO -->  
         <div id="LandingBannnerSliders" class="carousel slide" data-bs-ride="carousel">
             <div class="carousel-inner" role="listbox">
-                <div class="carousel-item active">
-                    <div class="slider-img w-100" style="min-height: 70vh;background: linear-gradient( #020202c9 50%, #00d9ff34) , url('https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1115&q=80');background-size:cover"></div>
-                    <div class="carousel-caption">
-                        <div>
-                            <span class="ms-1">Welcome to Brand <span class="badge bg-danger rounded-pill">New</span></span>
+                @if ($result->LandingPageBannerSliders)
+                    @foreach ($result->LandingPageBannerSliders as $key => $banner)
+                        <div class="carousel-item {{ $key == 0 ? 'active' : '' }}">
+                            <div class="slider-img w-100" style="min-height: 70vh;background: linear-gradient( #020202c9 50%, #00d9ff34) , url('{{ asset('storage/'.$banner->image) }}');background-size:cover"></div>
+                            <div class="carousel-caption">
+                                <div>
+                                    <span class="ms-1">Welcome to Brand <span class="badge bg-danger rounded-pill">New</span></span>
+                                </div>
+                                <h2 class="fw-normal text-white mb-4 mt-3 hero-title">
+                                   {{ $banner->title }}
+                                </h2>
+                                <p class="mb-4  w-75 mx-auto font-16 text-light">Phoenix CRM is a fully featured  with business or other organization administers its interactions with customers, typically using data analysis to study large amounts of information.</p>
+                                <a href="#" class="btn btn-primary rounded-pill">Get Started</a>
+                            </div>
                         </div>
-                        <h2 class="fw-normal text-white mb-4 mt-3 hero-title">
-                            Phoenix - Customer relationship management system 
-                        </h2>
-                        <p class="mb-4 w-75 mx-auto font-16 text-light">Phoenix CRM is a fully featured  with business or other organization administers its interactions with customers, typically using data analysis to study large amounts of information.</p>
-                        <a href="#" class="btn btn-primary rounded-pill">Get Started</a>
-                    </div>
-                </div>
-
-                <div class="carousel-item">
-                    <div class="slider-img w-100" style="min-height: 70vh;background: linear-gradient( #020202c9 50%, #00d9ff34) , url('https://images.unsplash.com/photo-1599658880436-c61792e70672?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80');background-size:cover"></div>
-                    <div class="carousel-caption">
-                        <div>
-                            <span class="ms-1">Welcome to Brand <span class="badge bg-danger rounded-pill">New</span></span>
-                        </div>
-                        <h2 class="fw-normal text-white mb-4 mt-3 hero-title">
-                            Phoenix - Customer relationship management system 
-                        </h2>
-                        <p class="mb-4  w-75 mx-auto font-16 text-light">Phoenix CRM is a fully featured  with business or other organization administers its interactions with customers, typically using data analysis to study large amounts of information.</p>
-                            <a href="#" class="btn btn-primary rounded-pill">Get Started</a>
-                    </div>
-                </div>
-                <div class="carousel-item">
-                    <div class="slider-img w-100" style="min-height: 70vh;background: linear-gradient( #020202c9 50%, #00d9ff34) , url('https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1176&q=80');background-size:cover"></div>
-                    <div class="carousel-caption">
-                        <div>
-                            <span class="ms-1">Welcome to Brand <span class="badge bg-danger rounded-pill">New</span></span>
-                        </div>
-                        <h2 class="fw-normal text-white mb-4 mt-3 hero-title">
-                            Phoenix - Customer relationship management system 
-                        </h2>
-                        <p class="mb-4  w-75 mx-auto font-16 text-light">Phoenix CRM is a fully featured  with business or other organization administers its interactions with customers, typically using data analysis to study large amounts of information.</p>
-                         <a href="#" class="btn btn-primary rounded-pill">Get Started</a>
-                    </div>
-                </div>
+                    @endforeach
+                @endif
             </div>
             <a class="carousel-control-prev" href="#LandingBannnerSliders" role="button" data-bs-slide="prev">
                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -221,7 +181,7 @@
         <!-- END HERO -->
          <!-- START FEATURES 2 -->
       
-         <section class="py-5">
+         <section class="py-5" id="about-us">
             <div class="container"> 
                 <div class="row pb-3 pt-5 align-items-center">
                     <div class="col-lg-6 col-md-5">
@@ -374,7 +334,7 @@
             </div>
         </section> 
 
-        <section class=" py-5 bg-light"> 
+        <section class=" py-5 bg-light" id="contact-us"> 
             <div class="container">
                 <div class="row align-items-center">
                     <div class="col-lg-9 h-100 ms-auto position-relative p-0">
@@ -537,7 +497,7 @@
         </script>
         <script>
             $(window).scroll(function(){
-                if ($(this).scrollTop() > 100) {
+                if ($(this).scrollTop() > 50) {
                 $('#top-navbar-animated').addClass('bg-dark-50');
                 } else {
                 $('#top-navbar-animated').removeClass('bg-dark-50');
