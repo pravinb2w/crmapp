@@ -16,7 +16,7 @@
         <link href="{{ asset('assets/custom/css/effect.css' ) }}" rel="stylesheet" type="text/css" />
         <link href="{{ asset('assets/css/app-creative.min.css') }}" rel="stylesheet" type="text/css" id="light-style" />
         <link href="{{ asset('assets/css/app-creative-dark.min.css') }}" rel="stylesheet" type="text/css" id="dark-style" />        
-
+        <link rel="stylesheet" href="https://getbootstrap.com/docs/5.1/examples/cover/cover.css">
         <style>
             .btn-primary {
                 background-image: linear-gradient(to right, #00c6ff 0%, #006BDF 51%, #00c6ff 100%);
@@ -105,408 +105,420 @@
            }
         </style>
     </head>
-    
-    <body class="loading" data-layout-config='{"darkMode":false}'>
-  
-        <!-- NAVBAR START -->
-        <nav class="navbar navbar-expand-lg p-0 bg-dark-50 sticky-top w-100" id="top-navbar-animated">
-            <div class="container">
-                <!-- logo -->
-                <a href="#" class="navbar-brand me-lg-5 ">
-                    <img src="{{ asset('assets/images/logo/logo-color.png') }}"     class="logo-dark" width="300px"  />
-                </a>
+    @if (!empty($result))
+        <body class="loading" data-layout-config='{"darkMode":false}'>
+            
+            <!-- NAVBAR START -->
+            <nav class="navbar navbar-expand-lg p-0 bg-dark-50 sticky-top w-100" id="top-navbar-animated">
+                <div class="container">
+                    <!-- logo -->
+                    <a href="#" class="navbar-brand me-lg-5 ">
+                        <img src="{{ asset('assets/images/logo/logo-color.png') }}"     class="logo-dark" width="300px"  />
+                    </a>
 
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
-                    aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-                    <i class="mdi text-white mdi-menu" style="text-shadow: 0 2px black;"></i>
-                </button>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
+                        aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                        <i class="mdi text-white mdi-menu" style="text-shadow: 0 2px black;"></i>
+                    </button>
 
-                <!-- menus -->
-                <div class="collapse navbar-collapse" id="navbarNavDropdown">
-          
-                    <ul class="navbar-nav ms-auto py-2 align-items-center"> 
-                    
-                        <li class="nav-item mx-lg-1">
-                            <a class="nav-link text-white active" href="#">Home</a>
-                        </li>
-                        <li class="nav-item mx-lg-1">
-                            <a class="nav-link text-white" href="#about-us">About</a>
-                        </li>
-                        <li class="nav-item mx-lg-1">
-                            <a class="nav-link text-white" href="#contact-us">contact</a>
-                        </li>
-                        <li class="nav-item me-0 ms-3">
-                            <a href="https://themes.getbootstrap.com/product/hyper-responsive-admin-dashboard-template/" target="_blank" class="nav-link d-lg-none">Purchase now</a>
-                            <a href="login" target="_blank" class="btn btn-sm btn-primary rounded-pill d-none d-lg-inline-flex">
-                                <i class="mdi mdi-login-variant me-2"></i> LOGIN
-                            </a>
-                        </li>
-                    </ul> 
+                    <!-- menus -->
+                    <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            
+                        <ul class="navbar-nav ms-auto py-2 align-items-center"> 
+                        
+                            <li class="nav-item mx-lg-1">
+                                <a class="nav-link text-white active" href="#">Home</a>
+                            </li>
+                            <li class="nav-item mx-lg-1">
+                                <a class="nav-link text-white" href="#about-us">About</a>
+                            </li>
+                            <li class="nav-item mx-lg-1">
+                                <a class="nav-link text-white" href="#contact-us">contact</a>
+                            </li>
+                            <li class="nav-item me-0 ms-3">
+                                <a href="https://themes.getbootstrap.com/product/hyper-responsive-admin-dashboard-template/" target="_blank" class="nav-link d-lg-none">Purchase now</a>
+                                <a href="login" target="_blank" class="btn btn-sm btn-primary rounded-pill d-none d-lg-inline-flex">
+                                    <i class="mdi mdi-login-variant me-2"></i> LOGIN
+                                </a>
+                            </li>
+                        </ul> 
 
+                    </div>
                 </div>
-            </div>
-        </nav>
-        <!-- NAVBAR END -->
+            </nav>
+            <!-- NAVBAR END -->
 
-        <!-- START HERO -->  
-        <div id="LandingBannnerSliders" class="carousel slide" data-bs-ride="carousel">
-            <div class="carousel-inner" role="listbox">
-                @if ($result->LandingPageBannerSliders)
-                    @foreach ($result->LandingPageBannerSliders as $key => $banner)
-                        <div class="carousel-item {{ $key == 0 ? 'active' : '' }}">
-                            <div class="slider-img w-100" style="min-height: 70vh;background: linear-gradient( #020202c9 50%, #00d9ff34) , url('{{ asset('storage/'.$banner->image) }}');background-size:cover"></div>
-                            <div class="carousel-caption">
-                                <div>
-                                    <span class="ms-1">Welcome to Brand <span class="badge bg-danger rounded-pill">New</span></span>
+            <!-- START HERO -->  
+            <div id="LandingBannnerSliders" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-inner" role="listbox">
+                    @if ($result->LandingPageBannerSliders)
+                        @foreach ($result->LandingPageBannerSliders as $key => $banner)
+                            <div class="carousel-item {{ $key == 0 ? 'active' : '' }}">
+                                <div class="slider-img w-100" style="min-height: 70vh;background: linear-gradient( #020202c9 50%, #00d9ff34) , url('{{ asset('storage/'.$banner->image) }}');background-size:cover"></div>
+                                <div class="carousel-caption">
+                                    <div>
+                                        <span class="ms-1">Welcome to Brand <span class="badge bg-danger rounded-pill">New</span></span>
+                                    </div>
+                                    <h2 class="fw-normal text-white mb-4 mt-3 hero-title">
+                                    {{ $banner->title }}
+                                    </h2>
+                                    <p class="mb-4  w-75 mx-auto font-16 text-light">Phoenix CRM is a fully featured  with business or other organization administers its interactions with customers, typically using data analysis to study large amounts of information.</p>
+                                    <a href="#" class="btn btn-primary rounded-pill">Get Started</a>
                                 </div>
-                                <h2 class="fw-normal text-white mb-4 mt-3 hero-title">
-                                   {{ $banner->title }}
-                                </h2>
-                                <p class="mb-4  w-75 mx-auto font-16 text-light">Phoenix CRM is a fully featured  with business or other organization administers its interactions with customers, typically using data analysis to study large amounts of information.</p>
-                                <a href="#" class="btn btn-primary rounded-pill">Get Started</a>
+                            </div>
+                        @endforeach
+                    @endif
+                </div>
+                <a class="carousel-control-prev" href="#LandingBannnerSliders" role="button" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </a>
+                <a class="carousel-control-next" href="#LandingBannnerSliders" role="button" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </a>
+            </div> 
+            <!-- END HERO -->
+            <!-- START FEATURES 2 -->
+        
+            <section class="py-5" id="about-us">
+                <div class="container"> 
+                    <div class="row pb-3 pt-5 align-items-center">
+                        <div class="col-lg-6 col-md-5">
+                            <h3 class="aos-init" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="1000">Who We are?</h3>
+                            <div class="mt-4">
+                                <p class="text-muted mb-3 aos-init"data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="1200">Phoenix  CRM was originally designed to minimize the pain points of managing Small and Medium-Sized Companies with regards to Clients, Employees, and Finances.</p>
+                                <p class="text-muted mb-3 aos-init"data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="1400"> The Core Brain behind the development of Phoenix  CRM is having a huge experience in handling clients with regards to multiple industries and he found that most of the startup, small and medium scale companies are lagging in maintaining their own customers, new leads, followups with them, invoice tracking, finances and many other minor things which are affecting their business in a huge way. They are losing so many potential clients as well as their existing clients in the long run.</p>
+                                <p class="text-muted mb-3 aos-init"data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="1600"> Hence, we produced a system that will help them to overcome all these growth hurdles in their business and help them to reach the next level in their Business.</p>
+                                <p class="text-muted mb-3 aos-init"data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="1800"> Phoenix  CRM CRM(solidperformers.com) is owned by Phoenix  CRM Private Limited. We are a B2B Platform offering solutions only to Corporate Businesses of all sizes.</p>
+                            </div>
+                            <a href="#" class="btn btn-primary rounded-pill mt-3 aos-init" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="2000">Know More <i class="mdi mdi-arrow-right ms-1"></i></a>
+                        </div>
+                        <div class="col-lg-5 col-md-6 offset-md-1">
+                            <div class="aos-init"  data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="2000" >
+                                <img src="{{ asset('assets/images/about.png') }}" class="img-fluid"  alt="">
                             </div>
                         </div>
-                    @endforeach
-                @endif
-            </div>
-            <a class="carousel-control-prev" href="#LandingBannnerSliders" role="button" data-bs-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Previous</span>
-            </a>
-            <a class="carousel-control-next" href="#LandingBannnerSliders" role="button" data-bs-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Next</span>
-            </a>
-        </div> 
-        <!-- END HERO -->
-         <!-- START FEATURES 2 -->
-      
-         <section class="py-5" id="about-us">
-            <div class="container"> 
-                <div class="row pb-3 pt-5 align-items-center">
-                    <div class="col-lg-6 col-md-5">
-                        <h3 class="aos-init" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="1000">Who We are?</h3>
-                        <div class="mt-4">
-                            <p class="text-muted mb-3 aos-init"data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="1200">Phoenix  CRM was originally designed to minimize the pain points of managing Small and Medium-Sized Companies with regards to Clients, Employees, and Finances.</p>
-                            <p class="text-muted mb-3 aos-init"data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="1400"> The Core Brain behind the development of Phoenix  CRM is having a huge experience in handling clients with regards to multiple industries and he found that most of the startup, small and medium scale companies are lagging in maintaining their own customers, new leads, followups with them, invoice tracking, finances and many other minor things which are affecting their business in a huge way. They are losing so many potential clients as well as their existing clients in the long run.</p>
-                            <p class="text-muted mb-3 aos-init"data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="1600"> Hence, we produced a system that will help them to overcome all these growth hurdles in their business and help them to reach the next level in their Business.</p>
-                            <p class="text-muted mb-3 aos-init"data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="1800"> Phoenix  CRM CRM(solidperformers.com) is owned by Phoenix  CRM Private Limited. We are a B2B Platform offering solutions only to Corporate Businesses of all sizes.</p>
-                        </div>
-                        <a href="#" class="btn btn-primary rounded-pill mt-3 aos-init" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="2000">Know More <i class="mdi mdi-arrow-right ms-1"></i></a>
-                    </div>
-                    <div class="col-lg-5 col-md-6 offset-md-1">
-                        <div class="aos-init"  data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="2000" >
-                            <img src="{{ asset('assets/images/about.png') }}" class="img-fluid"  alt="">
-                        </div>
-                    </div>
-                </div> 
-            </div>
-            </section>
-        <!-- END FEATURES 2 -->   
+                    </div> 
+                </div>
+                </section>
+            <!-- END FEATURES 2 -->   
 
-        <section class="py-5 bg-light">
-            <div class="container">
-                <div class="row">
-                    <div class="col-sm-12">
-                        <div class="section-head text-center">
-                            <h1 class="text-primary">CRM Features</h1>
+            <section class="py-5 bg-light">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="section-head text-center">
+                                <h1 class="text-primary">CRM Features</h1>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-4">
-                        <!-- InfoBox Left  <Start> -->
-                        <div class="text-center mt-4 aos-init" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="1000">
-                            <img src="https://phpstack-543502-1740558.cloudwaysapps.com/ohdearcrm/images/icn1.svg" alt="" class="img-fluid">
-                            <h4 class="text-primary">Quality Resources</h4>
-                            <p>Sed ut perspiciatis remque laudan unde omnis iste natus error sit voluptatem accusantium dolo remque laudan tiuotam.</p>
-                        </div>
-                        <!-- InfoBox Left </End> -->
-                    </div>
-                    <div class="col-md-4">
-                        <!-- InfoBox Center  <Start> -->
-                        <div class="text-center mt-4 aos-init" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="1200">
-                            <img src="https://phpstack-543502-1740558.cloudwaysapps.com/ohdearcrm/images/icn2.svg" alt="" class="img-fluid">
-                            <h4 class="text-primary">At solmen va esser</h4>
-                            <p>Sed ut perspiciatis remque laudan unde omnis iste natus error sit voluptatem accusantium dolo remque laudan tiuotam.</p>
-                        </div>
-                        <!-- InfoBox Center </End> -->
-                    </div>
-                    <div class="col-md-4">
-                        <!-- InfoBox Center  <Start> -->
-                        <div class="text-center mt-4 aos-init" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="1400">
-                            <img src="https://phpstack-543502-1740558.cloudwaysapps.com/ohdearcrm/images/icn1.svg" alt="" class="img-fluid">
-                            <h4 class="text-primary">Pronunciation sommun</h4>
-                            <p>Sed ut perspiciatis remque laudan unde omnis iste natus error sit voluptatem accusantium dolo remque laudan tiuotam.</p>
-                        </div>
-                        <!-- InfoBox Center </End> -->
-                    </div>
-                    <div class="col-md-4">
-                        <!-- InfoBox Center  <Start> -->
-                        <div class="text-center mt-4 aos-init" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="1600">
-                            <img src="https://phpstack-543502-1740558.cloudwaysapps.com/ohdearcrm/images/icn3.svg" alt="" class="img-fluid">
-                            <h4 class="text-primary">Uniform Grammatica</h4>
-                            <p>Sed ut perspiciatis remque laudan unde omnis iste natus error sit voluptatem accusantium dolo remque laudan tiuotam.</p>
-                        </div>
-                        <!-- InfoBox Center </End> -->
-                    </div>
-                    <div class="col-md-4">
-                        <!-- InfoBox Center  <Start> -->
-                        <div class="text-center mt-4 aos-init" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="1800">
-                            <img src="https://phpstack-543502-1740558.cloudwaysapps.com/ohdearcrm/images/icn4.svg" alt="" class="img-fluid">
-                            <h4 class="text-primary">Omnicos al desirabilite</h4>
-                            <p>Sed ut perspiciatis remque laudan unde omnis iste natus error sit voluptatem accusantium dolo remque laudan tiuotam.</p>
-                        </div>
-                        <!-- InfoBox Center </End> -->
-                    </div>
-                    <div class="col-md-4">
-                        <!-- InfoBox Center  <Start> -->
-                        <div class="text-center mt-4 aos-init" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="2000">
-                            <img src="https://phpstack-543502-1740558.cloudwaysapps.com/ohdearcrm/images/icn5.svg" alt="" class="img-fluid">
-                            <h4 class="text-primary">Commun Vocabules</h4>
-                            <p>Sed ut perspiciatis remque laudan unde omnis iste natus error sit voluptatem accusantium dolo remque laudan tiuotam.</p>
-                        </div>
-                        <!-- InfoBox Center </End> -->
-                    </div>
-                </div>
-            </div>
-        </section> 
-
-
-        <section class="py-5 text-center " style="background: url('{{ asset('/assets/images/landnig-bg.png') }}');background-size:cover">
-            <div class="media-body"> 
-                <h3 data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="1000"  class="aos-init text-white display-5">Want to try CRM Software for Free?</h3>
-                <p  data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="1400" class="text-light my-4 mt-3 lead">Close more deals than ever, automatice lead captures,in-built phone,smart alerts with push notifcations.</p>
-                <div class="aos-init " data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="1800" >
-                    <a href="#" class="aos-init btn btn-success px-md-5 py-2 rounded-pill"><b>Register Now !</b></a>
-                </div>
-            </div>
-        </section>
-   
-        <section class="py-5 ">
-            <div class="container">
-                <div class="row">
-                    <div class="col-sm-12">
-                        <div class="section-head text-center">
-                            <h1 class="text-primary aos-init" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="1000">Latest Blogs</h1>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-4 p-md-3">
-                        <!-- InfoBox Left  <Start> -->
-                        <div class="mt-4 shadow aos-init" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="1000">
-                            <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80" alt="" class="img-fluid blog-img mb-2">
-                            <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <!-- InfoBox Left  <Start> -->
+                            <div class="text-center mt-4 aos-init" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="1000">
+                                <img src="https://phpstack-543502-1740558.cloudwaysapps.com/ohdearcrm/images/icn1.svg" alt="" class="img-fluid">
                                 <h4 class="text-primary">Quality Resources</h4>
                                 <p>Sed ut perspiciatis remque laudan unde omnis iste natus error sit voluptatem accusantium dolo remque laudan tiuotam.</p>
-                                <a href="#" class="rounded-pill btn btn-outline-primary"><b>Read More..</b></a>
                             </div>
+                            <!-- InfoBox Left </End> -->
                         </div>
-                        <!-- InfoBox Left </End> -->
-                    </div>
-                    <div class="col-md-4 p-md-3">
-                        <!-- InfoBox Center  <Start> -->
-                        <div class="mt-4 shadow aos-init" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="1200">
-                            <img src="https://images.unsplash.com/photo-1599658880436-c61792e70672?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80" alt="" class="img-fluid blog-img mb-2">
-                            <div class="card-body">
+                        <div class="col-md-4">
+                            <!-- InfoBox Center  <Start> -->
+                            <div class="text-center mt-4 aos-init" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="1200">
+                                <img src="https://phpstack-543502-1740558.cloudwaysapps.com/ohdearcrm/images/icn2.svg" alt="" class="img-fluid">
                                 <h4 class="text-primary">At solmen va esser</h4>
                                 <p>Sed ut perspiciatis remque laudan unde omnis iste natus error sit voluptatem accusantium dolo remque laudan tiuotam.</p>
-                                <a href="#" class="rounded-pill btn btn-outline-primary"><b>Read More..</b></a>
                             </div>
+                            <!-- InfoBox Center </End> -->
                         </div>
-                        <!-- InfoBox Center </End> -->
-                    </div>
-                    <div class="col-md-4 p-md-3">
-                        <!-- InfoBox Center  <Start> -->
-                        <div class="mt-4 shadow aos-init" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="1400">
-                            <img src="https://images.unsplash.com/photo-1608222351212-18fe0ec7b13b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1074&q=80" alt="" class="img-fluid blog-img mb-2">
-                            <div class="card-body">
+                        <div class="col-md-4">
+                            <!-- InfoBox Center  <Start> -->
+                            <div class="text-center mt-4 aos-init" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="1400">
+                                <img src="https://phpstack-543502-1740558.cloudwaysapps.com/ohdearcrm/images/icn1.svg" alt="" class="img-fluid">
                                 <h4 class="text-primary">Pronunciation sommun</h4>
                                 <p>Sed ut perspiciatis remque laudan unde omnis iste natus error sit voluptatem accusantium dolo remque laudan tiuotam.</p>
-                                <a href="#" class="rounded-pill btn btn-outline-primary"><b>Read More..</b></a>
                             </div>
+                            <!-- InfoBox Center </End> -->
                         </div>
-                        <!-- InfoBox Center </End> -->
+                        <div class="col-md-4">
+                            <!-- InfoBox Center  <Start> -->
+                            <div class="text-center mt-4 aos-init" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="1600">
+                                <img src="https://phpstack-543502-1740558.cloudwaysapps.com/ohdearcrm/images/icn3.svg" alt="" class="img-fluid">
+                                <h4 class="text-primary">Uniform Grammatica</h4>
+                                <p>Sed ut perspiciatis remque laudan unde omnis iste natus error sit voluptatem accusantium dolo remque laudan tiuotam.</p>
+                            </div>
+                            <!-- InfoBox Center </End> -->
+                        </div>
+                        <div class="col-md-4">
+                            <!-- InfoBox Center  <Start> -->
+                            <div class="text-center mt-4 aos-init" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="1800">
+                                <img src="https://phpstack-543502-1740558.cloudwaysapps.com/ohdearcrm/images/icn4.svg" alt="" class="img-fluid">
+                                <h4 class="text-primary">Omnicos al desirabilite</h4>
+                                <p>Sed ut perspiciatis remque laudan unde omnis iste natus error sit voluptatem accusantium dolo remque laudan tiuotam.</p>
+                            </div>
+                            <!-- InfoBox Center </End> -->
+                        </div>
+                        <div class="col-md-4">
+                            <!-- InfoBox Center  <Start> -->
+                            <div class="text-center mt-4 aos-init" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="2000">
+                                <img src="https://phpstack-543502-1740558.cloudwaysapps.com/ohdearcrm/images/icn5.svg" alt="" class="img-fluid">
+                                <h4 class="text-primary">Commun Vocabules</h4>
+                                <p>Sed ut perspiciatis remque laudan unde omnis iste natus error sit voluptatem accusantium dolo remque laudan tiuotam.</p>
+                            </div>
+                            <!-- InfoBox Center </End> -->
+                        </div>
                     </div>
-                     
                 </div>
-            </div>
-        </section> 
+            </section> 
 
-        <section class=" py-5 bg-light" id="contact-us"> 
-            <div class="container">
-                <div class="row align-items-center">
-                    <div class="col-lg-9 h-100 ms-auto position-relative p-0">
-                        <div class="card position-absolute contact-card rounded-5"  style="background: linear-gradient( #020202c9 50%, #00d9ff34) , url('https://poetsandquants.com/wp-content/uploads/sites/5/2021/12/analytics.jpg');background-size:cover">
-                            <div class="card-body p-4">
-                                <h1>Request a call back</h1>
-                                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Beatae optio, maxime illo nisi distinctio, error temporibus</p>
-                                <div class="py-4">
-                                    <div class="d-flex align-items-center mb-3">
-                                        <div class="text-primary mdi mdi-phone-in-talk fa-lg"></div>
-                                        <div>
-                                            <strong>Call US</strong>
-                                            <div>+91 98745 61230</div>
-                                        </div>
-                                    </div>
-                                    <div class="d-flex align-items-center mb-3">
-                                        <div class="text-primary mdi mdi-email fa-lg"></div>
-                                        <div>
-                                            <strong>Mail US</strong>
-                                            <div>info@phoenix.crm.com </div>
-                                        </div>
-                                    </div>
-                                    <div class="d-flex align-items-center">
-                                        <div class="text-primary mdi mdi-map-marker fa-lg"></div>
-                                        <div>
-                                            <strong>Call US</strong>
-                                            <div>N.34/21 , New street , chennai-60001</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card h-100 padding-left-250" style="min-height: 80vh">
-                            <div class="card-body py-lg-5" >
-                                <div class="px-2">
-                                    <h3 class="h3">CONTACT US</h3>
-                                    <p>Enter your details to receive a call back from us</p>
-                                </div>
-                                @include('landing.enquiry')
-                            </div>
-                        </div> 
+
+            <section class="py-5 text-center " style="background: url('{{ asset('/assets/images/landnig-bg.png') }}');background-size:cover">
+                <div class="media-body"> 
+                    <h3 data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="1000"  class="aos-init text-white display-5">Want to try CRM Software for Free?</h3>
+                    <p  data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="1400" class="text-light my-4 mt-3 lead">Close more deals than ever, automatice lead captures,in-built phone,smart alerts with push notifcations.</p>
+                    <div class="aos-init " data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="1800" >
+                        <a href="#" class="aos-init btn btn-success px-md-5 py-2 rounded-pill"><b>Register Now !</b></a>
                     </div>
                 </div>
-            </div>
-        </section>
-          
-        <section class="py-5">
-            <div class="container">
-                <div class="row align-items-center m-0">
-                    <div class="col-md">
-                        <h3 class="h3"  class="aos-init" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="1000">
-                            Subscribe with us get the newsletter
-                        </h3>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="btn-group border shadow-sm rounded w-100 aos-init" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="1200">
-                            <div class="w-100 bg-white">
-                                <input class="form-control  border-0 rounded-0  w-100 p-3" type="text" id="subject" placeholder="Enter your email...">
-                            </div>
-                            <div class="">
-                                <button type="submit" class=" border-0 rounded-0 btn h-100 btn-primary p-3">Subscribe</button>
+            </section>
+    
+            <section class="py-5 ">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="section-head text-center">
+                                <h1 class="text-primary aos-init" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="1000">Latest Blogs</h1>
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
-        </section>
-        <footer class="py-5 text-center " style="background: linear-gradient(#020202e0 50%, #00d9ff34) , url('https://images.unsplash.com/photo-1587560699334-cc4ff634909a?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80');background-size:cover;backdrop-filter:blur(5px)">
-            <div class="container">
-                <div class="row justify-content-center align-items-center" >
-                    <div class="col-md-12 text-center">
-                        {{-- <img src="assets/images/logo.png" alt="" class="logo-dark" height="18" /> --}}
+                    <div class="row">
+                        <div class="col-md-4 p-md-3">
+                            <!-- InfoBox Left  <Start> -->
+                            <div class="mt-4 shadow aos-init" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="1000">
+                                <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80" alt="" class="img-fluid blog-img mb-2">
+                                <div class="card-body">
+                                    <h4 class="text-primary">Quality Resources</h4>
+                                    <p>Sed ut perspiciatis remque laudan unde omnis iste natus error sit voluptatem accusantium dolo remque laudan tiuotam.</p>
+                                    <a href="#" class="rounded-pill btn btn-outline-primary"><b>Read More..</b></a>
+                                </div>
+                            </div>
+                            <!-- InfoBox Left </End> -->
+                        </div>
+                        <div class="col-md-4 p-md-3">
+                            <!-- InfoBox Center  <Start> -->
+                            <div class="mt-4 shadow aos-init" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="1200">
+                                <img src="https://images.unsplash.com/photo-1599658880436-c61792e70672?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80" alt="" class="img-fluid blog-img mb-2">
+                                <div class="card-body">
+                                    <h4 class="text-primary">At solmen va esser</h4>
+                                    <p>Sed ut perspiciatis remque laudan unde omnis iste natus error sit voluptatem accusantium dolo remque laudan tiuotam.</p>
+                                    <a href="#" class="rounded-pill btn btn-outline-primary"><b>Read More..</b></a>
+                                </div>
+                            </div>
+                            <!-- InfoBox Center </End> -->
+                        </div>
+                        <div class="col-md-4 p-md-3">
+                            <!-- InfoBox Center  <Start> -->
+                            <div class="mt-4 shadow aos-init" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="1400">
+                                <img src="https://images.unsplash.com/photo-1608222351212-18fe0ec7b13b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1074&q=80" alt="" class="img-fluid blog-img mb-2">
+                                <div class="card-body">
+                                    <h4 class="text-primary">Pronunciation sommun</h4>
+                                    <p>Sed ut perspiciatis remque laudan unde omnis iste natus error sit voluptatem accusantium dolo remque laudan tiuotam.</p>
+                                    <a href="#" class="rounded-pill btn btn-outline-primary"><b>Read More..</b></a>
+                                </div>
+                            </div>
+                            <!-- InfoBox Center </End> -->
+                        </div>
                         
-                        <div class="aos-init"  data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="1400">
-                            <strong class="text-white"> PHOENIX</strong>
-                        </div>
-                        <p class="text-white mt-4 aos-init" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="1500">PHOENIX TECH makes it easier to build better websites with
-                            <br> great speed. Save hundreds of hours of design
-                            <br> and development by using it.</p>
+                    </div>
+                </div>
+            </section> 
 
-                        <div class="aos-init"  data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="2000">
-                            <strong class="text-primary">Follow Us On Social...</strong>
-                            <ul class="social-list list-inline mt-3">
-                                <li class="list-inline-item text-center">
-                                    <a href="javascript: void(0);" class="social-list-item border-primary text-white btn-outline-primary"><i class="mdi mdi-facebook"></i></a>
-                                </li>
-                                <li class="list-inline-item text-center">
-                                    <a href="javascript: void(0);" class="social-list-item border-primary text-white btn-outline-primary"><i class="mdi mdi-google"></i></a>
-                                </li>
-                                <li class="list-inline-item text-center">
-                                    <a href="javascript: void(0);" class="social-list-item border-primary text-white btn-outline-primary"><i class="mdi mdi-twitter"></i></a>
-                                </li>
-                                <li class="list-inline-item text-center">
-                                    <a href="javascript: void(0);" class="social-list-item border-primary text-white btn-outline-primary"><i class="mdi mdi-github"></i></a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>  
-                    
-                    <div class="col-12 text-center">
-                        <div class="aos-init"  data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="2400">
-                            <ul class="list-unstyled justify-content-center d-flex ps-0 mb-0 mt-3">
-                                <li class="m-2"><a href="javascript: void(0);" class="text-light">About Us</a></li>
-                                <li class="m-2"><a href="javascript: void(0);" class="text-light">Price</a></li>
-                                <li class="m-2"><a href="javascript: void(0);" class="text-light">Blog</a></li>
-                                <li class="m-2"><a href="javascript: void(0);" class="text-light">Contact us</a></li>
-                            </ul>
+            <section class=" py-5 bg-light" id="contact-us"> 
+                <div class="container">
+                    <div class="row align-items-center">
+                        <div class="col-lg-9 h-100 ms-auto position-relative p-0">
+                            <div class="card position-absolute contact-card rounded-5"  style="background: linear-gradient( #020202c9 50%, #00d9ff34) , url('https://poetsandquants.com/wp-content/uploads/sites/5/2021/12/analytics.jpg');background-size:cover">
+                                <div class="card-body p-4">
+                                    <h1>Request a call back</h1>
+                                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Beatae optio, maxime illo nisi distinctio, error temporibus</p>
+                                    <div class="py-4">
+                                        <div class="d-flex align-items-center mb-3">
+                                            <div class="text-primary mdi mdi-phone-in-talk fa-lg"></div>
+                                            <div>
+                                                <strong>Call US</strong>
+                                                <div>+91 98745 61230</div>
+                                            </div>
+                                        </div>
+                                        <div class="d-flex align-items-center mb-3">
+                                            <div class="text-primary mdi mdi-email fa-lg"></div>
+                                            <div>
+                                                <strong>Mail US</strong>
+                                                <div>info@phoenix.crm.com </div>
+                                            </div>
+                                        </div>
+                                        <div class="d-flex align-items-center">
+                                            <div class="text-primary mdi mdi-map-marker fa-lg"></div>
+                                            <div>
+                                                <strong>Call US</strong>
+                                                <div>N.34/21 , New street , chennai-60001</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card h-100 padding-left-250" style="min-height: 80vh">
+                                <div class="card-body py-lg-5" >
+                                    <div class="px-2">
+                                        <h3 class="h3">CONTACT US</h3>
+                                        <p>Enter your details to receive a call back from us</p>
+                                    </div>
+                                    @include('landing.enquiry')
+                                </div>
+                            </div> 
                         </div>
                     </div>
                 </div>
-                    
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="mt-5">
-                            <p class="text-light mt-4 text-center mb-0">{{ $copyrights ?? '© 2022 - 2023 PHOENIX. Design and coded by
-                                DuraiBytes' }}</p>
+            </section>
+            
+            <section class="py-5">
+                <div class="container">
+                    <div class="row align-items-center m-0">
+                        <div class="col-md">
+                            <h3 class="h3"  class="aos-init" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="1000">
+                                Subscribe with us get the newsletter
+                            </h3>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="btn-group border shadow-sm rounded w-100 aos-init" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="1200">
+                                <div class="w-100 bg-white">
+                                    <input class="form-control  border-0 rounded-0  w-100 p-3" type="text" id="subject" placeholder="Enter your email...">
+                                </div>
+                                <div class="">
+                                    <button type="submit" class=" border-0 rounded-0 btn h-100 btn-primary p-3">Subscribe</button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </footer>
-        <!-- bundle -->
-        <script src="{{ asset('assets/js/vendor.min.js') }}"></script>
-        <script src="{{ asset('assets/js/app.min.js') }}"></script>
-        <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.js"></script>
-        <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-        <script>
-            $(".enquiry-form").validate({
-            submitHandler:function(form) {
-                $.ajax({
-                    url: form.action,
-                    type: form.method,
-                    data: $(form).serialize(),
-                    beforeSend: function() {
-                        $('#error').removeClass('alert alert-danger');
-                        $('#error').html('');
-                        $('#error').removeClass('alert alert-success');
-                        $('#save').html('Loading...');
-                    },
-                    success: function(response) {
-                        $('#save').html('Save');
-                        if(response.error.length > 0 && response.status == "1" ) {
-                            $('#error').addClass('alert alert-danger');
-                            response.error.forEach(display_errors);
-                        } else {
-                            $('#error').addClass('alert alert-success');
-                            response.error.forEach(display_errors);
-                            setTimeout(function(){
-                                location.reload();
-                            },100);
-                        }
-                    }            
-                });
-            }
-        });
+            </section>
+            <footer class="py-5 text-center " style="background: linear-gradient(#020202e0 50%, #00d9ff34) , url('https://images.unsplash.com/photo-1587560699334-cc4ff634909a?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80');background-size:cover;backdrop-filter:blur(5px)">
+                <div class="container">
+                    <div class="row justify-content-center align-items-center" >
+                        <div class="col-md-12 text-center">
+                            {{-- <img src="assets/images/logo.png" alt="" class="logo-dark" height="18" /> --}}
+                            
+                            <div class="aos-init"  data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="1400">
+                                <strong class="text-white"> PHOENIX</strong>
+                            </div>
+                            <p class="text-white mt-4 aos-init" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="1500">PHOENIX TECH makes it easier to build better websites with
+                                <br> great speed. Save hundreds of hours of design
+                                <br> and development by using it.</p>
 
-        function display_errors( item, index) {
-            $('#error').append('<div>'+item+'</div>');
-        }
-        </script>
-        <script>
-            $(window).scroll(function(){
-                if ($(this).scrollTop() > 50) {
-                $('#top-navbar-animated').addClass('bg-dark-50');
-                } else {
-                $('#top-navbar-animated').removeClass('bg-dark-50');
+                            <div class="aos-init"  data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="2000">
+                                <strong class="text-primary">Follow Us On Social...</strong>
+                                <ul class="social-list list-inline mt-3">
+                                    <li class="list-inline-item text-center">
+                                        <a href="javascript: void(0);" class="social-list-item border-primary text-white btn-outline-primary"><i class="mdi mdi-facebook"></i></a>
+                                    </li>
+                                    <li class="list-inline-item text-center">
+                                        <a href="javascript: void(0);" class="social-list-item border-primary text-white btn-outline-primary"><i class="mdi mdi-google"></i></a>
+                                    </li>
+                                    <li class="list-inline-item text-center">
+                                        <a href="javascript: void(0);" class="social-list-item border-primary text-white btn-outline-primary"><i class="mdi mdi-twitter"></i></a>
+                                    </li>
+                                    <li class="list-inline-item text-center">
+                                        <a href="javascript: void(0);" class="social-list-item border-primary text-white btn-outline-primary"><i class="mdi mdi-github"></i></a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>  
+                        
+                        <div class="col-12 text-center">
+                            <div class="aos-init"  data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="2400">
+                                <ul class="list-unstyled justify-content-center d-flex ps-0 mb-0 mt-3">
+                                    <li class="m-2"><a href="javascript: void(0);" class="text-light">About Us</a></li>
+                                    <li class="m-2"><a href="javascript: void(0);" class="text-light">Price</a></li>
+                                    <li class="m-2"><a href="javascript: void(0);" class="text-light">Blog</a></li>
+                                    <li class="m-2"><a href="javascript: void(0);" class="text-light">Contact us</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                        
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="mt-5">
+                                <p class="text-light mt-4 text-center mb-0">{{ $copyrights ?? '© 2022 - 2023 PHOENIX. Design and coded by
+                                    DuraiBytes' }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+            <!-- bundle -->
+            <script src="{{ asset('assets/js/vendor.min.js') }}"></script>
+            <script src="{{ asset('assets/js/app.min.js') }}"></script>
+            <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.js"></script>
+            <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+            <script>
+                $(".enquiry-form").validate({
+                submitHandler:function(form) {
+                    $.ajax({
+                        url: form.action,
+                        type: form.method,
+                        data: $(form).serialize(),
+                        beforeSend: function() {
+                            $('#error').removeClass('alert alert-danger');
+                            $('#error').html('');
+                            $('#error').removeClass('alert alert-success');
+                            $('#save').html('Loading...');
+                        },
+                        success: function(response) {
+                            $('#save').html('Save');
+                            if(response.error.length > 0 && response.status == "1" ) {
+                                $('#error').addClass('alert alert-danger');
+                                response.error.forEach(display_errors);
+                            } else {
+                                $('#error').addClass('alert alert-success');
+                                response.error.forEach(display_errors);
+                                setTimeout(function(){
+                                    location.reload();
+                                },100);
+                            }
+                        }            
+                    });
                 }
             });
-        </script>
-        <script>
-            AOS.init();
-          </script>
-    </body>
 
+            function display_errors( item, index) {
+                $('#error').append('<div>'+item+'</div>');
+            }
+            </script>
+            <script>
+                $(window).scroll(function(){
+                    if ($(this).scrollTop() > 50) {
+                    $('#top-navbar-animated').addClass('bg-dark-50');
+                    } else {
+                    $('#top-navbar-animated').removeClass('bg-dark-50');
+                    }
+                });
+            </script>
+            <script>
+                AOS.init();
+            </script>
+        </body>
+        @else 
+        <body class="h-100">
+            <div class="cover-container d-flex w-100 h-100 p-3 mx-auto justify-content-center align-items-center text-center" style="min-height: 100vh">
+                <main class="px-3">
+                    <h1>There is no, <br> Published landing page !</h1>
+                    <p class="lead">If you want to publish a landing page ? Please login to use ..!</p>
+                    <p class="lead">
+                        <a href="{{ route('login') }}" class="btn btn-lg btn-primary gradient rounded-pill fw-bold border-white bg-white">Login</a>
+                    </p>
+                </main> 
+            </div>
+        </body>
+    @endif 
 </html>
