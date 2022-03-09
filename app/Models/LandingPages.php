@@ -13,6 +13,9 @@ class LandingPages extends Model
         "page_title",
         "page_logo",
         "permalink",
+        "mail_us",
+        "call_us",
+        "contact_us",
 
     ];
     public function LandingPageSocialMedias() {
@@ -20,5 +23,9 @@ class LandingPages extends Model
     } 
     public function LandingPageBannerSliders() {
         return $this->hasMany(LandingPageBannerSliders::class, 'page_id', 'id');
-    } 
+    }
+    public function LandingPageFormInputs()
+    {
+        return $this->hasMany(LandingPageFormInputs::class, 'page_id', 'id');
+    }
 } 

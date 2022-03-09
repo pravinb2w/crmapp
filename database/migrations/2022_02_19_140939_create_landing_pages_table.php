@@ -20,6 +20,9 @@ class CreateLandingPagesTable extends Migration
             $table->text("permalink");
             $table->string('page_type', 100)->nullable(); 
             $table->longText("footer_content")->nullable();
+            $table->text("mail_us");
+            $table->text("call_us");
+            $table->text("contact_us");
             $table->integer('status')->default(1);
             $table->softDeletes();
             $table->timestamps();

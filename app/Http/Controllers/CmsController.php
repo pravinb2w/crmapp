@@ -29,6 +29,7 @@ class CmsController extends Controller
     public function save(Request $request, $type=null)
     {
         
+        // dd($request->all());
        
         $page_validator = [
             'page_type'     =>  [ 'required', 'string', 'max:255'],
@@ -46,6 +47,9 @@ class CmsController extends Controller
                 'page_type'     => $request->page_type,
                 'page_logo'     => $file, 
                 'permalink'     => Str::slug($request->page_type),
+                'mail_us'       => $request->mail_us,
+                'call_us'       => $request->call_us,
+                'contact_us'    => $request->contact_us,
             ]);
              
             foreach($request->media_type as $i => $media){
@@ -55,12 +59,17 @@ class CmsController extends Controller
                     'icon'      =>  "-",
                 ]); 
             }
+            foreach($request->form_input_type as $i => $form){
+                $result->LandingPageFormInputs()->create([
+                    'input_type'        =>  $request->form_input_type[$i] ,
+                    'input_text'        =>  $request->form_input_text[$i],
+                    'input_required'    =>  $request->form_input_required[$i],
+                ]); 
+            }
+
             foreach($request->banner_title as $i => $banner){
-                 
                 $image  = $request->file('banner_image')[$i];
-                // dd($image);
                 $file               =    $image->store( 'LandingPages/Banners', 'public' );
-                // dd($file);
                 $result->LandingPageBannerSliders()->create([
                     'title'     =>  $request->banner_title[$i] ,
                     'sub_title' =>  $request->sub_banner_title[$i],
@@ -68,7 +77,7 @@ class CmsController extends Controller
                     'content'   =>  $request->banner_content[$i],
                 ]); 
             }
-            return response()->json(['success'=>"Create Succes !"]);
+            return response()->json(['success'=>"Create Success !"]);
         }
         return response()->json(['error'=>$validator->errors()->all(), 'status' => '1']);
     }

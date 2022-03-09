@@ -2,14 +2,18 @@
 <html lang="en">
     <head>
         <meta charset="utf-8" />
-        <title>Phonix CRM</title>
+        @if ($result)
+            <title>{{ $result->page_title }}</title>
+            <link rel="shortcut icon" href="{{ asset('storage/'.$result->page_logo) }}">
+        @endif
+       
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta content="A fully featured admin theme which can be used to build CRM, CMS, etc." name="description" />
         <meta content="Coderthemes" name="author" />
         <meta name="csrf-token" content="{{ csrf_token() }}" />
 
         <!-- App favicon -->
-        <link rel="shortcut icon" href="{{ asset('assets/images/favicon.ico') }}">
+        
         <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
         <!-- App css -->
         <link href="{{ asset('assets/css/icons.min.css' ) }}" rel="stylesheet" type="text/css" />
@@ -107,6 +111,7 @@
            }
         </style>
     </head>
+
     @if (!empty($result))
         <body class="loading" data-layout-config='{"darkMode":false}'>
             
@@ -115,7 +120,7 @@
                 <div class="container">
                     <!-- logo -->
                     <a href="#" class="navbar-brand me-lg-5 ">
-                        <img src="{{ asset('assets/images/logo/logo-color.png') }}"     class="logo-dark" width="300px"  />
+                        <img src="{{ asset('storage/'.$result->page_logo) }}" alt="{{ $result->page_title }}" class="logo-dark" height="60" />
                     </a>
 
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
@@ -345,25 +350,25 @@
                                     <h1>Request a call back</h1>
                                     <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Beatae optio, maxime illo nisi distinctio, error temporibus</p>
                                     <div class="py-4">
-                                        <div class="d-flex align-items-center mb-3">
+                                        <a href="tel:{{ $result->call_us }}" class="d-flex align-items-center mb-3">
                                             <div class="text-primary mdi mdi-phone-in-talk fa-lg"></div>
-                                            <div>
+                                            <div class="text-white">
                                                 <strong>Call US</strong>
-                                                <div>+91 98745 61230</div>
+                                                <div>{{ $result->call_us }}</div>
                                             </div>
-                                        </div>
-                                        <div class="d-flex align-items-center mb-3">
+                                        </a>
+                                        <a href="mailto:{{ $result->mail_us }}" class="d-flex align-items-center mb-3">
                                             <div class="text-primary mdi mdi-email fa-lg"></div>
-                                            <div>
+                                            <div class="text-white">
                                                 <strong>Mail US</strong>
-                                                <div>info@phoenix.crm.com </div>
+                                                <div>{{ $result->mail_us }}</div>
                                             </div>
-                                        </div>
+                                        </a>
                                         <div class="d-flex align-items-center">
                                             <div class="text-primary mdi mdi-map-marker fa-lg"></div>
                                             <div>
                                                 <strong>Call US</strong>
-                                                <div>N.34/21 , New street , chennai-60001</div>
+                                                <div>{{ $result->contact_us }}</div>
                                             </div>
                                         </div>
                                     </div>
@@ -419,19 +424,43 @@
 
                             <div class="aos-init"  data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="2000">
                                 <strong class="text-primary">Follow Us On Social...</strong>
+                                
                                 <ul class="social-list list-inline mt-3">
-                                    <li class="list-inline-item text-center">
-                                        <a href="javascript: void(0);" class="social-list-item border-primary text-white btn-outline-primary"><i class="mdi mdi-facebook"></i></a>
-                                    </li>
-                                    <li class="list-inline-item text-center">
-                                        <a href="javascript: void(0);" class="social-list-item border-primary text-white btn-outline-primary"><i class="mdi mdi-google"></i></a>
-                                    </li>
-                                    <li class="list-inline-item text-center">
-                                        <a href="javascript: void(0);" class="social-list-item border-primary text-white btn-outline-primary"><i class="mdi mdi-twitter"></i></a>
-                                    </li>
-                                    <li class="list-inline-item text-center">
-                                        <a href="javascript: void(0);" class="social-list-item border-primary text-white btn-outline-primary"><i class="mdi mdi-github"></i></a>
-                                    </li>
+                                    @if ($result->LandingPageSocialMedias)
+                                        @foreach ($result->LandingPageSocialMedias as $media)
+                                            <li class="list-inline-item text-center">
+                                                <a href="{{ $media->link }}" class="social-list-item border-primary text-white btn-outline-primary">
+                                                    @if ($media->name == 'Gmail')
+                                                        <i class="mdi mdi-google"></i>
+                                                    @endif
+                                                    @if ($media->name == 'Whatsapp')
+                                                        <i class="mdi mdi-whatsapp"></i>
+                                                    @endif
+                                                    @if ($media->name == 'Instagram')
+                                                        <i class="mdi mdi-instagram"></i>
+                                                    @endif
+                                                    @if ($media->name == 'Reddit')
+                                                        <i class="mdi mdi-reddit"></i>
+                                                    @endif
+                                                    @if ($media->name == 'Snapchat')
+                                                        <i class="mdi mdi-snapchat"></i>
+                                                    @endif
+                                                    @if ($media->name == 'YouTube')
+                                                        <i class="mdi mdi-youtube"></i>
+                                                    @endif
+                                                    @if ($media->name == 'Facebook')
+                                                        <i class="mdi mdi-facebook"></i>
+                                                    @endif
+                                                    @if ($media->name == 'Twitter')
+                                                        <i class="mdi mdi-twitter"></i>
+                                                    @endif
+                                                    @if ($media->name == 'LinkedIn')
+                                                        <i class="mdi mdi-linkedin"></i>
+                                                    @endif
+                                                </a>
+                                            </li>
+                                        @endforeach
+                                    @endif
                                 </ul>
                             </div>
                         </div>  
@@ -458,6 +487,7 @@
                     </div>
                 </div>
             </footer>
+           
             <!-- bundle -->
             <script src="{{ asset('assets/js/vendor.min.js') }}"></script>
             <script src="{{ asset('assets/js/app.min.js') }}"></script>
