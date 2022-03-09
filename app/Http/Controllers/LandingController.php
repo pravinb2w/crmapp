@@ -6,16 +6,25 @@ use Illuminate\Http\Request;
 use App\Models\CompanySettings;
 use App\Models\Customer;
 use App\Models\Lead;
+use App\Models\LandingPages;
 
 use Illuminate\Support\Facades\Validator;
 
 class LandingController extends Controller
 {
-    public function index()
+    public function index($permalink=null)
     {
-        $info = CompanySettings::find(1);
+        $info           = CompanySettings::find(1);
         $params['info'] = $info;
-        return view('landing.landing', $params);
+        if($permalink  != null) {
+            $result   = LandingPages::where('permalink', '=', $permalink)->first();
+            if(empty($result)) {
+                $result   = LandingPages::latest()->first();
+            }
+        }else {
+            $result   = LandingPages::latest()->first();
+        }
+        return view('landing.landing', $params, compact('result'));
     } 
     public function enquiry_save(Request $request) {
         $id = $request->id;
@@ -53,6 +62,5 @@ class LandingController extends Controller
             return response()->json(['error'=>[$success], 'status' => '0']);
         }
         return response()->json(['error'=>$validator->errors()->all(), 'status' => '1']);
-    }
-    
+    } 
 }

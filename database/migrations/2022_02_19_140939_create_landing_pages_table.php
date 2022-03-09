@@ -17,9 +17,10 @@ class CreateLandingPagesTable extends Migration
             $table->id();
             $table->text("page_title");
             $table->text("page_logo");
+            $table->text("permalink");
             $table->string('page_type', 100)->nullable(); 
             $table->longText("footer_content")->nullable();
-            $table->integer('status')->default(0);
+            $table->integer('status')->default(1);
             $table->softDeletes();
             $table->timestamps();
         });

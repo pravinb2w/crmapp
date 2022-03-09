@@ -52,7 +52,7 @@
   z-index: -1;
 }
 .bg-dark-50 {
-  background: #ffffffc2 !important;
+  background: #ffffffde !important;
   backdrop-filter: blur(5px);
   border-bottom: 2px solid var(--bs-primary) !important;
 }
