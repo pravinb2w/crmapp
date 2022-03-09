@@ -69,4 +69,9 @@ class Invoice extends Model implements Auditable
     {
         return $this->hasOne(User::class, 'id', 'updated_by');
     } 
+
+    public function items()
+    {
+        return $this->hasMany(InvoiceItem::class, 'invoice_id')->orderBy('invoice_items.created_at', 'asc');
+    }
 }

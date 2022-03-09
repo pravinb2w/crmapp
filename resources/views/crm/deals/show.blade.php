@@ -222,6 +222,42 @@ form#activites-form>div>label>i {
 
     }
 
+    function unlink_invoice(deal_id, invoice_id, type) {
+        var comman = 'You are trying to unlink invoice from Deals';
+
+        Swal.fire({
+           title: 'Are you sure?',
+           text: comman,
+           icon: 'warning',
+           showCancelButton: true,
+           confirmButtonColor: '#3085d6',
+           cancelButtonColor: '#d33',
+           confirmButtonText: 'Yes, do it!'
+           }).then((result) => {
+               /* Read more about isConfirmed, isDenied below */
+               if (result.isConfirmed) {
+                   var ajax_url = "{{ route('deals.unlink') }}";
+                   $.ajaxSetup({
+                       headers: {
+                           'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                       }
+                   });
+                   $.ajax({
+                       url: ajax_url,
+                       method:'POST',
+                       data: {deal_id:deal_id, invoice_id:invoice_id, type:type},
+                       success:function(response){
+                            if( response.type  && response.deal_id ) {
+                                refresh_deal_timeline(response.type, response.deal_id, 'all');
+                            }
+                       }      
+                   });
+                   Swal.fire('Updated!', '', 'success')
+               } 
+           })
+           return false;
+    }
+
      
 
 </script>

@@ -19,6 +19,8 @@ use CommonHelper;
 use App\Models\DealDocument;
 use App\Models\InvoiceItem;
 use App\Models\Invoice;
+use App\Models\CompanySettings;
+use PDF;
 
 class DealsController extends Controller
 {
@@ -565,5 +567,30 @@ class DealsController extends Controller
         $success = 'Invoice added successfully';
         return response()->json(['error'=>[$success], 'status' => '0', 'deal_id' => $deal_id, 'type' => 'done']);
 
+    }
+
+    public function generatePDF(Request $request, $id)
+    {
+        $info = Invoice::find( $id );
+        $company = CompanySettings::find(1);
+
+        $data = [
+            'info' => $info,
+            'company' => $company
+        ];
+        // return view('crm.invoice.deal_invoice', $data);
+        $pdf = PDF::loadView('crm.invoice.deal_invoice', $data);
+        return $pdf->download($info->invoice_no.'.pdf');
+    }
+
+    public function unlink_invoice(Request $request) {
+        $deal_id = $request->deal_id;
+        $invoice_id = $request->invoice_id;
+        $type = $request->invoice_id;
+
+        $invoice = Invoice::find($invoice_id);
+        $invoice->delete();
+        $success = 'Invoice Deleted successfully';
+        return response()->json(['error'=>[$success], 'status' => '0', 'deal_id' => $deal_id, 'type' => 'done']);
     }
 }

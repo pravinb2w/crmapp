@@ -20,4 +20,14 @@ class InvoiceItem extends Model
        'tax',
        'amount',
     ];
+
+    public function invoice()
+    {
+        return $this->hasOne(Invoice::class, 'id', 'invoice_id');
+    }
+
+    public function product()
+    {
+        return $this->hasOne(Product::class, 'id', 'product_id');
+    }
 }

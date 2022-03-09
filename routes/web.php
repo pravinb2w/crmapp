@@ -46,6 +46,8 @@ Route::middleware([SetViewVariable::class, 'auth'])->group(function(){
 
     Route::post('/autocomplete_lead_deal', [App\Http\Controllers\LeadController::class, 'autocomplete_lead_deal'])->name('autocomplete_lead_deal');
     Route::post('/autocomplete_lead_deal_set', [App\Http\Controllers\LeadController::class, 'autocomplete_lead_deal_set'])->name('autocomplete_lead_deal_set');
+    
+    Route::get('pdf/{id}', [App\Http\Controllers\DealsController::class, 'generatePDF'])->name('pdf');
 
     //Activities
     Route::prefix('activities')->group(function () {
@@ -124,6 +126,8 @@ Route::middleware([SetViewVariable::class, 'auth'])->group(function(){
         Route::post('/finalize', [App\Http\Controllers\DealsController::class, 'deal_finalize'])->name('deals.finalize');
         Route::post('/insert/invoice', [App\Http\Controllers\DealsController::class, 'insert_invoice'])->name('deals.save-invoice');
         Route::post('/get/items', [App\Http\Controllers\DealsController::class, 'invoice_product_list'])->name('invoices.add_items');
+        Route::post('/invoice/unlink', [App\Http\Controllers\DealsController::class, 'unlink_invoice'])->name('deals.unlink');
+
     });
     //tasks route
     Route::prefix('tasks')->group(function () {

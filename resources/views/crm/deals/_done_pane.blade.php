@@ -147,11 +147,12 @@
                                     <i class="mdi mdi-dots-vertical"></i>
                                 </button>
                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                    <a class="dropdown-item" href="#"  onclick="change_activity_status('{{ $info->id }}','{{ $litem['id'] }}', 'done')">Delete</a>
                                     @if($litem['activity_type'] == 'invoice')
                                     <a class="dropdown-item" href="#"  onclick="submit_approve_invoice('{{ $info->id }}','{{ $litem['id'] }}', 'done')">Submit for Approval</a>
                                     <a class="dropdown-item" href="#"  onclick="unlink_invoice('{{ $info->id }}','{{ $litem['id'] }}', 'done')">Unlink from Deal</a>
-                                    <a class="dropdown-item" href="#"  onclick="download_invoice('{{ $info->id }}','{{ $litem['id'] }}', 'done')">Download Pdf</a>
+                                    <a class="dropdown-item" href="{{ route('pdf', ['id' => $litem['id'] ]) }}">Download Pdf</a>
+                                    @else
+                                    <a class="dropdown-item" href="#"  onclick="change_activity_status('{{ $info->id }}','{{ $litem['id'] }}', 'done')">Delete</a>
                                     @endif
                                 </div>
                             </div>
