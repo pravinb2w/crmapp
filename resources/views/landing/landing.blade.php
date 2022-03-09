@@ -545,10 +545,7 @@
             <div class="container d-flex w-100 h-100 p-3 mx-auto justify-content-center align-items-center text-center" style="min-height: 100vh">
                 <main class="px-4">
                     <h1>There is no, <br> Published landing page here!</h1>
-                    <p class="lead">You need to publish a landing page ? Please click the login button ..!</p>
-                    <p class="lead">
-                        <a href="{{ route('login') }}" class="btn btn-lg btn-primary gradient rounded-pill fw-bold border-white bg-white">Login</a>
-                    </p>
+                    <p class="lead">Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatum laboriosam facilis animi recusandae voluptates quisquam itaque numquam et voluptate fugit aperiam labore accusantium beatae aspernatur ab, nobis neque vel nostrum.</p>
                 </main> 
             </div>
         </body>
