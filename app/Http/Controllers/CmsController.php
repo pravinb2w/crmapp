@@ -26,11 +26,18 @@ class CmsController extends Controller
         return view('crm.cms.add', $params);
     }
 
+    public function edit(Request $equest, $id=null)
+    {
+        $params['id'] = $id;
+        $params['pagetype'] = PageType::where('status', 1)->get();
+        $result = LandingPages::where('id', $id)->firstOrFail();
+        return view('crm.cms.edit', $params, compact('result'));
+    }
+
     public function save(Request $request, $type=null)
     {
         
         // dd($request->all());
-       
         $page_validator = [
             'page_type'     =>  [ 'required', 'string', 'max:255'],
             'page_title'    =>  [ 'required', 'string','max:255'] 
@@ -77,8 +84,9 @@ class CmsController extends Controller
                     'content'   =>  $request->banner_content[$i],
                 ]); 
             }
-            return response()->json(['success'=>"Create Success !"]);
+            return response()->json(['success'=>"Landing page to be created successfully !"]);
         }
         return response()->json(['error'=>$validator->errors()->all(), 'status' => '1']);
     }
+     
 }

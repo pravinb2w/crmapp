@@ -6,7 +6,6 @@
             <title>{{ $result->page_title }}</title>
             <link rel="shortcut icon" href="{{ asset('storage/'.$result->page_logo) }}">
         @endif
-       
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta content="A fully featured admin theme which can be used to build CRM, CMS, etc." name="description" />
         <meta content="Coderthemes" name="author" />
@@ -423,8 +422,9 @@
                                 <br> and development by using it.</p>
 
                             <div class="aos-init"  data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="2000">
-                                <strong class="text-primary">Follow Us On Social...</strong>
-                                
+                                @if ($result->LandingPageSocialMedias == [])
+                                    <strong class="text-primary">Follow Us On Social...</strong>
+                                @endif
                                 <ul class="social-list list-inline mt-3">
                                     @if ($result->LandingPageSocialMedias)
                                         @foreach ($result->LandingPageSocialMedias as $media)
@@ -468,10 +468,9 @@
                         <div class="col-12 text-center">
                             <div class="aos-init"  data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="2400">
                                 <ul class="list-unstyled justify-content-center d-flex ps-0 mb-0 mt-3">
-                                    <li class="m-2"><a href="javascript: void(0);" class="text-light">About Us</a></li>
-                                    <li class="m-2"><a href="javascript: void(0);" class="text-light">Price</a></li>
-                                    <li class="m-2"><a href="javascript: void(0);" class="text-light">Blog</a></li>
-                                    <li class="m-2"><a href="javascript: void(0);" class="text-light">Contact us</a></li>
+                                    <li class="m-2"><a href="#about-us" class="text-light">Home</a></li> 
+                                    <li class="m-2"><a href="#about-us" class="text-light">About Us</a></li> 
+                                    <li class="m-2"><a href="#contact-us" class="text-light">Contact us</a></li>
                                 </ul>
                             </div>
                         </div>

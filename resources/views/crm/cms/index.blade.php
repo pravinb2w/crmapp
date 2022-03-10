@@ -25,15 +25,10 @@
                     @include('crm.common.common_add_btn')
 
                     <div class="table-responsive">
-                        <table class="table table-centered w-100 dt-responsive nowrap" id="customer-datatable">
+                        <table class="table table-centered w-100 dt-responsive nowrap" id="ladingPage-datatable">
                             <thead class="table-light">
                                 <tr>
-                                    <th class="all" style="width: 20px;">
-                                        <div class="form-check">
-                                            <input type="checkbox" class="form-check-input" id="customCheck1">
-                                            <label class="form-check-label" for="customCheck1">&nbsp;<label>
-                                        </div>
-                                    </th>
+                                    <th>S.No</th>
                                     <th class="all">Page Name</th>
                                     <th>Page Logo</th>
                                     <th>Created at</th>
@@ -43,32 +38,21 @@
                             </thead>
                             <tbody>
                                 @if ($result)
-                                    @foreach ($result as $row)
+                                    @foreach ($result as $key => $row)
                                         <tr>
                                             <th class="all" style="width: 20px;">
-                                                <div class="form-check">
-                                                    <input type="checkbox" class="form-check-input" id="customCheck1">
-                                                    <label class="form-check-label" for="customCheck1">&nbsp;<label>
-                                                </div>
+                                                {{ $key +1 }}
                                             </th>
                                             <td>{{ $row->page_title }}</td>
                                             <td><img src="{{ asset('storage/'.$row->page_logo) }} "  height="40px" alt=""></td>
                                             <td>{{ $row->created_at }}</td>
                                             <td>
-                                                <div>
-                                                    <div>
-                                                        <input type="checkbox" name="status" id="switch3" data-switch="primary"
-                                                            @if ($row->status == 1)
-                                                                checked
-                                                            @endif
-                                                         >
-                                                        <label for="switch3" data-on-label="" data-off-label=""></label>
-                                                    </div>  
-                                                </div>
+                                                @if ($row->status == 1)
+                                                    <span class="badge bg-success"> Active </span>
+                                                @endif
                                             </td>
                                             <td>
-                                                <a href="#" class="action-icon"><i class="mdi mdi-eye"></i></a>
-                                                <a href="#" class="action-icon"><i class="mdi mdi-square-edit-outline"></i></a>
+                                                <a href="{{ route('pages.edit', $row->id) }}" class="action-icon"><i class="mdi mdi-square-edit-outline"></i></a>
                                                 <a href="#" class="action-icon"><i class="mdi mdi-delete"></i> </a>
                                             </td>
                                         </tr>
@@ -86,4 +70,5 @@
  
 
 @endsection
+
  
