@@ -21,6 +21,9 @@ use App\Models\InvoiceItem;
 use App\Models\Invoice;
 use App\Models\CompanySettings;
 use PDF;
+use App\Mail\SubmitApproval;
+use Mail;
+
 
 class DealsController extends Controller
 {
@@ -593,4 +596,37 @@ class DealsController extends Controller
         $success = 'Invoice Deleted successfully';
         return response()->json(['error'=>[$success], 'status' => '0', 'deal_id' => $deal_id, 'type' => 'done']);
     }
+
+    public function submit_for_approve(Request $request) {
+        $deal_id = $request->deal_id;
+        $invoice_id = $request->invoice_id;
+        $type = $request->invoice_id;
+        $deal_info = Deal::find($deal_id);
+
+        $info = Invoice::find( $invoice_id );
+        $company = CompanySettings::find(1);
+
+        $email = 'dred@yopmail.com';
+ 
+        $body = [
+            'name'=> $deal_info->customer->first_name,
+            'info' => $info,
+            'company' => $company,
+            'html' => view('crm.invoice._mail_invoice', ['info' => $info, 'company' => $company]),
+            'url_a'=> route('approve-invoice', ['id' => $invoice_id]),
+           'url_b'=> route('reject-invoice', ['id' => $invoice_id]),
+        ];
+        $send_mail = new SubmitApproval($body);
+        // return $send_mail->render();
+        Mail::to($email)->send($send_mail);
+
+
+        // $invoice = Invoice::find($invoice_id);
+        // $invoice->pending_at = date('Y-m-d H:i:s');
+        // $invoice->update();
+        $success = 'Invoice Submitted for Approval successfully';
+        return response()->json(['error'=>[$success], 'status' => '0', 'deal_id' => $deal_id, 'type' => 'done']);
+    }
+
+   
 }

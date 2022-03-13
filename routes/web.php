@@ -2,7 +2,6 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\SetViewVariable;
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -18,7 +17,8 @@ Route::get('/', function () {
 });
 Route::get('/crm/{permalink?}', [App\Http\Controllers\LandingController::class, 'index'])->name('landing.index');
 Route::post('/enquiry', [App\Http\Controllers\LandingController::class, 'enquiry_save'])->name('enquiry.save'); 
-
+Route::get('/approve/invoice/{id}',[App\Http\Controllers\InvoiceController::class, 'approve_invoice'])->name('approve-invoice');
+Route::get('/reject/invoice/{id}',[App\Http\Controllers\InvoiceController::class, 'reject_invoice'])->name('reject-invoice');
 Auth::routes();
 Route::middleware([SetViewVariable::class, 'auth'])->group(function(){
 
@@ -130,8 +130,17 @@ Route::middleware([SetViewVariable::class, 'auth'])->group(function(){
         Route::post('/insert/invoice', [App\Http\Controllers\DealsController::class, 'insert_invoice'])->name('deals.save-invoice');
         Route::post('/get/items', [App\Http\Controllers\DealsController::class, 'invoice_product_list'])->name('invoices.add_items');
         Route::post('/invoice/unlink', [App\Http\Controllers\DealsController::class, 'unlink_invoice'])->name('deals.unlink');
+        Route::post('/invoice/submit', [App\Http\Controllers\DealsController::class, 'submit_for_approve'])->name('deals.submit-approve');
 
     });
+
+    //Invoice route
+    Route::prefix('invoices')->group(function () {
+        Route::get('/', [App\Http\Controllers\InvoiceController::class, 'index'])->name('invoices');
+        Route::post('/list', [App\Http\Controllers\InvoiceController::class, 'ajax_list'])->name('invoices.list');
+        Route::post('/view', [App\Http\Controllers\InvoiceController::class, 'view'])->name('invoices.view'); //set on modal
+    });
+
     //tasks route
     Route::prefix('tasks')->group(function () {
         Route::get('/', [App\Http\Controllers\TaskController::class, 'index'])->name('tasks');

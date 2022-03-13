@@ -258,7 +258,42 @@ form#activites-form>div>label>i {
            return false;
     }
 
-     
+    function submit_approve_invoice(deal_id, invoice_id, type) {
+        var comman = 'You are trying to submiot for Approval';
+
+        Swal.fire({
+           title: 'Are you sure?',
+           text: comman,
+           icon: 'warning',
+           showCancelButton: true,
+           confirmButtonColor: '#3085d6',
+           cancelButtonColor: '#d33',
+           confirmButtonText: 'Yes, do it!'
+           }).then((result) => {
+               /* Read more about isConfirmed, isDenied below */
+               if (result.isConfirmed) {
+                   var ajax_url = "{{ route('deals.submit-approve') }}";
+                   $.ajaxSetup({
+                       headers: {
+                           'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                       }
+                   });
+                   $.ajax({
+                       url: ajax_url,
+                       method:'POST',
+                       data: {deal_id:deal_id, invoice_id:invoice_id, type:type},
+                       async:true,
+                       success:function(response){
+                            if( response.type  && response.deal_id ) {
+                                refresh_deal_timeline(response.type, response.deal_id, 'all');
+                            }
+                       }      
+                   });
+                   Swal.fire('Updated!', '', 'success')
+               } 
+           })
+           return false;
+    } 
 
 </script>
 

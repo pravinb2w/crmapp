@@ -29,7 +29,9 @@ class Deal extends Model implements Auditable
         'assinged_by',
         'status',
         'added_by',
-        'updated_by'
+        'updated_by',
+        'won_at',
+        'loss_at',
     ];
 
     public function scopeLatests( Builder $query ) {

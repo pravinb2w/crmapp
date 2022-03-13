@@ -28,7 +28,12 @@ class Invoice extends Model implements Auditable
         'status',
         'approved_at',
         'added_by',
-        'updated_by'
+        'updated_by',
+        'pending_at',
+        'rejected_at',
+        'approved_by',
+        'rejected_by',
+        'reject_reason'
     ];
 
     public function scopeLatests( Builder $query ) {

@@ -111,7 +111,7 @@
                             <a href="{{ route('deals') }}">Deals</a>
                         </li>
                         <li>
-                            <a href="javascipt:void(0)">Invoices</a>
+                            <a href="{{ route('invoices') }}">Invoices</a>
                         </li>
                         <li>
                             <a href="javascript:void(0)">Payments</a>

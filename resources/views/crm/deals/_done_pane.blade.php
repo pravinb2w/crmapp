@@ -68,6 +68,9 @@
                         $tmp['done_at'] = Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $value->created_at)->format('Y-m-d H:i:s');
                         $tmp['done_by'] = '';
                         $tmp['added'] = $value->added;
+                        $tmp['pending_at'] = $value->pending_at;
+                        $tmp['approved_at'] = $value->approved_at;
+                        $tmp['rejected_at'] = $value->rejected_at;
                         $list[] = $tmp;
                     }
                 }
@@ -125,6 +128,7 @@
                 array_multisort($sort, SORT_DESC, $list);
             }
         @endphp
+        
         @forelse ($list as $litem)
        
             <div class="right">
@@ -135,7 +139,15 @@
                             <h4 class="mt-0 mb-1 font-16 w-85">
                                 <span class="timeline-icon">
                                 <i class="mdi mdi-adjust"></i> 
-                                @if(!empty($litem['activity_type'])) {{ strtoupper($litem['activity_type']) }}  - @endif {{ $litem['subject'] }}</span>
+                                @if(!empty($litem['activity_type'])) {{ strtoupper($litem['activity_type']) }}  - @endif {{ $litem['subject'] }}
+                                </span>
+                                @if( isset( $litem['pending_at']) && !empty($litem['pending_at']) && $litem['approved_at'] == null && $litem['activity_type'] == 'invoice' )
+                                <span class="badge bg-info-lighten">Awaiting for Approval</span>
+                                @elseif( $litem['approved_at'] && $litem['activity_type'] == 'invoice')
+                                <span class="badge bg-success-lighten">Approved</span>
+                                @elseif( $litem['rejected_at'] && $litem['activity_type'] == 'invoice' )
+                                <span class="badge bg-danger-lighten">Rejected</span>
+                                @endif
                                 @if( isset( $litem['document'] ) && !empty($litem['document'])) 
                                 <small class="ml-3">
                                     <a href="{{ asset('storage/'.$litem['document']) }}" target="_blank"> View Files </a>
@@ -148,7 +160,11 @@
                                 </button>
                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                     @if($litem['activity_type'] == 'invoice')
-                                    <a class="dropdown-item" href="#"  onclick="submit_approve_invoice('{{ $info->id }}','{{ $litem['id'] }}', 'done')">Submit for Approval</a>
+                                    @if( $litem['pending_at'] == null )
+                                        <a class="dropdown-item" href="#"  onclick="submit_approve_invoice('{{ $info->id }}','{{ $litem['id'] }}', 'done')">
+                                            Submit for Approval 
+                                        </a>
+                                    @endif
                                     <a class="dropdown-item" href="#"  onclick="unlink_invoice('{{ $info->id }}','{{ $litem['id'] }}', 'done')">Unlink from Deal</a>
                                     <a class="dropdown-item" href="{{ route('pdf', ['id' => $litem['id'] ]) }}">Download Pdf</a>
                                     @else

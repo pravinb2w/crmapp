@@ -81,5 +81,12 @@
         .float-right {
             float: right;
         }
+        table.dataTable.nowrap th, table.dataTable.nowrap td {
+            white-space: nowrap;
+            padding: 1px 15px;
+        }
+        th {
+            padding: 10px !important;
+        }
     </style>
 </head>
