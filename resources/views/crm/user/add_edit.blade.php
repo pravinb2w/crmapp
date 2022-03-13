@@ -1,10 +1,10 @@
 <div class="modal-dialog modal-lg modal-right">
-    <div class="modal-content">
+    <div class="modal-content custom-content" >
         <div class="modal-header">
             <h4 class="modal-title" id="myLargeModalLabel">{{ $modal_title }}</h4>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-        <div class="modal-body" style="max-height: 95vh;overflow:auto">
+        <div class="modal-body" style="max-height: 95vh;overflow:auto;height:690px;">
             <div class="row">
                 <div class="col-12" id="error">
                 </div>
@@ -51,7 +51,7 @@
                         <div class="row mb-1">
                             <label for="mobile_no" class="col-3 col-form-label">Role <span class="text-danger">*</span></label>
                             <div class="col-9">
-                                <select name="role_id" id="role_id" class="form-control">
+                                <select name="role_id" id="role_id" class="form-control" required>
                                     <option value="">--select--</option>
                                     @if( isset($roles) && !empty($roles))
                                         @foreach ($roles as $item)
@@ -65,6 +65,12 @@
                             <label for="lead_limit" class="col-3 col-form-label">Lead Limit </label>
                             <div class="col-9">
                                 <input type="text" name="lead_limit" class="form-control" id="lead_limit" placeholder="Lead limit" value="{{ $info->lead_limit ?? '' }}" required>
+                            </div>
+                        </div>
+                        <div class="row mb-1">
+                            <label for="deal_limit" class="col-3 col-form-label">Deal Limit </label>
+                            <div class="col-9">
+                                <input type="text" name="deal_limit" class="form-control" id="deal_limit" placeholder="Deal limit" value="{{ $info->deal_limit ?? '' }}" required>
                             </div>
                         </div>
 

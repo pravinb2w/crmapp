@@ -1,10 +1,10 @@
-<div class="modal-dialog modal-md">
+<div class="modal-dialog modal-md modal-right">
     <div class="modal-content">
         <div class="modal-header">
             <h4 class="modal-title" id="myLargeModalLabel">{{ $modal_title }}</h4>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-        <div class="modal-body">
+        <div class="modal-body" style="height: 691px;">
             <div class="row">
                 <div class="col-12" id="error">
                 </div>

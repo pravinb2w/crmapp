@@ -12,7 +12,7 @@ class LeadTypeController extends Controller
 {
     public function index(Type $var = null)
     {
-        $params = array('btn_name' => 'Lead Type', 'btn_fn_param' => 'leadtype');
+        $params = array('btn_name' => 'Lead Stage', 'btn_fn_param' => 'leadtype');
         return view('crm.leadtype.index', $params);
     }
 
@@ -87,10 +87,10 @@ class LeadTypeController extends Controller
             return response('Forbidden.', 403);
         }
         $id = $request->id;
-        $modal_title = 'Add Lead Type';
+        $modal_title = 'Add Lead Stage';
         if( isset( $id ) && !empty($id) ) {
             $info = LeadType::find($id);
-            $modal_title = 'Update Lead Type';
+            $modal_title = 'Update Lead Stage';
         }
         $params = ['modal_title' => $modal_title, 'id' => $id ?? '', 'info' => $info ?? ''];
         return view('crm.leadtype.add_edit', $params);
@@ -103,7 +103,7 @@ class LeadTypeController extends Controller
             return response('Forbidden.', 403);
         }
         $id = $request->id;
-        $modal_title = 'Lead Type Info';
+        $modal_title = 'Lead Stage Info';
         $info = LeadType::find($id);
         $params = ['modal_title' => $modal_title, 'id' => $id ?? '', 'info' => $info ?? ''];
         return view('crm.leadtype.view', $params);

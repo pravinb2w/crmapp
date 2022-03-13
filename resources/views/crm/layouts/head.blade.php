@@ -88,5 +88,8 @@
         th {
             padding: 10px !important;
         }
+        .custom-content {
+            width:700px;
+        }
     </style>
 </head>

@@ -86,7 +86,7 @@ Route::middleware([SetViewVariable::class, 'auth'])->group(function(){
     });
     //products route
     Route::prefix('products')->group(function () {
-        Route::get('/', [App\Http\Controllers\ProductController::class, 'index'])->name('products');
+        Route::get('/', [App\Http\Controllers\ProductController::class, 'index'])->name('products')->middleware('checkAccess:is_view');
         Route::post('/add', [App\Http\Controllers\ProductController::class, 'add_edit'])->name('products.add');
         Route::post('/save', [App\Http\Controllers\ProductController::class, 'save'])->name('products.save');
         Route::post('/view', [App\Http\Controllers\ProductController::class, 'view'])->name('products.view');
@@ -220,7 +220,7 @@ Route::middleware([SetViewVariable::class, 'auth'])->group(function(){
         Route::post('/pagetype/list', [App\Http\Controllers\PageTypeController::class, 'ajax_list'])->name('pagetype.list');
         Route::post('/pagetype/delete', [App\Http\Controllers\PageTypeController::class, 'delete'])->name('pagetype.delete');
         Route::post('/pagetype/status', [App\Http\Controllers\PageTypeController::class, 'change_status'])->name('pagetype.status');
-
+ 
         Route::get('/dealstages', [App\Http\Controllers\DealStageController::class, 'index'])->name('dealstages');
         Route::post('/dealstages/add', [App\Http\Controllers\DealStageController::class, 'add_edit'])->name('dealstages.add');
         Route::post('/dealstages/view', [App\Http\Controllers\DealStageController::class, 'view'])->name('dealstages.view');
@@ -229,7 +229,7 @@ Route::middleware([SetViewVariable::class, 'auth'])->group(function(){
         Route::post('/dealstages/delete', [App\Http\Controllers\DealStageController::class, 'delete'])->name('dealstages.delete');
         Route::post('/dealstages/status', [App\Http\Controllers\DealStageController::class, 'change_status'])->name('dealstages.status');
 
-        Route::get('/leadtype', [App\Http\Controllers\LeadTypeController::class, 'index'])->name('leadtype');
+        Route::get('/leadstage', [App\Http\Controllers\LeadTypeController::class, 'index'])->name('leadstage');
         Route::post('/leadtype/add', [App\Http\Controllers\LeadTypeController::class, 'add_edit'])->name('leadtype.add');
         Route::post('/leadtype/view', [App\Http\Controllers\LeadTypeController::class, 'view'])->name('leadtype.view');
         Route::post('/leadtype/save', [App\Http\Controllers\LeadTypeController::class, 'save'])->name('leadtype.save');

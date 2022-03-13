@@ -12,7 +12,7 @@
                     <ol class="breadcrumb m-0">
                         <li class="breadcrumb-item"><a href="javascript: void(0);">CRM</a></li>
                         <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
-                        <li class="breadcrumb-item active">Deal stages</li>
+                        <li class="breadcrumb-item active">Lead stages</li>
                     </ol>
                 </div>
                 <h4 class="page-title">Settings </h4>
@@ -42,7 +42,7 @@
                                             <label class="form-check-label" for="customCheck1">&nbsp;</label>
                                         </div>
                                     </th>
-                                    <th class="all">Lead Type</th>
+                                    <th class="all">Lead Stage</th>
                                     <th>Status</th>
                                     <th style="width: 80px;">Action</th>
                                 </tr>

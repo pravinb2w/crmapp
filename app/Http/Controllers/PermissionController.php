@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use DB;
 use App\Models\Permission;
 use App\Models\Role;
-
+use App\Models\RolePermissionMenu;
 
 class PermissionController extends Controller
 {
@@ -63,8 +63,8 @@ class PermissionController extends Controller
                     <input type="checkbox" class="form-check-input" id="customCheck2" value="'.$permissions->id.'">
                     <label class="form-check-label" for="customCheck2">&nbsp;</label>
                 </div>';
-                $nested_data[ 'page' ]              = $permissions->page;
-                $nested_data['addedBy']             = '';
+                $nested_data[ 'role' ]              = $permissions->role->role;
+                $nested_data['addedBy']             = $permissions->added->name ?? '';
                 $nested_data[ 'action' ]            = $action;
                 $data[]                             = $nested_data;
             }
@@ -86,7 +86,6 @@ class PermissionController extends Controller
         $id = $request->id;
         $modal_title = 'Add Role Permissions';
         $role = Role::all();
-
         if( isset( $id ) && !empty($id) ) {
             $info = Permission::find($id);
             $modal_title = 'Update Role Permissions';
@@ -101,7 +100,59 @@ class PermissionController extends Controller
         if (! $request->ajax()) {
             return response('Forbidden.', 403);
         }
+        $id = $request->id;
+        if( isset( $id ) && !empty($id) ) {
+            $role_validator   = [
+                'role_id'      => [ 'required', 'string', 'max:255', 'unique:role_permissions,role_id,'.$id ],
+            ];
+        } else {
+            $role_validator   = [
+                'role_id'      => [ 'required', 'string', 'max:255', 'unique:role_permissions,role_id'],
+            ];
+        }
+        //Validate the product
+        $validator                     = Validator::make( $request->all(), $role_validator );
+        
+        if ($validator->passes()) {
+            $role_id = $request->role_id;
+            $per['role_id'] = $role_id;
+            if( isset( $id ) && !empty($id)){
+                $per_info = Permission::find($id);
+                $per_info->role_id = $role_id;
+                $per_info->update();
+            } else {
+                $per['status'] = 1;
+                $per['added_by'] = Auth::id();
+                $id = Permission::create($per)->id;
+            }
 
-        dd( $_POST );
+            RolePermissionMenu::where('permission_id', $id)->forceDelete();
+
+            $ins = [];
+            foreach( config('constant.role_menu') as $item ) {
+                $visible = 'visible_'.$item;
+                $editable = 'editable_'.$item;
+                $delete = 'delete_'.$item;
+                $assign = 'assign_'.$item;
+                $export = 'export_'.$item;
+                $tmp['permission_id']   = $id;
+                $tmp['menu']            = $item;
+                $tmp['is_view']         = $request->$visible ?? 'no';
+                $tmp['is_edit']         = $request->$editable ?? 'no';
+                $tmp['is_delete']       = $request->$delete ?? 'no';
+                $tmp['is_assign']       = $request->$assign ?? 'no';
+                $tmp['is_export']       = $request->$export ?? 'no';
+                $tmp['added_by'] = Auth::id();
+                $tmp['created_at'] = date('Y-m-d H:i:s');
+                RolePermissionMenu::create($tmp);
+            }
+            if( !empty( $tmp ) ) {
+                return response()->json(['error'=> 'Permission added successfully', 'status' => '0']);
+            }
+        } else {
+        return response()->json(['error'=> $validator->errors()->all(), 'status' => '1']);
+
+        }
+        
     }
 }

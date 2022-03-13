@@ -43,6 +43,7 @@
                                         </div>
                                     </th>
                                     <th class="all">Name</th>
+                                    <th>Role</th>
                                     <th>Email</th>
                                     <th>Mobile Number</th>
                                     <th>Status</th>
@@ -83,6 +84,7 @@
             "columns"       : [
                 {"data" : "id"},
                 {"data" : "name"},
+                {"data" : "role"},
                 {"data" : "email"},
                 {"data" : "mobile_no"},
                 {"data" : "status" },

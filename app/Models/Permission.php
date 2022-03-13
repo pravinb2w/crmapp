@@ -15,10 +15,6 @@ class Permission extends Model
     protected $fillable = [
         'role_id',
         'menu',
-        'is_view',
-        'is_edit',
-        'is_delete',
-        'is_assign',
         'status',
         'added_by',
         'updated_by',
@@ -43,5 +39,23 @@ class Permission extends Model
     public function added()
     {
         return $this->hasOne(User::class, 'id', 'added_by');
+    }
+
+    public function role()
+    {
+        return $this->hasOne(Role::class, 'id', 'role_id');
+    }
+
+    public function permission()
+    {
+        return $this->hasMany(RolePermissionMenu::class, 'permission_id');
+    }
+
+    public function scopeHas_access(Builder $query, $menu){
+        return $query->join('role_permission_menu', function($join, $menu){
+                    $join->on('role_permission_menu.permission_id', '=', 'role_permissions.id')
+                    ->where('role_permission_menu.menu', $menu);
+        });
+            
     }
 }
