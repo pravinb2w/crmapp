@@ -17,7 +17,6 @@ class CreateLandingPageFormInputsTable extends Migration
             $table->id();
             $table->integer('page_id');
             $table->string('input_type');
-            $table->string('input_text'); 
             $table->string('input_required');
             $table->timestamps();
         });
