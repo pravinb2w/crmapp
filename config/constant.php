@@ -6,15 +6,15 @@ return [
 	'role_menu' => [
         'dashboard',
         'notes',
-        'activity',
-        'lead',
-        'deal',
-        'task',
-        'product',
-        'customer',
-        'user',
-        'invoice',
-        'payment',
+        'activities',
+        'leads',
+        'deals',
+        'tasks',
+        'products',
+        'customers',
+        'users',
+        'invoices',
+        'payments',
         'activity_log',
         'database_backup',
         'email_template',
@@ -22,8 +22,7 @@ return [
         'master_data',
         'bulk_import',
         'landing_pages',
-        'organization',
-        'subscription'
-        
+        'organizations',
+        'subscriptions'
     ]
 ];

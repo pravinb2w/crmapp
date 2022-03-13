@@ -606,8 +606,6 @@ class DealsController extends Controller
         $info = Invoice::find( $invoice_id );
         $company = CompanySettings::find(1);
 
-        $email = 'dred@yopmail.com';
- 
         $body = [
             'name'=> $deal_info->customer->first_name,
             'info' => $info,
@@ -618,12 +616,11 @@ class DealsController extends Controller
         ];
         $send_mail = new SubmitApproval($body);
         // return $send_mail->render();
-        Mail::to($email)->send($send_mail);
+        Mail::to($info->customer->email ?? 'durai@yopmail.com')->send($send_mail);
 
-
-        // $invoice = Invoice::find($invoice_id);
-        // $invoice->pending_at = date('Y-m-d H:i:s');
-        // $invoice->update();
+        $invoice = Invoice::find($invoice_id);
+        $invoice->pending_at = date('Y-m-d H:i:s');
+        $invoice->update();
         $success = 'Invoice Submitted for Approval successfully';
         return response()->json(['error'=>[$success], 'status' => '0', 'deal_id' => $deal_id, 'type' => 'done']);
     }

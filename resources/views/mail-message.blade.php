@@ -147,22 +147,32 @@
         </nav>
         <!-- NAVBAR END --> 
         <section style="min-height: 500px" class="bg-light d-flex justify-content-center align-items-center">
+            @if( isset( $status ) && $status == 0 )
             <div class="card m-3 ">
                 <div class="card-body text-center p-4">
                     <h1 class="display-1 mb-3 bi bi-check-circle-fill text-success"></h1>
                     <h1 class="text-dark">Proposal Aprroved !</h1>
-                    <p class="lead">Congratulation Your Proposal to be aprroved Succsussfully </p>
-                    <a href="" class="mt-3 btn btn-success px-4 rounded-pill">Contine</a>
+                    <p class="lead">{{ $message }}</p>
+                    <a href="{{ route('landing.index') }}" class="mt-3 btn btn-success px-4 rounded-pill">Contine</a>
                 </div>
             </div>
+            @elseif( isset($status) && $status == 2)
+            <div class="card m-3 ">
+                <div class="card-body text-center p-4">
+                    <h1 class="display-1 mb-3 bi bi-exclamation-circle-fill text-danger"></h1>
+                    <h1 class="text-dark">Session Expired!</h1>
+                    <p class="lead">{{ $message }}</p>
+                </div>
+            </div>
+            @else
             <div class="card m-3 ">
                 <div class="card-body text-center p-4">
                     <h1 class="display-1 mb-3 bi bi-exclamation-circle-fill text-danger"></h1>
                     <h1 class="text-dark">Proposal Denied !</h1>
-                    <p class="lead">Sorry ! Your Proposal to be Denied ! Please try again later !</p>
-                    <a href="" class="mt-3 btn btn-danger px-4 rounded-pill">Try Again</a>
+                    <p class="lead">{{ $message }}</p>
                 </div>
             </div>
+            @endif
         </section>
         <section class="py-5 ">
             <div class="container">

@@ -13,6 +13,7 @@ class ProductController extends Controller
 {
     public function index(Type $var = null)
     {
+
         $params = array('btn_name' => 'Product', 'btn_fn_param' => 'products');
         return view('crm.products.index', $params);
     }

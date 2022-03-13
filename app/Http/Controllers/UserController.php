@@ -72,6 +72,7 @@ class UserController extends Controller
                     <label class="form-check-label" for="customCheck2">&nbsp;</label>
                 </div>';
                 $nested_data[ 'name' ]              = $users->name;
+                $nested_data[ 'role' ]              = $users->role->role ?? '';
                 $nested_data[ 'email' ]             = $users->email;
                 $nested_data[ 'mobile_no' ]         = $users->mobile_no;
                 $nested_data[ 'status' ]            = $users_status;
@@ -151,6 +152,7 @@ class UserController extends Controller
             $ins['role_id'] = $request->role_id;
             $ins['email'] = $request->email;
             $ins['lead_limit'] = $request->lead_limit;
+            $ins['deal_limit'] = $request->deal_limit;
 
             if( isset( $request->password ) ) {
                 $ins['password'] = Hash::make($request->password);
@@ -165,6 +167,7 @@ class UserController extends Controller
                 $user->mobile_no = $request->mobile_no;
                 $user->role_id = $request->role_id;
                 $user->lead_limit = $request->lead_limit;
+                $user->deal_limit = $request->deal_limit;
 
                 if( isset( $request->password ) ) {
                     $user->password = Hash::make($request->password);

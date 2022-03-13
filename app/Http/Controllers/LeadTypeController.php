@@ -12,7 +12,7 @@ class LeadTypeController extends Controller
 {
     public function index(Type $var = null)
     {
-        $params = array('btn_name' => 'Lead Type', 'btn_fn_param' => 'leadtype');
+        $params = array('btn_name' => 'Lead Stage', 'btn_fn_param' => 'leadstage');
         return view('crm.leadtype.index', $params);
     }
 
@@ -53,14 +53,14 @@ class LeadTypeController extends Controller
         if( $list ) {
             $i=1;
             foreach( $list as $leadtype ) {
-                $leadtype_status                         = '<div class="badge bg-danger" role="button" onclick="change_status(\'leadtype\','.$leadtype->id.', 1)"> Inactive </div>';
+                $leadtype_status                         = '<div class="badge bg-danger" role="button" onclick="change_status(\'leadstage\','.$leadtype->id.', 1)"> Inactive </div>';
                 if( $leadtype->status == 1 ) {
-                    $leadtype_status                     = '<div class="badge bg-success" role="button" onclick="change_status(\'leadtype\','.$leadtype->id.', 0)"> Active </div>';
+                    $leadtype_status                     = '<div class="badge bg-success" role="button" onclick="change_status(\'leadstage\','.$leadtype->id.', 0)"> Active </div>';
                 }
                 $action = '
-                <a href="javascript:void(0);" class="action-icon" onclick="return view_modal(\'leadtype\', '.$leadtype->id.')"> <i class="mdi mdi-eye"></i></a>
-                <a href="javascript:void(0);" class="action-icon" onclick="return get_add_modal(\'leadtype\', '.$leadtype->id.')"> <i class="mdi mdi-square-edit-outline"></i></a>
-                <a href="javascript:void(0);" class="action-icon" onclick="return common_soft_delete(\'leadtype\', '.$leadtype->id.')"> <i class="mdi mdi-delete"></i></a>';
+                <a href="javascript:void(0);" class="action-icon" onclick="return view_modal(\'leadstage\', '.$leadtype->id.')"> <i class="mdi mdi-eye"></i></a>
+                <a href="javascript:void(0);" class="action-icon" onclick="return get_add_modal(\'leadstage\', '.$leadtype->id.')"> <i class="mdi mdi-square-edit-outline"></i></a>
+                <a href="javascript:void(0);" class="action-icon" onclick="return common_soft_delete(\'leadstage\', '.$leadtype->id.')"> <i class="mdi mdi-delete"></i></a>';
 
                 $nested_data[ 'id' ]                = '<div class="form-check">
                     <input type="checkbox" class="form-check-input" id="customCheck2" value="'.$leadtype->id.'">
@@ -87,10 +87,10 @@ class LeadTypeController extends Controller
             return response('Forbidden.', 403);
         }
         $id = $request->id;
-        $modal_title = 'Add Lead Type';
+        $modal_title = 'Add Lead Stage';
         if( isset( $id ) && !empty($id) ) {
             $info = LeadType::find($id);
-            $modal_title = 'Update Lead Type';
+            $modal_title = 'Update Lead Stage';
         }
         $params = ['modal_title' => $modal_title, 'id' => $id ?? '', 'info' => $info ?? ''];
         return view('crm.leadtype.add_edit', $params);
@@ -103,7 +103,7 @@ class LeadTypeController extends Controller
             return response('Forbidden.', 403);
         }
         $id = $request->id;
-        $modal_title = 'Lead Type Info';
+        $modal_title = 'Lead Stage Info';
         $info = LeadType::find($id);
         $params = ['modal_title' => $modal_title, 'id' => $id ?? '', 'info' => $info ?? ''];
         return view('crm.leadtype.view', $params);

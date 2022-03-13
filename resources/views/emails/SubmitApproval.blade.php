@@ -25,25 +25,25 @@
 </div>
 <hr>
 <div style="width: 100%;display:inline-flex">
-    <div style="width: 50%;font-size:11px;">
-        <div  > <strong>Pay To:</strong>
-            <address class="ps-2">
-                {{ $body['company']->site_name ?? '' }}<br />
-                {{ $body['company']->address ?? '' }} <br>
-                {{ $body['company']->site_email ?? '' }}
-            </address>
-        </div>
-    </div>
-    <div style="width:50%;text-align:left;font-size:11px;">
-        <div> <strong>Invoiced To:</strong>
-            <address class="ps-2">
-                {{ $body['info']->customer->first_name ?? '' }} {{ $body['info']->customer->last_name ?? '' }}<br />
-                {{ $body['info']->address ?? '' }}
-                <br>
-                {{ $body['info']->customer->mobile_no ?? '' }}
-            </address>
-        </div>
-    </div>
+<div style="width: 50%;font-size:11px;">
+<div  > <strong>Pay To:</strong>
+<address class="ps-2">
+{{ $body['company']->site_name ?? '' }}<br />
+{{ $body['company']->address ?? '' }} <br>
+{{ $body['company']->site_email ?? '' }}
+</address>
+</div>
+</div>
+<div style="width:50%;text-align:left;font-size:11px;">
+<div> <strong>Invoiced To:</strong>
+<address class="ps-2">
+{{ $body['info']->customer->first_name ?? '' }} {{ $body['info']->customer->last_name ?? '' }}<br />
+{{ $body['info']->address ?? '' }}
+<br>
+{{ $body['info']->customer->mobile_no ?? '' }}
+</address>
+</div>
+</div>
 </div>
 <br>
 <table class="item-table" style="width: 100%;margin-top:15px;">

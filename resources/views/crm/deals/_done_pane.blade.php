@@ -143,9 +143,9 @@
                                 </span>
                                 @if( isset( $litem['pending_at']) && !empty($litem['pending_at']) && $litem['approved_at'] == null && $litem['activity_type'] == 'invoice' )
                                 <span class="badge bg-info-lighten">Awaiting for Approval</span>
-                                @elseif( $litem['approved_at'] && $litem['activity_type'] == 'invoice')
+                                @elseif( isset($litem['approved_at']) && $litem['activity_type'] == 'invoice')
                                 <span class="badge bg-success-lighten">Approved</span>
-                                @elseif( $litem['rejected_at'] && $litem['activity_type'] == 'invoice' )
+                                @elseif( isset($litem['rejected_at']) && $litem['activity_type'] == 'invoice' )
                                 <span class="badge bg-danger-lighten">Rejected</span>
                                 @endif
                                 @if( isset( $litem['document'] ) && !empty($litem['document'])) 

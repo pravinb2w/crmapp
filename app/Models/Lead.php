@@ -35,6 +35,15 @@ class Lead extends Model implements Auditable
         return $query->orderBy( static::CREATED_AT, 'desc' );
     }
 
+    public function scopeAccess( Builder $query ) {
+        $role_id = auth()->user()->role_id;
+        if($role_id){
+            return $query->where('assigned_to', auth()->user()->id );
+
+        }
+        return $query;
+    }
+
     public function scopeSearch( Builder $query, $search ) {
 
         if( empty( $search ) ) {

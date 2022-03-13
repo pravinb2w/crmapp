@@ -56,7 +56,6 @@ Route::middleware([SetViewVariable::class, 'auth'])->group(function(){
         Route::get('/', [App\Http\Controllers\ActivityController::class, 'index'])->name('activities');
         Route::post('/add', [App\Http\Controllers\ActivityController::class, 'add_edit'])->name('activities.add');
         Route::post('/edit', [App\Http\Controllers\ActivityController::class, 'add_edit_modal'])->name('activities.edit');
-
         Route::post('/save', [App\Http\Controllers\ActivityController::class, 'save'])->name('activities.save');
         Route::post('/view', [App\Http\Controllers\ActivityController::class, 'view'])->name('activities.view');
         Route::post('/list', [App\Http\Controllers\ActivityController::class, 'ajax_list'])->name('activities.list');
@@ -87,7 +86,7 @@ Route::middleware([SetViewVariable::class, 'auth'])->group(function(){
     });
     //products route
     Route::prefix('products')->group(function () {
-        Route::get('/', [App\Http\Controllers\ProductController::class, 'index'])->name('products');
+        Route::get('/', [App\Http\Controllers\ProductController::class, 'index'])->name('products')->middleware('checkAccess:is_view');
         Route::post('/add', [App\Http\Controllers\ProductController::class, 'add_edit'])->name('products.add');
         Route::post('/save', [App\Http\Controllers\ProductController::class, 'save'])->name('products.save');
         Route::post('/view', [App\Http\Controllers\ProductController::class, 'view'])->name('products.view');
@@ -132,7 +131,6 @@ Route::middleware([SetViewVariable::class, 'auth'])->group(function(){
         Route::post('/get/items', [App\Http\Controllers\DealsController::class, 'invoice_product_list'])->name('invoices.add_items');
         Route::post('/invoice/unlink', [App\Http\Controllers\DealsController::class, 'unlink_invoice'])->name('deals.unlink');
         Route::post('/invoice/submit', [App\Http\Controllers\DealsController::class, 'submit_for_approve'])->name('deals.submit-approve');
-
     });
 
     //Invoice route
@@ -161,6 +159,35 @@ Route::middleware([SetViewVariable::class, 'auth'])->group(function(){
         Route::post('/list', [App\Http\Controllers\OrganizationController::class, 'ajax_list'])->name('organizations.list');
         Route::post('/delete', [App\Http\Controllers\OrganizationController::class, 'delete'])->name('organizations.delete');
         Route::post('/status', [App\Http\Controllers\OrganizationController::class, 'change_status'])->name('organizations.status');
+    });
+
+    Route::prefix('leadstage')->group(function () {
+        Route::get('/', [App\Http\Controllers\LeadTypeController::class, 'index'])->name('leadstage');
+        Route::post('/add', [App\Http\Controllers\LeadTypeController::class, 'add_edit'])->name('leadstage.add');
+        Route::post('/view', [App\Http\Controllers\LeadTypeController::class, 'view'])->name('leadstage.view');
+        Route::post('/save', [App\Http\Controllers\LeadTypeController::class, 'save'])->name('leadstage.save');
+        Route::post('/list', [App\Http\Controllers\LeadTypeController::class, 'ajax_list'])->name('leadstage.list');
+        Route::post('/delete', [App\Http\Controllers\LeadTypeController::class, 'delete'])->name('leadstage.delete');
+        Route::post('/status', [App\Http\Controllers\LeadTypeController::class, 'change_status'])->name('leadstage.status');
+    });
+
+    Route::prefix('leadsource')->group(function () {
+        Route::any('', [App\Http\Controllers\LeadSourceController::class, 'index'])->name('leadsource');
+        Route::post('/add', [App\Http\Controllers\LeadSourceController::class, 'add_edit'])->name('leadsource.add');
+        Route::post('/view', [App\Http\Controllers\LeadSourceController::class, 'view'])->name('leadsource.view');
+        Route::post('/save', [App\Http\Controllers\LeadSourceController::class, 'save'])->name('leadsource.save');
+        Route::post('/list', [App\Http\Controllers\LeadSourceController::class, 'ajax_list'])->name('leadsource.list');
+        Route::post('/delete', [App\Http\Controllers\LeadSourceController::class, 'delete'])->name('leadsource.delete');
+        Route::post('/status', [App\Http\Controllers\LeadSourceController::class, 'change_status'])->name('leadsource.status');
+    });
+    Route::prefix('dealstages')->group(function () {
+        Route::get('/', [App\Http\Controllers\DealStageController::class, 'index'])->name('dealstages');
+        Route::post('/add', [App\Http\Controllers\DealStageController::class, 'add_edit'])->name('dealstages.add');
+        Route::post('/view', [App\Http\Controllers\DealStageController::class, 'view'])->name('dealstages.view');
+        Route::post('/save', [App\Http\Controllers\DealStageController::class, 'save'])->name('dealstages.save');
+        Route::post('/list', [App\Http\Controllers\DealStageController::class, 'ajax_list'])->name('dealstages.list');
+        Route::post('/delete', [App\Http\Controllers\DealStageController::class, 'delete'])->name('dealstages.delete');
+        Route::post('/status', [App\Http\Controllers\DealStageController::class, 'change_status'])->name('dealstages.status');
     });
 
     Route::prefix('settings')->group(function () {
@@ -221,30 +248,6 @@ Route::middleware([SetViewVariable::class, 'auth'])->group(function(){
         Route::post('/pagetype/list', [App\Http\Controllers\PageTypeController::class, 'ajax_list'])->name('pagetype.list');
         Route::post('/pagetype/delete', [App\Http\Controllers\PageTypeController::class, 'delete'])->name('pagetype.delete');
         Route::post('/pagetype/status', [App\Http\Controllers\PageTypeController::class, 'change_status'])->name('pagetype.status');
-
-        Route::get('/dealstages', [App\Http\Controllers\DealStageController::class, 'index'])->name('dealstages');
-        Route::post('/dealstages/add', [App\Http\Controllers\DealStageController::class, 'add_edit'])->name('dealstages.add');
-        Route::post('/dealstages/view', [App\Http\Controllers\DealStageController::class, 'view'])->name('dealstages.view');
-        Route::post('/dealstages/save', [App\Http\Controllers\DealStageController::class, 'save'])->name('dealstages.save');
-        Route::post('/dealstages/list', [App\Http\Controllers\DealStageController::class, 'ajax_list'])->name('dealstages.list');
-        Route::post('/dealstages/delete', [App\Http\Controllers\DealStageController::class, 'delete'])->name('dealstages.delete');
-        Route::post('/dealstages/status', [App\Http\Controllers\DealStageController::class, 'change_status'])->name('dealstages.status');
-
-        Route::get('/leadtype', [App\Http\Controllers\LeadTypeController::class, 'index'])->name('leadtype');
-        Route::post('/leadtype/add', [App\Http\Controllers\LeadTypeController::class, 'add_edit'])->name('leadtype.add');
-        Route::post('/leadtype/view', [App\Http\Controllers\LeadTypeController::class, 'view'])->name('leadtype.view');
-        Route::post('/leadtype/save', [App\Http\Controllers\LeadTypeController::class, 'save'])->name('leadtype.save');
-        Route::post('/leadtype/list', [App\Http\Controllers\LeadTypeController::class, 'ajax_list'])->name('leadtype.list');
-        Route::post('/leadtype/delete', [App\Http\Controllers\LeadTypeController::class, 'delete'])->name('leadtype.delete');
-        Route::post('/leadtype/status', [App\Http\Controllers\LeadTypeController::class, 'change_status'])->name('leadtype.status');
-
-        Route::any('/leadsource', [App\Http\Controllers\LeadSourceController::class, 'index'])->name('leadsource');
-        Route::post('/leadsource/add', [App\Http\Controllers\LeadSourceController::class, 'add_edit'])->name('leadsource.add');
-        Route::post('/leadsource/view', [App\Http\Controllers\LeadSourceController::class, 'view'])->name('leadsource.view');
-        Route::post('/leadsource/save', [App\Http\Controllers\LeadSourceController::class, 'save'])->name('leadsource.save');
-        Route::post('/leadsource/list', [App\Http\Controllers\LeadSourceController::class, 'ajax_list'])->name('leadsource.list');
-        Route::post('/leadsource/delete', [App\Http\Controllers\LeadSourceController::class, 'delete'])->name('leadsource.delete');
-        Route::post('/leadsource/status', [App\Http\Controllers\LeadSourceController::class, 'change_status'])->name('leadsource.status');
 
         Route::get('/country', [App\Http\Controllers\CountryController::class, 'index'])->name('country');
         Route::post('/country/add', [App\Http\Controllers\CountryController::class, 'add_edit'])->name('country.add');

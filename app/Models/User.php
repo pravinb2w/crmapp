@@ -9,6 +9,7 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use OwenIt\Auditing\Contracts\Auditable;
 use Illuminate\Database\Eloquent\Builder;
+use DB;
 
 class User extends Authenticatable implements Auditable
 {
@@ -82,5 +83,27 @@ class User extends Authenticatable implements Auditable
                         ->orWhere( 'email', 'like', "%{$search}%" )
                         ->orWhere( 'mobile_no', 'like', "%{$search}%" );
                 }); 
+    }
+
+    public function hasAccess($menu, $access) {
+
+        $role_id = auth()->user()->role_id;
+        if( $role_id ) {
+            $info = DB::table('role_permissions')
+                    ->join('role_permission_menu', function ($join) use ($menu) {
+                        $join->on('role_permissions.id', '=', 'role_permission_menu.permission_id')
+                            ->where('role_permission_menu.menu', '=', $menu);
+                    })->where('role_permissions.role_id', $role_id)->first();
+
+            if( isset($info) && !empty($info)) {
+                if( isset( $info->$access ) && $info->$access == 'on') {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        }
+        
+        return true;
     }
 }

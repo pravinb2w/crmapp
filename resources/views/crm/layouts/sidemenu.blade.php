@@ -85,6 +85,43 @@
                     </ul>
                 </div>
             </li>
+            <li class="side-nav-item">
+                <a data-bs-toggle="collapse" href="#sidebarLeades" aria-expanded="false" aria-controls="sidebarLeades" class="side-nav-link">
+                    <i class="mdi mdi-frequently-asked-questions"></i>
+                    <span> Leads </span>
+                    <span class="menu-arrow"></span>
+                </a>
+                <div class="collapse" id="sidebarLeades">
+                    <ul class="side-nav-second-level">
+                        <li>
+                            <a href="{{ route('leads') }}">Leads</a>
+                        </li>
+                        <li>
+                            <a href="{{ route('leadsource') }}">Lead Source</a>
+                        </li>
+                        <li>
+                            <a href="{{ route('leadstage') }}">Lead Stage</a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+            <li class="side-nav-item">
+                <a data-bs-toggle="collapse" href="#sidebardeals" aria-expanded="false" aria-controls="sidebardeals" class="side-nav-link">
+                    <i class="mdi mdi-thumbs-up-down"></i>
+                    <span> Deals </span>
+                    <span class="menu-arrow"></span>
+                </a>
+                <div class="collapse" id="sidebardeals">
+                    <ul class="side-nav-second-level">
+                        <li>
+                            <a href="{{ route('deals') }}">Deals</a>
+                        </li>
+                        <li>
+                            <a href="{{ route('dealstages') }}">Deal Stages</a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
 
             <li class="side-nav-item">
                 <a data-bs-toggle="collapse" href="#sidebarEmail_new" aria-expanded="false" aria-controls="sidebarEmail_new" class="side-nav-link">
@@ -95,12 +132,6 @@
                 <div class="collapse" id="sidebarEmail_new">
                     <ul class="side-nav-second-level">
                         <li>
-                            <a href="{{ route('leads') }}">Leads</a>
-                        </li>
-                        <li>
-                            <a href="{{ route('deals') }}">Deals</a>
-                        </li>
-                        <li>
                             <a href="{{ route('invoices') }}">Invoices</a>
                         </li>
                         <li>
@@ -109,31 +140,44 @@
                     </ul>
                 </div>
             </li>
+            @if(Auth::user()->hasAccess('products', 'is_view'))
+
             <li class="side-nav-item">
                 <a href="{{ route('products') }}" class="side-nav-link">
                     <i class="mdi mdi-archive"></i>
                     <span> Products </span>
                 </a>
             </li>
+            @endif
+            @if(Auth::user()->hasAccess('activities', 'is_view'))
+
             <li class="side-nav-item">
                 <a href="{{ route('activities') }}" class="side-nav-link">
                     <i class="mdi mdi-elevation-rise"></i>
                     <span> Activities </span>
                 </a>
             </li>
+            @endif
+            @if(Auth::user()->hasAccess('tasks', 'is_view'))
+
             <li class="side-nav-item">
                 <a href="{{ route('tasks') }}" class="side-nav-link">
                     <i class="mdi mdi-progress-clock"></i>
                     <span> Tasks </span>
                 </a>
             </li>
+            @endif
+            @if(Auth::user()->hasAccess('notes', 'is_view'))
+
             <li class="side-nav-item">
                 <a href="{{ route('notes') }}" class="side-nav-link">
                     <i class="mdi mdi-note-text"></i>
                     <span> Notes </span>
                 </a>
             </li>
-            
+            @endif
+            @if(!Auth::user()->role_id)
+
             <li class="side-nav-item">
                 <a data-bs-toggle="collapse" href="#sidebarProjects" aria-expanded="false" aria-controls="sidebarProjects" class="side-nav-link">
                     <i class="mdi mdi-apps"></i>
@@ -163,7 +207,8 @@
                     </ul>
                 </div>
             </li>
-
+            @endif
+            @if(Auth::user()->hasAccess('reports', 'is_view'))
             <li class="side-nav-item">
                 <a data-bs-toggle="collapse" href="#sidebarTasks" aria-expanded="false" aria-controls="sidebarTasks" class="side-nav-link">
                     <i class="uil-clipboard-alt"></i>
@@ -187,6 +232,8 @@
                     </ul>
                 </div>
             </li>
+            @endif
+            @if(!Auth::user()->role_id)
 
             <li class="side-nav-title side-nav-item">Setup</li>
 
@@ -196,6 +243,7 @@
                     <span> Settings </span>
                 </a>
             </li>
+            @endif
 
         </ul>
 
