@@ -47,13 +47,13 @@
                         <div class="row m-0 mb-3">
                             <div class="col-6 ps-md-0">
                                 <div class="custom-form-group">
-                                   <input  value="{{ $result->page_type }}" type="text"  name="page_type" id="" class="form-control" required  placeholder="Enter the page name">
+                                   <input  value="{{ $result->page_type }}" type="text"  name="page_type" id="" class="form-control"  placeholder="Enter the page name">
                                     <label for="" class="custom-label">Page Type</label>
                                 </div> 
                             </div>
                             <div class="col-6">
                                 <div class="custom-form-group">
-                                    <input value="{{ $result->page_title }}" type="text" name="page_title" class="form-control" required placeholder="Enter the page title">
+                                    <input value="{{ $result->page_title }}" type="text" name="page_title" class="form-control" placeholder="Enter the page title">
                                     <label for="" class="custom-label">Page Title</label>
                                 </div> 
                             </div>
@@ -123,15 +123,15 @@
                                                     <span onclick="bannerDelete(this)" class="badge badge-danger-lighten rounded-pill btn btn-sm shadow"><i class="bi fa-2x bi-x"></i></span>
                                                 </span>
                                                 <div class="custom-form-group">
-                                                    <input name="banner_image[]" type="file" id="" class="form-control mb-3" required  placeholder="Type here...">
+                                                    <input name="banner_image[]" type="file" id="" class="form-control mb-3"  placeholder="Type here...">
                                                     <label for="" class="custom-label bg-white">Cover Iamge</label>
                                                 </div> 
                                                 <div class="custom-form-group">
-                                                    <input value="{{ $row->sub_title }}" type="text" name="sub_banner_title[]" id="" class="form-control mb-3" required  placeholder="Type here...">
+                                                    <input value="{{ $row->sub_title }}" type="text" name="sub_banner_title[]" id="" class="form-control mb-3"  placeholder="Type here...">
                                                     <label for="" class="custom-label bg-white">Sub Title</label>
                                                 </div> 
                                                 <div class="custom-form-group">
-                                                    <input value="{{ $row->title }}" type="text" name="banner_title[]" id="" class="form-control mb-3" required  placeholder="Type here...">
+                                                    <input value="{{ $row->title }}" type="text" name="banner_title[]" id="" class="form-control mb-3"  placeholder="Type here...">
                                                     <label for="" class="custom-label bg-white">Title</label>
                                                 </div> 
                                                 <div class="custom-form-group">
@@ -261,7 +261,7 @@
             $('#error').removeClass("alert alert-success");
             $.ajax({
                 type:'POST',
-                url: '{{ route("pages.save") }}',
+                url: '{{ route("pages.update" , $result->id) }}',
                 data: formData,
                 contentType: false,
                 processData: false,
@@ -320,15 +320,15 @@
                                 <span onclick="bannerDelete(this)" class="badge badge-danger-lighten rounded-pill btn btn-sm shadow"><i class="bi fa-2x bi-x"></i></span>
                             </span>
                             <div class="custom-form-group">
-                                <input name="banner_image[]" type="file" id="" class="form-control mb-3" required  placeholder="Type here...">
+                                <input name="banner_image[]" type="file" id="" class="form-control mb-3"  placeholder="Type here...">
                                 <label for="" class="custom-label bg-white">Cover Iamge</label>
                             </div> 
                             <div class="custom-form-group">
-                                <input type="text" name="sub_banner_title[]" id="" class="form-control mb-3" required  placeholder="Type here...">
+                                <input type="text" name="sub_banner_title[]" id="" class="form-control mb-3"  placeholder="Type here...">
                                 <label for="" class="custom-label bg-white">Sub Title</label>
                             </div> 
                             <div class="custom-form-group">
-                                <input type="text" name="banner_title[]" id="" class="form-control mb-3" required  placeholder="Type here...">
+                                <input type="text" name="banner_title[]" id="" class="form-control mb-3"  placeholder="Type here...">
                                 <label for="" class="custom-label bg-white">Title</label>
                             </div> 
                             <div class="custom-form-group">

@@ -52,7 +52,7 @@
                                                 @endif
                                             </td>
                                             <td>
-                                                <a href="{{ route('pages.edit', $row->id) }}" class="action-icon"><i class="mdi mdi-square-edit-outline"></i></a>
+                                                {{-- <a href="{{ route('pages.edit', $row->id) }}" class="action-icon"><i class="mdi mdi-square-edit-outline"></i></a> --}}
                                                 <a href="#" class="action-icon"><i class="mdi mdi-delete"></i> </a>
                                             </td>
                                         </tr>

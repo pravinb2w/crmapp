@@ -18,6 +18,7 @@ class LandingPageSeeder extends Seeder
                 'page_title' => 'Lead creation Page',
                 'page_logo' => 'LandingPages/Logos/cparS00eCtCIETaWaxSOYJc1EXy4czy75Irdw5MY.png',
                 'permalink' => 'lead-page' ,
+                'page_type' => 'lead page' ,
                 'mail_us' => 'info@lead.gmail.com' ,
                 'call_us' => '9874561230' ,
                 'contact_us' => 'N0.30/234 New Road, city - 600028' , 
@@ -72,19 +73,19 @@ class LandingPageSeeder extends Seeder
             [
                 'page_id' => 1,
                 'name' => 'Instagram',
-                'link' => '#',
+                'link' => 'https://www.instagram.com/',
                 'icon' => '0' 
             ] ,
             [
                 'page_id' => 1,
                 'name' => 'Facebook',
-                'link' => '#',
+                'link' => 'https://www.facebook.com/',
                 'icon' => '0' 
             ] ,
             [
                 'page_id' => 1,
                 'name' => 'YouTube',
-                'link' => '#',
+                'link' => 'https://www.youtube.com/',
                 'icon' => '0' 
             ] ,
         ];
