@@ -2334,7 +2334,7 @@ progress {
 }
 
 .table-light {
-    --bs-table-bg: #10b9f1;
+    --bs-table-bg:var( --bs-blue);
     --bs-table-striped-bg: #fff;
     --bs-table-striped-color: #fff;
     --bs-table-active-bg: #a2a8b0;
