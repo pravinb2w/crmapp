@@ -2,7 +2,6 @@
 
 
 return [
-	
 	'role_menu' => [
         'dashboard',
         'notes',

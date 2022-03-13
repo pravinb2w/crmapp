@@ -86,7 +86,6 @@ class User extends Authenticatable implements Auditable
     }
 
     public function hasAccess($menu, $access) {
-        
         $role_id = auth()->user()->role_id;
         if( $role_id ) {
             $info = DB::table('role_permissions')
