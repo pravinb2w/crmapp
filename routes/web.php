@@ -80,6 +80,7 @@ Route::middleware([SetViewVariable::class, 'auth'])->group(function(){
         Route::get('/add/{id?}', [App\Http\Controllers\CmsController::class, 'add'])->name('pages.add');
         Route::get('/edit/{id?}', [App\Http\Controllers\CmsController::class, 'edit'])->name('pages.edit');
         Route::post('/save/{type?}', [App\Http\Controllers\CmsController::class, 'save'])->name('pages.save');
+        Route::post('/update/{id?}', [App\Http\Controllers\CmsController::class, 'update'])->name('pages.update');
         Route::post('/list', [App\Http\Controllers\CmsController::class, 'ajax_list'])->name('pages.list');
         Route::post('/delete', [App\Http\Controllers\CmsController::class, 'delete'])->name('pages.delete');
         Route::post('/status', [App\Http\Controllers\CmsController::class, 'change_status'])->name('pages.status');
