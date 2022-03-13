@@ -46,6 +46,8 @@
     </div>
     
     {{-- if user login only then hide user dropdown, show only admin login --}}
+    @if(Auth::user()->hasAccess('leads', 'is_assign'))
+
     <div class="form-group mt-3">
         <span><i class="dripicons-user"></i></span>
         <label for=""> User </label>
@@ -59,6 +61,9 @@
             @endif
         </select>
     </div>
+    @else 
+    <input type="hidden" name="user_id" id="user_id" value="{{ Auth::id() }}">
+    @endif
     <div class="form-group mt-3 text-end">
         <button type="button" class="btn btn-light me-2" > Cancel </button>
         <button type="submit" class="btn btn-success"> Save </button>

@@ -10,12 +10,6 @@
     
     <a href="{{ route('country') }}" class="list-group-item list-group-item-action {{ Request::segment(2) == 'country' ? 'active' : '' }}">
         Country</a>
-    <a href="{{ route('leadsource') }}" class="list-group-item list-group-item-action {{ Request::segment(2) == 'leadsource' ? 'active' : '' }}">
-        Lead Source</a>
-    <a href="{{ route('leadstage') }}" class="list-group-item list-group-item-action {{ Request::segment(2) == 'leadstage' ? 'active' : '' }}">
-        Lead Stage</a>
-    <a href="{{ route('dealstages') }}" class="list-group-item list-group-item-action {{ Request::segment(2) == 'dealstages' ? 'active' : '' }}">
-        Deal Stages</a>
     <a href="{{ route('permissions') }}" class="list-group-item list-group-item-action {{ Request::segment(2) == 'permissions' ? 'active' : '' }}">
         Permission</a>
     <a href="{{ route('pagetype') }}" class="list-group-item list-group-item-action {{ Request::segment(2) == 'pagetype' ? 'active' : '' }}">

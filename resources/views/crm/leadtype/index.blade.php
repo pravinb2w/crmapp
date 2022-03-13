@@ -21,19 +21,15 @@
     </div>     
     <!-- end page title --> 
     <div class="row">
-        <div class="col-lg-2">
-            <div>
-                @include('crm.layouts.setup_menu')             
-            </div>
-        </div>
-        <div class="col-lg-10">
+        
+        <div class="col-lg-12">
             <div class="card">
                 <div class="card-body">
                     {{-- <h4 class="header-title">Personal Preference</h4> --}}
                     @include('crm.common.common_add_btn')
 
                     <div class="table-responsive">
-                        <table class="table table-centered w-100 dt-responsive nowrap" id="leadtype-datatable">
+                        <table class="table table-centered w-100 dt-responsive nowrap" id="leadstage-datatable">
                             <thead class="table-light">
                                 <tr>
                                     <th class="all" style="width: 20px;">
@@ -70,12 +66,12 @@
     <script>
         $(document).ready(function(){"use strict";
         
-        const roletable = $('#leadtype-datatable').DataTable( {
+        const roletable = $('#leadstage-datatable').DataTable( {
             
             "processing"    : true,
             "serverSide"    : true,
             "ajax"          : {
-                "url"       : "<?= route( 'leadtype.list' ); ?>",
+                "url"       : "<?= route( 'leadstage.list' ); ?>",
                 "dataType"  : "json",
                 "type"      : "POST",
                 "data"      : { "_token" : "<?=csrf_token();?>" }

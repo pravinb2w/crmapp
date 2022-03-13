@@ -36,22 +36,22 @@ class LeadController extends Controller
         $dir                = $request->input( 'order' )[0][ 'dir' ];
         $search             = $request->input( 'search.value' );
        
-        $total_list         = lead::count();
+        $total_list         = lead::access()->count();
         // DB::enableQueryLog();
         if( $order != 'id') {
             $list               = lead::skip($start)->take($limit)->orderBy($order, $dir)
-                                ->search( $search )
+                                ->search( $search )->access()
                                 ->get();
         } else {
             $list               = lead::skip($start)->take($limit)->Latests()
-                                ->search( $search )
+                                ->search( $search )->access()
                                 ->get();
         }
         // $query = DB::getQueryLog();
         if( empty( $request->input( 'search.value' ) ) ) {
-            $total_filtered = lead::count();
+            $total_filtered = lead::access()->count();
         } else {
-            $total_filtered = lead::search( $search )
+            $total_filtered = lead::access()->search( $search )
                                 ->count();
         }
         
@@ -353,6 +353,14 @@ class LeadController extends Controller
                 $lead->update();
                 $success = 'Updated Lead';
             } else {
+                if( $request->assigned_to ) {
+                    $assigned_info = User::find($request->assigned_to);
+                    $limit = $assigned_info->lead_limit ?? 1;
+                    $check_limit = Lead::whereDate('created_at','=', date('Y-m-d'))->where('assigned_to', $request->assigned_to)->count();
+                    if( $check_limit >= $limit ) {
+                        return response()->json(['error'=>['Lead Limit per day reached maximum'], 'status' => '1']);
+                    }
+                }
                 $ins['added_by'] = Auth::id();
                 Lead::create($ins);
                 $success = 'Added new Lead';

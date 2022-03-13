@@ -85,6 +85,43 @@
                     </ul>
                 </div>
             </li>
+            <li class="side-nav-item">
+                <a data-bs-toggle="collapse" href="#sidebarLeades" aria-expanded="false" aria-controls="sidebarLeades" class="side-nav-link">
+                    <i class="mdi mdi-frequently-asked-questions"></i>
+                    <span> Leads </span>
+                    <span class="menu-arrow"></span>
+                </a>
+                <div class="collapse" id="sidebarLeades">
+                    <ul class="side-nav-second-level">
+                        <li>
+                            <a href="{{ route('leads') }}">Leads</a>
+                        </li>
+                        <li>
+                            <a href="{{ route('leadsource') }}">Lead Source</a>
+                        </li>
+                        <li>
+                            <a href="{{ route('leadstage') }}">Lead Stage</a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+            <li class="side-nav-item">
+                <a data-bs-toggle="collapse" href="#sidebardeals" aria-expanded="false" aria-controls="sidebardeals" class="side-nav-link">
+                    <i class="mdi mdi-thumbs-up-down"></i>
+                    <span> Deals </span>
+                    <span class="menu-arrow"></span>
+                </a>
+                <div class="collapse" id="sidebardeals">
+                    <ul class="side-nav-second-level">
+                        <li>
+                            <a href="{{ route('deals') }}">Deals</a>
+                        </li>
+                        <li>
+                            <a href="{{ route('dealstages') }}">Deal Stages</a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
 
             <li class="side-nav-item">
                 <a data-bs-toggle="collapse" href="#sidebarEmail_new" aria-expanded="false" aria-controls="sidebarEmail_new" class="side-nav-link">
@@ -94,12 +131,6 @@
                 </a>
                 <div class="collapse" id="sidebarEmail_new">
                     <ul class="side-nav-second-level">
-                        <li>
-                            <a href="{{ route('leads') }}">Leads</a>
-                        </li>
-                        <li>
-                            <a href="{{ route('deals') }}">Deals</a>
-                        </li>
                         <li>
                             <a href="{{ route('invoices') }}">Invoices</a>
                         </li>

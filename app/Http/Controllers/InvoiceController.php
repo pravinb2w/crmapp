@@ -95,21 +95,33 @@ class InvoiceController extends Controller
     }
 
     public function approve_invoice(Request $request, $id ) {
-        echo 'approve  ';
-        dd( $id );
+      
         $info = Invoice::find($id);
         if( isset( $info->approved_at ) && !empty( $info->approved_at ) ) {
-            $status = 1;
-            $message = 'Session expired or already approved';
+            $params['status'] = 1;
+            $params['message'] = 'Session expired or already approved';
         } else {
-            $status = 0;
-            $message = 'Approved Successfully';
+            $params['status'] = 0;
+            $params['message'] = 'Congratulation Your have approved proposal Succsussfully';
+            $info->approved_at = date('Y-m-d H:i:s');
+            $info->update();
         }
+        return view('mail-message', $params);
     }
 
     public function reject_invoice(Request $request, $id ) {
-        echo 'approve  ';
-        dd( $id );
+        
+        $info = Invoice::find($id);
+        if( isset( $info->rejected_at ) && !empty( $info->rejected_at ) ) {
+            $params['status'] = 1;
+            $params['message'] = 'Session expired or already rejected';
+        } else {
+            $params['status'] = 2;
+            $params['message'] = 'Sorry! Your have rejected proposal';
+            $info->rejected_at = date('Y-m-d H:i:s');
+            $info->update();
+        }
+        return view('mail-message', $params);
     }
 
 }

@@ -174,8 +174,8 @@
             return ajax_url = '{{ route("pagetype.add") }}';
         } else if(page_type=='dealstages') {
             return ajax_url = '{{ route("dealstages.add") }}';
-        } else if(page_type=='leadtype') {
-            return ajax_url = '{{ route("leadtype.add") }}';
+        } else if(page_type=='leadstage') {
+            return ajax_url = '{{ route("leadstage.add") }}';
         } else if(page_type=='leadsource') {
             return ajax_url = '{{ route("leadsource.add") }}';
         } else if(page_type=='country') {
@@ -218,8 +218,8 @@
             return ajax_url = '{{ route("pagetype.view") }}';
         } else if(page_type=='dealstages') {
             return ajax_url = '{{ route("dealstages.view") }}';
-        } else if(page_type=='leadtype') {
-            return ajax_url = '{{ route("leadtype.view") }}';
+        } else if(page_type=='leadstage') {
+            return ajax_url = '{{ route("leadstage.view") }}';
         } else if(page_type=='leadsource') {
             return ajax_url = '{{ route("leadsource.view") }}';
         } else if(page_type=='country') {
@@ -257,8 +257,8 @@
             return ajax_url = '{{ route("pagetype.delete") }}';
         } else if(page_type=='dealstages') {
             return ajax_url = '{{ route("dealstages.delete") }}';
-        } else if(page_type=='leadtype') {
-            return ajax_url = '{{ route("leadtype.delete") }}';
+        } else if(page_type=='leadstage') {
+            return ajax_url = '{{ route("leadstage.delete") }}';
         } else if(page_type=='leadsource') {
             return ajax_url = '{{ route("leadsource.delete") }}';
         } else if(page_type=='country') {
@@ -301,8 +301,8 @@
             return ajax_url = '{{ route("pagetype.status") }}';
         } else if(page_type=='dealstages') {
             return ajax_url = '{{ route("dealstages.status") }}';
-        } else if(page_type=='leadtype') {
-            return ajax_url = '{{ route("leadtype.status") }}';
+        } else if(page_type=='leadstage') {
+            return ajax_url = '{{ route("leadstage.status") }}';
         } else if(page_type=='leadsource') {
             return ajax_url = '{{ route("leadsource.status") }}';
         } else if(page_type=='country') {

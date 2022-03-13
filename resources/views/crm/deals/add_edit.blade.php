@@ -96,6 +96,7 @@
                                 <hr>
                             </div>
                         </div>
+                        @if(Auth::user()->hasAccess('deals', 'is_assign'))
 
                         <div class="col-6 mt-2">
                             <div class="d-flex align-items-center">
@@ -110,6 +111,9 @@
                                 </select>
                             </div>
                         </div>
+                        @else 
+                            <input type="hidden" name="assigned_to" id="assigned_to" value="{{ Auth::id() }}">
+                        @endif
                         <div class=" row col-6 mt-2 mb-3">
                             <div class="d-flex align-items-center">
                                 <label for="description" class="col-form-label me-2">Status</label>
