@@ -25,9 +25,9 @@
         <td style="width: 70%;">
             <div class="col-sm-7 text-center text-sm-start mb-3 mb-sm-0">
                 @if( isset($company->site_logo) && !empty($company->site_logo))
-                <img id="logo" style="width: 250px" src="{{ asset('storage/'.$company->site_logo) }}" title="Phoneix" alt="Phoneix" />
+                <img id="logo" style="width: 100px" src="{{ asset('storage/'.$company->site_logo) }}" title="Phoneix" alt="Phoneix" />
                 @else
-                <img id="logo" style="width: 250px" src="{{ asset('assets/images/logo/logo-color.png') }}" title="Phoneix" alt="Phoneix" /> 
+                <img id="logo" style="width: 100px" src="{{ asset('assets/images/logo/logo-color.png') }}" title="Phoneix" alt="Phoneix" /> 
                 @endif
                 {{-- <img id="logo" style="width: 250px" src="{{ asset('storage/'.$company->site_logo) }}" title="Phoneix" alt="Phoneix" /> --}}
             </div>

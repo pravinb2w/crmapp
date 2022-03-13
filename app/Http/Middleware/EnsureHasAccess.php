@@ -19,6 +19,7 @@ class EnsureHasAccess
     public function handle(Request $request, Closure $next, $access )
     {
         $role_id = auth()->user()->role_id;
+      
         if( $role_id ) {
             $info = DB::table('role_permissions')
                     ->join('role_permission_menu', function ($join) {

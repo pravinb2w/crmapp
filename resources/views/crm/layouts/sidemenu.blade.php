@@ -48,6 +48,7 @@
                     </ul>
                 </div>
             </li>
+            @if(Auth::user()->hasAccess('account', 'is_view') || Auth::user()->hasAccess('pages', 'is_view') )
 
             <li class="side-nav-item">
                 <a data-bs-toggle="collapse" href="#Accounts" aria-expanded="false" aria-controls="Accounts" class="side-nav-link">
@@ -57,16 +58,22 @@
                 </a>
                 <div class="collapse" id="Accounts">
                     <ul class="side-nav-second-level">
+                        @if(Auth::user()->hasAccess('account', 'is_view'))
                         <li>
                             <a href="{{ route('account') }}">Configuration</a>
                         </li>
+                        @endif
+                        @if(Auth::user()->hasAccess('pages', 'is_view'))
                         <li>
                             <a href="{{ route('pages') }}">Pages</a>
                         </li>
+                        @endif
                     </ul>
                 </div>
             </li>
+            @endif
 
+            @if(Auth::user()->hasAccess('customers', 'is_view') || Auth::user()->hasAccess('organizations', 'is_view') )
             <li class="side-nav-item">
                 <a data-bs-toggle="collapse" href="#sidebarEmail" aria-expanded="false" aria-controls="sidebarEmail" class="side-nav-link">
                     <i class="mdi mdi-account-tie"></i>
@@ -75,16 +82,22 @@
                 </a>
                 <div class="collapse" id="sidebarEmail">
                     <ul class="side-nav-second-level">
+                        @if(Auth::user()->hasAccess('customers', 'is_view'))
                         <li>
                             <a href="{{ route('customers') }}">Customers</a>
                         </li>
+                        @endif
+                        @if(Auth::user()->hasAccess('organizations', 'is_view'))
                         <li>
                             <a href="{{ route('organizations') }}">Organizations</a>
                         </li>
-                       
+                        @endif
                     </ul>
                 </div>
             </li>
+            @endif
+
+            @if(Auth::user()->hasAccess('leads', 'is_view'))
             <li class="side-nav-item">
                 <a data-bs-toggle="collapse" href="#sidebarLeades" aria-expanded="false" aria-controls="sidebarLeades" class="side-nav-link">
                     <i class="mdi mdi-frequently-asked-questions"></i>
@@ -105,6 +118,9 @@
                     </ul>
                 </div>
             </li>
+            @endif
+
+            @if(Auth::user()->hasAccess('deals', 'is_view'))
             <li class="side-nav-item">
                 <a data-bs-toggle="collapse" href="#sidebardeals" aria-expanded="false" aria-controls="sidebardeals" class="side-nav-link">
                     <i class="mdi mdi-thumbs-up-down"></i>
@@ -122,7 +138,9 @@
                     </ul>
                 </div>
             </li>
+            @endif
 
+            @if(Auth::user()->hasAccess('invoices', 'is_view') || Auth::user()->hasAccess('payments', 'is_view') )
             <li class="side-nav-item">
                 <a data-bs-toggle="collapse" href="#sidebarEmail_new" aria-expanded="false" aria-controls="sidebarEmail_new" class="side-nav-link">
                     <i class="mdi mdi-sale"></i>
@@ -131,15 +149,21 @@
                 </a>
                 <div class="collapse" id="sidebarEmail_new">
                     <ul class="side-nav-second-level">
+                        @if(Auth::user()->hasAccess('invoices', 'is_view'))
                         <li>
                             <a href="{{ route('invoices') }}">Invoices</a>
                         </li>
+                        @endif
+                        @if(Auth::user()->hasAccess('payments', 'is_view'))
+                        
                         <li>
                             <a href="javascript:void(0)">Payments</a>
                         </li>
+                        @endif
                     </ul>
                 </div>
             </li>
+            @endif
             @if(Auth::user()->hasAccess('products', 'is_view'))
 
             <li class="side-nav-item">

@@ -21,7 +21,7 @@ return [
         'reports',
         'master_data',
         'bulk_import',
-        'landing_pages',
+        'pages',
         'organizations',
         'subscriptions'
     ]
