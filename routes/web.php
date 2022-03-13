@@ -266,6 +266,8 @@ Route::middleware([SetViewVariable::class, 'auth'])->group(function(){
     Route::get('invoice', function () {
         return view('invoice');
     });
-
+    Route::get('mail-message', function () {
+        return view('mail-message');
+    }); 
 });
 
