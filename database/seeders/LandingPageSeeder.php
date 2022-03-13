@@ -45,32 +45,54 @@ class LandingPageSeeder extends Seeder
             [
                 'page_id' => 1,
                 'input_type' => 'fullname',
-                'input_required' => 'required' 
+                'input_required' => '1' 
             ] ,
             [
                 'page_id' => 1,
                 'input_type' => 'email',
-                'input_required' => 'required' 
+                'input_required' => '1' 
             ] ,
             [
                 'page_id' => 1,
                 'input_type' => 'mobile_no',
-                'input_required' => 'required' 
+                'input_required' => '1' 
             ] ,
             [
                 'page_id' => 1,
                 'input_type' => 'subject',
-                'input_required' => 'not_required' 
+                'input_required' => '0' 
             ] ,
             [
                 'page_id' => 1,
                 'input_type' => 'message',
-                'input_required' => 'not_required' 
+                'input_required' => '0' 
             ] 
+        ];
+        $data_media = [
+            [
+                'page_id' => 1,
+                'name' => 'Instagram',
+                'link' => '#',
+                'icon' => '0' 
+            ] ,
+            [
+                'page_id' => 1,
+                'name' => 'Facebook',
+                'link' => '#',
+                'icon' => '0' 
+            ] ,
+            [
+                'page_id' => 1,
+                'name' => 'YouTube',
+                'link' => '#',
+                'icon' => '0' 
+            ] ,
         ];
         \DB::table('landing_pages')->insert($data);
         \DB::table('landing_page_banner_sliders')->insert($data_banner);
         \DB::table('landing_page_form_inputs')->insert($data_input);
+        \DB::table('landing_page_social_medias')->insert($data_media);
+
 
 
     }
