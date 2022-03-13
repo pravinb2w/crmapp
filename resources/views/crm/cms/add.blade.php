@@ -112,7 +112,7 @@
                             </div>
                             <div class="card-body p-1">
                                 <div class="row m-0" id="banner_sliders">
-                                    <div class="col-4 p-1">
+                                    <div class="col-4 p-1" id="bannerCol">
                                         <div class="shadow border rounded p-2 pt-3 position-relative">
                                             <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-white p-0">
                                                 <span onclick="bannerDelete(this)" class="badge badge-danger-lighten rounded-pill btn btn-sm shadow"><i class="bi fa-2x bi-x"></i></span>
@@ -135,7 +135,7 @@
                                             </div>  
                                         </div>
                                     </div> 
-                                    <div class="col-4 p-1">
+                                    <div class="col-4 p-1" id="bannerCol">
                                         <div class="shadow border rounded p-2 pt-3 position-relative">
                                             <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-white p-0">
                                                 <span onclick="bannerDelete(this)" class="badge badge-danger-lighten rounded-pill btn btn-sm shadow"><i class="bi fa-2x bi-x"></i></span>
@@ -158,7 +158,7 @@
                                             </div>  
                                         </div>
                                     </div>
-                                    <div class="col-4 p-1">
+                                    <div class="col-4 p-1" id="bannerCol">
                                         <div class="shadow border rounded p-2 pt-3 position-relative">
                                             <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-white p-0">
                                                 <span onclick="bannerDelete(this)" class="badge badge-danger-lighten rounded-pill btn btn-sm shadow"><i class="bi fa-2x bi-x"></i></span>
@@ -214,9 +214,11 @@
                                                     <td class="p-0">
                                                         <select name="form_input_type[]" id="" class="form-select border-0 border-bottom form-select-sm">
                                                             <option value="">-- select --</option>
-                                                            <option value="email">Mail ID</option>
-                                                            <option value="number">Phone Number</option>
-                                                            <option value="text">Others</option>
+                                                            <option value="fullname">Full Name</option>
+                                                            <option value="email">Email Id</option>
+                                                            <option value="mobile_no">Mobile Number</option>
+                                                            <option value="subject">Subject</option>
+                                                            <option value="message">Message</option>
                                                         </select>
                                                     </td>
                                                     <td class="p-1">
@@ -394,9 +396,11 @@
                         <td class="p-0">
                             <select name="form_input_type[]" id="" class="form-select form-select-sm border-0 border-bottom ">
                                 <option value="">-- select --</option>
-                                <option value="email">Mail ID</option>
-                                <option value="number">Phone Number</option>
-                                <option value="text">Others</option>
+                                <option value="fullname">Full Name</option>
+                                <option value="email">Email Id</option>
+                                <option value="mobile_no">Mobile Number</option>
+                                <option value="subject">Subject</option>
+                                <option value="message">Message</option>
                             </select>
                         </td>
                         <td class="p-1">

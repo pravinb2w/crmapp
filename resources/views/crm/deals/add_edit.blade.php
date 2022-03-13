@@ -12,7 +12,7 @@
         <form class="form-horizontal" id="deals-form" method="POST" action="{{ route('deals.save') }}" autocomplete="off">
             @csrf
             <div class="modal-body d-flex justify-content-center h-100 p-3">
-                <div class="w-100">
+                <div class="w-100 h-100">
                     <div class="row">
                         <div class="col-12" id="error"></div>
                     </div>
@@ -124,8 +124,7 @@
                             <button type="submit" class="btn btn-primary" id="save">Save</button>
                         </div>
                     </div> 
-                </div>
-                
+                </div> 
             </div>
         </form>
         

@@ -6,7 +6,16 @@
             @foreach ($result->LandingPageFormInputs as $input)
                 <div class="col-lg-12 mb-3">
                     <div class="text-start position-relative">
-                        <input class="form-control rounded-pill" required name="subject" type="{{ $input->input_type }}" id="subject" placeholder="Enter {{ $input->input_text }}..." {{ $input->input_required }}>
+                        <input class="form-control rounded-pill" required name="{{ $input->input_type }}" 
+                        type="
+                                {{ $input->input_type ===  'fullname' ? 'text' : ''}}
+                                {{ $input->input_type ===  'email' ? 'email' : ''}}
+                                {{ $input->input_type ===  'mobile_no' ? 'number' : ''}}
+                                {{ $input->input_type ===  'subject' ? 'text' : ''}}
+                                {{ $input->input_type ===  'message' ? 'text' : ''}}
+                            " 
+                        id="subject" 
+                        placeholder="{{ $input->input_type ===  'fullname' ? 'Enter Your Full Name' : ''}}{{ $input->input_type ===  'email' ? 'Enter Your Email Id' : ''}}{{ $input->input_type ===  'mobile_no' ? 'Enter Your Contact Number' : ''}}{{ $input->input_type ===  'subject' ? 'Enter  Your Subject' : ''}}{{ $input->input_type ===  'message' ? 'Enter Your Message...' : ''}}" {{ $input->input_required }}>
                     </div>
                 </div>
             @endforeach
