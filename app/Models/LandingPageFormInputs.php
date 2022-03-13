@@ -11,7 +11,6 @@ class LandingPageFormInputs extends Model
     
     protected $fillable = [
         "input_type",
-        "input_text",
         "input_required" 
     ];
 }

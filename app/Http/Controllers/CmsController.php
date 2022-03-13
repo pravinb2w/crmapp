@@ -69,7 +69,6 @@ class CmsController extends Controller
             foreach($request->form_input_type as $i => $form){
                 $result->LandingPageFormInputs()->create([
                     'input_type'        =>  $request->form_input_type[$i] ,
-                    'input_text'        =>  $request->form_input_text[$i],
                     'input_required'    =>  $request->form_input_required[$i],
                 ]); 
             }

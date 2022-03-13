@@ -3,19 +3,9 @@
     <!-- LOGO -->
     <a href="#" class="logo text-center logo-light">
         <span class="logo-lg">
-            @if($cm_logo)
-            <img src="{{ asset('storage/'.$cm_logo) }}" alt="" height="16">
-            @else
-                <div class="d-flex justify-content-center">
-                    {{-- <a href="{{ url('/') }}"> --}}
-                        <div class="me-2">
-                            <img src="{{ asset('assets/images/logo/logo.png') }}" width="40px">
-                        </div>
-                        <strong class="text-primary">PHOENIX <span class="text-secondary">TECH</span></strong>
-                    {{-- </a> --}}
-                </div>                
-            @endif
-            {{--  --}}
+           
+           <img src="{{ asset('assets/images/logo/logo-color.png') }}" height="50">
+           
 
         </span>
         <span class="logo-sm">
