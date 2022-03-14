@@ -10,6 +10,7 @@
     {{-- {{ dd($cm_favicon) }} --}}
     <!-- App favicon -->
     <link rel="shortcut icon" href="{{ asset('storage/'.$cm_favicon) }}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
     
     <!-- App css -->
     <link href="{{ asset('assets/css/icons.min.css') }}" rel="stylesheet" type="text/css" />
