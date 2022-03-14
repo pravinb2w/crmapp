@@ -53,5 +53,6 @@
     --bs-body-bg: #fafbfe;
 
     --side-bar-bg : #0088EA;
-    --side-bar-text : white
+    --side-bar-text : white;
+    --side-bar-size : 170px;
   }

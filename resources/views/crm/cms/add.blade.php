@@ -264,14 +264,11 @@
                                 <label for="">Publish</label>
                             </div>
                             <div class="card-body">
-                                <div class="d-flex justify-content-between mb-3">
-                                    <div><a href="#" class="btn btn-light border">Save Darft</a></div>
-                                    <div><a href="#" class="btn btn-light border">Preview</a></div>
-                                </div>
-                                <div class="my-1"><i class="me-2 bi bi-key-fill"></i> Status: <b>Public</b> <b>Imediately</b> <a href="#"><u>Edit</u></a></div>
-                                <div class="my-1"><i class="me-2 bi bi-eye-fill"></i> Visibility: <b>Public</b> <b>Imediately</b> <a href="#"><u>Edit</u></a></div>
-                                <div class="my-1"><i class="me-2 bi bi-calendar-check-fill"></i> Publish: <b>Imediately</b> <a href="#"><u>Edit</u></a></div>
-                                <div class="my-1"><i class="me-2 bi bi-circle-square"></i> SEO: <b>N / A</b></div>
+                             
+                                <div class="my-1"><i class="me-2 bi bi-key-fill"></i> Status: <b>Public</b> <b>Imediately</b></div>
+                                <div class="my-1"><i class="me-2 bi bi-eye-fill"></i> Visibility: <b>Public</b> <b>Imediately</b></div>
+                                <div class="my-1"><i class="me-2 bi bi-calendar-check-fill"></i> Publish: <b>Imediately</b></div>
+                                {{-- <div class="my-1"><i class="me-2 bi bi-circle-square"></i> SEO: <b>N / A</b></div> --}}
                             </div>
                             <div class="card-footer">
                                 <div class="d-flex justify-content-between">

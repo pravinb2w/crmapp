@@ -18,11 +18,10 @@
         </div>
     </div>  
     <div class="row">
-        <div class="col-12">
+        <div class="col-12 p-0">
             <div class="board">
-                <div class="tasks p-0" data-plugin="dragula" data-containers='["task-list-one", "task-list-two", "task-list-three", "task-list-four", "task-list-five"]'>
+                <div class="tasks p-0 m-0" data-plugin="dragula" data-containers='["task-list-one", "task-list-two", "task-list-three", "task-list-four", "task-list-five"]'>
                     <h6 class="m-0 task-header bg-success text-white">Qualified </h6>
-                    
                     <div id="task-list-one" class="task-list-items px-0">
 
                         <!-- Task Item -->
@@ -162,7 +161,7 @@
                         
                     </div> <!-- end company-list-1-->
                 </div> 
-                <div class="tasks p-0">
+                <div class="tasks p-0 m-0">
                     <h6 class="m-0 task-header text-uppercase bg-warning text-white">Contact Made</h6>
                     
                     <div id="task-list-two" class="task-list-items px-0">
@@ -259,7 +258,7 @@
 
                     </div> <!-- end company-list-2-->
                 </div> 
-                <div class="tasks p-0">
+                <div class="tasks p-0 m-0">
                     <h6 class="m-0 task-header text-uppercase bg-info text-white">Demo Schedulded</h6>
                     <div id="task-list-three" class="task-list-items px-0">
 
@@ -445,7 +444,7 @@
 
                     </div> <!-- end company-list-3-->
                 </div> 
-                <div class="tasks p-0">
+                <div class="tasks p-0 m-0">
                     <h6 class="m-0 task-header text-uppercase bg-primary text-white">Proposal Made</h6>
                     <div id="task-list-four" class="task-list-items px-0">
 
@@ -496,7 +495,7 @@
                         
                     </div> <!-- end company-list-4-->
                 </div> 
-                <div class="tasks p-0">
+                <div class="tasks p-0 m-0">
                     <h6 class="m-0 task-header text-uppercase bg-danger text-white">Negation Started</h6>
                     <div id="task-list-five" class="task-list-items px-0">
 
