@@ -37,6 +37,7 @@
                                         </div>
                                     </th>
                                     <th>Name</th>
+                                    <th>Company</th>
                                     <th>Email</th>
                                     <th>Mobile No</th>
                                     <th>Status</th>
@@ -79,6 +80,7 @@
             "columns"       : [
                 {"data" : "id"},
                 {"data" : "first_name"},
+                {"data" : "company"},
                 {"data" : "email"},
                 {"data" : "mobile_no"},
                 {"data" : "status" },

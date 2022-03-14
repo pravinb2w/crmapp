@@ -18,8 +18,8 @@
                                 </button>
                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                     <a class="dropdown-item" href="javascript:;"  onclick="edit_activity('planned','{{ $item->id }}', '','{{ $info->id }}')">Edit</a>
-                                    <a class="dropdown-item" href="#" onclick="mark_as_done('planned','{{ $item->id }}', '{{ $info->id }}')">Mark as Done</a>
-                                    <a class="dropdown-item" href="#" onclick="change_activity_status('{{ $info->id }}','{{ $item->id }}', 'planned')">
+                                    <a class="dropdown-item" href="#" onclick="mark_as_done_deal('planned','{{ $item->id }}', '{{ $info->id }}')">Mark as Done</a>
+                                    <a class="dropdown-item" href="#" onclick="change_activity_status('{{ $info->id }}','{{ $item->id }}', 'planned', 'activity')">
                                         
                                         Delete</a>
                                 </div>

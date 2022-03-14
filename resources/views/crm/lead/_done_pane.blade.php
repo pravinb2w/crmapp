@@ -57,9 +57,9 @@
                                     <i class="mdi mdi-dots-vertical"></i>
                                 </button>
                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                    <a class="dropdown-item" href="#"  onclick="change_activity_status('{{ $info->id }}','{{ $litem['id'] }}', 'done')">Delete</a>
+                                    <a class="dropdown-item" href="#"  onclick="change_activity_status('{{ $info->id }}','{{ $litem['id'] }}', 'done', {{ $litem['activity_type'] }})">Delete</a>
                                 </div>
-                            </div>
+                            </div> 
                             <div class="text-danger">
                                 <small> {{ $litem['done_at']. date('d M Y H:i A', strtotime($litem['done_at'] ) ); }}
                                 </small>

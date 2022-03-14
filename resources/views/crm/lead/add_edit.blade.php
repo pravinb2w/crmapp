@@ -71,7 +71,7 @@
                         <div class="d-flex align-items-center">
                             <label for="description" class="col-form-label me-2">Status</label>
                             <div>
-                                <input type="checkbox" name="status" id="switch3" data-switch="primary" @if(isset($info->status) && $info->status == '1' ) checked @endif>
+                                <input type="checkbox" name="status" id="switch3" data-switch="primary" {{ (isset($info->status) && $info->status == '1' )  ? 'checked' : ((isset($info->status) && $info->status == '0' ) ? '':'checked')}}>
                                 <label for="switch3" data-on-label="" data-off-label=""></label>
                             </div>  
                         </div>

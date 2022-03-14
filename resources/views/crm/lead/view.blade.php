@@ -82,7 +82,7 @@ form#activites-form>div>label>i {
                 <div class="card-body"> 
                     <div class="row">
                         <div class="col-12">
-                            <div class="row card p-4 mb-3">
+                            <div class="row card px-4 mb-3">
                                 <div class="col-12">
                                     @include('crm.lead._info')
                                 </div>

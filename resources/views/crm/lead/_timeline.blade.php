@@ -5,7 +5,7 @@
     @include('crm.lead._done_pane')
 </div>
 <script>
-    function change_activity_status( lead_id, activity_id, type ) {
+    function change_activity_status( lead_id, activity_id, type, lead_type = '' ) {
         var ttt = 'You are trying to delete activity';
 
         Swal.fire({
@@ -28,7 +28,7 @@
                     $.ajax({
                         url: ajax_url,
                         method:'POST',
-                        data: {lead_id:lead_id, activity_id:activity_id, type:type},
+                        data: {lead_id:lead_id, activity_id:activity_id, type:type, lead_type:lead_type},
                         success:function(response){
                             if(response.lead_id ) {
                            

@@ -1,6 +1,11 @@
 <div class="row  ">
     <div class="col-md-6 mb-3">
-       <h3 class="h4 link"><a href="#" class="me-1">{{ $info->lead_title ?? $info->lead_subject }}</a> <i class="mdi mdi-tag"></i></h3>
+       <h3 class="h4 link">
+           <a href="#" class="me-1">{{ $info->lead_title ?? $info->lead_subject }}</a> 
+           <i class="mdi mdi-tag"></i>
+
+           <small> Created At : {{ date('M d,Y', strtotime($info->created_at)) }} </small>
+        </h3>
         <div class="d-flex">
             @if( isset($info->lead_value ) && !empty($info->lead_value))
             <div class="btn ps-0"><b class="h4">RS.{{ $info->lead_value }}</b></div>
@@ -29,12 +34,12 @@
             @endif
         </div>
     </div>
-    <div class="col-md-12 mb-2"> 
+    {{-- <div class="col-md-12 mb-2"> 
         
         <div class="form-group">
            
-            Created At : {{ date('M d,Y', strtotime($info->created_at)) }}
-            {{-- {{ $info }} --}}
+            
+        
         </div>
-    </div>
+    </div> --}}
 </div>

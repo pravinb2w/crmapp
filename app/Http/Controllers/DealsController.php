@@ -625,5 +625,27 @@ class DealsController extends Controller
         return response()->json(['error'=>[$success], 'status' => '0', 'deal_id' => $deal_id, 'type' => 'done']);
     }
 
+    public function delete_activity(Request $request)
+    {
+        $deal_id = $request->deal_id;
+        $activity_id = $request->activity_id;
+        $type = $request->type;
+        $lead_type = $request->lead_type;
+        if( $lead_type == 'files' ) {
+            $file = DealDocument::find($activity_id);
+            $file->delete();
+        } else if( $lead_type == 'invoice' ) {
+            $invoice = Invoice::find($activity_id);
+            $invoic->delete();
+        } else if( !empty( $lead_type ) ) {
+            $role = Activity::find($activity_id);
+            $role->delete();
+        } else {
+            $role = Note::find($activity_id);
+            $role->delete();    
+        }
+        return response()->json(['status' => '0', 'deal_id' => $deal_id, 'type' => $type]);
+    }
+
    
 }

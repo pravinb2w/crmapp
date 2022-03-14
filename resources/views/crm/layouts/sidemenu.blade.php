@@ -3,10 +3,7 @@
     <!-- LOGO -->
     <a href="#" class="logo text-center logo-light">
         <span class="logo-lg">
-           
-           <img src="{{ asset('assets/images/logo/logo-color.png') }}" height="50">
-           
-
+           <img src="{{ asset('assets/images/logo/logo-color.png') }}" height="30">
         </span>
         <span class="logo-sm">
             @if($cm_logo)

@@ -13,6 +13,9 @@ use App\Models\LeadSource;
 use App\Models\LeadType;
 use App\Models\Note;
 use App\Models\Activity;
+use App\Models\DealDocument;
+use App\Models\InvoiceItem;
+use App\Models\Invoice;
 
 class LeadController extends Controller
 {
@@ -238,9 +241,20 @@ class LeadController extends Controller
         $lead_id = $request->lead_id;
         $activity_id = $request->activity_id;
         $type = $request->type;
-
-        $role = Activity::find($activity_id);
-        $role->delete();
+        $lead_type = $request->lead_type;
+        if( $lead_type == 'files' ) {
+            $file = DealDocument::find($activity_id);
+            $file->delete();
+        } else if( $lead_type == 'invoice' ) {
+            $invoice = Invoice::find($activity_id);
+            $invoic->delete();
+        } else if( !empty( $lead_type ) ) {
+            $role = Activity::find($activity_id);
+            $role->delete();
+        } else {
+            $role = Note::find($activity_id);
+            $role->delete();    
+        }
         return response()->json(['status' => '0', 'lead_id' => $lead_id, 'type' => $type]);
     }
 

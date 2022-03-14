@@ -45,7 +45,7 @@
                             <label for="description" class="col-4 col-form-label">Status</label>
                             <!-- Success Switch-->
                             <div class="col-8">
-                                <input type="checkbox" name="status" id="switch3" {{ (isset($info->status) && $info->status == '1' )  ? 'checked' : '' }} data-switch="success"/>
+                                <input type="checkbox" name="status" id="switch3" {{ (isset($info->status) && $info->status == '1' )  ? 'checked' : ((isset($info->status) && $info->status == '0' ) ? '':'checked')}} data-switch="success"/>
                                 <label for="switch3" data-on-label="" data-off-label=""></label>
                             </div>
                         </div>

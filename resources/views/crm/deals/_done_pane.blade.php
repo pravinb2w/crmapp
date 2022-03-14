@@ -160,15 +160,15 @@
                                 </button>
                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                     @if($litem['activity_type'] == 'invoice')
-                                    @if( $litem['pending_at'] == null )
-                                        <a class="dropdown-item" href="#"  onclick="submit_approve_invoice('{{ $info->id }}','{{ $litem['id'] }}', 'done')">
-                                            Submit for Approval 
-                                        </a>
-                                    @endif
-                                    <a class="dropdown-item" href="#"  onclick="unlink_invoice('{{ $info->id }}','{{ $litem['id'] }}', 'done')">Unlink from Deal</a>
-                                    <a class="dropdown-item" href="{{ route('pdf', ['id' => $litem['id'] ]) }}">Download Pdf</a>
-                                    @else
-                                    <a class="dropdown-item" href="#"  onclick="change_activity_status('{{ $info->id }}','{{ $litem['id'] }}', 'done')">Delete</a>
+                                        @if( $litem['pending_at'] == null )
+                                            <a class="dropdown-item" href="#"  onclick="submit_approve_invoice('{{ $info->id }}','{{ $litem['id'] }}', 'done')">
+                                                Submit for Approval 
+                                            </a>
+                                        @endif
+                                        <a class="dropdown-item" href="#"  onclick="unlink_invoice('{{ $info->id }}','{{ $litem['id'] }}', 'done')">Unlink from Deal</a>
+                                        <a class="dropdown-item" href="{{ route('pdf', ['id' => $litem['id'] ]) }}">Download Pdf</a>
+                                    @elseif($litem['activity_type'] != 'Deal')
+                                    <a class="dropdown-item" href="#"  onclick="change_activity_status('{{ $info->id }}','{{ $litem['id'] }}', 'done', '{{$litem['activity_type']}}')">Delete</a>
                                     @endif
                                 </div>
                             </div>
