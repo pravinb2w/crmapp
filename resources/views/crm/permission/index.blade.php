@@ -53,9 +53,10 @@
                
                 </div>  <!-- end card-body -->
             </div>  <!-- end card -->
+             
         </div>
     </div>
-</div>
+</div> 
 
 
 @endsection

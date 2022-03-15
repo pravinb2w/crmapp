@@ -132,3 +132,6 @@
   font-weight: bold;
   text-align: center;
 }
+.w-com {
+  width: 100px !important;
+}
