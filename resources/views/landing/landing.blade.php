@@ -23,6 +23,10 @@
             <link rel="stylesheet" href="https://getbootstrap.com/docs/5.1/examples/cover/cover.css">
         @endif
         <style>
+            iframe {
+                min-height: 50vh !important; 
+                width: 100% !important
+            }
             .btn-primary {
                 background-image: linear-gradient(to right, #00c6ff 0%, #006BDF 51%, #00c6ff 100%);
                 background-size: 200% auto;
@@ -387,6 +391,8 @@
                 </div>
             </section>
             
+            <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d124371.0938232576!2d80.2062336!3d13.061324800000001!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sin!4v1647306931658!5m2!1sen!2sin" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+
             <section class="py-5">
                 <div class="container">
                     <div class="row align-items-center m-0">
