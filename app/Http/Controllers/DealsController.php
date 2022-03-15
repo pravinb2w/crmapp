@@ -598,6 +598,9 @@ class DealsController extends Controller
     }
 
     public function submit_for_approve(Request $request) {
+
+        CommonHelper::setMailConfig();
+
         $deal_id = $request->deal_id;
         $invoice_id = $request->invoice_id;
         $type = $request->invoice_id;
@@ -616,7 +619,7 @@ class DealsController extends Controller
         ];
         $send_mail = new SubmitApproval($body);
         // return $send_mail->render();
-        Mail::to($info->customer->email ?? 'durai@yopmail.com')->send($send_mail);
+        Mail::to($info->customer->emails ?? 'durai@yopmail.com')->send($send_mail);
 
         $invoice = Invoice::find($invoice_id);
         $invoice->pending_at = date('Y-m-d H:i:s');

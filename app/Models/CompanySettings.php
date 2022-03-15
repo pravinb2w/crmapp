@@ -26,7 +26,14 @@ class CompanySettings extends Model implements Auditable
         'facebook_url',
         'twitter_url',
         'instagram_url',
-        'status'
+        'status',
+        'mailer',
+        'smtp_host',
+        'smtp_port',
+        'smtp_user',
+        'smtp_password',
+        'mail_encryption',
+        'copyrights',
     ];
 
     public function subscription()

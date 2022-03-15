@@ -4,6 +4,12 @@
 </div>
 <form class="form-horizontal account_form" enctype="multipart/form-data" id="company_setting_form">
     <div class="row mb-3">
+        <label for="inputname3" class="col-3 col-form-label">Mailer</label>
+        <div class="col-9">
+            <input type="text" name="mailer" value="{{ $info->company->mailer ?? '' }}" class="form-control" id="inputname3" placeholder="SMTP">
+        </div>
+    </div>
+    <div class="row mb-3">
         <label for="inputname3" class="col-3 col-form-label">Smtp Host</label>
         <div class="col-9">
             <input type="text" name="smtp_host" value="{{ $info->company->smtp_host ?? '' }}" class="form-control" id="inputname3" placeholder="Smtp Host">
@@ -26,6 +32,12 @@
         <label for="smtp_password" class="col-3 col-form-label">Smtp Password</label>
         <div class="col-9">
             <input type="text" name="smtp_password" class="form-control" value="{{ $info->company->smtp_password ?? '' }}" id="smtp_password" placeholder="Smtp Password">
+        </div>
+    </div>
+    <div class="row mb-3">
+        <label for="mail_encryption" class="col-3 col-form-label">Encryption</label>
+        <div class="col-9">
+            <input type="text" name="mail_encryption" class="form-control" value="{{ $info->company->mail_encryption ?? '' }}" id="mail_encryption" placeholder="Encryption">
         </div>
     </div>
     

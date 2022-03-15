@@ -134,6 +134,8 @@ class AccountController extends Controller
                     $sett->smtp_port = $request->smtp_port;
                     $sett->smtp_user = $request->smtp_user;
                     $sett->smtp_password = $request->smtp_password;
+                    $sett->mailer = $request->mailer;
+                    $sett->mail_encryption = $request->mail_encryption;
                     $sett->update();
                     $success = 'Account settings saved';
                     return response()->json(['error'=>[$success], 'status' => '0']);

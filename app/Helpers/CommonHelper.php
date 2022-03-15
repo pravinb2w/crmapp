@@ -7,7 +7,7 @@ use DB;
 use App\Models\Product;
 use App\Models\Invoice;
 use App\Models\PrefixSetting;
-
+use App\Models\CompanySettings;
 
 class CommonHelper
 {
@@ -101,5 +101,25 @@ class CommonHelper
             } 
         }
         return $invoice_no;
+    }
+
+    public static function setMailConfig(){
+
+        //Get the data from settings table
+        $settings = CompanySettings::find(1); 
+
+        //Set the data in an array variable from settings table
+        $mailConfig = [
+            'transport' => 'smtp',
+            'host' => $settings->smtp_host,
+            'port' => $settings->smtp_port,
+            'encryption' => $settings->mail_encryption,
+            'username' => $settings->smtp_user,
+            'password' => $settings->smtp_password,
+            'timeout' => null
+        ];
+
+        //To set configuration values at runtime, pass an array to the config helper
+        config(['mail.mailers.smtp' => $mailConfig]);
     }
 }
