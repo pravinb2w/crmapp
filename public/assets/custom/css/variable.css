@@ -1,5 +1,5 @@
 :root {
-    --bs-blue: #2c8ef8;
+    --bs-blue: #00BFFF;
     --bs-indigo: #727cf5;
     --bs-purple: #6b5eae;
     --bs-pink: #ff679b;
@@ -22,7 +22,7 @@
     --bs-gray-800: #343a40;
     --bs-gray-900: #313a46;
     --bs-primary-light: #0088EA8c;
-    --bs-primary: #0088EA;
+    --bs-primary: #00BFFF;
     --bs-secondary: #03507F;
     --bs-success: #0acf97;
     --bs-info: #39afd1;
@@ -52,7 +52,7 @@
     --bs-body-color: #6c757d;
     --bs-body-bg: #fafbfe;
 
-    --side-bar-bg : #0088EA;
+    --side-bar-bg : #00BFFF;
     --side-bar-text : white;
-    --side-bar-size : 190px;
+    --side-bar-size : 220px;
   }

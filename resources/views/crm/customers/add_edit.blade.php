@@ -1,15 +1,12 @@
 <div class="modal-dialog modal-lg modal-right">
-    
-    <div class="modal-content h-100">
+    <form id="customers-form" method="POST" action="{{ route('customers.save') }}" autocomplete="off" class="modal-content h-100">
         <div class="modal-header px-3" id="myLargeModalLabel">
             <h4>{{ $modal_title }}</h4>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-        <div class="modal-body" style="max-height: 95vh;overflow:auto">
-
-            <form class="form-horizontal" id="customers-form" method="POST" action="{{ route('customers.save') }}" autocomplete="off">
-
-                <div class="modal-body d-flex justify-content-center align-items-center h-100 p-3">
+        <div class="modal-body">
+            <div>
+                <div class="d-flex justify-content-center align-items-center h-100 p-3">
                     <div class="w-100">
                         <div class="row">
                             <div class="col-12" id="error"></div>
@@ -33,7 +30,7 @@
                             </div>
                             <div class="col-6 mb-4">
                                 <label for="email" class="col-form-label"> Phone Number </label>
-                                <input type="number" name="mobile_no" id="mobile_no" value="{{ $info->mobile_no ?? '' }}" class="form-control" autocomplete="off">
+                                <input type="number" name="mobile_no" id="mobile_no" value="{{ $info->mobile_no ?? '' }}" class="form-control" placeholder="Enter Phone no" autocomplete="off">
 
                                 <div class="mt-2">
                                     <div id="phoneRow">
@@ -41,7 +38,7 @@
                                             @foreach ($info->secondary_mobile as $item)
                                                 <div id="inputPhoneFormRow">
                                                     <div class="input-group mb-2">
-                                                        <input type="text" name="secondary_phone[]" value="{{ $item->mobile_no ?? '' }}" class="form-control m-input" placeholder="Type here..." autocomplete="off">
+                                                        <input type="text" name="secondary_phone[]" value="{{ $item->mobile_no ?? '' }}" class="form-control m-input" placeholder="Enter Phone no" autocomplete="off">
                                                         <div class="input-group-append">
                                                             <button id="removePhoneRow" type="button" class="btn btn-light text-danger"><i class="bi bi-x"></i></button>
                                                         </div>
@@ -55,14 +52,14 @@
                             </div>
                             <div class="col-6 mb-4">
                                 <label for="email" class="col-form-label"> Email Id </label>
-                                <input type="email" name="email" id="email" value="{{ $info->email ?? '' }}" class="form-control" autocomplete="off">
+                                <input type="email" name="email" id="email" value="{{ $info->email ?? '' }}" class="form-control" autocomplete="off" placeholder="Enter email">
                                 <div class="mt-2">
                                     <div id="emailRow">
                                         @if(isset($info->secondary_email) && !empty($info->secondary_email))
                                             @foreach ($info->secondary_email as $item)
                                                 <div id="inputEmailFormRow">
                                                     <div class="input-group mb-2">
-                                                        <input type="text" name="secondary_email[]" value="{{ $item->email ?? '' }}" class="form-control m-input" placeholder="Type here..." autocomplete="off">
+                                                        <input type="text" name="secondary_email[]" value="{{ $item->email ?? '' }}" class="form-control m-input" placeholder="Enter email" autocomplete="off">
                                                         <div class="input-group-append">
                                                             <button id="removeEmailRow" type="button" class="btn btn-light text-danger"><i class="bi bi-x"></i></button>
                                                         </div>
@@ -82,18 +79,17 @@
                                         <label for="switch3" data-on-label="" data-off-label=""></label>
                                     </div>  
                                 </div>
-                            </div>
-
-                            <div class="col-md-12 mb-2 text-end">
-                                <button type="button" class="btn btn-light me-2" data-bs-dismiss="modal" aria-label="Close"> Cancel</button>
-                                <button type="submit" class="btn btn-primary" id="save">Save</button>
-                            </div>
+                            </div>  
                         </div>  
                     </div>
                 </div>
-            </form>
+            </div>
         </div>
-    </div> 
+        <div class="modal-footer">
+            <button type="button" class="btn btn-light me-2" data-bs-dismiss="modal" aria-label="Close"> Cancel</button>
+            <button type="submit" class="btn btn-primary" id="save">Save</button>
+        </div>
+    </form> 
 </div>
 
 <script>
@@ -101,7 +97,7 @@
         var html = '';
         html += '<div id="inputPhoneFormRow">';
         html += '<div class="input-group mb-2">';
-        html += '<input type="text" name="secondary_phone[]" class="form-control m-input" placeholder="Enter Phone no" autocomplete="off">';
+        html += '<input type="number" name="secondary_phone[]" class="form-control m-input" placeholder="Enter Phone no" autocomplete="off">';
         html += '<div class="input-group-append">';
         html += '<button id="removePhoneRow" type="button" class="btn btn-light text-danger"><i class="bi bi-x"></i></button>';
         html += '</div>';
@@ -120,7 +116,7 @@
             var html = '';
             html += '<div id="inputEmailFormRow">';
             html += '<div class="input-group mb-2">';
-            html += '<input type="text" name="secondary_email[]" class="form-control m-input" placeholder="Enter email" autocomplete="off">';
+            html += '<input type="email" name="secondary_email[]" class="form-control m-input" placeholder="Enter email" autocomplete="off">';
             html += '<div class="input-group-append">';
             html += '<button id="removeEmailRow" type="button" class="btn btn-light text-danger"><i class="bi bi-x"></i></button>';
             html += '</div>';

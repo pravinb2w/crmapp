@@ -51,10 +51,7 @@ body {
 {
     min-height: 100% !important;
 } 
-.modal-right  .modal-content {
-    max-height: 100vh !important;
-    overflow: auto;
-}
+
 hr {
     margin: 1rem 0;
     color: inherit;
@@ -13776,7 +13773,7 @@ body {
 }
 
 .logo img {
-    height: 35px !important;
+    height: 50px !important;
 }
 
 .wrapper {

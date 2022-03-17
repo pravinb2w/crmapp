@@ -1,11 +1,9 @@
 <div class="modal-dialog modal-lg modal-right">
 
-    <div class="modal-content h-100">
+    <form id="leads-form" method="POST" action="{{ route('leads.save') }}" autocomplete="off" class="modal-content h-100">
         <div class="modal-header px-3" id="myLargeModalLabel">{{ $modal_title }}</h4>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <form class="form-horizontal" id="leads-form" method="POST" action="{{ route('leads.save') }}" autocomplete="off">
-
+        </div> 
         <div class="modal-body d-flex justify-content-center h-100 p-3">
             <div class="w-100">
                 <div class="row">
@@ -18,8 +16,7 @@
                         <input type="text" name="customer" id="customer" class="form-control" required value="{{ $info->customer->first_name ?? '' }}" autocomplete="off">
                         <input type="hidden" name="customer_id" id="customer_id" value="{{ $info->customer_id ?? '' }}">
                         <div id="result" class="typeahead-custom"></div>
-                    </div>    
-                    
+                    </div> 
                     <div class="form-group mt-1">
                         <label for="name" class="col-form-label">Organization </label>                   
                         <input type="text" name="organization" id="organization" value="{{ $info->customer->company->name ?? ''}}" class="form-control" autocomplete="off" required>
@@ -79,19 +76,15 @@
                     <input type="hidden" name="id" value="{{ $info->id ?? '' }}">
                     <input type="hidden" name="from" id="from" value="{{ $from ?? '' }}">
                 </div>  
-            </div>
-            
+            </div> 
         </div>
-        <div class="modal-footer px-3">
-            <div class="row">
-                <div class="col-12 text-end">
-                    <button type="button" class="btn btn-light me-2" data-bs-dismiss="modal" aria-label="Close"> Cancel</button>
-                    <button type="submit" class="btn btn-primary" id="save">Save</button>
-                </div>
-            </div>
-        </div>
+        <div class="modal-footer">
+    
+            <button type="button" class="btn btn-light me-2" data-bs-dismiss="modal" aria-label="Close"> Cancel</button>
+            <button type="submit" class="btn btn-primary" id="save">Save</button>
         
-    </div><!-- /.modal-content -->
+        </div>
+    </form><!-- /.modal-content -->
 </div>
 
 <script>

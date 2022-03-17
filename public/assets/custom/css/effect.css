@@ -135,3 +135,15 @@
 .w-com {
   width: 100px !important;
 }
+
+.modal-header {
+  background: var(--bs-primary) !important;
+  color:  white !important;
+}
+.modal-footer {
+  background: #FAFBFC !important;
+}
+.modal-right  .modal-body {
+  max-height: 90vh !important;
+  overflow: auto;
+}

@@ -1,5 +1,5 @@
 <div class="modal-dialog modal-lg modal-right">
-    <div class="modal-content h-100">
+    <form id="notes-form" method="POST" action="{{ route('notes.save') }}" autocomplete="off" class="modal-content h-100">
         <div class="modal-header">
             <h4 class="modal-title" id="myLargeModalLabel">{{ $modal_title }}</h4>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -11,7 +11,7 @@
                 <div class="col-12" id="error">
                 </div>
             </div>
-            <form class="form-horizontal" id="notes-form" method="POST" action="{{ route('notes.save') }}" autocomplete="off">
+            <div>
                 <div class="modal-body d-flex justify-content-center align-items-center h-100 p-3">
                     <div class="w-100" id="activitiy-icon">
                         {{-- if user login only then hide user dropdown, show only admin login --}}
@@ -41,8 +41,8 @@
                             <label for="">Notes <span class="text-danger">*</span></label>
                             <textarea name="notes" id="notes" cols="30" rows="1" required>{{ $info->notes ?? '' }}</textarea>
                         </div>
-                        <div class="row mt-3">
-                            <label for="description" class="col-4 col-form-label">Status</label>
+                        <div class="d-flex mt-3 align-items-center">
+                            <label for="description" class="me-3 col-form-label">Status</label>
                             <!-- Success Switch-->
                             <div class="col-8">
                                 <input type="checkbox" name="status" id="switch3" {{ (isset($info->status) && $info->status == '1' )  ? 'checked' : ((isset($info->status) && $info->status == '0' ) ? '':'checked')}} data-switch="success"/>
@@ -50,16 +50,16 @@
                             </div>
                         </div>
                         <input type="hidden" name="id" value="{{ $info->id ?? '' }}">
-                        <input type="hidden" name="from" id="from" value="{{ $from ?? '' }}">
-                        <div class="form-group mt-3 text-end">
-                            <button type="button" class="btn btn-light me-2" data-bs-dismiss="modal" aria-label="Close"> Cancel</button>
-                            <button type="submit"  class="btn btn-info"> Save </button>
-                        </div>
+                        <input type="hidden" name="from" id="from" value="{{ $from ?? '' }}"> 
                     </div>
                 </div>
-            </form>
+            </div>
         </div>
-    </div><!-- /.modal-content -->
+        <div class="modal-footer">
+            <button type="button" class="btn btn-light me-2" data-bs-dismiss="modal" aria-label="Close"> Cancel</button>
+            <button type="submit"  class="btn btn-info"> Save </button>
+        </div>
+    </form><!-- /.modal-content -->
 </div>
 <script>
     $(function(){
