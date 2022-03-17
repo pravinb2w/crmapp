@@ -1,11 +1,9 @@
 <div class="modal-dialog modal-xl modal-right" style="width: 80% !important">
-    <div class="modal-content ">
+    <form id="permissions-form" method="POST" action="{{ route('permissions.save') }}" autocomplete="off" class="modal-content h-100">
         <div class="modal-header px-3" id="myLargeModalLabel">{{ $modal_title }}</h4>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <form class="form-horizontal modal-body" id="permissions-form" method="POST" action="{{ route('permissions.save') }}" autocomplete="off">
-
-        <div class="modal-body justify-content-center align-items-center h-100 p-3 custom-scroll">
+        </div> 
+        <div class="modal-body justify-content-center align-items-center h-100 p-3">
             <div class="w-100">
                 <div class="row">
                     <div class="col-12" id="error"></div>
@@ -236,7 +234,7 @@
                 <button type="submit" class="btn btn-primary" id="save">Save</button>
             </div>
         </div>
-    </div><!-- /.modal-content -->
+    </form><!-- /.modal-content -->
 </div>
 
 <script>

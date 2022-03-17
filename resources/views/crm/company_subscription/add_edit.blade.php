@@ -1,20 +1,20 @@
 <div class="modal-dialog modal-md modal-right">
-    <div class="modal-content">
+    <form class="modal-content h-100" id="csubscription-form" method="POST" action="{{ route('company-subscriptions.save') }}" autocomplete="off">
         <div class="modal-header">
             <h4 class="modal-title" id="myLargeModalLabel">{{ $modal_title }}</h4>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-        <div class="modal-body">
+        <div  class="modal-body" style="width: 400px">
             <div class="row">
                 <div class="col-12" id="error">
                 </div>
             </div>
-            <form class="form-horizontal id="csubscription-form" method="POST" action="{{ route('company-subscriptions.save') }}" autocomplete="off">
+         
                 @csrf
                 <input type="hidden" name="id" value="{{ $id ?? '' }}">
-                <div class="row mb-3">
-                    <label for="subscription_id" class="col-4 col-form-label">Subscription <span class="text-danger">*</span></label>
-                    <div class="col-8">
+                <div class="mb-3">
+                    <label for="subscription_id" class="col-form-label">Subscription <span class="text-danger">*</span></label>
+                    <div>
                         <select name="subscription_id" id="subscription_id" class="form-control" required>
                             <option value="">--Select--</option>
                             @if(isset($subscriptions) && !empty($subscriptions))
@@ -25,9 +25,9 @@
                         </select>
                     </div>
                 </div>
-                <div class="row mb-3">
-                    <label for="company_id" class="col-4 col-form-label">Company <span class="text-danger">*</span></label>
-                    <div class="col-8">
+                <div class="mb-3">
+                    <label for="company_id" class="col-form-label">Company <span class="text-danger">*</span></label>
+                    <div>
                         <select name="company_id" id="company_id" class="form-control" required>
                             <option value="">--Select--</option>
                             @if(isset($company) && !empty($company))
@@ -39,43 +39,41 @@
                     </div>
                 </div>
                
-                <div class="row mb-3 position-relative" id="datepicker4">
+                <div class="mb-3 position-relative" id="datepicker4">
                     <label class="form-label col-4">Start Date <span class="text-danger">*</span></label>
-                    <div class="col-8">
+                    <div>
                         <input type="text" required name="start_date" id="start_date" class="form-control datepicker w-100" value="<?= isset($info->startAt) ? date('d-m-Y', strtotime($info->startAt)): ''?>">
                     </div>
                 </div>
-                <div class="row mb-3">
-                    <label for="total_amount" class="col-4 col-form-label">Total Amount <span class="text-danger">*</span></label>
+                <div class="mb-3">
+                    <label for="total_amount" class="col-form-label">Total Amount <span class="text-danger">*</span></label>
                     <!-- Success Switch-->
-                    <div class="col-8">
+                    <div>
                         <input type="text" name="total_amount" id="total_amount" value="{{ $info->total_amount ?? '' }}" class="form-control" required/>
                     </div>
                 </div>
-                <div class="row mb-3">
-                    <label for="description" class="col-4 col-form-label">Description</label>
+                <div class="mb-3">
+                    <label for="description" class="col-form-label">Description</label>
                     <!-- Success Switch-->
-                    <div class="col-8">
+                    <div>
                         <textarea name="description" class="form-control" id="description" cols="30" rows="3"></textarea>
                     </div>
                 </div>
-                <div class="row mb-3">
-                    <label for="status" class="col-4 col-form-label">Status</label>
+                <div class="mb-3 d-flex align-items-center">
+                    <label for="status" class="col-form-label me-2">Status</label>
                     <!-- Success Switch-->
-                    <div class="col-8">
+                    <div>
                         <input type="checkbox" name="status" id="switch3" {{ (isset($info->status) && $info->status == '1' )  ? 'checked' : ((isset($info->status) && $info->status == '0' ) ? '':'checked')}} data-switch="success"/>
                         <label for="switch3" data-on-label="" data-off-label=""></label>
                     </div>
-                </div>
-                <div class=" row">
-                    <div class="col-12 text-end">
-                        <button type="submit" class="btn btn-info" id="save">Save</button>
-                        <button type="button" class="btn btn-dark" data-bs-dismiss="modal" aria-label="Close"> Cancel</button>
-                    </div>
-                </div>
-            </form> 
+                </div> 
         </div>
-    </div><!-- /.modal-content -->
+        
+        <div class="modal-footer">
+            <button type="button" class="btn btn-light" data-bs-dismiss="modal" aria-label="Close"> Cancel</button>
+            <button type="submit" class="btn btn-info" id="save">Save</button>
+        </div>
+    </form><!-- /.modal-content -->
 </div>
 
 <script>

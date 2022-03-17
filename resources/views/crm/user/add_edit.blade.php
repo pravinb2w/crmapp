@@ -1,56 +1,56 @@
 <div class="modal-dialog modal-lg modal-right">
-    <div class="modal-content custom-content" >
+    <form id="users-form" method="POST" action="{{ route('users.save') }}" autocomplete="off" class="modal-content custom-content h-100" >
         <div class="modal-header">
             <h4 class="modal-title" id="myLargeModalLabel">{{ $modal_title }}</h4>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-        <div class="modal-body" style="max-height: 95vh;overflow:auto;height:690px;">
+        <div class="modal-body"  >
             <div class="row">
                 <div class="col-12" id="error">
                 </div>
             </div>
-            <form class="form-horizontal" id="users-form" method="POST" action="{{ route('users.save') }}" autocomplete="off">
+            <div>
                 @csrf
-                <div class="modal-body d-flex justify-content-center align-items-center h-100 p-3 custom-scroll">
+                <div class="d-flex justify-content-center align-items-center h-100 p-3 ">
                     <div class="w-100">
                         <input type="hidden" name="id" value="{{ $id ?? '' }}">
-                        <div class="row mb-2">
-                            <label for="name" class="col-3 col-form-label">First Name <span class="text-danger">*</span></label>
-                            <div class="col-9">
+                        <div class="mb-2">
+                            <label for="name" class="col-form-label">First Name <span class="text-danger">*</span></label>
+                            <div>
                                 <input type="text" name="name" class="form-control" id="name" placeholder="Name" value="{{ $info->name ?? '' }}" required>
                             </div>
                         </div>
-                        <div class="row mb-2">
-                            <label for="last_name" class="col-3 col-form-label">Last Name </label>
-                            <div class="col-9">
+                        <div class="mb-2">
+                            <label for="last_name" class="col-form-label">Last Name </label>
+                            <div>
                                 <input type="text" name="last_name" class="form-control" id="last_name" placeholder="Last Name" value="{{ $info->last_name ?? '' }}" >
                             </div>
                         </div>
-                        <div class="row mb-2">
-                            <label for="email" class="col-3 col-form-label"> Email<span class="text-danger">*</span></label>
-                            <div class="col-9">
+                        <div class="mb-2">
+                            <label for="email" class="col-form-label"> Email<span class="text-danger">*</span></label>
+                            <div>
                                 <input type="text" name="email" class="form-control" id="email" placeholder="Email" value="{{ $info->email ?? '' }}" required>
                             </div>
                         </div>
                         
                         @if( empty($id))
-                        <div class="row mb-2">
-                            <label for="password" class="col-3 col-form-label"> Password<span class="text-danger">*</span></label>
-                            <div class="col-9">
+                        <div class="mb-2">
+                            <label for="password" class="col-form-label"> Password<span class="text-danger">*</span></label>
+                            <div>
                                 <input type="password" name="password" class="form-control" id="password" placeholder="Password" value="{{ $info->password ?? '' }}" required>
                             </div>
                         </div>
                         @endif
-                        <div class="row mb-2">
-                            <label for="mobile_no" class="col-3 col-form-label">Mobile Number <span class="text-danger">*</span></label>
-                            <div class="col-9">
-                                <input type="text" name="mobile_no" class="form-control" id="mobile_no" placeholder="Mobile Number" value="{{ $info->mobile_no ?? '' }}" required>
+                        <div class="mb-2">
+                            <label for="mobile_no" class="col-form-label">Mobile Number <span class="text-danger">*</span></label>
+                            <div>
+                                <input type="number" name="mobile_no" class="form-control" id="mobile_no" placeholder="Mobile Number" value="{{ $info->mobile_no ?? '' }}" required>
                             </div>
                         </div>
                         
-                        <div class="row mb-2">
-                            <label for="mobile_no" class="col-3 col-form-label">Role <span class="text-danger">*</span></label>
-                            <div class="col-9">
+                        <div class="mb-2">
+                            <label for="mobile_no" class="col-form-label">Role <span class="text-danger">*</span></label>
+                            <div>
                                 <select name="role_id" id="role_id" class="form-control" required>
                                     <option value="">--select--</option>
                                     @if( isset($roles) && !empty($roles))
@@ -61,39 +61,37 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="row mb-2">
-                            <label for="lead_limit" class="col-3 col-form-label">Lead Limit </label>
-                            <div class="col-9">
-                                <input type="text" name="lead_limit" class="form-control" id="lead_limit" placeholder="Lead limit" value="{{ $info->lead_limit ?? '' }}" required>
+                        <div class="mb-2">
+                            <label for="lead_limit" class="col-form-label">Lead Limit </label>
+                            <div>
+                                <input type="number" name="lead_limit" class="form-control" id="lead_limit" placeholder="Lead limit" value="{{ $info->lead_limit ?? '' }}" required>
                             </div>
                         </div>
-                        <div class="row mb-2">
-                            <label for="deal_limit" class="col-3 col-form-label">Deal Limit </label>
-                            <div class="col-9">
-                                <input type="text" name="deal_limit" class="form-control" id="deal_limit" placeholder="Deal limit" value="{{ $info->deal_limit ?? '' }}" required>
+                        <div class="mb-2">
+                            <label for="deal_limit" class="col-form-label">Deal Limit </label>
+                            <div>
+                                <input type="number" name="deal_limit" class="form-control" id="deal_limit" placeholder="Deal limit" value="{{ $info->deal_limit ?? '' }}" required>
                             </div>
                         </div>
 
                         
-                        <div class="row mb-2">
-                            <label for="description" class="col-3 col-form-label">Status</label>
+                        <div class="mb-2 d-flex align-items-center">
+                            <label for="description" class="col-form-label me-2">Status</label>
                             <!-- Success Switch-->
-                            <div class="col-9">
+                            <div>
                                 <input type="checkbox" name="status" id="switch3" {{ (isset($info->status) && $info->status == '1' )  ? 'checked' : ((isset($info->status) && $info->status == '0' ) ? '':'checked')}} data-switch="success"/>
                                 <label for="switch3" data-on-label="" data-off-label=""></label>
                             </div>
-                        </div>
-                        <div class=" row">
-                            <div class="col-12 text-end">
-                                <button type="button" class="btn btn-light me-2" data-bs-dismiss="modal" aria-label="Close"> Cancel</button>
-                                <button type="submit" class="btn btn-info" id="save">Save</button>
-                            </div>
-                        </div>
+                        </div> 
                     </div>
                 </div>
-            </form> 
+            </div> 
         </div>
-    </div><!-- /.modal-content -->
+        <div class="modal-footer">
+            <button type="button" class="btn btn-light me-2" data-bs-dismiss="modal" aria-label="Close"> Cancel</button>
+            <button type="submit" class="btn btn-info" id="save">Save</button>
+        </div>
+    </form><!-- /.modal-content -->
 </div>
 
 <script>
