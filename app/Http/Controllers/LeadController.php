@@ -105,6 +105,14 @@ class LeadController extends Controller
         return view('crm.lead.view', ['users' => $users, 'id' => $id, 'info' => $info, 'all_done' => $all_done ]);
     }
 
+    public function get_tab(Request $request) {
+        $tab = $request->tab;
+        $id = $request->lead_id;
+        $info = Lead::with(['all_activity', 'notes'])->find($id);
+        $users = User::whereNotNull('role_id')->get();
+        return view('crm.lead._'.$tab.'_form', ['id' => $id, 'info' => $info, 'users' => $users ]);
+    }
+
     public function autocomplete_lead_deal(Request $request) {
         if (! $request->ajax()) {
             return response('Forbidden.', 403);
@@ -231,8 +239,8 @@ class LeadController extends Controller
         $type = $request->type;
         $lead_id = $request->lead_id;
 
-        $info = Lead::with(['planned_activity','done_activity', 'notes'])->find($lead_id);
-
+        $info = Lead::with(['all_activity', 'notes'])->find($lead_id);
+        
         return view('crm.lead._'.$type.'_pane', ['info' => $info]);
     }
 
@@ -240,7 +248,6 @@ class LeadController extends Controller
     {
         $lead_id = $request->lead_id;
         $activity_id = $request->activity_id;
-        $type = $request->type;
         $lead_type = $request->lead_type;
         if( $lead_type == 'files' ) {
             $file = DealDocument::find($activity_id);
@@ -248,14 +255,14 @@ class LeadController extends Controller
         } else if( $lead_type == 'invoice' ) {
             $invoice = Invoice::find($activity_id);
             $invoic->delete();
+        } else if( $lead_type == 'Notes') {
+            $role = Note::find($activity_id);
+            $role->delete();    
         } else if( !empty( $lead_type ) ) {
             $role = Activity::find($activity_id);
             $role->delete();
-        } else {
-            $role = Note::find($activity_id);
-            $role->delete();    
-        }
-        return response()->json(['status' => '0', 'lead_id' => $lead_id, 'type' => $type]);
+        } 
+        return response()->json(['status' => '0', 'lead_id' => $lead_id]);
     }
 
     public function notes_save(Request $request) {
@@ -291,7 +298,7 @@ class LeadController extends Controller
             } else {
                 $ins['added_by'] = Auth::id();
                 Note::create($ins);
-                $success = 'Acitivity added successfully';
+                $success = 'Notes added successfully';
             }
             return response()->json(['error'=>[$success], 'status' => '0', 'lead_id' => $lead_id, 'type' => 'done']);
         }

@@ -429,7 +429,7 @@ function leade_deal_set(id, lead_type ) {
 function mark_as_done(page_type, id, lead_id='') {
     var ttt = 'You are trying to complete Activity';
 
-    Swal.fire({
+    Swal.fire({ 
         title: 'Are you sure?',
         text: ttt,
         icon: 'warning',
@@ -547,39 +547,7 @@ function mark_as_done(page_type, id, lead_id='') {
 
     }
 
-    function insert_notes() {
-        
-        var form_data = $('#lead-insert-notes').serialize();
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
-        $.ajax({
-            url: "{{ route('leads.save-notes') }}",
-            type: 'POST',
-            data: form_data,
-            beforeSend: function() {
-                // $('#error').removeClass('alert alert-danger');
-                // $('#error').html('');
-                // $('#error').removeClass('alert alert-success');
-                // $('#save').html('Loading...');
-            },
-            success: function(response) {
-                if(response.error.length > 0 && response.status == "1" ) {
-                    $('#error').addClass('alert alert-danger');
-                    response.error.forEach(display_errors);
-                } else {
-                    $('#notes').val('');
-                    $('#error').addClass('alert alert-success');
-                    response.error.forEach(display_errors);
-                    if( response.type  && response.lead_id ) {
-                        refresh_lead_timeline(response.type, response.lead_id);
-                    }
-                }
-            }            
-        });
-    }
+    
 
     function get_deal_modal(lead_id = '', id = '') {
         if( lead_id ){

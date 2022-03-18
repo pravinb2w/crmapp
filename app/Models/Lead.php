@@ -105,6 +105,11 @@ class Lead extends Model implements Auditable
         return $this->hasMany(Activity::class, 'lead_id')->whereNotNull('activities.done_at')->where('status', 1)->orderBy('activities.done_at', 'desc');
     }
 
+    public function all_activity()
+    {
+        return $this->hasMany(Activity::class, 'lead_id')->where('status', 1)->orderBy('activities.created_at', 'desc');
+    }
+
     public function notes()
     {
         return $this->hasMany(Note::class, 'lead_id')->orderBy('notes.created_at', 'desc');

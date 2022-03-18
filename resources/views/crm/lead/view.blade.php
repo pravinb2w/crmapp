@@ -61,6 +61,30 @@ form#activites-form>div>label>i {
     top: 0;
 }
 </style>
+<style>
+    .loader{
+    position: absolute;
+    top:0px;
+    right:0px;
+    border: 10px solid #f3f3f3; /* Light grey */
+    border-top: 10px solid #3498db; /* Blue */
+    border-radius: 50%;
+    width: 75px;
+    height: 75px;
+    animation: spin 0.5s linear infinite;
+    background-position:center;
+    z-index:10000000;
+    opacity: 0.4;
+    filter: alpha(opacity=40);
+    left: 50%;
+    top: 30%;
+    display: none;
+}
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+</style>
 <div class="container-fluid">
                         
     <!-- start page title -->
@@ -93,35 +117,29 @@ form#activites-form>div>label>i {
                             <div class="card shadow-sm">
                                 <ul class="nav nav-pills bg-nav-pills nav-justified custom">
                                     <li class="nav-item">
-                                        <a href="#Notes" data-bs-toggle="tab" aria-expanded="false" class="nav-link rounded-0 active">
+                                        <a href="#Notes" data-bs-toggle="tab" data-id="note" aria-expanded="false" class="nav-link rounded-0 active lead-tab">
                                             <i class="uil uil-pen"></i>
                                             <span>Notes</span>
                                         </a>
                                     </li>
                                     <li class="nav-item">
-                                        <a href="#Activity" data-bs-toggle="tab" aria-expanded="true" class="nav-link rounded-0 ">
+                                        <a href="#Activity" data-bs-toggle="tab" data-id="activity" aria-expanded="true" class="nav-link rounded-0 lead-tab">
                                             <i class="uil uil-user"></i>
                                             <span >Activity</span>
                                         </a>
                                     </li>  
-                                    {{-- <li class="nav-item">
-                                        <a href="#Email" data-bs-toggle="tab" aria-expanded="true" class="nav-link rounded-0">
+                                    <li class="nav-item">
+                                        <a href="#History" data-bs-toggle="tab" data-id="history" aria-expanded="true" class="nav-link rounded-0 lead-tab">
                                             <i class="uil uil-envelope-alt"></i>
-                                            <span>Email</span>
+                                            <span>History</span>
                                         </a>
-                                    </li>  --}}
+                                    </li>
                                 </ul>
-                                
                                 <div class="tab-content p-3">
-                                    <div class="tab-pane active" id="Notes">
+                                    <div class="tab-pane active" id="leadstab" >
                                         @include('crm.lead._note_form')
                                     </div>
-                                    <div class="tab-pane show" id="Activity">
-                                        @include('crm.lead._activity_form')
-                                    </div> 
-                                    {{-- <div class="tab-pane" id="Email">
-                                        <p>Email times</p>
-                                    </div>  --}}
+                                    <div class="loader"></div>
                                 </div>
                             </div>
                         </div> 
@@ -129,15 +147,108 @@ form#activites-form>div>label>i {
                     </div>
                 </div>  <!-- end card-body -->
             </div>  <!-- end card -->
-            <div class="card">
+            {{-- <div class="card">
                 <div class="card-body" id="lead_timeline">
                     @include('crm.lead._timeline')
                 </div>
-            </div>
+            </div> --}}
         </div>
     </div> 
 </div>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/css/toastr.css" rel="stylesheet"/>
+      
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/js/toastr.js"></script>
+      
+<script>
+    function get_tab(tab, lead_id){
+        var ajax_url = "{{ route('leads.get_tab') }}";
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        $.ajax({
+            url: ajax_url,
+            method:'POST',
+            data: {lead_id:lead_id, tab:tab},
+            beforeSend:function(){
+                $('.loader').show();
+            },
+            success:function(response){
+               $('#leadstab').html(response);
+               $('.loader').hide();
+            }      
+        });
+    }
+    $('.lead-tab').click(function(){
+        var tab = $(this).attr('data-id');
+        var lead_id = '{{ $id }}';
+        get_tab(tab, lead_id);
+    })
 
+    function insert_notes() {
+       
+        var form_data = $('#lead-insert-notes').serialize();
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        $.ajax({
+            url: "{{ route('leads.save-notes') }}",
+            type: 'POST',
+            data: form_data,
+            beforeSend: function() {
+                $('.loader').show();
+            },
+            success: function(response) {
+                $('.loader').hide();
+                if(response.error.length > 0 && response.status == "1" ) {
+                    toastr.error('Errors', response.error );
+                } else {
+                    $('#notes').val('');
+                    toastr.success('Success', response.error );
+                }
+            }            
+        });
+    }
+
+    function change_activity_status( lead_id, activity_id, lead_type = '' ) {
+        var ttt = 'You are trying to delete activity';
+
+        Swal.fire({
+            title: 'Are you sure?',
+            text: ttt,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, do it!'
+            }).then((result) => {
+                /* Read more about isConfirmed, isDenied below */
+                if (result.isConfirmed) {
+                    var ajax_url = "{{ route('leads.activity-delete') }}";
+                    $.ajaxSetup({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        }
+                    });
+                    $.ajax({
+                        url: ajax_url,
+                        method:'POST',
+                        data: {lead_id:lead_id, activity_id:activity_id, lead_type:lead_type},
+                        success:function(response){
+                            if(response.lead_id ) {
+                                get_tab('history',response.lead_id);
+                            }
+                        }      
+                    });
+                    Swal.fire('Updated!', '', 'success')
+                } 
+            })
+            return false;
+    }
+</script>
 <!-- SimpleMDE js -->
 @endsection
 

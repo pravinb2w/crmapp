@@ -108,8 +108,9 @@ Route::middleware([SetViewVariable::class, 'auth'])->group(function(){
         Route::post('/refresh/timeline', [App\Http\Controllers\LeadController::class, 'refresh_timeline'])->name('leads.refresh-timeline');
         Route::post('/activity/delete', [App\Http\Controllers\LeadController::class, 'delete_activity'])->name('leads.activity-delete');
         Route::post('/mark_as_done', [App\Http\Controllers\LeadController::class, 'mark_as_done'])->name('leads.mark_as_done');
+        Route::post('/get_tab', [App\Http\Controllers\LeadController::class, 'get_tab'])->name('leads.get_tab');
     });
-    //deals route
+    //deals route 
     Route::prefix('deals')->group(function () {
         Route::get('/', [App\Http\Controllers\DealsController::class, 'index'])->name('deals');
         Route::get('/view/{id}', [App\Http\Controllers\DealsController::class, 'view'])->name('deals.view');

@@ -69,7 +69,6 @@
         <button type="submit" class="btn btn-success"> Save </button>
     </div>
 </form>
-@section('add_on_script')
 <script>
     $('.activity-title').click(function(){  
         var title = $(this).val();
@@ -106,27 +105,18 @@
                 type: form.method,
                 data: $(form).serialize(),
                 beforeSend: function() {
-                    $('#error').removeClass('alert alert-danger');
-                    $('#error').html('');
-                    $('#error').removeClass('alert alert-success');
-                    $('#save').html('Loading...');
+                    $('.loader').show();
                 },
                 success: function(response) {
-                    $('#save').html('Save');
+                    $('.loader').hide();
                     if(response.error.length > 0 && response.status == "1" ) {
-                        $('#error').addClass('alert alert-danger');
-                        response.error.forEach(display_errors);
+                        toastr.error('Errors', response.error );
                     } else {
-                        $('#error').addClass('alert alert-success');
-                        response.error.forEach(display_errors);
-                        form.reset();
-                        if( response.type  && response.lead_id ) {
-                            refresh_lead_timeline(response.type, response.lead_id);
-                        }
+                        $('#notes').val('');
+                        toastr.success('Success', response.error );
                     }
                 }            
             });
         }
     });
 </script>
-@endsection

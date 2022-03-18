@@ -246,7 +246,7 @@
                                 $('#Mymodal').modal('hide');
                             },100);
                             if( lead_id != '' && lead_id != undefined && lead_id != null ) {
-                                refresh_lead_timeline(page_type, lead_id);
+                                get_tab(page_type,lead_id);
                             }
                             if( deal_id != '' && deal_id != undefined && deal_id != null ) {
                                 refresh_deal_timeline(page_type, deal_id);
