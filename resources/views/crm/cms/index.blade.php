@@ -1,7 +1,6 @@
 @extends('crm.layouts.template')
 
-@section('content')
-
+@section('content') 
 <div class="container-fluid">
     <!-- start page title -->
     <div class="row">
@@ -44,7 +43,7 @@
                                                 {{ $key +1 }}
                                             </th>
                                             <td>{{ $row->page_title }}</td>
-                                            <td><img src="{{ asset('storage/'.$row->page_logo) }} "  height="40px" alt=""></td>
+                                            <td><img src="{{  $row->page_logo }} "  height="40px" alt=""></td>
                                             <td>{{ $row->created_at }}</td>
                                             <td>
                                                 @if ($row->status == 1)
@@ -66,9 +65,7 @@
             </div>  <!-- end card -->
         </div>
     </div> 
-</div>
- 
-
+</div> 
 @endsection
 
  

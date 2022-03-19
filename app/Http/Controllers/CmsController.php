@@ -104,93 +104,62 @@ class CmsController extends Controller
     {
          
         $update = LandingPages::find($id);
-        
-        $data = LandingPages::find($id)->update([
-            'page_title'    => $request->page_title,
-            'page_type'     => $request->page_type,
-            'permalink'     => Str::slug($request->page_type),
-            'mail_us'       => $request->mail_us,
-            'call_us'       => $request->call_us,
-            'contact_us'    => $request->contact_us,
-            'iframe_tags'   => $request->iframe_tags,
-            'other_tags'   => $request->other_tags,
+ 
+        if($request->file('page_logo')){
+            $page_logo = Image::make($request->file('page_logo'))->encode('data-url');
+        }
+
+        if($request->file('about_image')){
+            $about_image = Image::make($request->file('about_image'))->encode('data-url');
+        }
+
+        $update->update([
+            'page_title'        => $request->page_title,
+            'page_type'         => $request->page_type,
+            'page_logo'         => $page_logo ?? $request->page_logo_data_url, 
+            'permalink'         => Str::slug($request->page_type),
+            'mail_us'           => $request->mail_us,
+            'call_us'           => $request->call_us,
+            'contact_us'        => $request->contact_us,
+            'iframe_tags'       => $request->iframe_tags,
+            'other_tags'        => $request->other_tags,
+            'about_title'       => $request->about_title,
+            'file_about'        => $about_image ?? $request->about_image_data_url,
+            'about_content'     => $request->about_content,
+            'primary_color'     => $request->primary_color,
+            'secondary_color'   => $request->secondary_color,
         ]);
 
-        
-        $update->LandingPageSocialMedias()->delete();
-        foreach ($request->media_type as $i => $value) {
-            $update->LandingPageSocialMedias()->create([
-                'name'      => $request->media_type[$i] ,
-                'link'      => $request->link[$i],
-                'icon'      =>  "-",
-            ]);
-        }
-
-
-        $update->LandingPageFormInputs()->delete();
-
-        foreach($request->form_input_type as $i => $form){
-            $update->LandingPageFormInputs()->create([
-                'input_type'        =>  $request->form_input_type[$i] ,
-                'input_required'    =>  $request->form_input_required[$i],
-            ]); 
-        }
- 
+        //=========== Banner Sliders ========== 
         $update->LandingPageBannerSliders()->delete();
-        foreach($request->banner_title as $i => $banner){
-            $image  =   $request->file('banner_image')[$i];
-            $file   =   $image->store( 'LandingPages/Banners', 'public' );
+
+        foreach($request->banner_title as $i => $banner) {
+
+            if(isset($request->file('banner_image')[$i])){
+                $banner_image = Image::make($request->file('banner_image')[$i])->encode('data-url');
+            }
             $update->LandingPageBannerSliders()->create([
                 'title'     =>  $request->banner_title[$i] ,
                 'sub_title' =>  $request->sub_banner_title[$i],
-                'image'    =>  $file,
+                'image'     =>  $banner_image ?? $request->banner_image_data_url[$i],
                 'content'   =>  $request->banner_content[$i],
             ]); 
         }
 
-        
-        return response()->json(['success'=>"Landing page to be Updated successfully !"]);
-        
-        if($validator->passes()) {
-            if( $request->hasFile( 'page_logo' ) ) {
-                $file               =   $request->file('page_logo')->store( 'LandingPages/Logos', 'public' );
-            }
-            $result = LandingPages::create([
-                'page_title'    => $request->page_title,
-                'page_type'     => $request->page_type,
-                'page_logo'     => $file, 
-                'permalink'     => Str::slug($request->page_type),
-                'mail_us'       => $request->mail_us,
-                'call_us'       => $request->call_us,
-                'contact_us'    => $request->contact_us,
-            ]);
-             
-            foreach($request->media_type as $i => $media){
-                $result->LandingPageSocialMedias()->create([
-                    'name'      => $request->media_type[$i] ,
-                    'link'      => $request->link[$i],
-                    'icon'      =>  "-",
-                ]); 
-            }
-            foreach($request->form_input_type as $i => $form){
-                $result->LandingPageFormInputs()->create([
-                    'input_type'        =>  $request->form_input_type[$i] ,
-                    'input_required'    =>  $request->form_input_required[$i],
-                ]); 
-            }
+        // ========== Feature Section ==========
+        $update->LandingPageFeatures()->delete();
 
-            foreach($request->banner_title as $i => $banner){
-                $image  = $request->file('banner_image')[$i];
-                $file   =    $image->store( 'LandingPages/Banners', 'public' );
-                $result->LandingPageBannerSliders()->create([
-                    'title'     =>  $request->banner_title[$i] ,
-                    'sub_title' =>  $request->sub_banner_title[$i],
-                    'image'    =>  $file,
-                    'content'   =>  $request->banner_content[$i],
-                ]); 
+        foreach ($request->feature_title as $i => $row) {
+            if(isset($request->file('feature_icon')[$i])) {
+                $feature_icon = Image::make($request->file('feature_icon')[$i])->encode('data-url');
             }
-            return response()->json(['success'=>"Landing page to be created successfully !"]);
+            $update->LandingPageFeatures()->create([
+                'title'     =>  $request->feature_title[$i],
+                'icon'      =>  $feature_icon ?? $request->feature_icon_data_url[$i],
+                'content'   =>  $request->feature_content[$i],
+            ]);
         }
-        return response()->json(['error'=>$validator->errors()->all(), 'status' => '1']);
+
+        return response()->json(['success'=>"Landing page to be created successfully !"]); 
     }
 }

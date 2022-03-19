@@ -18,10 +18,12 @@
         <link href="{{ asset('assets/css/app-creative.min.css') }}" rel="stylesheet" type="text/css" id="light-style" />
         <link href="{{ asset('assets/css/app-creative-dark.min.css') }}" rel="stylesheet" type="text/css" id="dark-style" />        
         @if (empty($result))
-            <link rel="stylesheet" href="https://getbootstrap.com/docs/5.1/examples/cover/cover.css">
-            {{ $result->other_tags }}
+            <link rel="stylesheet" href="https://getbootstrap.com/docs/5.1/examples/cover/cover.css"> 
         @endif
-        <style> #top-navbar-animated .nav-link.active {color: {{$result->primary_color }}!important }.bg-dark-50 {border-bottom: 2px solid {{$result->primary_color }}!important }iframe {min-height: 50vh !important;width: 100% !important }.text-primary {color: {{$result->primary_color }}!important;}.btn-outline-primary {color: {{$result->primary_color }}!important;border-color: {{$result->primary_color }}!important;}.btn-outline-primary:hover {background-image: linear-gradient(to right, {{$result->primary_color }} 0%, {{$result->secondary_color }} 51%, {{$result->primary_color }} 100%);background-size: 200% auto;color: white !important;border-color: {{$result->primary_color }}!important;}.btn-primary {background-image: linear-gradient(to right, {{$result->primary_color }} 0%, {{$result->secondary_color }} 51%, {{$result->primary_color }} 100%);background-size: 200% auto;color: white !important;box-shadow: 2px 4px 10px 0px rgb(0 0 0 / 20%);transition: all .5s !important;font-weight: 500 !important;padding: 11px 25px !important;font-size: 1rem !important;}.btn-primary:hover {background-position: right center;transition: 0.5s;}.btn-dark {background-image: linear-gradient(to right, #517fa4 0%, #243949 51%, #517fa4 100%);background-size: 200% auto;color: white !important;box-shadow: 2px 4px 10px 0px rgb(0 0 0 / 20%);transition: all .5s !important;font-weight: 500 !important;padding: 11px 25px !important;font-size: 1rem !important;}.btn-dark:hover {background-position: right center;transition: 0.5s;}@media screen and (max-width: 980px) {.contact-card {position: unset !important;transform: translate(0,0) !important;width: 100% !important;}.padding-left-250 {padding-left: 35px !important }}.contact-card {transform: translate(-240px,80px);z-index: 1;color: white;width: 450px;top:0%;left: 0% }.padding-left-250 {padding:35px 35px 35px 250px ;}.bg-trans {background: transparent !important;}.fa-lg {font-size: 28px;padding: 5px;border: 2px solid;margin-right: 15px;border-radius: 10px }.border-bottom-input {border-top: none !important;border-right: none !important;border-left: none !important;border-radius: 0 !important;border-bottom: 1px solid #ffffff17 !important }label.error {font-size: 10px;color: red;position: absolute;right: 0%;bottom: -21px }.rounded-5 {border-radius: 30px !important }.carousel-caption {left: 50% !important;top: 50% !important;transform: translate(-50%,-50%) !important;width: 100%;text-align: center !important }</style>
+        @if (!empty($result))
+            {!! $result->other_tags !!}
+        @endif
+        @if (!empty($result)) <style> #top-navbar-animated .nav-link.active {color: {{$result->primary_color }}!important }.bg-dark-50 {border-bottom: 2px solid {{$result->primary_color }}!important }iframe {min-height: 50vh !important;width: 100% !important }.text-primary {color: {{$result->primary_color }}!important;}.btn-outline-primary {color: {{$result->primary_color }}!important;border-color: {{$result->primary_color }}!important;}.btn-outline-primary:hover {background-image: linear-gradient(to right, {{$result->primary_color }} 0%, {{$result->secondary_color }} 51%, {{$result->primary_color }} 100%);background-size: 200% auto;color: white !important;border-color: {{$result->primary_color }}!important;}.btn-primary {background-image: linear-gradient(to right, {{$result->primary_color }} 0%, {{$result->secondary_color }} 51%, {{$result->primary_color }} 100%);background-size: 200% auto;color: white !important;box-shadow: 2px 4px 10px 0px rgb(0 0 0 / 20%);transition: all .5s !important;font-weight: 500 !important;padding: 11px 25px !important;font-size: 1rem !important;}.btn-primary:hover {background-position: right center;transition: 0.5s;}.btn-dark {background-image: linear-gradient(to right, #517fa4 0%, #243949 51%, #517fa4 100%);background-size: 200% auto;color: white !important;box-shadow: 2px 4px 10px 0px rgb(0 0 0 / 20%);transition: all .5s !important;font-weight: 500 !important;padding: 11px 25px !important;font-size: 1rem !important;}.btn-dark:hover {background-position: right center;transition: 0.5s;}@media screen and (max-width: 980px) {.contact-card {position: unset !important;transform: translate(0,0) !important;width: 100% !important;}.padding-left-250 {padding-left: 35px !important }}.contact-card {transform: translate(-240px,80px);z-index: 1;color: white;width: 450px;top:0%;left: 0% }.padding-left-250 {padding:35px 35px 35px 250px ;}.bg-trans {background: transparent !important;}.fa-lg {font-size: 28px;padding: 5px;border: 2px solid;margin-right: 15px;border-radius: 10px }.border-bottom-input {border-top: none !important;border-right: none !important;border-left: none !important;border-radius: 0 !important;border-bottom: 1px solid #ffffff17 !important }label.error {font-size: 10px;color: red;position: absolute;right: 0%;bottom: -21px }.rounded-5 {border-radius: 30px !important }.carousel-caption {left: 50% !important;top: 50% !important;transform: translate(-50%,-50%) !important;width: 100%;text-align: center !important }</style> @endif
     </head>
 
     @if (!empty($result))
@@ -31,7 +33,7 @@
             <nav class="navbar navbar-expand-lg p-0 bg-dark-50 sticky-top w-100" id="top-navbar-animated">
                 <div class="container">
                     <!-- logo -->
-                    <a href="#" class="navbar-brand me-lg-5 ">
+                    <a href="#contact-us" class="navbar-brand me-lg-5 ">
                         <img src="{{  $result->page_logo }}" alt="{{ $result->page_title }}" class="logo-dark" height="60" />
                     </a>
 
@@ -46,7 +48,7 @@
                         <ul class="navbar-nav ms-auto py-2 align-items-center"> 
                         
                             <li class="nav-item mx-lg-1">
-                                <a class="nav-link text-white active" href="#">Home</a>
+                                <a class="nav-link text-white active" href="#contact-us">Home</a>
                             </li>
                             <li class="nav-item mx-lg-1">
                                 <a class="nav-link text-white" href="#about-us">About</a>
@@ -82,7 +84,7 @@
                                         {{ $banner->title }}
                                     </h2>
                                     <p class="mb-4  w-75 mx-auto font-16 text-light">{{ $banner->content }}</p>
-                                    <a href="#" class="btn btn-primary rounded-pill">Get Started</a>
+                                    <a href="#contact-us" class="btn btn-primary rounded-pill">Get Started</a>
                                 </div>
                             </div>
                         @endforeach
@@ -107,10 +109,10 @@
                             <h3 class="aos-init" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="1000">{{ $result->about_title }}</h3>
                             <div class="mt-4">
                                 <p class="text-muted mb-3 aos-init"data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="1200">
-                                    {{ $result->about_content }}
+                                    {!! $result->about_content !!}
                                 </p>
                             </div>
-                            <a href="#" class="btn btn-primary rounded-pill mt-3 aos-init" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="2000">Know More <i class="mdi mdi-arrow-right ms-1"></i></a>
+                            <a href="#contact-us" class="btn btn-primary rounded-pill mt-3 aos-init" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="2000">Know More <i class="mdi mdi-arrow-right ms-1"></i></a>
                         </div>
                         <div class="col-lg-5 col-md-6 offset-md-1">
                             <div class="aos-init"  data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="2000" >
@@ -136,7 +138,7 @@
                         <div class="col-md-4">
                             <!-- InfoBox Center  <Start> -->
                             <div class="text-center mt-4 aos-init" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="{{ $key+1 }}000">
-                                <img src="{{ $row->icon }}" alt="" class="img-fluid">
+                                <img src="{{ $row->icon }}" width="45px" class="img-fluid">
                                 <h4 class="text-primary">{{ $row->title }}</h4>
                                 <p>{{ $row->content }}</p>
                             </div>
@@ -148,12 +150,12 @@
             </section> 
 
 
-            <section class="py-5 text-center " style="background: linear-gradient({{ $result->primary_color }} ,{{ $result->secondary_color }}">
+            <section class="py-5 text-center " style="background: linear-gradient(30deg, {{ $result->primary_color }} ,{{ $result->secondary_color }}">
                 <div class="media-body"> 
                     <h3 data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="1000"  class="aos-init text-white display-5">Want to try CRM Software for Free?</h3>
                     <p  data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="1400" class="text-light my-4 mt-3 lead">Close more deals than ever, automatice lead captures,in-built phone,smart alerts with push notifcations.</p>
                     <div class="aos-init " data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="1800" >
-                        <a href="#" class="aos-init btn btn-success px-md-5 py-2 rounded-pill"><b>Register Now !</b></a>
+                        <a href="#contact-us" style="border-width: 2px" class="aos-init btn btn-outline-light px-md-5 shadow py-2 rounded-pill"><b class="lead"><strong>Contact Now !</strong></b></a>
                     </div>
                 </div>
             </section>
@@ -175,7 +177,7 @@
                                 <div class="card-body">
                                     <h4 class="text-primary">Quality Resources</h4>
                                     <p>Sed ut perspiciatis remque laudan unde omnis iste natus error sit voluptatem accusantium dolo remque laudan tiuotam.</p>
-                                    <a href="#" class="rounded-pill btn btn-outline-primary"><b>Read More..</b></a>
+                                    <a href="#contact-us" class="rounded-pill btn btn-outline-primary"><b>Read More..</b></a>
                                 </div>
                             </div>
                             <!-- InfoBox Left </End> -->
@@ -187,7 +189,7 @@
                                 <div class="card-body">
                                     <h4 class="text-primary">At solmen va esser</h4>
                                     <p>Sed ut perspiciatis remque laudan unde omnis iste natus error sit voluptatem accusantium dolo remque laudan tiuotam.</p>
-                                    <a href="#" class="rounded-pill btn btn-outline-primary"><b>Read More..</b></a>
+                                    <a href="#contact-us" class="rounded-pill btn btn-outline-primary"><b>Read More..</b></a>
                                 </div>
                             </div>
                             <!-- InfoBox Center </End> -->
@@ -199,7 +201,7 @@
                                 <div class="card-body">
                                     <h4 class="text-primary">Pronunciation sommun</h4>
                                     <p>Sed ut perspiciatis remque laudan unde omnis iste natus error sit voluptatem accusantium dolo remque laudan tiuotam.</p>
-                                    <a href="#" class="rounded-pill btn btn-outline-primary"><b>Read More..</b></a>
+                                    <a href="#contact-us" class="rounded-pill btn btn-outline-primary"><b>Read More..</b></a>
                                 </div>
                             </div>
                             <!-- InfoBox Center </End> -->
@@ -256,7 +258,7 @@
                 </div>
             </section>
             
-            <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d124371.0938232576!2d80.2062336!3d13.061324800000001!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sin!4v1647306931658!5m2!1sen!2sin" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+            {!! $result->iframe_tags !!}
 
             <section class="py-5">
                 <div class="container">

@@ -22,16 +22,15 @@ class CreateLandingPagesTable extends Migration
             $table->text("mail_us");
             $table->text("call_us");
             $table->text("contact_us");
-            $table->integer('status')->default(1);
-            $table->softDeletes();
+            $table->integer('status')->default(1); 
             $table->longText("other_tags")->nullable();
             $table->longText("iframe_tags")->nullable();
             $table->string('about_title')->nullable();
             $table->longText('file_about')->nullable();
-            $table->string('about_content')->nullable();
+            $table->longText('about_content')->nullable();
             $table->string('primary_color')->nullable();
             $table->string('secondary_color')->nullable();
-
+            $table->softDeletes();
             $table->timestamps();
         });
     }

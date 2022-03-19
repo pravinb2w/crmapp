@@ -22558,3 +22558,6 @@ div.dataTables_scrollBody > table > :not(:first-child) {
 .flex-x {
     justify-content: space-between !important;
 }
+.CodeMirror .cm-spell-error:not(.cm-url):not(.cm-comment):not(.cm-tag):not(.cm-word) {
+    background: none !important;
+}
