@@ -123,7 +123,7 @@
                                                     <span onclick="bannerDelete(this)" class="badge badge-danger-lighten rounded-pill btn btn-sm shadow"><i class="bi fa-2x bi-x"></i></span>
                                                 </span>
                                                 <div class="custom-form-group">
-                                                    <input name="banner_image[]" type="file" id="" class="form-control mb-3"  placeholder="Type here...">
+                                                    <input name="banner_image[] value="{{ $row->banner_image }}" type="file" id="" class="form-control mb-3"  placeholder="Type here..." required>
                                                     <label for="" class="custom-label bg-white">Cover Iamge</label>
                                                 </div> 
                                                 <div class="custom-form-group">
@@ -217,18 +217,22 @@
                                 <label for="">GA Tags / Other Scripts</label>
                             </div>
                             <div class="card-body">
-                                 <textarea name="other_tags" id="" class="form-control" cols="30" rows="6" placeholder="Paste here..."></textarea>
+                                 <textarea name="other_tags" id="" class="form-control" cols="30" rows="3" placeholder="Paste here..."></textarea>
+                            </div> 
+                        </div>
+                        <div class="border mt-3 card">
+                            <div class="card-header">
+                                <label for="">Iframe Embed Tags</label>
+                            </div>
+                            <div class="card-body">
+                                 <textarea name="iframe_tags" id="" class="form-control" cols="30" rows="3" placeholder="Paste here..."></textarea>
                             </div> 
                         </div>
                         <div class="border mt-3 card">
                             <div class="card-header">
                                 <label for="">Publish</label>
                             </div>
-                            <div class="card-body">
-                                <div class="d-flex justify-content-between mb-3">
-                                    <div><a href="#" class="btn btn-light border">Save Darft</a></div>
-                                    <div><a href="#" class="btn btn-light border">Preview</a></div>
-                                </div>
+                            <div class="card-body">                                
                                 <div class="my-1"><i class="me-2 bi bi-key-fill"></i> Status: <b>Public</b> <b>Imediately</b> <a href="#"><u>Edit</u></a></div>
                                 <div class="my-1"><i class="me-2 bi bi-eye-fill"></i> Visibility: <b>Public</b> <b>Imediately</b> <a href="#"><u>Edit</u></a></div>
                                 <div class="my-1"><i class="me-2 bi bi-calendar-check-fill"></i> Publish: <b>Imediately</b> <a href="#"><u>Edit</u></a></div>

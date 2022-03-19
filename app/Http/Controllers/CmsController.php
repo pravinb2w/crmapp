@@ -9,7 +9,7 @@ use Illuminate\Support\Str;
 use App\Models\LandingPages;
 use App\Models\LandingPageSocialMedias;
 
-
+use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Validator;
 
 class CmsController extends Controller
@@ -38,28 +38,32 @@ class CmsController extends Controller
     }
 
     public function save(Request $request, $type=null)
-    {
-        
-        // dd($request->all());
+    {  
+       
         $page_validator = [
             'page_type'     =>  [ 'required', 'string', 'max:255'],
-            'page_title'    =>  [ 'required', 'string','max:255'] 
+            'page_title'    =>  [ 'required', 'string','max:255'],
         ];
          
         $validator  =   Validator::make( $request->all(), $page_validator );
         
         if($validator->passes()) {
-            if( $request->hasFile( 'page_logo' ) ) {
-                $file               =   $request->file('page_logo')->store( 'LandingPages/Logos', 'public' );
-            }
+  
             $result = LandingPages::create([
                 'page_title'    => $request->page_title,
                 'page_type'     => $request->page_type,
-                'page_logo'     => $file, 
+                'page_logo'     => Image::make($request->file('page_logo'))->encode('data-url'), 
                 'permalink'     => Str::slug($request->page_type),
                 'mail_us'       => $request->mail_us,
                 'call_us'       => $request->call_us,
                 'contact_us'    => $request->contact_us,
+                'iframe_tags'   => $request->iframe_tags,
+                'other_tags'    => $request->other_tags,
+                'about_title'   => $request->about_title,
+                'file_about'    => Image::make($request->file('about_image'))->encode('data-url'),
+                'about_content' => $request->about_content,
+                'primary_color' => $request->primary_color,
+                'secondary_color' => $request->secondary_color,
             ]);
              
             foreach($request->media_type as $i => $media){
@@ -77,14 +81,20 @@ class CmsController extends Controller
             }
 
             foreach($request->banner_title as $i => $banner){
-                $image  = $request->file('banner_image')[$i];
-                $file               =    $image->store( 'LandingPages/Banners', 'public' );
                 $result->LandingPageBannerSliders()->create([
                     'title'     =>  $request->banner_title[$i] ,
                     'sub_title' =>  $request->sub_banner_title[$i],
-                    'image'    =>  $file,
+                    'image'     =>  Image::make($request->file('banner_image')[$i])->encode('data-url'),
                     'content'   =>  $request->banner_content[$i],
                 ]); 
+            }
+
+            foreach ($request->feature_icon as $i => $row) {
+                $result->LandingPageFeatures()->create([
+                    'title'     =>  $request->feature_title[$i],
+                    'icon'      =>  Image::make($request->file('feature_icon')[$i])->encode('data-url'),
+                    'content'   =>  $request->feature_content[$i],
+                ]);
             }
             return response()->json(['success'=>"Landing page to be created successfully !"]);
         }
@@ -94,7 +104,7 @@ class CmsController extends Controller
     {
          
         $update = LandingPages::find($id);
-
+        
         $data = LandingPages::find($id)->update([
             'page_title'    => $request->page_title,
             'page_type'     => $request->page_type,
@@ -102,52 +112,43 @@ class CmsController extends Controller
             'mail_us'       => $request->mail_us,
             'call_us'       => $request->call_us,
             'contact_us'    => $request->contact_us,
+            'iframe_tags'   => $request->iframe_tags,
+            'other_tags'   => $request->other_tags,
         ]);
 
-        // $socialMedia = LandingPageSocialMedias::where('page_id', '=', $id)->select('id')->get();
-        // foreach($socialMedia as $i => $media) {
-        //     $info = LandingPageSocialMedias::find($media->id);
-        //     $info->name = $request->media_type[$i];
-        //     $info->link = $request->link[$i];
-        //     $info->update();
-        // }
-            
-            foreach ($request->media_type as $i => $value) {
-                echo $i;
-            }
-            return 'ok';
-            foreach ($request->media_type as $i => $value) {
-                $update->LandingPageSocialMedias()->update([
-                    'name'      => $request->media_type[$i] ,
-                    'link'      => $request->link[$i],
-                    'icon'      =>  "-",
-                ]);
-            } 
+        
+        $update->LandingPageSocialMedias()->delete();
+        foreach ($request->media_type as $i => $value) {
+            $update->LandingPageSocialMedias()->create([
+                'name'      => $request->media_type[$i] ,
+                'link'      => $request->link[$i],
+                'icon'      =>  "-",
+            ]);
+        }
 
-         
-            // for ($i=0; $i < count($socialMedia); $i++) { 
-            //     // $ins[] = array('name' => $request->media_type[$i], 'link' => $request->link[$i], 'id' => $request->media_id[$i]);
-            //     $info = LandingPageSocialMedias::find( $media['id']);
-            //     $info->name = $media['name'];
-            //     $info->link = $media['link'];
-            //     $info->update();
-            // }
-            // if( isset( $ins ) && !empty($ins)){
-            //     foreach ($ins as $media) {
-            //         $info = LandingPageSocialMedias::find( $media['id']);
-            //         $info->name = $media['name'];
-            //         $info->link = $media['link'];
-            //         $info->update();
-            //     }
-            // }
-         
-        // foreach($request->media_type as $i => $media){
 
-        //     $tmp = [];
-        //     $tmp = array('name' => $request->media_type[$i], 'link' => $request->link[$i], 'icon' => '-');
-        //     $update->LandingPageSocialMedias()->update($tmp);
-        // }
-        //  dd($ins);
+        $update->LandingPageFormInputs()->delete();
+
+        foreach($request->form_input_type as $i => $form){
+            $update->LandingPageFormInputs()->create([
+                'input_type'        =>  $request->form_input_type[$i] ,
+                'input_required'    =>  $request->form_input_required[$i],
+            ]); 
+        }
+ 
+        $update->LandingPageBannerSliders()->delete();
+        foreach($request->banner_title as $i => $banner){
+            $image  =   $request->file('banner_image')[$i];
+            $file   =   $image->store( 'LandingPages/Banners', 'public' );
+            $update->LandingPageBannerSliders()->create([
+                'title'     =>  $request->banner_title[$i] ,
+                'sub_title' =>  $request->sub_banner_title[$i],
+                'image'    =>  $file,
+                'content'   =>  $request->banner_content[$i],
+            ]); 
+        }
+
+        
         return response()->json(['success'=>"Landing page to be Updated successfully !"]);
         
         if($validator->passes()) {

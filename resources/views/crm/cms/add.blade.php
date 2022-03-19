@@ -17,6 +17,9 @@
     tr,td {
         vertical-align: middle !important
     }
+     .CodeMirror.cm-s-paper.CodeMirror-wrap{
+         min-height:  150px !important
+     }
    
 </style>
 <div class="container-fluid">
@@ -56,58 +59,11 @@
                                     <input type="text" name="page_title" class="form-control" required placeholder="Enter the page title">
                                     <label for="" class="custom-label">Page Title</label>
                                 </div> 
-                            </div>
-                        </div>
+                            </div> 
+                        </div> 
                         <div class="card border">
                             <div class="card-header d-flex justify-content-between align-items-center">
-                                <label for="">Social Media links</label> 
-                                <a class="btn btn-light border btn-sm" id="add_social_media">+ Add</a>
-                            </div>
-                            <div class="card-body p-2">
-                                <div >
-                                    <table class="table m-0 table-hover table-bordered rounded  ">
-                                        <thead class="bg-light">
-                                            <tr>
-                                                <th class="py-1 text-center">Media Name</th>
-                                                <th class="py-1 text-center">Profile Link</th>
-                                                <th class="text-center"><i class="text-danger bi bi-trash"></i></th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="social_medias" >
-                                            <tr>
-                                                <td class="p-0">
-                                                    <select name="media_type[]" id="" class="form-select border-0 border-bottom form-select-sm">
-                                                        <option value="">-- Choose --</option>
-                                                        <option value="Instagram">Instagram</option>
-                                                        <option value="YouTube">YouTube</option>
-                                                        <option value="Facebook">Facebook</option>
-                                                        <option value="Twitter">Twitter</option>
-                                                        <option value="Gmail">Gmail</option>
-                                                        <option value="LinkedIn">LinkedIn</option>
-                                                        <option value="Pinterest">Pinterest</option>
-                                                        <option value="Whatsapp">Whatsapp</option>
-                                                        <option value="Snapchat">Snapchat</option>
-                                                        <option value="Reddit">Reddit</option>
-                                                    </select>
-                                                </td>
-                                                <td class="p-0">
-                                                    <input type="url" name="link[]" id="" placeholder="Ex: Enter your name" class="border-0 border-bottom form-control form-control-sm">
-                                                </td> 
-                                                <td class="text-center p-0"><i onclick='socialDelete(this);' class="bi bi-x btn p-1 py-0 border btn-sm btn-light"></i></td>
-                                            </tr> 
-                                        </tbody>
-                                    </table>
-                                     
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card border">
-                            <div class="card-header d-flex justify-content-between align-items-center">
-                               
-                                <div class="form-check">
-                                    <input type="checkbox" id="customRadio1" name="customRadio" class="form-check-input">
-                                    <label class="form-check-label" for="customRadio1">Banner Sliders</label>
-                                </div>
+                                <label>Banner Sliders </label>
                                 <a class="btn btn-light border btn-sm" id="add_banner_sliders">+ Add</a>
                             </div>
                             <div class="card-body p-1">
@@ -183,7 +139,57 @@
                                     </div>
                                 </div> 
                             </div>
-                        </div> 
+                        </div>  
+                        <div class="card border">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                               <label>About Us Section </label>  
+                            </div>
+                            <div class="card-body ">    
+                                <div class="row m-0">
+                                    <div class="custom-form-group col px-0 pe-1">
+                                        <input type="file" name="about_image" id="" class="form-control mb-3" required  placeholder="Type here...">
+                                        <label for="" class="custom-label bg-white">About Image</label>
+                                    </div> 
+                                    <div class="custom-form-group col px-0 ps-1">
+                                        <input type="text" name="about_title" id="" class="form-control mb-3" required  placeholder="Type here...">
+                                        <label for="" class="custom-label bg-white">About Heading</label>
+                                    </div> 
+                                </div>
+                                <div class="custom-form-group">
+                                    <textarea name="about_content" id="textarea" cols="30" rows="10" class="rounded-0 form-control-sm form-control" placeholder="Type here..."></textarea>
+                                    <label for="" class="custom-label bg-white">About Content</label>
+                                </div>   
+                            </div>
+                        </div>
+                        <div class="card border">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <label>CRM Features</label>
+                                <a class="btn btn-light border btn-sm" id="add_feature">+ Add</a>
+                            </div>
+                            <div class="card-body p-1">
+                                <div class="row m-0" id="features_list">
+                                    <div class="col-4 p-1" id="featurCol">
+                                        <div class="shadow border rounded p-2 pt-3 position-relative">
+                                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-white p-0">
+                                                <span onclick="featureDelete(this)" class="badge badge-danger-lighten rounded-pill btn btn-sm shadow"><i class="bi fa-2x bi-x"></i></span>
+                                            </span>
+                                            <div class="custom-form-group">
+                                                <input name="feature_icon[]" type="file" id="" class="form-control mb-3" required>
+                                                <label for="" class="custom-label bg-white">Icon Image</label>
+                                            </div> 
+                                            <div class="custom-form-group">
+                                                <input type="text" name="feature_title[]" id="" class="form-control mb-3" required  placeholder="Type here...">
+                                                <label for="" class="custom-label bg-white">Ttile</label>
+                                            </div> 
+                                            <div class="custom-form-group">
+                                                <input type="text" name="feature_content[]" id="" class="form-control mb-3" required  placeholder="Type here...">
+                                                <label for="" class="custom-label bg-white">Content</label>
+                                            </div>  
+                                        </div>
+                                    </div>
+                                </div> 
+                            </div>
+                        </div>  
                         <div class="card border">
                             <div class="card-header d-flex justify-content-between align-items-center">
                                 <label for="">Contact Form</label>
@@ -229,15 +235,153 @@
                                                     </td>
                                                     <td class="text-center"><i onclick='formDelete(this);' class="bi bi-x btn p-1 py-0 border btn-sm btn-light"></i></td>
                                                 </tr>
-                                                 
+                                                <tr>
+                                                    <td class="p-0">
+                                                        <select name="form_input_type[]" id="" class="form-select border-0 border-bottom form-select-sm">
+                                                            <option value="">-- select --</option>
+                                                            <option value="fullname">Full Name</option>
+                                                            <option value="email">Email Id</option>
+                                                            <option value="mobile_no">Mobile Number</option>
+                                                            <option value="subject">Subject</option>
+                                                            <option value="message">Message</option>
+                                                        </select>
+                                                    </td> 
+                                                    <td class="text-center p-0">
+                                                        <select name="form_input_required[]" id="" class="form-select form-select-sm border-0 border-bottom ">
+                                                            <option value="">-- select --</option>
+                                                            <option value="1">Required</option>
+                                                            <option value="0">Not required</option>
+                                                        </select>
+                                                    </td>
+                                                    <td class="text-center"><i onclick='formDelete(this);' class="bi bi-x btn p-1 py-0 border btn-sm btn-light"></i></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="p-0">
+                                                        <select name="form_input_type[]" id="" class="form-select border-0 border-bottom form-select-sm">
+                                                            <option value="">-- select --</option>
+                                                            <option value="fullname">Full Name</option>
+                                                            <option value="email">Email Id</option>
+                                                            <option value="mobile_no">Mobile Number</option>
+                                                            <option value="subject">Subject</option>
+                                                            <option value="message">Message</option>
+                                                        </select>
+                                                    </td> 
+                                                    <td class="text-center p-0">
+                                                        <select name="form_input_required[]" id="" class="form-select form-select-sm border-0 border-bottom ">
+                                                            <option value="">-- select --</option>
+                                                            <option value="1">Required</option>
+                                                            <option value="0">Not required</option>
+                                                        </select>
+                                                    </td>
+                                                    <td class="text-center"><i onclick='formDelete(this);' class="bi bi-x btn p-1 py-0 border btn-sm btn-light"></i></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="p-0">
+                                                        <select name="form_input_type[]" id="" class="form-select border-0 border-bottom form-select-sm">
+                                                            <option value="">-- select --</option>
+                                                            <option value="fullname">Full Name</option>
+                                                            <option value="email">Email Id</option>
+                                                            <option value="mobile_no">Mobile Number</option>
+                                                            <option value="subject">Subject</option>
+                                                            <option value="message">Message</option>
+                                                        </select>
+                                                    </td> 
+                                                    <td class="text-center p-0">
+                                                        <select name="form_input_required[]" id="" class="form-select form-select-sm border-0 border-bottom ">
+                                                            <option value="">-- select --</option>
+                                                            <option value="1">Required</option>
+                                                            <option value="0">Not required</option>
+                                                        </select>
+                                                    </td>
+                                                    <td class="text-center"><i onclick='formDelete(this);' class="bi bi-x btn p-1 py-0 border btn-sm btn-light"></i></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="p-0">
+                                                        <select name="form_input_type[]" id="" class="form-select border-0 border-bottom form-select-sm">
+                                                            <option value="">-- select --</option>
+                                                            <option value="fullname">Full Name</option>
+                                                            <option value="email">Email Id</option>
+                                                            <option value="mobile_no">Mobile Number</option>
+                                                            <option value="subject">Subject</option>
+                                                            <option value="message">Message</option>
+                                                        </select>
+                                                    </td> 
+                                                    <td class="text-center p-0">
+                                                        <select name="form_input_required[]" id="" class="form-select form-select-sm border-0 border-bottom ">
+                                                            <option value="">-- select --</option>
+                                                            <option value="1">Required</option>
+                                                            <option value="0">Not required</option>
+                                                        </select>
+                                                    </td>
+                                                    <td class="text-center"><i onclick='formDelete(this);' class="bi bi-x btn p-1 py-0 border btn-sm btn-light"></i></td>
+                                                </tr>
                                             </tbody>
                                         </table>
                                     </div>
                                 </div>
                             </div>
                         </div> 
+                        <div class="card border">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <label for="">Social Media links</label> 
+                                <a class="btn btn-light border btn-sm" id="add_social_media">+ Add</a>
+                            </div>
+                            <div class="card-body p-2">
+                                <div >
+                                    <table class="table m-0 table-hover table-bordered rounded  ">
+                                        <thead class="bg-light">
+                                            <tr>
+                                                <th class="py-1 text-center">Media Name</th>
+                                                <th class="py-1 text-center">Profile Link</th>
+                                                <th class="text-center"><i class="text-danger bi bi-trash"></i></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="social_medias" >
+                                            <tr>
+                                                <td class="p-0">
+                                                    <select name="media_type[]" id="" class="form-select border-0 border-bottom form-select-sm">
+                                                        <option value="">-- Choose --</option>
+                                                        <option value="Instagram">Instagram</option>
+                                                        <option value="YouTube">YouTube</option>
+                                                        <option value="Facebook">Facebook</option>
+                                                        <option value="Twitter">Twitter</option>
+                                                        <option value="Gmail">Gmail</option>
+                                                        <option value="LinkedIn">LinkedIn</option>
+                                                        <option value="Pinterest">Pinterest</option>
+                                                        <option value="Whatsapp">Whatsapp</option>
+                                                        <option value="Snapchat">Snapchat</option>
+                                                        <option value="Reddit">Reddit</option>
+                                                    </select>
+                                                </td>
+                                                <td class="p-0">
+                                                    <input type="url" name="link[]" id="" placeholder="Ex: Enter your name" class="border-0 border-bottom form-control form-control-sm">
+                                                </td> 
+                                                <td class="text-center p-0"><i onclick='socialDelete(this);' class="bi bi-x btn p-1 py-0 border btn-sm btn-light"></i></td>
+                                            </tr> 
+                                        </tbody>
+                                    </table>
+                                     
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="col-md-4 stick-top h-100">
+                        <div class="border card">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <label for="">Team Colors Settings</label>
+                            </div>
+                            <div class="card-body py-2 text-center row m-0">
+                                <div class="custom-form-group col my-2 p-0 me-2">
+                                    <input type="color" name="primary_color" class="form-control" value="#00BFFF" required placeholder="Enter the page title">
+                                    <label for="" class="custom-label">Primary Color</label>
+                                </div> 
+                                <div class="custom-form-group col my-2 p-0 ms-2">
+                                    <input type="color" name="secondary_color" class="form-control" value="#0088EA" required placeholder="Enter the Primary Color">
+                                    <label for="" class="custom-label">Secondary Color</label>
+                                </div> 
+                            </div> 
+                        </div>
+                        
                         <div class="border card">
                             <div class="card-header d-flex justify-content-between align-items-center">
                                 <label for="">Page Logo</label>
@@ -251,12 +395,21 @@
                                 <b><i class="bi bi-info-circle-fill me-1"></i></b> Image height must be 60px
                             </div> 
                         </div>
+                         
                         <div class="border mt-3 card">
                             <div class="card-header">
                                 <label for="">GA Tags / Other Scripts</label>
                             </div>
                             <div class="card-body">
-                                 <textarea name="other_tags" id="" class="form-control" cols="30" rows="6" placeholder="Paste here..."></textarea>
+                                 <textarea name="other_tags" id="" class="form-control" cols="30" rows="3" placeholder="Paste here..."></textarea>
+                            </div> 
+                        </div>
+                        <div class="border mt-3 card">
+                            <div class="card-header">
+                                <label for="">Iframe Embed Tags</label>
+                            </div>
+                            <div class="card-body">
+                                 <textarea name="iframe_tags" id="" class="form-control" cols="30" rows="3" placeholder="Paste here..."></textarea>
                             </div> 
                         </div>
                         <div class="border mt-3 card">
@@ -383,6 +536,29 @@
                     </div>
                 `);
             });
+            $("#add_feature").click(function(){
+                $("#features_list").append(`
+                    <div class="col-4 p-1" id="featurCol">
+                        <div class="shadow border rounded p-2 pt-3 position-relative">
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-white p-0">
+                                <span onclick="featureDelete(this)" class="badge badge-danger-lighten rounded-pill btn btn-sm shadow"><i class="bi fa-2x bi-x"></i></span>
+                            </span>
+                            <div class="custom-form-group">
+                                <input name="feature_icon[]" type="file" id="" class="form-control mb-3" required>
+                                <label for="" class="custom-label bg-white">Icon Image</label>
+                            </div> 
+                            <div class="custom-form-group">
+                                <input type="text" name="feature_title[]" id="" class="form-control mb-3" required  placeholder="Type here...">
+                                <label for="" class="custom-label bg-white">Ttile</label>
+                            </div> 
+                            <div class="custom-form-group">
+                                <input type="text" name="feature_content[]" id="" class="form-control mb-3" required  placeholder="Type here...">
+                                <label for="" class="custom-label bg-white">Content</label>
+                            </div>  
+                        </div>
+                    </div>
+                `);
+            });
             $("#add_form_field").click(function(){
                 $("#contact_form").append(`
                     <tr>
@@ -417,6 +593,9 @@
         }
         function bannerDelete(ctl) {
             $(ctl).parents("#bannerCol").remove();
+        }
+        function featureDelete(ctl) {
+            $(ctl).parents("#featurCol").remove();
         }
     </script>
     <script>

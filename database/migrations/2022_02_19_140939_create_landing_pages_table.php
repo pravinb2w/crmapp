@@ -16,7 +16,7 @@ class CreateLandingPagesTable extends Migration
         Schema::create('landing_pages', function (Blueprint $table) {
             $table->id();
             $table->text("page_title");
-            $table->text("page_logo");
+            $table->longText("page_logo");
             $table->text("permalink");
             $table->string('page_type', 100)->nullable();  
             $table->text("mail_us");
@@ -25,6 +25,13 @@ class CreateLandingPagesTable extends Migration
             $table->integer('status')->default(1);
             $table->softDeletes();
             $table->longText("other_tags")->nullable();
+            $table->longText("iframe_tags")->nullable();
+            $table->string('about_title')->nullable();
+            $table->longText('file_about')->nullable();
+            $table->string('about_content')->nullable();
+            $table->string('primary_color')->nullable();
+            $table->string('secondary_color')->nullable();
+
             $table->timestamps();
         });
     }

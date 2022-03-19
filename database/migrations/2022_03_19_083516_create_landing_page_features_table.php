@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateLandingPageBannerSlidersTable extends Migration
+class CreateLandingPageFeaturesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,12 @@ class CreateLandingPageBannerSlidersTable extends Migration
      */
     public function up()
     {
-        Schema::create('landing_page_banner_sliders', function (Blueprint $table) {
+        Schema::create('landing_page_features', function (Blueprint $table) {
             $table->id();
             $table->integer('page_id');
+            $table->longText('icon');
             $table->string('title');
-            $table->string('sub_title');
-            $table->longText('image');
-            $table->longText('content');
+            $table->string('content');
             $table->softDeletes();
             $table->timestamps();
         });
@@ -32,6 +31,6 @@ class CreateLandingPageBannerSlidersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('landing_page_banner_sliders');
+        Schema::dropIfExists('landing_page_features');
     }
 }

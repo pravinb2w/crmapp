@@ -16,7 +16,13 @@ class LandingPages extends Model
         "mail_us",
         "call_us",
         "contact_us",
-
+        "iframe_tags",
+        "other_tags",
+        'about_title' ,
+        'file_about',
+        'about_content' ,
+        'primary_color' ,
+        'secondary_color',
     ];
     public function LandingPageSocialMedias() {
         return $this->hasMany(LandingPageSocialMedias::class, 'page_id', 'id');
@@ -27,5 +33,9 @@ class LandingPages extends Model
     public function LandingPageFormInputs()
     {
         return $this->hasMany(LandingPageFormInputs::class, 'page_id', 'id');
+    }
+    public function LandingPageFeatures()
+    {
+        return $this->hasMany(LandingPageFeatures::class, 'page_id', 'id');
     }
 } 
