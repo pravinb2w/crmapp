@@ -23,6 +23,10 @@
                                     <td>{{  $info->product_code ?? '' }}</td>
                                 </tr>
                                 <tr>
+                                    <th>Hsn No </th>
+                                    <td>{{  $info->hsn_no ?? '' }}</td>
+                                </tr>
+                                <tr>
                                     <th>Product Price </th>
                                     <td>{{  $info->price ?? '' }}</td>
                                 </tr>

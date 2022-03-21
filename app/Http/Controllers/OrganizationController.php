@@ -120,14 +120,14 @@ class OrganizationController extends Controller
             $role_validator   = [
                 'name'      => [ 'required', 'string', 'max:255', 'unique:organizations,name,'.$id ],
                 'email'      => [ 'nullable', 'string', 'max:255', 'unique:organizations,email,'.$id ],
-                'mobile_no'      => [ 'nullable', 'string', 'max:255', 'unique:organizations,mobile_no,'.$id ],
+                'mobile_no'      => [ 'nullable', 'digits:10', 'max:255', 'unique:organizations,mobile_no,'.$id ],
 
             ];
         } else {
             $role_validator   = [
                 'name'      => [ 'required', 'string', 'max:255', 'unique:organizations,name'],
                 'email'      => [ 'nullable', 'string', 'max:255', 'unique:organizations,email'],
-                'mobile_no'      => [ 'nullable', 'string', 'max:255', 'unique:organizations,mobile_no'],
+                'mobile_no'      => [ 'nullable', 'digits:10', 'max:255', 'unique:organizations,mobile_no'],
 
             ];
         }

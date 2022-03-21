@@ -95,7 +95,7 @@ Route::middleware([SetViewVariable::class, 'auth'])->group(function(){
         Route::post('/status', [App\Http\Controllers\ProductController::class, 'change_status'])->name('products.status');
     });
     //leads route
-    Route::prefix('leads')->group(function () {
+    Route::prefix('leads')->group(function () { 
         Route::get('/', [App\Http\Controllers\LeadController::class, 'index'])->name('leads');
         Route::get('/view/{id}', [App\Http\Controllers\LeadController::class, 'view'])->name('leads.view');
         Route::post('/add', [App\Http\Controllers\LeadController::class, 'add_edit'])->name('leads.add');

@@ -33,7 +33,7 @@
                         <div class=" mb-3">
                             <label for="mobile_no" class="col-form-label">Mobile Number </label>
                             <div class="">
-                                <input type="text" name="mobile_no" class="form-control mobile" id="mobile_no" placeholder="Mobile Number" value="{{ $info->mobile_no ?? '' }}" >
+                                <input type="number" name="mobile_no" class="form-control mobile" id="mobile_no" placeholder="Mobile Number" value="{{ $info->mobile_no ?? '' }}" >
                             </div>
                         </div>
                         <div class=" mb-3">
@@ -79,11 +79,9 @@
                         var from = $('#from').val();
                         $('#save').html('Save');
                         if(response.error.length > 0 && response.status == "1" ) {
-                            $('#error').addClass('alert alert-danger');
-                            response.error.forEach(display_errors);
+                            toastr.error('Error', response.error );
                         } else {
-                            $('#error').addClass('alert alert-success');
-                            response.error.forEach(display_errors);
+                            toastr.success('Success', response.error );
                             setTimeout(function(){
                                 $('#Mymodal').modal('hide');
                             },100);

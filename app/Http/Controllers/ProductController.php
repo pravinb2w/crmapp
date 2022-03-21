@@ -24,7 +24,7 @@ class ProductController extends Controller
             return response('Forbidden.', 403);
         }
 
-        $columns            = [ 'id', 'product_name',  'product_code', 'added', 'status', 'id' ];
+        $columns            = [ 'id', 'product_name',  'product_code', 'hsn_no', 'added', 'status', 'id' ];
 
         $limit              = $request->input( 'length' );
         $start              = $request->input( 'start' );
@@ -70,6 +70,7 @@ class ProductController extends Controller
                 </div>';
                 $nested_data[ 'product_name' ]      = $products->product_name;
                 $nested_data[ 'product_code' ]      = $products->product_code;
+                $nested_data[ 'hsn_no' ]            = $products->hsn_no ?? '';
                 $nested_data[ 'added' ]             = $products->added->name;
                 $nested_data[ 'status' ]            = $products_status;
                 $nested_data[ 'action' ]            = $action;
@@ -122,11 +123,13 @@ class ProductController extends Controller
             $role_validator   = [
                 'product_name'      => [ 'required', 'string', 'max:255', 'unique:products,product_name,'.$id ],
                 'product_code'      => [ 'required', 'string', 'max:255', 'unique:products,product_code,'.$id ],
+                'hsn_no'      => [ 'required', 'string', 'max:255' ],
             ];
         } else {
             $role_validator   = [
                 'product_name'      => [ 'required', 'string', 'max:255', 'unique:products,product_name'],
                 'product_code'      => [ 'required', 'string', 'max:255', 'unique:products,product_code'],
+                'hsn_no'      => [ 'required', 'string', 'max:255'],
             ];
         }
         //Validate the product
@@ -137,6 +140,7 @@ class ProductController extends Controller
             $ins['status']          = isset($request->status) ? 1 : 0;
             $ins['product_name']    = $request->product_name;
             $ins['product_code']    = $request->product_code;
+            $ins['hsn_no']          = $request->hsn_no;
             $ins['description']     = $request->description;
             
             if( isset($id) && !empty($id) ) {
@@ -144,8 +148,9 @@ class ProductController extends Controller
                 $page->status = isset($request->status) ? 1 : 0;
                 $page->product_name = $request->product_name;
                 $page->product_code = $request->product_code;
-                $page->updated_by = Auth::id();
-                $page->description = $request->description;
+                $page->hsn_no       = $request->hsn_no;
+                $page->updated_by   = Auth::id();
+                $page->description  = $request->description;
                 $page->update();
                 $success = 'Updated Product';
             } else {

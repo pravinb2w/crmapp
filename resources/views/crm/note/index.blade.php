@@ -42,7 +42,7 @@
                                     <th> User </th>
                                     <th >Lead / Deal</th>
                                     <th>Status</th>
-                                    <th style="width: 80px;">Action</th>
+                                    <th class="text-center">Action</th>
                                 </tr>
                             </thead>
                             

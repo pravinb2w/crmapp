@@ -30,7 +30,7 @@
                             </div>
                             <div class="col-6 mb-4">
                                 <label for="email" class="col-form-label"> Phone Number </label>
-                                <input type="number" name="mobile_no" id="mobile_no" value="{{ $info->mobile_no ?? '' }}" class="form-control" placeholder="Enter Phone no" autocomplete="off">
+                                <input type="number" name="mobile_no" id="mobile_no"  value="{{ $info->mobile_no ?? '' }}" class="form-control" placeholder="Enter Phone no" autocomplete="off">
 
                                 <div class="mt-2">
                                     <div id="phoneRow">
@@ -169,11 +169,9 @@
                         var from = $('#from').val();
                         $('#save').html('Save');
                         if(response.error.length > 0 && response.status == "1" ) {
-                            $('#error').addClass('alert alert-danger');
-                            response.error.forEach(display_errors);
+                            toastr.error('Error', response.error );
                         } else {
-                            $('#error').addClass('alert alert-success');
-                            response.error.forEach(display_errors);
+                            toastr.success('Success', response.error );
                             setTimeout(function(){
                                 $('#Mymodal').modal('hide');
                             },100);

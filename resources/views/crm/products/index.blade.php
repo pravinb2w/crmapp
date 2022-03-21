@@ -39,6 +39,7 @@
                                     </th>
                                     <th>Product</th>
                                     <th>Product Code</th>
+                                    <th>HSN No</th>
                                     <th>Added By</th>
                                     <th>Status</th>
                                     <th style="width: 80px;">Action</th>
@@ -81,6 +82,7 @@
                 {"data" : "id"},
                 {"data" : "product_name"},
                 {"data" : "product_code"},
+                {"data" : "hsn_no"},
                 {"data" : "added"},
                 {"data" : "status" },
                 {"data" : "action" },

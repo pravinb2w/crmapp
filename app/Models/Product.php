@@ -20,6 +20,7 @@ class Product extends Model implements Auditable
         'price',
         'added_by',
         'status',
+        'hsn_no',
     ];
     public function scopeLatests( Builder $query ) {
         return $query->orderBy( static::CREATED_AT, 'desc' );

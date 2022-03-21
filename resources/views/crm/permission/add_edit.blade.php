@@ -253,10 +253,9 @@
                     success: function(response) {
                         $('#save').html('Save');
                         if(response.error.length > 0 && response.status == "1" ) {
-                            $('#error').addClass('alert alert-danger');
-                            response.error.forEach(display_errors);
+                            toastr.error('Error', response.error );
                         } else {
-                            $('#error').addClass('alert alert-success');
+                            toastr.success('Success', response.error );
                             setTimeout(function(){
                                 $('#Mymodal').modal('hide');
                                 

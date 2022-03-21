@@ -25,6 +25,12 @@
                         <input type="text" name="product_code" id="product_code" class="form-control" value="{{ $info->product_code ?? ($product_code ?? '') }}" required>
                     </div>
                 </div>
+                <div class="mb-3">
+                    <label for="hsn_no" class="col-form-label">HSN No <span class="text-danger">*</span></label>
+                    <div>
+                        <input type="text" name="hsn_no" id="hsn_no" class="form-control" value="{{ $info->hsn_no ?? '' }}" required>
+                    </div>
+                </div>
                 
                 <div class="mb-3">
                     <label for="description" class="col-form-label"> Description </label>
@@ -68,11 +74,9 @@
                         var from = $('#from').val();
                         $('#save').html('Save');
                         if(response.error.length > 0 && response.status == "1" ) {
-                            $('#error').addClass('alert alert-danger');
-                            response.error.forEach(display_errors);
+                            toastr.error('Error', response.error );
                         } else {
-                            $('#error').addClass('alert alert-success');
-                            response.error.forEach(display_errors);
+                            toastr.success('Success', response.error );
                             setTimeout(function(){
                                 $('#Mymodal').modal('hide');
                             },100);
