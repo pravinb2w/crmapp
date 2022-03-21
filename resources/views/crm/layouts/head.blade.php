@@ -32,6 +32,9 @@
     <link rel="stylesheet" href="{{ asset('assets/css/vendor/sweetalert2.all.min.css') }}">
 
 
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/css/toastr.css" rel="stylesheet"/>
+      
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/js/toastr.js"></script>
 
     
     <style>

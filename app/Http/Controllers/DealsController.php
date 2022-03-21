@@ -650,5 +650,13 @@ class DealsController extends Controller
         return response()->json(['status' => '0', 'deal_id' => $deal_id, 'type' => $type]);
     }
 
+    public function get_tab(Request $request) {
+        $tab = $request->tab;
+        $id = $request->deal_id;
+        $info = Deal::with(['all_activity', 'notes'])->find($id);
+        $users = User::whereNotNull('role_id')->get();
+        return view('crm.deals._'.$tab.'_form', ['id' => $id, 'info' => $info, 'users' => $users ]);
+    }
+
    
 }

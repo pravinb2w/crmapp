@@ -112,7 +112,7 @@
                     if(response.error.length > 0 && response.status == "1" ) {
                         toastr.error('Errors', response.error );
                     } else {
-                        $('#notes').val('');
+                        form.reset();
                         toastr.success('Success', response.error );
                     }
                 }            

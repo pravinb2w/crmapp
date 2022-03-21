@@ -426,7 +426,7 @@ function leade_deal_set(id, lead_type ) {
     });
 }
 
-function mark_as_done(page_type, id, lead_id='') {
+function mark_as_done(id, lead_id='' , type = '') {
     var ttt = 'You are trying to complete Activity';
 
     Swal.fire({ 
@@ -449,77 +449,21 @@ function mark_as_done(page_type, id, lead_id='') {
                 $.ajax({
                     url: ajax_url,
                     method:'POST',
-                    data: {page_type:page_type, id:id, lead_id:lead_id},
+                    data: {id:id, lead_id:lead_id, type:type},
                     success:function(response){
                         if(response.error.length > 0 && response.status == "1" ) {
-                            $('#error').addClass('alert alert-danger');
-                            response.error.forEach(display_errors);
+                            toastr.error('Errors', response.error );
                         } else {
-                            if( response.page_type == 'planned') {
+                            toastr.success('Success', response.error );
+                            if( response.page_type ) {
+                                ReloadDataTableModal(response.page_type+'-datatable');
+                            } else {
                                 if( response.lead_id ) {
-                                    refresh_lead_timeline('planned', response.lead_id);
-                                    refresh_lead_timeline('done', response.lead_id);
+                                    get_tab('history', response.lead_id);
                                 }
                                 if( response.deal_id ) {
-                                    refresh_deal_timeline('planned', response.deal_id, 'all');
-                                    refresh_deal_timeline('done', response.deal_id, 'all');
+                                    get_tab('history', response.deal_id);
                                 }
-                            } else {
-                                $('#error').addClass('alert alert-success');
-                                response.error.forEach(display_errors);
-                                ReloadDataTableModal(page_type+'-datatable');
-                            }
-                        }
-                    }      
-                });
-                Swal.fire('Updated!', '', 'success')
-            } 
-        })
-        return false;
-    }
-
-    function mark_as_done_deal(page_type, id, deal_id='') {
-    var ttt = 'You are trying to complete Activity';
-
-    Swal.fire({
-        title: 'Are you sure?',
-        text: ttt,
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes, do it!'
-        }).then((result) => {
-            /* Read more about isConfirmed, isDenied below */
-            if (result.isConfirmed) {
-                var ajax_url = "{{ route('activities.mark_as_done') }}";
-                $.ajaxSetup({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    }
-                });
-                $.ajax({
-                    url: ajax_url,
-                    method:'POST',
-                    data: {page_type:page_type, id:id, deal_id:deal_id},
-                    success:function(response){
-                        if(response.error.length > 0 && response.status == "1" ) {
-                            $('#error').addClass('alert alert-danger');
-                            response.error.forEach(display_errors);
-                        } else {
-                            if( response.page_type == 'planned') {
-                                if( response.lead_id ) {
-                                    refresh_lead_timeline('planned', response.lead_id);
-                                    refresh_lead_timeline('done', response.lead_id);
-                                }
-                                if( response.deal_id ) {
-                                    refresh_deal_timeline('planned', response.deal_id, 'all');
-                                    refresh_deal_timeline('done', response.deal_id, 'all');
-                                }
-                            } else {
-                                $('#error').addClass('alert alert-success');
-                                response.error.forEach(display_errors);
-                                ReloadDataTableModal(page_type+'-datatable');
                             }
                         }
                     }      
@@ -652,24 +596,15 @@ function mark_as_done(page_type, id, lead_id='') {
             type: 'POST',
             data: form_data,
             beforeSend: function() {
-                $('#error').removeClass('alert alert-danger');
-                $('#error').html('');
-                $('#error').removeClass('alert alert-success');
-                // $('#save').html('Loading...');
+                $('.loader').show();
             },
             success: function(response) {
+                $('.loader').hide();
                 if(response.error.length > 0 && response.status == "1" ) {
-                    $('#error').addClass('alert alert-danger');
-                    response.error.forEach(display_errors);
-                    
+                    toastr.error('Errors', response.error );
                 } else {
                     $('#notes').val('');
-                    $('#error').addClass('alert alert-success');
-                    $('#error').fadeOut(1000);
-                    response.error.forEach(display_errors);
-                    if( response.type  && response.deal_id ) {
-                        refresh_deal_timeline(response.type, response.deal_id, 'all');
-                    }
+                    toastr.success('Success', response.error );
                 }
             }            
         });
@@ -691,24 +626,16 @@ function mark_as_done(page_type, id, lead_id='') {
             contentType: false,
             processData: false,
             beforeSend: function() {
-                $('#error').removeClass('alert alert-danger');
-                $('#error').html('');
-                $('#error').removeClass('alert alert-success');
-                // $('#save').html('Loading...');
+                $('.loader').show();
             },
             success: function(response) {
+                $('.loader').hide();
                 if(response.error.length > 0 && response.status == "1" ) {
-                    $('#error').addClass('alert alert-danger');
-                    response.error.forEach(display_errors);
-                    
+                    toastr.error('Errors', response.error );
                 } else {
-                    $('#notes').val('');
-                    $('#error').addClass('alert alert-success');
-                    $('#error').fadeOut(1000);
-                    response.error.forEach(display_errors);
-                    if( response.type  && response.deal_id ) {
-                        refresh_deal_timeline(response.type, response.deal_id, 'all');
-                    }
+                    var form = $('#deal-insert-files')[0];
+                    form.reset();
+                    toastr.success('Success', response.error );
                 }
             }            
         });

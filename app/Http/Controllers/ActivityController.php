@@ -56,7 +56,7 @@ class ActivityController extends Controller
             $i=1;
             foreach( $list as $activities ) {
                 if( empty($activities->done_at) ) {
-                    $activities_done                        = '<div class="badge badge-warning-lighten" role="button" onclick="mark_as_done(\'activities\','.$activities->id.')"> Mark as done </div>';
+                    $activities_done                        = '<div class="badge badge-warning-lighten" role="button" onclick="mark_as_done('.$activities->id.')"> Mark as done </div>';
                 } else {
                     $activities_done                        = '<div class="badge badge-success-lighten" role="button"> Done '.date('d M Y H:i A', strtotime($activities->done_at ) ).'
                                                                 </div>';
@@ -130,7 +130,6 @@ class ActivityController extends Controller
     public function save(Request $request)
     {
         $id = $request->id;
-        
         $role_validator   = [
             'activity_title'      => [ 'required', 'string', 'max:255'],
             'activity_type'      => [ 'required', 'string', 'max:255'],
@@ -214,17 +213,24 @@ class ActivityController extends Controller
     public function mark_as_done(Request $request)
     {
         $id = $request->id;
-        $page_type = $request->page_type;
-        $lead_id = $request->lead_id;
-        $deal_id = $request->deal_id;
-
+        $type = $request->type;
+        $lead_id = '';
+        $deal_id = '';
+        if( isset( $type ) && !empty($type)){
+            $deal_id = $request->lead_id;
+        } else {
+            $lead_id = $request->lead_id;
+        }
+        if( !$request->lead_id ) {
+            $page_type = 'activities';
+        }
         $role = Activity::find($id);
         $role->done_by = Auth::id();
         $role->done_at = date('Y-m-d H:i:s');
         $role->update();
         $update_msg = 'Updated successfully';
-        return response()->json(['error'=>[$update_msg], 'status' => '0', 'page_type' => $page_type, 
-                                'lead_id' => $lead_id, 'deal_id' => $deal_id]);
+        return response()->json(['error'=>[$update_msg], 'status' => '0',
+                                'lead_id' => $lead_id, 'deal_id' => $deal_id, 'page_type' => $page_type ?? '' ]);
     }
 
     public function add_edit_modal(Request $request) {

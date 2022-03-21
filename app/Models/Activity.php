@@ -12,7 +12,7 @@ class Activity extends Model implements Auditable
 {
     use HasFactory, SoftDeletes;
     use \OwenIt\Auditing\Auditable;
-
+    protected $table = 'activities';
     protected $fillable = [
         'subject',
         'activity_type',

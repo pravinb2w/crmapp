@@ -61,6 +61,30 @@ form#activites-form>div>label>i {
     top: 0;
 }
 </style>
+<style>
+    .loader{
+    position: absolute;
+    top:0px;
+    right:0px;
+    border: 10px solid #f3f3f3; /* Light grey */
+    border-top: 10px solid #3498db; /* Blue */
+    border-radius: 50%;
+    width: 75px;
+    height: 75px;
+    animation: spin 0.5s linear infinite;
+    background-position:center;
+    z-index:10000000;
+    opacity: 0.4;
+    filter: alpha(opacity=40);
+    left: 50%;
+    top: 30%;
+    display: none;
+}
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+</style>
 <div class="container-fluid">
                         
     <!-- start page title -->
@@ -87,54 +111,51 @@ form#activites-form>div>label>i {
     <div class="card shadow-sm">
         <ul class="nav nav-pills bg-nav-pills nav-justified custom">
             <li class="nav-item">
-                <a href="#Notes" data-bs-toggle="tab" aria-expanded="false" class="nav-link rounded-0 active">
+                <a href="#Notes" data-bs-toggle="tab" data-id="note" aria-expanded="false" class="nav-link rounded-0 active deal-tab">
                     <i class="uil uil-pen"></i>
                     <span>Notes</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a href="#Activity" data-bs-toggle="tab" aria-expanded="true" class="nav-link rounded-0 ">
+                <a href="#Activity" data-bs-toggle="tab" data-id="activity" aria-expanded="true" class="nav-link rounded-0 deal-tab">
                     <i class="uil uil-user"></i>
                     <span >Activity</span>
                 </a>
             </li>
             
             <li class="nav-item">
-                <a href="#Files" data-bs-toggle="tab" aria-expanded="false" class="nav-link rounded-0">
+                <a href="#Files" data-bs-toggle="tab" aria-expanded="false" data-id="file" class="nav-link rounded-0 deal-tab">
                     <i class="uil-files-landscapes-alt uil"></i>
                     <span>Files</span>
                 </a>
             </li>
            
             <li class="nav-item">
-                <a href="#Invoices" data-bs-toggle="tab" aria-expanded="false" class="nav-link rounded-0">
+                <a href="#Invoices" data-bs-toggle="tab" data-id="invoice" aria-expanded="false" class="nav-link rounded-0 deal-tab">
                     <i class="uil uil-invoice"></i>
                     <span>Invoices</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#History" data-bs-toggle="tab" data-id="history" aria-expanded="false" class="nav-link rounded-0 deal-tab">
+                    <i class="uil uil-invoice"></i>
+                    <span>History</span>
                 </a>
             </li>
         </ul>
         
         <div class="tab-content p-3">
-            <div class="tab-pane active" id="Notes">
+            <div class="tab-pane active" id="dealtab">
                 @include('crm.deals._note_form')
             </div>
-            <div class="tab-pane show" id="Activity">
-                @include('crm.deals._activity_form')
-            </div> 
-            <div class="tab-pane show" id="Files">
-                @include('crm.deals._file_form')
-            </div> 
-            
-            <div class="tab-pane" id="Invoices">
-                @include('crm.deals._invoice_form')
-            </div>
+            <div class="loader"></div>
         </div>
     </div>
-    <div class="card">
+    {{-- <div class="card">
         <div class="card-body" id="lead_timeline">
             @include('crm.deals._timeline')
         </div>
-    </div>
+    </div> --}}
 </div>
 <script>
     function deal_finalize(status, id) {
@@ -294,6 +315,33 @@ form#activites-form>div>label>i {
            })
            return false;
     } 
+
+    $('.deal-tab').click(function(){
+        var tab = $(this).attr('data-id');
+        var deal_id = '{{ $id }}';
+        get_tab(tab, deal_id);
+    })
+
+    function get_tab(tab, deal_id){
+        var ajax_url = "{{ route('deals.get_tab') }}";
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        $.ajax({
+            url: ajax_url,
+            method:'POST',
+            data: {deal_id:deal_id, tab:tab},
+            beforeSend:function(){
+                $('.loader').show();
+            },
+            success:function(response){
+               $('#dealtab').html(response);
+               $('.loader').hide();
+            }      
+        });
+    }
 
 </script>
 
