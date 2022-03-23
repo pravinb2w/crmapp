@@ -79,7 +79,7 @@ class AccountController extends Controller
     public function company_save(Request $request)
     {
         $type = $request->type;
-        if( isset($type ) && ( $type != 'api' && $type != 'link' && $type != 'prefix')) {
+        if( isset($type ) && ( $type != 'api' && $type != 'link' && $type != 'prefix' && $type != 'common')) {
             if( $type == 'company' ) {
                 $validator   = [
                     'site_name' => [ 'required', 'string', 'max:255' ],
@@ -171,6 +171,9 @@ class AccountController extends Controller
                 $sett->instagram_url = $request->instagram_url;
                 $sett->update();
 
+            } else if($type == 'common') {
+                $sett->invoice_terms = $request->invoice_terms;
+                $sett->update();
             } else if( $type == 'prefix' ) {
 
                 $prefix_field = $request->prefix_field;

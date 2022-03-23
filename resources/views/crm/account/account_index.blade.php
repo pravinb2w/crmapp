@@ -90,6 +90,11 @@
                                 Change Password
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a href="#horizontal-form-code" data-bs-toggle="tab" onclick="return get_settings_tab('common')" aria-expanded="true" class="nav-link @if($type=='common') active @endif">
+                                Common
+                            </a>
+                        </li>
                     </ul> 
                     <!-- end nav-->
                     <div class="tab-content" style="position: relative">

@@ -133,7 +133,6 @@ Route::middleware([SetViewVariable::class, 'auth'])->group(function(){
         Route::post('/invoice/unlink', [App\Http\Controllers\DealsController::class, 'unlink_invoice'])->name('deals.unlink');
         Route::post('/invoice/submit', [App\Http\Controllers\DealsController::class, 'submit_for_approve'])->name('deals.submit-approve');
         Route::post('/get_tab', [App\Http\Controllers\DealsController::class, 'get_tab'])->name('deals.get_tab');
-
     });
 
     //Invoice route
@@ -267,6 +266,14 @@ Route::middleware([SetViewVariable::class, 'auth'])->group(function(){
         Route::post('/teams/list', [App\Http\Controllers\TeamController::class, 'ajax_list'])->name('teams.list');
         Route::post('/teams/delete', [App\Http\Controllers\TeamController::class, 'delete'])->name('teams.delete');
         Route::post('/teams/status', [App\Http\Controllers\TeamController::class, 'change_status'])->name('teams.status');
+
+        Route::get('/tax', [App\Http\Controllers\TaxController::class, 'index'])->name('tax');
+        Route::post('/tax/add', [App\Http\Controllers\TaxController::class, 'add_edit'])->name('tax.add');
+        Route::post('/tax/view', [App\Http\Controllers\TaxController::class, 'view'])->name('tax.view');
+        Route::post('/tax/save', [App\Http\Controllers\TaxController::class, 'save'])->name('tax.save');
+        Route::post('/tax/list', [App\Http\Controllers\TaxController::class, 'ajax_list'])->name('tax.list');
+        Route::post('/tax/delete', [App\Http\Controllers\TaxController::class, 'delete'])->name('tax.delete');
+        Route::post('/tax/status', [App\Http\Controllers\TaxController::class, 'change_status'])->name('tax.status');
 
     });
     

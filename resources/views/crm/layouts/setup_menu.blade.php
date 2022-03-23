@@ -7,6 +7,8 @@
         Roles</a>
     <a href="{{ route('permissions') }}" class="list-group-item list-group-item-action {{ Request::segment(2) == 'permissions' ? 'active' : '' }}">
         Permission</a>
+    <a href="{{ route('tax') }}" class="list-group-item list-group-item-action {{ Request::segment(2) == 'tax' ? 'active' : '' }}">
+            Tax Groups</a>
     <a href="{{ route('teams') }}" class="list-group-item list-group-item-action {{ Request::segment(2) == 'teams' ? 'active' : '' }}">
         Teams</a>
     
