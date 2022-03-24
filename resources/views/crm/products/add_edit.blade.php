@@ -31,6 +31,34 @@
                         <input type="text" name="hsn_no" id="hsn_no" class="form-control" value="{{ $info->hsn_no ?? '' }}" required>
                     </div>
                 </div>
+                <div class="mb-3">
+                    <div class="row">
+                        <div class="col-3">
+                            <label for="">
+                                CGST
+                            </label>
+                            <div>
+                                <input type="text" name="cgst" value="{{ $info->cgst ?? '' }}" placeholder="CGST %" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <label for="">
+                                SGST
+                            </label>
+                            <div>
+                                <input type="text" name="sgst" value="{{ $info->sgst ?? '' }}"  placeholder="SGST %" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <label for="">
+                                IGST
+                            </label>
+                            <div>
+                                <input type="text" name="igst" value="{{ $info->igst ?? '' }}"  placeholder="IGST %" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 
                 <div class="mb-3">
                     <label for="description" class="col-form-label"> Description </label>

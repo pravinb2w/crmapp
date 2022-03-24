@@ -42,4 +42,9 @@ class DealStage extends Model implements Auditable
     {
         return $this->hasOne(CompanySettings::class, 'id', 'company_id');
     }
+
+    public function deals() {
+        return $this->hasMany(Deal::class, 'current_stage_id')->orderBy('deals.created_at', 'desc');
+
+    }
 }

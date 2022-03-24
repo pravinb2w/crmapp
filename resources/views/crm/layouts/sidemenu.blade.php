@@ -214,9 +214,6 @@
                             <a href="javascript:void(0)">Bulk Import</a>
                         </li>
                         <li>
-                            <a href="javascript:void(0)">Calendar </a>
-                        </li>
-                        <li>
                             <a href="javascript:void(0)">Activity Log</a>
                         </li>
                         <li>

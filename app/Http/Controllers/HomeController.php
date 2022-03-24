@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\DealStage;
+
 class HomeController extends Controller
 {
     /**
@@ -32,6 +34,9 @@ class HomeController extends Controller
     }
     public function dealsPipeline()
     {
-        return view('dashboard.deals-pipeline');
+        $stage = DealStage::orderBy('order_by', 'asc')->get();
+        $params = ['stage' => $stage ];
+
+        return view('dashboard.deals-pipeline', $params);
     }
 }

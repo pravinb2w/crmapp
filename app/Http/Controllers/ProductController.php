@@ -141,6 +141,9 @@ class ProductController extends Controller
             $ins['product_name']    = $request->product_name;
             $ins['product_code']    = $request->product_code;
             $ins['hsn_no']          = $request->hsn_no;
+            $ins['cgst']          = $request->cgst;
+            $ins['sgst']          = $request->sgst;
+            $ins['igst']          = $request->igst;
             $ins['description']     = $request->description;
             
             if( isset($id) && !empty($id) ) {
@@ -149,6 +152,9 @@ class ProductController extends Controller
                 $page->product_name = $request->product_name;
                 $page->product_code = $request->product_code;
                 $page->hsn_no       = $request->hsn_no;
+                $page->cgst       = $request->cgst;
+                $page->sgst       = $request->sgst;
+                $page->igst       = $request->igst;
                 $page->updated_by   = Auth::id();
                 $page->description  = $request->description;
                 $page->update();

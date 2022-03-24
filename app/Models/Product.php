@@ -21,6 +21,9 @@ class Product extends Model implements Auditable
         'added_by',
         'status',
         'hsn_no',
+        'cgst',
+        'sgst',
+        'igst'
     ];
     public function scopeLatests( Builder $query ) {
         return $query->orderBy( static::CREATED_AT, 'desc' );

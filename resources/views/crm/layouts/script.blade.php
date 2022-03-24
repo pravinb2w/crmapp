@@ -200,6 +200,8 @@
             return ajax_url = '{{ route("permissions.add") }}';
         } else if(page_type=='deals') {
             return ajax_url = '{{ route("deals.add") }}';
+        } else if(page_type=='taxgroup') {
+            return ajax_url = '{{ route("tax.add") }}';
         }
     }
 
@@ -240,6 +242,8 @@
             return ajax_url = '{{ route("notes.view") }}';
         } else if(page_type=='permissions') {
             return ajax_url = '{{ route("permissions.view") }}';
+        } else if(page_type=='taxgroup') {
+            return ajax_url = '{{ route("tax.view") }}';
         }
     }
     function set_delete_url(page_type) {
@@ -283,6 +287,8 @@
             return ajax_url = '{{ route("permissions.delete") }}';
         } else if(page_type=='deals') {
             return ajax_url = '{{ route("deals.delete") }}';
+        } else if(page_type=='taxgroup') {
+            return ajax_url = '{{ route("tax.delete") }}';
         }
     }
 
@@ -325,6 +331,8 @@
             return ajax_url = '{{ route("notes.status") }}';
         } else if(page_type=='deals') {
             return ajax_url = '{{ route("deals.status") }}';
+        } else if(page_type=='taxgroup') {
+            return ajax_url = '{{ route("tax.status") }}';
         }
     }
 
