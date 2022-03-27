@@ -284,5 +284,15 @@ Route::middleware([SetViewVariable::class, 'auth'])->group(function(){
     Route::get('mail-message', function () {
         return view('mail-message');
     }); 
+
+    // Email Template Routes
+    Route::prefix('email-template')->group(function () {
+        Route::get('/', [App\Http\Controllers\EmailTemplateController::class, 'index'])->name('email.index');
+        Route::get('/create', [App\Http\Controllers\EmailTemplateController::class, 'create'])->name('create.email_template');
+        Route::post('/create', [App\Http\Controllers\EmailTemplateController::class, 'store'])->name('store.email_template');
+        Route::get('/edit/{id?}', [App\Http\Controllers\EmailTemplateController::class, 'edit'])->name('edit.email_template');
+        Route::post('/edit/{id?}', [App\Http\Controllers\EmailTemplateController::class, 'update'])->name('update.email_template');
+        Route::post('/delete/{id?}', [App\Http\Controllers\EmailTemplateController::class, 'delete'])->name('delete.email_template');
+    });
 });
 
