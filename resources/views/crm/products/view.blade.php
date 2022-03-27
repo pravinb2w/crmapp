@@ -34,6 +34,18 @@
                                     <th>Product Description </th>
                                     <td>{{  $info->description ?? '' }}</td>
                                 </tr>
+                                <tr>
+                                    <th>CGST</th>
+                                    <td>{{ $info->cgst ?? '' }}</td>
+                                </tr>
+                                <tr>
+                                    <th>SGST</th>
+                                    <td>{{ $info->sgst ?? '' }}</td>
+                                </tr>
+                                <tr>
+                                    <th>IGST</th>
+                                    <td>{{ $info->igst ?? '' }}</td>
+                                </tr>
                             </table>
                             
                             <div class="col-md-12 mb-3 text-end">

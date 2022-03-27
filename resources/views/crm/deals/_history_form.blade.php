@@ -28,17 +28,35 @@
                 }
             }
             if( isset( $info->files ) && !empty($info->files ) ){
-                    foreach ($info->files as $iofiles){
-                        $tmp['activity_type'] = 'files';
-                        $tmp['subject'] = 'Document Created';
-                        $tmp['deal_id'] = $info->id;
-                        $tmp['id'] = $iofiles->id;
-                        $tmp['done_at'] = Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $iofiles->created_at)->format('Y-m-d H:i:s');
-                        $tmp['added'] = $iofiles->added;
-                        $tmp['document'] = $iofiles->document;
-                        $list[] = $tmp;
-                    }
+                foreach ($info->files as $iofiles){
+                    $tmp['activity_type'] = 'files';
+                    $tmp['subject'] = 'Document Created';
+                    $tmp['deal_id'] = $info->id;
+                    $tmp['id'] = $iofiles->id;
+                    $tmp['done_at'] = Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $iofiles->created_at)->format('Y-m-d H:i:s');
+                    $tmp['added'] = $iofiles->added;
+                    $tmp['document'] = $iofiles->document;
+                    $list[] = $tmp;
                 }
+            }
+            
+            if( isset( $info->invoice ) && !empty( $info->invoice)) {
+                foreach ($info->invoice as $inv) {
+                    $tmp['activity_type'] = 'invoice';
+                    $tmp['subject'] = 'Invoice Created';
+                    $tmp['deal_id'] = $inv->deal_id;
+                    $tmp['invoice_no'] = str_replace("/", "_", $inv->invoice_no);
+                    $tmp['id'] = $inv->id;
+                    $tmp['done_at'] = Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $inv->created_at)->format('Y-m-d H:i:s');
+                    $tmp['done_by'] = '';
+                    $tmp['added'] = $inv->added;
+                    $tmp['pending_at'] = $inv->pending_at;
+                    $tmp['approved_at'] = $inv->approved_at;
+                    $tmp['rejected_at'] = $inv->rejected_at;
+                    $list[] = $tmp;
+                }
+            }
+
             foreach ($list as $key => $part) {
                 $sort[$key] = strtotime($part['done_at']);
             }
@@ -51,10 +69,21 @@
             <td class="w-75">
                 <div>
                     <div>{{ strtoupper($litem['activity_type']) }} 
+
+                        @if( isset( $litem['pending_at']) && !empty($litem['pending_at']) && $litem['approved_at'] == null && $litem['activity_type'] == 'invoice' )
+                        <span class="badge bg-info-lighten">Awaiting for Approval</span>
+                        @elseif( isset($litem['approved_at']) && $litem['activity_type'] == 'invoice')
+                        <span class="badge bg-success-lighten">Approved</span>
+                        @elseif( isset($litem['rejected_at']) && $litem['activity_type'] == 'invoice' )
+                        <span class="badge bg-danger-lighten">Rejected</span>
+                        @endif
+
                         @if( isset( $litem['document'] ) && !empty($litem['document'])) 
-                        <small class="ml-3">
-                            <a href="{{ asset('storage/'.$litem['document']) }}" target="_blank"> View Files </a>
-                        </small>
+                            @if($litem['activity_type'] != 'invoice')
+                            <small class="ml-3">
+                                <a href="{{ asset('storage/'.$litem['document']) }}" target="_blank"> View Files </a>
+                            </small>
+                            @endif
                         @endif
                     </div>
                     <p> @if($litem['activity_type'] != 'Notes' ) {{ strtoupper($litem['activity_type']) }}  - @endif {{ $litem['subject'] }}</p>
@@ -79,13 +108,24 @@
                         <i class="mdi mdi-dots-vertical"></i>
                     </button>
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        @if( $litem['activity_type'] != 'Notes' && $litem['activity_type'] != 'files' )
+                        @if($litem['activity_type'] == 'invoice')
+                            @if( $litem['pending_at'] == null )
+                                <a class="dropdown-item" href="#"  onclick="submit_approve_invoice('{{ $info->id }}','{{ $litem['id'] }}', 'done')">
+                                    Submit for Approval 
+                                </a>
+                            @endif
+                            <a class="dropdown-item" href="#"  onclick="unlink_invoice('{{ $info->id }}','{{ $litem['id'] }}', 'done')">Unlink from Deal</a>
+                            <a class="dropdown-item" target="_blank" href="{{ asset('invoice').'/'.$litem['invoice_no'].'.pdf' }}">Download Pdf</a>
+
+                        @elseif( $litem['activity_type'] != 'Notes' && $litem['activity_type'] != 'files' )
                         <a class="dropdown-item" href="javascript:;"  onclick="edit_activity('history','{{ $litem['id'] }}', '','{{ $info->id }}')">Edit</a>
                             @if( isset($litem['done_by'])&& empty($litem['done_by']))
                                 <a class="dropdown-item" href="javascript:;" onclick="mark_as_done('{{ $litem['id'] }}', '{{ $info->id }}', 'deal')">Mark as Done</a>
                             @endif
                         @endif
+                        @if($litem['activity_type'] != 'invoice')
                         <a class="dropdown-item" href="#"  onclick="change_activity_status('{{ $info->id ?? '' }}','{{ $litem['id'] ?? '' }}', '{{ $litem['activity_type'] ?? '' }}' )">Delete</a>
+                        @endif
                     </div>
                 </div> 
             </td>

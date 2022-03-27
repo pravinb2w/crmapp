@@ -202,6 +202,12 @@ form#activites-form>div>label>i {
 
     function get_add_items() {
         var limit = $('#limit').val();
+        if( $('#with_tax').is(":checked") ) {
+            var with_tax = 'yes';
+        } else {
+            var with_tax = '';
+        }
+
         limit = parseInt(limit);
         limit++;
         $('#limit').val(limit);
@@ -213,15 +219,41 @@ form#activites-form>div>label>i {
         $.ajax({
             url: "{{ route('invoices.add_items') }}",
             type: 'POST',
-            data: {limit:limit},
+            data: {limit:limit, with_tax:with_tax},
             success: function(response) {
                 $('#invoice-items').append(response);
             }            
         });
     }
 
+    function get_product_tax(product_id, limit) {
+        var ajax_url = "{{ route('deals.get_product_tax') }}";
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        $.ajax({
+            url: ajax_url,
+            method:'POST',
+            data: {product_id:product_id, limit:limit},
+            success:function(response){
+                if( response.cgst ){
+                    $('input[name="cgst_'+limit+'"]').val(response.cgst);
+                }
+                if( response.sgst ){
+                    $('input[name="sgst_'+limit+'"]').val(response.sgst);
+                }
+                if( response.igst ){
+                    $('input[name="igst_'+limit+'"]').val(response.igst);
+                }
+            }      
+        });
+    }
+
     function remove_items(limit) {
         $('#add-product-tab_'+limit).remove();
+        get_total();
     }
 
     function get_total(limit) {
@@ -230,16 +262,38 @@ form#activites-form>div>label>i {
             amount = 0;
             price = $(this).find( '#unit_price' ).val();
             qty = $(this).find( '#qty' ).val();
+
+            discount = $(this).find( '#discount' ).val();
+
+            cgst = $(this).find( '#cgst' ).val();
+            sgst = $(this).find( '#sgst' ).val();
+            igst = $(this).find( '#igst' ).val();
             if( isNaN(price) || price == '' || price == undefined ){price=0;}
+            if( isNaN(cgst) || cgst == '' || cgst == undefined ){cgst=0;}
+            if( isNaN(sgst) || sgst == '' || sgst == undefined ){sgst=0;}
+            if( isNaN(igst) || igst == '' || igst == undefined ){igst=0;}
+            if( isNaN(discount) || discount == '' || discount == undefined ){discount=0;}
             if( isNaN(qty) || qty == '' || qty == undefined ){qty=0;}
 
             amount = parseInt(price) * parseInt(qty);
+            if( discount != 0 ) {
+                amount = amount - ( amount * discount/100 ); 
+            }
+            if( cgst != 0 ) {
+                amount = amount + ( amount * cgst/100 ); 
+            }
+            if( sgst != 0 ) {
+                amount = amount + ( amount * sgst/100 ); 
+            }
+            if( igst != 0 ) {
+                amount = amount + ( amount * igst/100 ); 
+            }
             total += amount;
-            $(this).find('#amount').val(amount);
+            $(this).find('#amount').val(amount.toFixed(2));
 
         });
-        $('#subtotal').html(total);
-        $('#total_cost').val(total);
+        $('#subtotal').html(total.toFixed(2));
+        $('#total_cost').val(total.toFixed(2));
 
     }
 
@@ -268,9 +322,10 @@ form#activites-form>div>label>i {
                        method:'POST',
                        data: {deal_id:deal_id, invoice_id:invoice_id, type:type},
                        success:function(response){
-                            if( response.type  && response.deal_id ) {
-                                refresh_deal_timeline(response.type, response.deal_id, 'all');
-                            }
+                            if(response.deal_id ) {
+                                get_tab('history', response.deal_id);
+                           }
+                           
                        }      
                    });
                    Swal.fire('Updated!', '', 'success')
@@ -305,8 +360,8 @@ form#activites-form>div>label>i {
                        data: {deal_id:deal_id, invoice_id:invoice_id, type:type},
                        async:true,
                        success:function(response){
-                            if( response.type  && response.deal_id ) {
-                                refresh_deal_timeline(response.type, response.deal_id, 'all');
+                            if(response.deal_id ) {
+                                get_tab('history', response.deal_id);
                             }
                        }      
                    });

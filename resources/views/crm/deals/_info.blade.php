@@ -6,6 +6,7 @@
             top: 50%;
         }
     </style>
+    
     <div class="col-md-6 mb-3">
        <h3 class="h4 link"><a href="#" class="me-1">{{ $info->deal_title ?? '' }}</a> <i class="mdi mdi-tag"></i></h3>
         <div class="d-flex">

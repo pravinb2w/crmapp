@@ -45,18 +45,20 @@
     </div>
     <div class="row">
         <h5> Invoice Items</h5>
+        <span class="text-end">
+            <input type="checkbox" name="with_tax" id="with_tax" >
+            <label for="with_tax"> With Tax</label>
+        </span>
         @php
             $limit = 0;
-            if( isset( $info->deal_products ) && !empty($info->deal_products)) {
-                $limit = count( $info->deal_products) -1;
-            }
+            
         @endphp
         <input type="hidden" name="limit" id="limit" value="{{ $limit }}">
         @php
             $limit = 0;
         @endphp
         <div class="col-12" id="invoice-items">
-            @include('crm.invoice._items')
+            {{-- @include('crm.invoice._items') --}}
         </div>
         <div class="mt-2">
             <a href="javascript:;"  onclick="return get_add_items()">
@@ -64,7 +66,7 @@
                  Add Items
             </a>
             <div class="text-end">
-                <h6> Subtotal : <b id="subtotal">123.00</b></h6>
+                <h6> Subtotal : <b id="subtotal">0.00</b></h6>
                 <input type="hidden" name="total_cost" id="total_cost" value="{{ $info->product_total ?? '' }}">
             </div>
         </div>
@@ -83,26 +85,22 @@
                 type: form.method,
                 data: $(form).serialize(),
                 beforeSend: function() {
-                    $('#error').removeClass('alert alert-danger');
-                    $('#error').html('');
-                    $('#error').removeClass('alert alert-success');
                     $('#save').html('Loading...');
                 },
                 success: function(response) {
                     $('#save').html('Save');
                     if(response.error.length > 0 && response.status == "1" ) {
-                        $('#error').addClass('alert alert-danger');
-                        response.error.forEach(display_errors);
+                        toastr.error('Errors', response.error );
                     } else {
-                        $('#error').addClass('alert alert-success');
-                        response.error.forEach(display_errors);
+                        toastr.success('Success', response.error );
                         form.reset();
-                        if( response.type  && response.deal_id ) {
-                            refresh_deal_timeline(response.type, response.deal_id);
-                        }
                     }
                 }            
             });
         }
+    });
+
+    $('#with_tax').change(function(){
+        $('#invoice-items').html('');
     });
 </script>

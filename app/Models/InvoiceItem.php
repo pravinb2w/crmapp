@@ -17,7 +17,9 @@ class InvoiceItem extends Model
        'qty',
        'unit_price',
        'discount',
-       'tax',
+       'cgst',
+       'sgst',
+       'igst',
        'amount',
     ];
 

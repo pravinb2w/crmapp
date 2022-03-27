@@ -23,6 +23,7 @@ use App\Models\CompanySettings;
 use PDF;
 use App\Mail\SubmitApproval;
 use Mail;
+use DB;
 
 
 class DealsController extends Controller
@@ -518,8 +519,9 @@ class DealsController extends Controller
 
     function invoice_product_list(Request $request) {
         $limit  = $request->limit;
+        $with_tax = $request->with_tax;
         $product_list = Product::all();
-        $params = ['limit' => $limit, 'product_list' => $product_list ];
+        $params = ['limit' => $limit, 'product_list' => $product_list, 'with_tax' => $with_tax ];
         return view('crm.invoice._items', $params );
     }
 
@@ -535,7 +537,6 @@ class DealsController extends Controller
         $currency = $request->currency;
         $limit = $request->limit;
         $total_cost = $request->total_cost;
-
         //insert in invoice
         $ins['deal_id'] = $deal_id;
         $ins['invoice_no'] = $invoice_no;
@@ -554,35 +555,47 @@ class DealsController extends Controller
         $invoice_id = Invoice::create($ins)->id;
 
         $up_data = [];
-        for ($i=0; $i < $limit; $i++) { 
+        for ($i=1; $i <= $limit; $i++) { 
             $ups['invoice_id'] = $invoice_id;
-            $ups['product_id'] = $_POST['item_'.$i] ?? '';
-            $ups['description'] = $_POST['description_'.$i] ?? '';
-            $ups['qty'] = $_POST['quantity_'.$i] ?? '';
-            $ups['unit_price'] = $_POST['unit_price_'.$i] ?? '';
-            $ups['discount'] = ( !empty($_POST['discount_'.$i]) ? $_POST['discount_'.$i]: 0);
-            $ups['tax'] = (!empty($_POST['tax_'.$i]) ? $_POST['tax_'.$i] : 0);
-            $ups['amount'] = $_POST['amount_'.$i] ?? 0;
+            if( $_POST['item_'.$i]) {
+                $ups['product_id'] = $_POST['item_'.$i] ?? '';
+                $ups['description'] = $_POST['description_'.$i] ?? '';
+                $ups['qty'] = $_POST['quantity_'.$i] ?? '';
+                $ups['unit_price'] = $_POST['unit_price_'.$i] ?? '';
+                $ups['discount'] = ( !empty($_POST['discount_'.$i]) ? $_POST['discount_'.$i]: 0);
+                $ups['cgst'] = (!empty($_POST['cgst_'.$i]) ? $_POST['cgst_'.$i] : 0);
+                $ups['sgst'] = (!empty($_POST['sgst_'.$i]) ? $_POST['sgst_'.$i] : 0);
+                $ups['igst'] = (!empty($_POST['igst_'.$i]) ? $_POST['igst_'.$i] : 0);
+                $ups['amount'] = $_POST['amount_'.$i] ?? 0;
 
-            InvoiceItem::create($ups);
-            $up_data[] = $ups;
+                InvoiceItem::create($ups);
+            }
         }
+        $this->generatePDF($invoice_id);
         $success = 'Invoice added successfully';
-        return response()->json(['error'=>[$success], 'status' => '0', 'deal_id' => $deal_id, 'type' => 'done']);
+        return response()->json(['error'=>[$success], 'status' => '0']);
 
     }
 
-    public function generatePDF(Request $request, $id)
+    public function generatePDF( $id)
     {
         $info = Invoice::find( $id );
         $company = CompanySettings::find(1);
-
+        $taxable = DB::table('invoice_items')
+                    ->join('products', 'invoice_items.product_id', '=', 'products.id')
+                    ->select('products.hsn_no', 'invoice_items.qty','invoice_items.unit_price', DB::raw('(invoice_items.qty * invoice_items.unit_price) as price'), 'invoice_items.cgst', 'invoice_items.sgst', 'invoice_items.igst')
+                    ->where('invoice_items.invoice_id', $id)
+                    ->groupBy('products.hsn_no')
+                    ->get();
         $data = [
             'info' => $info,
-            'company' => $company
+            'company' => $company,
+            'taxable' => $taxable,
         ];
-        // return view('crm.invoice.deal_invoice', $data);
-        $pdf = PDF::loadView('crm.invoice.deal_invoice', $data);
+        // return view('crm.invoice._new_deal_invoice', $data);
+        $pdf = PDF::loadView('crm.invoice._new_deal_invoice', $data);
+        $path = public_path('invoice');
+        return $pdf->save($path . '/' . str_replace("/", "_", $info->invoice_no ).'.pdf');
         return $pdf->download($info->invoice_no.'.pdf');
     }
 
@@ -654,8 +667,19 @@ class DealsController extends Controller
         $tab = $request->tab;
         $id = $request->deal_id;
         $info = Deal::with(['all_activity', 'notes'])->find($id);
+        $invoice_no = CommonHelper::get_invoice_code();
+
         $users = User::whereNotNull('role_id')->get();
-        return view('crm.deals._'.$tab.'_form', ['id' => $id, 'info' => $info, 'users' => $users ]);
+        return view('crm.deals._'.$tab.'_form', ['id' => $id, 'info' => $info, 'users' => $users, 'invoice_no' => $invoice_no ]);
+    }
+
+    public function get_product_tax(Request $request) {
+        $product_id = $request->product_id;
+        $limit = $request->limit;
+
+        $product_info = Product::find($product_id);
+        $response = ['cgst' => $product_info->cgst ?? '', 'sgst' => $product_info->sgst ?? '', 'igst' => $product_info->igst ];
+        return response()->json($response);
     }
 
    
