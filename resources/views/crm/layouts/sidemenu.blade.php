@@ -211,10 +211,10 @@
                     <span> Utilities </span>
                     <span class="menu-arrow"></span>
                 </a>
-                <div class="collapse" id="sidebarProjects">
+                <div class="collapse {{ Route::is(['create.email_template','edit.email_template']) ? "show" : ""}}" id="sidebarProjects">
                     <ul class="side-nav-second-level">
-                        <li>
-                            <a href="javascript:void(0)">Email Template</a>
+                        <li class="{{ Route::is(['create.email_template','edit.email_template']) ? "menuitem-active" : ""}}" >
+                            <a class="{{ Route::is(['create.email_template','edit.email_template']) ? "active" : ""}}" href="{{ route('email.index') }}">Email Template</a>
                         </li>
                         <li>
                             <a href="javascript:void(0)">Bulk Import</a>

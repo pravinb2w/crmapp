@@ -4,6 +4,7 @@
 </div>
 <form class="form-horizontal account_form" enctype="multipart/form-data" id="account_form">
     @csrf
+    
     <div class="row mb-3">
         <label for="inputname3" class="col-3 col-form-label">First Name</label>
         <div class="col-9">
@@ -29,6 +30,16 @@
             <input type="text" class="form-control" name="mobile_no" id="mobile_number" placeholder="Mobile number" value="{{ $info->mobile_no }}">
         </div>
     </div>
+    <div class="row mb-3">
+        <label for="inputname3" class="col-3 col-form-label">Theam Colors</label>
+        <div class="col-9">
+            <small>Primary Color</small>
+            <input type="color" name="primary_color" class="mx-2" id="inputname3" value="{{ $info->primary_color ?? '' }}" placeholder="Name">
+            <small>Secondary Color</small>
+            <input type="color" name="secondary_color" class="mx-2" id="inputname3" value="{{ $info->secondary_color ?? '' }}" placeholder="Name">
+        </div>
+    </div>
+   
     <div class="row mb-3">
         <label for="profile_image" class="col-3 col-form-label">Profile Image</label>
         <div class="col-3">

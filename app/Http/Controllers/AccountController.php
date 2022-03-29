@@ -65,6 +65,8 @@ class AccountController extends Controller
             $user->last_name = $request->last_name;
             $user->email = $request->email;
             $user->mobile_no = $request->mobile_no;
+            $user->primary_color = $request->primary_color;
+            $user->secondary_color = $request->secondary_color;
             if( $request->hasFile( 'profile_image' ) ) {
                 $file                       = $request->file( 'profile_image' )->store( 'account', 'public' );
                 $user->image                  = $file;

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
     @include('crm.layouts.head')
-
+    @yield('add_on_styles')
     <body class="loading" data-layout-config='{"leftSideBarTheme":"dark","layoutBoxed":false, "leftSidebarCondensed":false, "leftSidebarScrollable":false,"darkMode":false, "showRightSidebarOnStart": false}'>
         <!-- Begin page -->
         <div class="wrapper">
