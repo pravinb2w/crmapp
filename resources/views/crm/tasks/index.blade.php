@@ -40,6 +40,7 @@
                                     </th>
                                     <th class="">Task</th>
                                     <th>Assigned To</th>
+                                    <th>Assigned By</th>
                                     <th>Assigned Date</th>
                                     <th>Status</th>
                                     <th style="width: 80px;">Action</th>
@@ -82,6 +83,7 @@
                 {"data" : "id"},
                 {"data" : "task_name"},
                 {"data" : "assigned_to"},
+                {"data" : "assigned_by"},
                 {"data" : "assigned_date"},
                 {"data" : "status" },
                 {"data" : "action" },

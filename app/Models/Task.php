@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use OwenIt\Auditing\Contracts\Auditable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Builder;
+use Auth;
 
 class Task extends Model implements Auditable
 {
@@ -39,6 +40,14 @@ class Task extends Model implements Auditable
                         ->orWhere( 'start_date', 'like', "%{$search}%" )
                         ->orWhere( 'end_date', 'like', "%{$search}%" );
                     }); 
+    }
+
+    public function scopeRoledata( Builder $query ){
+        $role = Auth::user()->role_id;
+        if( !$role ) {
+            return $query;   
+        }
+        return $query->where('assigned_to', Auth::id())->orWhere('added_by', Auth::id());
     }
 
     public function added()

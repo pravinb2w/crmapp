@@ -15,7 +15,7 @@
                         <li class="breadcrumb-item active">Lead stages</li>
                     </ol>
                 </div>
-                <h4 class="page-title">Settings </h4>
+                <h4 class="page-title">Lead Stage </h4>
             </div>
         </div>
     </div>     

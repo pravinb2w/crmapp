@@ -51,8 +51,12 @@
                                                 @endif
                                             </td>
                                             <td>
+                                                @if(Auth::user()->hasAccess('pages', 'is_edit') )
                                                 <a href="{{ route('pages.edit', $row->id) }}" class="action-icon"><i class="mdi mdi-square-edit-outline"></i></a>
+                                                @endif
+                                                @if(Auth::user()->hasAccess('pages', 'is_delete') )
                                                 <a href="#" class="action-icon"><i class="mdi mdi-delete"></i> </a>
+                                                @endif
                                             </td>
                                         </tr>
                                     @endforeach

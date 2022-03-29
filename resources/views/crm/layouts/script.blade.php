@@ -143,17 +143,14 @@
                         data: {page_type:page_type, id:id, status:status},
                         success:function(response){
                             if(response.error.length > 0 && response.status == "1" ) {
-                                $('#error').addClass('alert alert-danger');
-                                response.error.forEach(display_errors);
+                                Swal.fire( response.error, '', 'error')
                             } else {
-                                $('#error').addClass('alert alert-success');
-                                response.error.forEach(display_errors);
-                                
+                                Swal.fire('Updated!', '', 'success')
                                 ReloadDataTableModal(page_type+'-datatable');
                             }
                         }      
                     });
-                    Swal.fire('Updated!', '', 'success')
+                   
                 } 
             })
             return false;

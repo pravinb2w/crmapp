@@ -59,10 +59,16 @@ class ProductController extends Controller
                 if( $products->status == 1 ) {
                     $products_status                     = '<div class="badge bg-success" role="button" onclick="change_status(\'products\','.$products->id.', 0)"> Active </div>';
                 }
-                $action = '
-                <a href="javascript:void(0);" class="action-icon" onclick="return view_modal(\'products\', '.$products->id.')"> <i class="mdi mdi-eye"></i></a>
-                <a href="javascript:void(0);" class="action-icon" onclick="return get_add_modal(\'products\', '.$products->id.')"> <i class="mdi mdi-square-edit-outline"></i></a>
-                <a href="javascript:void(0);" class="action-icon" onclick="return common_soft_delete(\'products\', '.$products->id.')"> <i class="mdi mdi-delete"></i></a>';
+                $action = '';
+                if(Auth::user()->hasAccess('products', 'is_view')) {
+                    $action .= '<a href="javascript:void(0);" class="action-icon" onclick="return view_modal(\'products\', '.$products->id.')"> <i class="mdi mdi-eye"></i></a>';
+                }
+                if(Auth::user()->hasAccess('products', 'is_edit')) {
+                    $action .= '<a href="javascript:void(0);" class="action-icon" onclick="return get_add_modal(\'products\', '.$products->id.')"> <i class="mdi mdi-square-edit-outline"></i></a>';
+                }
+                if(Auth::user()->hasAccess('products', 'is_delete')) {
+                    $action .= '<a href="javascript:void(0);" class="action-icon" onclick="return common_soft_delete(\'products\', '.$products->id.')"> <i class="mdi mdi-delete"></i></a>';
+                }
 
                 $nested_data[ 'id' ]                = '<div class="form-check">
                     <input type="checkbox" class="form-check-input" id="customCheck2" value="'.$products->id.'">
@@ -182,10 +188,17 @@ class ProductController extends Controller
     {
         $id = $request->id;
         $status = $request->status;
-        $page = Product::find($id);
-        $page->status = $status;
-        $page->update();
-        $update_msg = 'Updated successfully';
-        return response()->json(['error'=>[$update_msg], 'status' => '0']);
+        if(Auth::user()->hasAccess('products', 'is_edit')) {
+            $page = Product::find($id);
+            $page->status = $status;
+            $page->update();
+            $update_msg = 'Updated successfully';
+            $status = '0';
+        } else {
+            $update_msg = 'You Do not have access to change status';
+            $status = '1';
+        }
+        
+        return response()->json(['error'=>$update_msg, 'status' => $status]);
     }
 }

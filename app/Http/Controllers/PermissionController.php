@@ -155,4 +155,15 @@ class PermissionController extends Controller
         }
         
     }
+
+    public function delete(Request $request)
+    {
+        $id = $request->id;
+        $role = Permission::find($id);
+        $role->delete();
+        RolePermissionMenu::where('permission_id', $id)->forceDelete();
+        $delete_msg = 'Deleted successfully';
+        $role->forceDelete();
+        return response()->json(['error'=>[$delete_msg], 'status' => '0']);
+    }
 }

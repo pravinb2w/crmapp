@@ -32,22 +32,23 @@ class TaskController extends Controller
         $dir                = $request->input( 'order' )[0][ 'dir' ];
         $search             = $request->input( 'search.value' );
        
-        $total_list         = Task::count();
+        $total_list         = Task::roledata()->count();
         // DB::enableQueryLog();
+        
         if( $order != 'id') {
-            $list               = Task::skip($start)->take($limit)->whereRaw('created_at')->orderBy($order, $dir)
+            $list               = Task::roledata()->skip($start)->take($limit)->orderBy($order, $dir)
                                 ->search( $search )
                                 ->get();
         } else {
-            $list               = Task::skip($start)->take($limit)->whereRaw('created_at')->Latests()
+            $list               = Task::roledata()->skip($start)->take($limit)->Latests()
                                 ->search( $search )
                                 ->get();
         }
         // $query = DB::getQueryLog();
         if( empty( $request->input( 'search.value' ) ) ) {
-            $total_filtered = Task::count();
+            $total_filtered = Task::roledata()->count();
         } else {
-            $total_filtered = Task::search( $search )
+            $total_filtered = Task::roledata()->search( $search )
                                 ->count();
         }
         
@@ -62,10 +63,16 @@ class TaskController extends Controller
                     $tasks_status                     = '<div class="badge bg-primary" role="button" > Done </div>';
 
                 }
-                $action = '
-                <a href="javascript:void(0);" class="action-icon" onclick="return view_modal(\'tasks\', '.$tasks->id.')"> <i class="mdi mdi-eye"></i></a>
-                <a href="javascript:void(0);" class="action-icon" onclick="return get_add_modal(\'tasks\', '.$tasks->id.')"> <i class="mdi mdi-square-edit-outline"></i></a>
-                <a href="javascript:void(0);" class="action-icon" onclick="return common_soft_delete(\'tasks\', '.$tasks->id.')"> <i class="mdi mdi-delete"></i></a>';
+                $action = '';
+                if(Auth::user()->hasAccess('tasks', 'is_view')) {
+                    $action .= '<a href="javascript:void(0);" class="action-icon" onclick="return view_modal(\'tasks\', '.$tasks->id.')"> <i class="mdi mdi-eye"></i></a>';
+                }
+                if(Auth::user()->hasAccess('tasks', 'is_edit')) {
+                    $action .= '<a href="javascript:void(0);" class="action-icon" onclick="return get_add_modal(\'tasks\', '.$tasks->id.')"> <i class="mdi mdi-square-edit-outline"></i></a>';
+                }
+                if(Auth::user()->hasAccess('tasks', 'is_delete')) {
+                    $action .= '<a href="javascript:void(0);" class="action-icon" onclick="return common_soft_delete(\'tasks\', '.$tasks->id.')"> <i class="mdi mdi-delete"></i></a>';
+                }
 
                 $nested_data[ 'id' ]                = '<div class="form-check">
                     <input type="checkbox" class="form-check-input" id="customCheck2" value="'.$tasks->id.'">
@@ -73,6 +80,7 @@ class TaskController extends Controller
                 </div>';
                 $nested_data[ 'task_name' ]         = $tasks->task_name;
                 $nested_data[ 'assigned_to' ]       = $tasks->assigned->name ?? '';
+                $nested_data[ 'assigned_by' ]       = $tasks->added->name ?? '';
                 $nested_data[ 'assigned_date' ]     = date('d-m-Y H:i A', strtotime($tasks->created_at ) ) ?? '';
                 $nested_data[ 'status' ]            = $tasks_status;
                 $nested_data[ 'action' ]            = $action;
@@ -167,10 +175,17 @@ class TaskController extends Controller
     {
         $id = $request->id;
         $status = $request->status;
-        $page = Task::find($id);
-        $page->status = $status;
-        $page->update();
-        $update_msg = 'Updated successfully';
-        return response()->json(['error'=>[$update_msg], 'status' => '0']);
+        if(Auth::user()->hasAccess('tasks', 'is_edit')) {
+
+            $page = Task::find($id);
+            $page->status = $status;
+            $page->update();
+            $update_msg = 'Updated successfully';
+            $status = '0';
+        } else {
+            $update_msg = 'You Do not have access to change status';
+            $status = '1';
+        }
+        return response()->json(['error'=> $update_msg, 'status' => $status]);
     }
 }

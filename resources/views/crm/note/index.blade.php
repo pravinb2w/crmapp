@@ -39,7 +39,8 @@
                                         </div>
                                     </th>
                                     <th style="width: 40%"> Note </th>
-                                    <th> User </th>
+                                    <th> Assigned To </th>
+                                    <th> Assigned By </th>
                                     <th >Lead / Deal</th>
                                     <th>Status</th>
                                     <th class="text-center">Action</th>
@@ -81,7 +82,8 @@
             "columns"       : [
                 {"data" : "id"},
                 {"data" : "notes"},
-                {"data" : "user"},
+                {"data" : "assigned_to"},
+                {"data" : "assigned_by"},
                 {"data" : "lead"},
                 {"data" : "status" },
                 {"data" : "action" },

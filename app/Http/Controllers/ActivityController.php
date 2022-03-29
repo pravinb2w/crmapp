@@ -32,22 +32,22 @@ class ActivityController extends Controller
         $dir                = $request->input( 'order' )[0][ 'dir' ];
         $search             = $request->input( 'search.value' );
        
-        $total_list         = Activity::count();
+        $total_list         = Activity::roledata()->count();
         // DB::enableQueryLog();
         if( $order != 'id') {
-            $list               = Activity::skip($start)->take($limit)->orderBy($order, $dir)
+            $list               = Activity::roledata()->skip($start)->take($limit)->orderBy($order, $dir)
                                 ->search( $search )
                                 ->get();
         } else {
-            $list               = Activity::skip($start)->take($limit)->Latests()
+            $list               = Activity::roledata()->skip($start)->take($limit)->Latests()
                                 ->search( $search )
                                 ->get();
         }
         // $query = DB::getQueryLog();
         if( empty( $request->input( 'search.value' ) ) ) {
-            $total_filtered = Activity::count();
+            $total_filtered = Activity::roledata()->count();
         } else {
-            $total_filtered = Activity::search( $search )
+            $total_filtered = Activity::roledata()->search( $search )
                                 ->count();
         }
         
@@ -66,22 +66,30 @@ class ActivityController extends Controller
                 if( $activities->status == 1 ) {
                     $activities_status                     = '<div class="badge bg-success" role="button" onclick="change_status(\'activities\','.$activities->id.', 0)"> Active </div>';
                 }
-                $action = '
-                <a href="javascript:void(0);" class="action-icon" onclick="return view_modal(\'activities\', '.$activities->id.')"> <i class="mdi mdi-eye"></i></a>
-                <a href="javascript:void(0);" class="action-icon" onclick="return get_add_modal(\'activities\', '.$activities->id.')"> <i class="mdi mdi-square-edit-outline"></i></a>
-                <a href="javascript:void(0);" class="action-icon" onclick="return common_soft_delete(\'activities\', '.$activities->id.')"> <i class="mdi mdi-delete"></i></a>';
+                $action = '';
+                if(Auth::user()->hasAccess('activities', 'is_view')) {
+                    $action .= '<a href="javascript:void(0);" class="action-icon" onclick="return view_modal(\'activities\', '.$activities->id.')"> <i class="mdi mdi-eye"></i></a>';
+                }
+                if(Auth::user()->hasAccess('activities', 'is_edit')) {
+                    $action .= '<a href="javascript:void(0);" class="action-icon" onclick="return get_add_modal(\'activities\', '.$activities->id.')"> <i class="mdi mdi-square-edit-outline"></i></a>';
+                }
+                if(Auth::user()->hasAccess('activities', 'is_delete')) {
+                    $action .= '<a href="javascript:void(0);" class="action-icon" onclick="return common_soft_delete(\'activities\', '.$activities->id.')"> <i class="mdi mdi-delete"></i></a>';
+                }
 
                 $nested_data[ 'id' ]                = '<div class="form-check">
                     <input type="checkbox" class="form-check-input" id="customCheck2" value="'.$activities->id.'">
                     <label class="form-check-label" for="customCheck2">&nbsp;</label>
                 </div>';
-                $nested_data[ 'subject' ]           = ucwords($activities->subject);
+                // $nested_data[ 'subject' ]           = ucwords($activities->subject);
                 $nested_data[ 'type' ]              = ucfirst($activities->activity_type);
                 $nested_data[ 'lead' ]              = $activities->lead->lead_subject ?? $activities->lead->lead_description ?? $activities->deal->deal_title ?? '';
                 $nested_data[ 'customer' ]          = $activities->customer->first_name ?? '';
                 $nested_data[ 'startAt' ]           = date('d M Y H:i A', strtotime($activities->started_at ) );
                 $nested_data[ 'dueAt' ]             = date('d M Y H:i A', strtotime($activities->due_at ) );
                 $nested_data['done']                = $activities_done;
+                $nested_data['assigned_to']         = $activities->user->name;
+                $nested_data['assigned_by']         = $activities->added->name;
                 $nested_data[ 'status' ]            = $activities_status;
                 $nested_data[ 'action' ]            = $action;
                 $data[]                             = $nested_data;
@@ -203,11 +211,19 @@ class ActivityController extends Controller
     {
         $id = $request->id;
         $status = $request->status;
-        $role = Activity::find($id);
-        $role->status = $status;
-        $role->update();
-        $update_msg = 'Updated successfully';
-        return response()->json(['error'=>[$update_msg], 'status' => '0']);
+        if(Auth::user()->hasAccess('notes', 'is_edit')) {
+            $role = Activity::find($id);
+            $role->status = $status;
+            $role->update();
+            $update_msg = 'Updated successfully';
+            $status = '0';
+        } else {
+            $update_msg = 'You Do not have access to change status';
+            $status = '1';
+        }
+
+        
+        return response()->json(['error'=>$update_msg, 'status' => $status]);
     }
 
     public function mark_as_done(Request $request)

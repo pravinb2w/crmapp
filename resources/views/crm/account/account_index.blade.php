@@ -55,6 +55,8 @@
                                 Profile
                             </a>
                         </li>
+                        @if(Auth::user()->hasAccess('account', 'is_edit'))
+
                         <li class="nav-item">
                             <a href="#horizontal-form-company" data-bs-toggle="tab" onclick="return get_settings_tab('company')" aria-expanded="false" class="nav-link">
                                 Company
@@ -86,15 +88,17 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="#horizontal-form-code" data-bs-toggle="tab" onclick="return get_settings_tab('change')" aria-expanded="true" class="nav-link @if($type=='change') active @endif">
-                                Change Password
-                            </a>
-                        </li>
-                        <li class="nav-item">
                             <a href="#horizontal-form-code" data-bs-toggle="tab" onclick="return get_settings_tab('common')" aria-expanded="true" class="nav-link @if($type=='common') active @endif">
                                 Common
                             </a>
                         </li>
+                        @endif
+                        <li class="nav-item">
+                            <a href="#horizontal-form-code" data-bs-toggle="tab" onclick="return get_settings_tab('change')" aria-expanded="true" class="nav-link @if($type=='change') active @endif">
+                                Change Password
+                            </a>
+                        </li>
+                        
                     </ul> 
                     <!-- end nav-->
                     <div class="tab-content" style="position: relative">

@@ -95,6 +95,7 @@ class User extends Authenticatable implements Auditable
                     })->where('role_permissions.role_id', $role_id)->first();
 
             if( isset($info) && !empty($info)) {
+                
                 if( isset( $info->$access ) && $info->$access == 'on') {
                     return true;
                 } else {

@@ -59,10 +59,16 @@ class CustomerController extends Controller
                 if( $customers->status == 1 ) {
                     $customers_status                     = '<div class="badge bg-success" role="button" onclick="change_status(\'customers\','.$customers->id.', 0)"> Active </div>';
                 }
-                $action = '
-                <a href="javascript:void(0);" class="action-icon" onclick="return view_modal(\'customers\', '.$customers->id.')"> <i class="mdi mdi-eye"></i></a>
-                <a href="javascript:void(0);" class="action-icon" onclick="return get_add_modal(\'customers\', '.$customers->id.')"> <i class="mdi mdi-square-edit-outline"></i></a>
-                <a href="javascript:void(0);" class="action-icon" onclick="return common_soft_delete(\'customers\', '.$customers->id.')"> <i class="mdi mdi-delete"></i></a>';
+                $action = '';
+                if(Auth::user()->hasAccess('customers', 'is_view')) {
+                    $action .= '<a href="javascript:void(0);" class="action-icon" onclick="return view_modal(\'customers\', '.$customers->id.')"> <i class="mdi mdi-eye"></i></a>';
+                }
+                if(Auth::user()->hasAccess('customers', 'is_edit')) {
+                    $action .= '<a href="javascript:void(0);" class="action-icon" onclick="return get_add_modal(\'customers\', '.$customers->id.')"> <i class="mdi mdi-square-edit-outline"></i></a>';  
+                }
+                if(Auth::user()->hasAccess('customers', 'is_delete')) {
+                    $action .= '<a href="javascript:void(0);" class="action-icon" onclick="return common_soft_delete(\'customers\', '.$customers->id.')"> <i class="mdi mdi-delete"></i></a>';
+                }
 
                 $nested_data[ 'id' ]                = '<div class="form-check">
                     <input type="checkbox" class="form-check-input" id="customCheck2" value="'.$customers->id.'">
@@ -242,11 +248,18 @@ class CustomerController extends Controller
     {
         $id = $request->id;
         $status = $request->status;
-        $role = Customer::find($id);
-        $role->status = $status;
-        $role->update();
-        $update_msg = 'Updated successfully';
-        return response()->json(['error'=>[$update_msg], 'status' => '0']);
+        if(Auth::user()->hasAccess('customers', 'is_edit')) {
+            $role = Customer::find($id);
+            $role->status = $status;
+            $role->update();
+            $update_msg = 'Updated successfully';
+            $status = '0';
+        } else {
+            $update_msg = 'You Do not have access to change status';
+            $status = '1';
+        }
+        
+        return response()->json(['error'=> $update_msg, 'status' => $status]);
     }
 
     public function autocomplete_customer(Request $request) {

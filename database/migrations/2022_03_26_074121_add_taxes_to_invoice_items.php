@@ -15,7 +15,6 @@ class AddTaxesToInvoiceItems extends Migration
     {
         Schema::table('invoice_items', function (Blueprint $table) {
             $table->dropColumn('tax');
-           
             $table->decimal('cgst')->nullable()->after('discount');
             $table->decimal('sgst')->nullable()->after('cgst');
             $table->decimal('igst')->nullable()->after('sgst');

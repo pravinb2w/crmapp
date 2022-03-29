@@ -57,10 +57,16 @@ class OrganizationController extends Controller
                 if( $organizations->status == 1 ) {
                     $organizations_status                     = '<div class="badge bg-success" role="button" onclick="change_status(\'organizations\','.$organizations->id.', 0)"> Active </div>';
                 }
-                $action = '
-                <a href="javascript:void(0);" class="action-icon" onclick="return view_modal(\'organizations\', '.$organizations->id.')"> <i class="mdi mdi-eye"></i></a>
-                <a href="javascript:void(0);" class="action-icon" onclick="return get_add_modal(\'organizations\', '.$organizations->id.')"> <i class="mdi mdi-square-edit-outline"></i></a>
-                <a href="javascript:void(0);" class="action-icon" onclick="return common_soft_delete(\'organizations\', '.$organizations->id.')"> <i class="mdi mdi-delete"></i></a>';
+                $action = '';
+                if(Auth::user()->hasAccess('organizations', 'is_view')) {
+                    $action .= '<a href="javascript:void(0);" class="action-icon" onclick="return view_modal(\'organizations\', '.$organizations->id.')"> <i class="mdi mdi-eye"></i></a>';
+                }
+                if(Auth::user()->hasAccess('organizations', 'is_edit')) {
+                    $action .= '<a href="javascript:void(0);" class="action-icon" onclick="return get_add_modal(\'organizations\', '.$organizations->id.')"> <i class="mdi mdi-square-edit-outline"></i></a>';
+                }
+                if(Auth::user()->hasAccess('organizations', 'is_delete')) {
+                    $action .= '<a href="javascript:void(0);" class="action-icon" onclick="return common_soft_delete(\'organizations\', '.$organizations->id.')"> <i class="mdi mdi-delete"></i></a>';
+                }
 
                 $nested_data[ 'id' ]                = '<div class="form-check">
                     <input type="checkbox" class="form-check-input" id="customCheck2" value="'.$organizations->id.'">
@@ -176,11 +182,18 @@ class OrganizationController extends Controller
     {
         $id = $request->id;
         $status = $request->status;
-        $org = Organization::find($id);
-        $org->status = $status;
-        $org->update();
-        $update_msg = 'Updated successfully';
-        return response()->json(['error'=>[$update_msg], 'status' => '0']);
+        if(Auth::user()->hasAccess('organizations', 'is_edit')) {
+            $org = Organization::find($id);
+            $org->status = $status;
+            $org->update();
+            $update_msg = 'Updated successfully';
+            $status = '0';
+        } else {
+            $update_msg = 'You Do not have access to change status';
+            $status = '1';
+        }
+        
+        return response()->json(['error'=>$update_msg, 'status' => $status]);
     }
 
 }

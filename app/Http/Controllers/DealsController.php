@@ -15,6 +15,7 @@ use App\Models\Product;
 use App\Models\Activity;
 use App\Models\DealPipline;
 use App\Models\DealProduct;
+use App\Models\Country;
 use CommonHelper;
 use App\Models\DealDocument;
 use App\Models\InvoiceItem;
@@ -666,11 +667,12 @@ class DealsController extends Controller
     public function get_tab(Request $request) {
         $tab = $request->tab;
         $id = $request->deal_id;
+        $country = Country::all();
         $info = Deal::with(['all_activity', 'notes'])->find($id);
         $invoice_no = CommonHelper::get_invoice_code();
 
         $users = User::whereNotNull('role_id')->get();
-        return view('crm.deals._'.$tab.'_form', ['id' => $id, 'info' => $info, 'users' => $users, 'invoice_no' => $invoice_no ]);
+        return view('crm.deals._'.$tab.'_form', ['id' => $id, 'info' => $info, 'users' => $users, 'invoice_no' => $invoice_no, 'country' => $country ]);
     }
 
     public function get_product_tax(Request $request) {

@@ -38,13 +38,15 @@
                                             <label class="form-check-label" for="customCheck1">&nbsp;</label>
                                         </div>
                                     </th>
-                                    <th> Subject </th>
+                                    {{-- <th> Subject </th> --}}
                                     <th> Type </th>
                                     <th >Lead / Deal</th>
                                     <th > Customer </th>
                                     <th > StartAt</th>
                                     <th >Due</th>
                                     <th> Done </th>
+                                    <th> Assigned To </th>
+                                    <th> Assigned By </th>
                                     <th>Status</th>
                                     <th style="width: 80px;">Action</th>
                                 </tr>
@@ -84,13 +86,15 @@
             },
             "columns"       : [
                 {"data" : "id"},
-                {"data" : "subject"},
+                // {"data" : "subject"},
                 {"data" : "type"},
                 {"data" : "lead"},
                 {"data" : "customer"},
                 {"data" : "startAt"},
                 {"data" : "dueAt"},
                 {"data" : "done"},
+                {"data" : "assigned_to"},
+                {"data" : "assigned_by"},
                 {"data" : "status" },
                 {"data" : "action" },
             ],

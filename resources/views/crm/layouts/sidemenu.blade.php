@@ -106,12 +106,16 @@
                         <li>
                             <a href="{{ route('leads') }}">Leads</a>
                         </li>
+                        @if(Auth::user()->hasAccess('leadsource', 'is_view'))
                         <li>
                             <a href="{{ route('leadsource') }}">Lead Source</a>
                         </li>
+                        @endif
+                        @if(Auth::user()->hasAccess('leadstage', 'is_view'))
                         <li>
                             <a href="{{ route('leadstage') }}">Lead Stage</a>
                         </li>
+                        @endif
                     </ul>
                 </div>
             </li>
@@ -129,9 +133,11 @@
                         <li>
                             <a href="{{ route('deals') }}">Deals</a>
                         </li>
+                        @if(Auth::user()->hasAccess('dealstages', 'is_view'))
                         <li>
                             <a href="{{ route('dealstages') }}">Deal Stages</a>
                         </li>
+                        @endif
                     </ul>
                 </div>
             </li>
@@ -160,8 +166,8 @@
                     </ul>
                 </div>
             </li>
-            @endif
-            @if(Auth::user()->hasAccess('products', 'is_view'))
+            @endif 
+            @if(Auth::user()->hasAccess('products', 'is_view')) 
 
             <li class="side-nav-item">
                 <a href="{{ route('products') }}" class="side-nav-link">

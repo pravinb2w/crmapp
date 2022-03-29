@@ -53,57 +53,57 @@ Route::middleware([SetViewVariable::class, 'auth'])->group(function(){
 
     //Activities
     Route::prefix('activities')->group(function () {
-        Route::get('/', [App\Http\Controllers\ActivityController::class, 'index'])->name('activities');
-        Route::post('/add', [App\Http\Controllers\ActivityController::class, 'add_edit'])->name('activities.add');
-        Route::post('/edit', [App\Http\Controllers\ActivityController::class, 'add_edit_modal'])->name('activities.edit');
+        Route::get('/', [App\Http\Controllers\ActivityController::class, 'index'])->name('activities')->middleware('checkAccess:is_view');
+        Route::post('/add', [App\Http\Controllers\ActivityController::class, 'add_edit'])->name('activities.add')->middleware('checkAccess:is_edit');
+        Route::post('/edit', [App\Http\Controllers\ActivityController::class, 'add_edit_modal'])->name('activities.edit')->middleware('checkAccess:is_edit');
         Route::post('/save', [App\Http\Controllers\ActivityController::class, 'save'])->name('activities.save');
-        Route::post('/view', [App\Http\Controllers\ActivityController::class, 'view'])->name('activities.view');
-        Route::post('/list', [App\Http\Controllers\ActivityController::class, 'ajax_list'])->name('activities.list');
-        Route::post('/delete', [App\Http\Controllers\ActivityController::class, 'delete'])->name('activities.delete');
+        Route::post('/view', [App\Http\Controllers\ActivityController::class, 'view'])->name('activities.view')->middleware('checkAccess:is_view');
+        Route::post('/list', [App\Http\Controllers\ActivityController::class, 'ajax_list'])->name('activities.list')->middleware('checkAccess:is_view');
+        Route::post('/delete', [App\Http\Controllers\ActivityController::class, 'delete'])->name('activities.delete')->middleware('checkAccess:is_delete');
         Route::post('/status', [App\Http\Controllers\ActivityController::class, 'change_status'])->name('activities.status');
-        Route::post('/mark_as_done', [App\Http\Controllers\ActivityController::class, 'mark_as_done'])->name('activities.mark_as_done');
+        Route::post('/mark_as_done', [App\Http\Controllers\ActivityController::class, 'mark_as_done'])->name('activities.mark_as_done')->middleware('checkAccess:is_edit');
     });
     //notes route
     Route::prefix('notes')->group(function () {
-        Route::get('/', [App\Http\Controllers\NoteController::class, 'index'])->name('notes');
-        Route::post('/add', [App\Http\Controllers\NoteController::class, 'add_edit'])->name('notes.add');
+        Route::get('/', [App\Http\Controllers\NoteController::class, 'index'])->name('notes')->middleware('checkAccess:is_view');
+        Route::post('/add', [App\Http\Controllers\NoteController::class, 'add_edit'])->name('notes.add')->middleware('checkAccess:is_edit');
         Route::post('/save', [App\Http\Controllers\NoteController::class, 'save'])->name('notes.save');
-        Route::post('/view', [App\Http\Controllers\NoteController::class, 'view'])->name('notes.view');
-        Route::post('/list', [App\Http\Controllers\NoteController::class, 'ajax_list'])->name('notes.list');
-        Route::post('/delete', [App\Http\Controllers\NoteController::class, 'delete'])->name('notes.delete');
+        Route::post('/view', [App\Http\Controllers\NoteController::class, 'view'])->name('notes.view')->middleware('checkAccess:is_view');
+        Route::post('/list', [App\Http\Controllers\NoteController::class, 'ajax_list'])->name('notes.list')->middleware('checkAccess:is_view');
+        Route::post('/delete', [App\Http\Controllers\NoteController::class, 'delete'])->name('notes.delete')->middleware('checkAccess:is_delete');
         Route::post('/status', [App\Http\Controllers\NoteController::class, 'change_status'])->name('notes.status');
     });
     //pages route
     Route::prefix('pages')->group(function () {
-        Route::get('/', [App\Http\Controllers\CmsController::class, 'index'])->name('pages');         
-        Route::get('/add/{id?}', [App\Http\Controllers\CmsController::class, 'add'])->name('pages.add');
-        Route::get('/edit/{id?}', [App\Http\Controllers\CmsController::class, 'edit'])->name('pages.edit');
+        Route::get('/', [App\Http\Controllers\CmsController::class, 'index'])->name('pages')->middleware('checkAccess:is_view');         
+        Route::get('/add/{id?}', [App\Http\Controllers\CmsController::class, 'add'])->name('pages.add')->middleware('checkAccess:is_edit');
+        Route::get('/edit/{id?}', [App\Http\Controllers\CmsController::class, 'edit'])->name('pages.edit')->middleware('checkAccess:is_edit');
         Route::post('/save/{type?}', [App\Http\Controllers\CmsController::class, 'save'])->name('pages.save');
         Route::post('/update/{id?}', [App\Http\Controllers\CmsController::class, 'update'])->name('pages.update');
-        Route::post('/list', [App\Http\Controllers\CmsController::class, 'ajax_list'])->name('pages.list');
-        Route::post('/delete', [App\Http\Controllers\CmsController::class, 'delete'])->name('pages.delete');
-        Route::post('/status', [App\Http\Controllers\CmsController::class, 'change_status'])->name('pages.status');
+        Route::post('/list', [App\Http\Controllers\CmsController::class, 'ajax_list'])->name('pages.list')->middleware('checkAccess:is_view');
+        Route::post('/delete', [App\Http\Controllers\CmsController::class, 'delete'])->name('pages.delete')->middleware('checkAccess:is_delete');
+        Route::post('/status', [App\Http\Controllers\CmsController::class, 'change_status'])->name('pages.status')->middleware('checkAccess:is_edit');
     });
     //products route
     Route::prefix('products')->group(function () {
         Route::get('/', [App\Http\Controllers\ProductController::class, 'index'])->name('products')->middleware('checkAccess:is_view');
-        Route::post('/add', [App\Http\Controllers\ProductController::class, 'add_edit'])->name('products.add');
+        Route::post('/add', [App\Http\Controllers\ProductController::class, 'add_edit'])->name('products.add')->middleware('checkAccess:is_edit');
         Route::post('/save', [App\Http\Controllers\ProductController::class, 'save'])->name('products.save');
-        Route::post('/view', [App\Http\Controllers\ProductController::class, 'view'])->name('products.view');
-        Route::post('/list', [App\Http\Controllers\ProductController::class, 'ajax_list'])->name('products.list');
-        Route::post('/delete', [App\Http\Controllers\ProductController::class, 'delete'])->name('products.delete');
+        Route::post('/view', [App\Http\Controllers\ProductController::class, 'view'])->name('products.view')->middleware('checkAccess:is_view');
+        Route::post('/list', [App\Http\Controllers\ProductController::class, 'ajax_list'])->name('products.list')->middleware('checkAccess:is_view');
+        Route::post('/delete', [App\Http\Controllers\ProductController::class, 'delete'])->name('products.delete')->middleware('checkAccess:is_delete');;
         Route::post('/status', [App\Http\Controllers\ProductController::class, 'change_status'])->name('products.status');
     });
     //leads route
     Route::prefix('leads')->group(function () { 
-        Route::get('/', [App\Http\Controllers\LeadController::class, 'index'])->name('leads');
-        Route::get('/view/{id}', [App\Http\Controllers\LeadController::class, 'view'])->name('leads.view');
-        Route::post('/add', [App\Http\Controllers\LeadController::class, 'add_edit'])->name('leads.add');
+        Route::get('/', [App\Http\Controllers\LeadController::class, 'index'])->name('leads')->middleware('checkAccess:is_view');
+        Route::get('/view/{id}', [App\Http\Controllers\LeadController::class, 'view'])->name('leads.view')->middleware('checkAccess:is_view');
+        Route::post('/add', [App\Http\Controllers\LeadController::class, 'add_edit'])->name('leads.add')->middleware('checkAccess:is_edit');
         Route::post('/save', [App\Http\Controllers\LeadController::class, 'save'])->name('leads.save');
         Route::post('/activity/save', [App\Http\Controllers\LeadController::class, 'activity_save'])->name('leads.save-activity');
         Route::post('/notes/save', [App\Http\Controllers\LeadController::class, 'notes_save'])->name('leads.save-notes');
-        Route::post('/list', [App\Http\Controllers\LeadController::class, 'ajax_list'])->name('leads.list');
-        Route::post('/delete', [App\Http\Controllers\LeadController::class, 'delete'])->name('leads.delete');
+        Route::post('/list', [App\Http\Controllers\LeadController::class, 'ajax_list'])->name('leads.list')->middleware('checkAccess:is_view');
+        Route::post('/delete', [App\Http\Controllers\LeadController::class, 'delete'])->name('leads.delete')->middleware('checkAccess:is_delete');
         Route::post('/status', [App\Http\Controllers\LeadController::class, 'change_status'])->name('leads.status');
         Route::post('/refresh/timeline', [App\Http\Controllers\LeadController::class, 'refresh_timeline'])->name('leads.refresh-timeline');
         Route::post('/activity/delete', [App\Http\Controllers\LeadController::class, 'delete_activity'])->name('leads.activity-delete');
@@ -112,11 +112,11 @@ Route::middleware([SetViewVariable::class, 'auth'])->group(function(){
     });
     //deals route 
     Route::prefix('deals')->group(function () {
-        Route::get('/', [App\Http\Controllers\DealsController::class, 'index'])->name('deals');
-        Route::get('/view/{id}', [App\Http\Controllers\DealsController::class, 'view'])->name('deals.view');
-        Route::post('/add', [App\Http\Controllers\DealsController::class, 'add_edit'])->name('deals.add');
+        Route::get('/', [App\Http\Controllers\DealsController::class, 'index'])->name('deals')->middleware('checkAccess:is_view');
+        Route::get('/view/{id}', [App\Http\Controllers\DealsController::class, 'view'])->name('deals.view')->middleware('checkAccess:is_view');
+        Route::post('/add', [App\Http\Controllers\DealsController::class, 'add_edit'])->name('deals.add')->middleware('checkAccess:is_edit');
         Route::post('/save', [App\Http\Controllers\DealsController::class, 'save'])->name('deals.save');
-        Route::post('/delete', [App\Http\Controllers\DealsController::class, 'delete'])->name('deals.delete');
+        Route::post('/delete', [App\Http\Controllers\DealsController::class, 'delete'])->name('deals.delete')->middleware('checkAccess:is_delete');
         Route::post('/status', [App\Http\Controllers\DealsController::class, 'change_status'])->name('deals.status');
         Route::post('/list', [App\Http\Controllers\DealsController::class, 'ajax_list'])->name('deals.list');
         Route::post('/product/list', [App\Http\Controllers\DealsController::class, 'product_list'])->name('deals.product-list'); 
@@ -138,58 +138,58 @@ Route::middleware([SetViewVariable::class, 'auth'])->group(function(){
 
     //Invoice route
     Route::prefix('invoices')->group(function () {
-        Route::get('/', [App\Http\Controllers\InvoiceController::class, 'index'])->name('invoices');
-        Route::post('/list', [App\Http\Controllers\InvoiceController::class, 'ajax_list'])->name('invoices.list');
-        Route::post('/view', [App\Http\Controllers\InvoiceController::class, 'view'])->name('invoices.view'); //set on modal
+        Route::get('/', [App\Http\Controllers\InvoiceController::class, 'index'])->name('invoices')->middleware('checkAccess:is_view');
+        Route::post('/list', [App\Http\Controllers\InvoiceController::class, 'ajax_list'])->name('invoices.list')->middleware('checkAccess:is_view');
+        Route::post('/view', [App\Http\Controllers\InvoiceController::class, 'view'])->name('invoices.view')->middleware('checkAccess:is_view'); //set on modal
     });
 
     //tasks route
     Route::prefix('tasks')->group(function () {
-        Route::get('/', [App\Http\Controllers\TaskController::class, 'index'])->name('tasks');
-        Route::post('/add', [App\Http\Controllers\TaskController::class, 'add_edit'])->name('tasks.add');
+        Route::get('/', [App\Http\Controllers\TaskController::class, 'index'])->name('tasks')->middleware('checkAccess:is_view');
+        Route::post('/add', [App\Http\Controllers\TaskController::class, 'add_edit'])->name('tasks.add')->middleware('checkAccess:is_edit');
         Route::post('/save', [App\Http\Controllers\TaskController::class, 'save'])->name('tasks.save');
-        Route::post('/view', [App\Http\Controllers\TaskController::class, 'view'])->name('tasks.view');
-        Route::post('/list', [App\Http\Controllers\TaskController::class, 'ajax_list'])->name('tasks.list');
+        Route::post('/view', [App\Http\Controllers\TaskController::class, 'view'])->name('tasks.view')->middleware('checkAccess:is_view');
+        Route::post('/list', [App\Http\Controllers\TaskController::class, 'ajax_list'])->name('tasks.list')->middleware('checkAccess:is_view');
         Route::post('/delete', [App\Http\Controllers\TaskController::class, 'delete'])->name('tasks.delete');
         Route::post('/status', [App\Http\Controllers\TaskController::class, 'change_status'])->name('tasks.status');
     });
 
     Route::prefix('organizations')->group(function () {
-        Route::get('/', [App\Http\Controllers\OrganizationController::class, 'index'])->name('organizations');
-        Route::post('/add', [App\Http\Controllers\OrganizationController::class, 'add_edit'])->name('organizations.add');
-        Route::post('/view', [App\Http\Controllers\OrganizationController::class, 'view'])->name('organizations.view');
+        Route::get('/', [App\Http\Controllers\OrganizationController::class, 'index'])->name('organizations')->middleware('checkAccess:is_view');
+        Route::post('/add', [App\Http\Controllers\OrganizationController::class, 'add_edit'])->name('organizations.add')->middleware('checkAccess:is_edit');
+        Route::post('/view', [App\Http\Controllers\OrganizationController::class, 'view'])->name('organizations.view')->middleware('checkAccess:is_view');
         Route::post('/save', [App\Http\Controllers\OrganizationController::class, 'save'])->name('organizations.save');
-        Route::post('/list', [App\Http\Controllers\OrganizationController::class, 'ajax_list'])->name('organizations.list');
-        Route::post('/delete', [App\Http\Controllers\OrganizationController::class, 'delete'])->name('organizations.delete');
+        Route::post('/list', [App\Http\Controllers\OrganizationController::class, 'ajax_list'])->name('organizations.list')->middleware('checkAccess:is_view');
+        Route::post('/delete', [App\Http\Controllers\OrganizationController::class, 'delete'])->name('organizations.delete')->middleware('checkAccess:is_delete');
         Route::post('/status', [App\Http\Controllers\OrganizationController::class, 'change_status'])->name('organizations.status');
     });
 
     Route::prefix('leadstage')->group(function () {
-        Route::get('/', [App\Http\Controllers\LeadTypeController::class, 'index'])->name('leadstage');
-        Route::post('/add', [App\Http\Controllers\LeadTypeController::class, 'add_edit'])->name('leadstage.add');
-        Route::post('/view', [App\Http\Controllers\LeadTypeController::class, 'view'])->name('leadstage.view');
+        Route::get('/', [App\Http\Controllers\LeadTypeController::class, 'index'])->name('leadstage')->middleware('checkAccess:is_view');
+        Route::post('/add', [App\Http\Controllers\LeadTypeController::class, 'add_edit'])->name('leadstage.add')->middleware('checkAccess:is_edit');
+        Route::post('/view', [App\Http\Controllers\LeadTypeController::class, 'view'])->name('leadstage.view')->middleware('checkAccess:is_view');
         Route::post('/save', [App\Http\Controllers\LeadTypeController::class, 'save'])->name('leadstage.save');
-        Route::post('/list', [App\Http\Controllers\LeadTypeController::class, 'ajax_list'])->name('leadstage.list');
-        Route::post('/delete', [App\Http\Controllers\LeadTypeController::class, 'delete'])->name('leadstage.delete');
+        Route::post('/list', [App\Http\Controllers\LeadTypeController::class, 'ajax_list'])->name('leadstage.list')->middleware('checkAccess:is_view');
+        Route::post('/delete', [App\Http\Controllers\LeadTypeController::class, 'delete'])->name('leadstage.delete')->middleware('checkAccess:is_delete');
         Route::post('/status', [App\Http\Controllers\LeadTypeController::class, 'change_status'])->name('leadstage.status');
     });
 
     Route::prefix('leadsource')->group(function () {
-        Route::any('', [App\Http\Controllers\LeadSourceController::class, 'index'])->name('leadsource');
-        Route::post('/add', [App\Http\Controllers\LeadSourceController::class, 'add_edit'])->name('leadsource.add');
-        Route::post('/view', [App\Http\Controllers\LeadSourceController::class, 'view'])->name('leadsource.view');
+        Route::any('', [App\Http\Controllers\LeadSourceController::class, 'index'])->name('leadsource')->middleware('checkAccess:is_view');
+        Route::post('/add', [App\Http\Controllers\LeadSourceController::class, 'add_edit'])->name('leadsource.add')->middleware('checkAccess:is_edit');
+        Route::post('/view', [App\Http\Controllers\LeadSourceController::class, 'view'])->name('leadsource.view')->middleware('checkAccess:is_view');
         Route::post('/save', [App\Http\Controllers\LeadSourceController::class, 'save'])->name('leadsource.save');
-        Route::post('/list', [App\Http\Controllers\LeadSourceController::class, 'ajax_list'])->name('leadsource.list');
-        Route::post('/delete', [App\Http\Controllers\LeadSourceController::class, 'delete'])->name('leadsource.delete');
+        Route::post('/list', [App\Http\Controllers\LeadSourceController::class, 'ajax_list'])->name('leadsource.list')->middleware('checkAccess:is_view');
+        Route::post('/delete', [App\Http\Controllers\LeadSourceController::class, 'delete'])->name('leadsource.delete')->middleware('checkAccess:is_delete');
         Route::post('/status', [App\Http\Controllers\LeadSourceController::class, 'change_status'])->name('leadsource.status');
     });
     Route::prefix('dealstages')->group(function () {
-        Route::get('/', [App\Http\Controllers\DealStageController::class, 'index'])->name('dealstages');
-        Route::post('/add', [App\Http\Controllers\DealStageController::class, 'add_edit'])->name('dealstages.add');
-        Route::post('/view', [App\Http\Controllers\DealStageController::class, 'view'])->name('dealstages.view');
+        Route::get('/', [App\Http\Controllers\DealStageController::class, 'index'])->name('dealstages')->middleware('checkAccess:is_view');
+        Route::post('/add', [App\Http\Controllers\DealStageController::class, 'add_edit'])->name('dealstages.add')->middleware('checkAccess:is_edit');
+        Route::post('/view', [App\Http\Controllers\DealStageController::class, 'view'])->name('dealstages.view')->middleware('checkAccess:is_view');
         Route::post('/save', [App\Http\Controllers\DealStageController::class, 'save'])->name('dealstages.save');
-        Route::post('/list', [App\Http\Controllers\DealStageController::class, 'ajax_list'])->name('dealstages.list');
-        Route::post('/delete', [App\Http\Controllers\DealStageController::class, 'delete'])->name('dealstages.delete');
+        Route::post('/list', [App\Http\Controllers\DealStageController::class, 'ajax_list'])->name('dealstages.list')->middleware('checkAccess:is_view');
+        Route::post('/delete', [App\Http\Controllers\DealStageController::class, 'delete'])->name('dealstages.delete')->middleware('checkAccess:is_delete');
         Route::post('/status', [App\Http\Controllers\DealStageController::class, 'change_status'])->name('dealstages.status');
     });
 

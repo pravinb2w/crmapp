@@ -19,12 +19,13 @@ class EnsureHasAccess
     public function handle(Request $request, Closure $next, $access )
     {
         $role_id = auth()->user()->role_id;
-      
+        $path_name = str_replace("/","",$request->route()->getAction()['prefix'] );
+        // dd( $path_name );
         if( $role_id ) {
             $info = DB::table('role_permissions')
-                    ->join('role_permission_menu', function ($join) {
+                    ->join('role_permission_menu', function ($join) use ($path_name) {
                         $join->on('role_permissions.id', '=', 'role_permission_menu.permission_id')
-                            ->where('role_permission_menu.menu', '=', 'products');
+                            ->where('role_permission_menu.menu', '=', $path_name);
                     })->where('role_permissions.role_id', $role_id)->first();
             if( isset($info) && !empty($info)) {
                 if( isset( $info->$access ) && $info->$access == 'on') {

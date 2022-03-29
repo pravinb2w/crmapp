@@ -3,13 +3,18 @@
 
 return [
 	'role_menu' => [
+        'account',
         'dashboard',
         'notes',
         'activities',
         'leads',
+        'leadsource',
+        'leadstage',
+        'dealstages',
         'deals',
         'tasks',
         'products',
+        'pages',
         'customers',
         'users',
         'invoices',
@@ -20,8 +25,6 @@ return [
         'reports',
         'master_data',
         'bulk_import',
-        'pages',
         'organizations',
-        'subscriptions'
     ]
 ];

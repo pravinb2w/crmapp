@@ -166,7 +166,7 @@
                                         <strong>Total</strong>
                                     </td>
                                     <td style="width: 50%;">
-                                        {{ $info->total }}
+                                       {{ $info->currency ?? '' }} {{ $info->total }}
                                     </td>
                                 </tr>
                             </table>

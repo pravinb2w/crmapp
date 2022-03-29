@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Builder;
 use OwenIt\Auditing\Contracts\Auditable;
+use Auth;
 
 class Note extends Model implements Auditable
 {
@@ -65,6 +66,14 @@ class Note extends Model implements Auditable
     public function user()
     {
         return $this->hasOne(User::class, 'id', 'user_id');
+    }
+
+    public function scopeRoledata( Builder $query ){
+        $role = Auth::user()->role_id;
+        if( !$role ) {
+            return $query;   
+        }
+        return $query->where('user_id', Auth::id())->orWhere('added_by', Auth::id());
     }
 
 }

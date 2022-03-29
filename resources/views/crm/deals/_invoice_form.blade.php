@@ -36,7 +36,14 @@
             </div>
             <div class="form-group d-flex mt-1">
                 <label for="" class="col-3">Currency</label>
-                <input type="text" name="currency" id="currency" class="form-control">
+                <select name="currency" id="currency" class="form-control" required>
+                    <option value="">--select--</option>
+                    @if( isset($country) && !empty($country))
+                        @foreach ($country as $item)
+                            <option value="{{ $item->currency }}">{{ $item->currency }}</option>
+                        @endforeach
+                    @endif
+                </select>
             </div>
         </div>
     </div>

@@ -1,3 +1,8 @@
+@php
+    $path_name = str_replace("/","",request()->route()->getAction()['prefix'] );
+    $path_name = (empty($path_name) ? request()->route()->uri : $path_name);
+@endphp
+@if(Auth::user()->hasAccess($path_name, 'is_edit')) 
 <div class="row mb-2">
     <div class="col-sm-5">
         @if( isset($btn_href ) && !empty($btn_href) ) 
@@ -14,3 +19,4 @@
         </div>
     </div><!-- end col-->
 </div>
+@endif

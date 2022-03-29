@@ -32,22 +32,22 @@ class NoteController extends Controller
         $dir                = $request->input( 'order' )[0][ 'dir' ];
         $search             = $request->input( 'search.value' );
        
-        $total_list         = Note::count();
+        $total_list         = Note::roledata()->count();
         // DB::enableQueryLog();
         if( $order != 'id') {
-            $list               = Note::skip($start)->take($limit)->orderBy($order, $dir)
+            $list               = Note::roledata()->skip($start)->take($limit)->orderBy($order, $dir)
                                 ->search( $search )
                                 ->get();
         } else {
-            $list               = Note::skip($start)->take($limit)->Latests()
+            $list               = Note::roledata()->skip($start)->take($limit)->Latests()
                                 ->search( $search )
                                 ->get();
         }
         // $query = DB::getQueryLog();
         if( empty( $request->input( 'search.value' ) ) ) {
-            $total_filtered = Note::count();
+            $total_filtered = Note::roledata()->count();
         } else {
-            $total_filtered = Note::search( $search )
+            $total_filtered = Note::roledata()->search( $search )
                                 ->count();
         }
         
@@ -60,17 +60,24 @@ class NoteController extends Controller
                 if( $notes->status == 1 ) {
                     $notes_status                     = '<div class="badge bg-success" role="button" onclick="change_status(\'notes\','.$notes->id.', 0)"> Active </div>';
                 }
-                $action = '
-                <a href="javascript:void(0);" class="action-icon" onclick="return view_modal(\'notes\', '.$notes->id.')"> <i class="mdi mdi-eye"></i></a>
-                <a href="javascript:void(0);" class="action-icon" onclick="return get_add_modal(\'notes\', '.$notes->id.')"> <i class="mdi mdi-square-edit-outline"></i></a>
-                <a href="javascript:void(0);" class="action-icon" onclick="return common_soft_delete(\'notes\', '.$notes->id.')"> <i class="mdi mdi-delete"></i></a>';
+                $action = '';
+                if(Auth::user()->hasAccess('notes', 'is_view')) {
+                    $action .= '<a href="javascript:void(0);" class="action-icon" onclick="return view_modal(\'notes\', '.$notes->id.')"> <i class="mdi mdi-eye"></i></a>';
+                }
+                if(Auth::user()->hasAccess('notes', 'is_edit')) {
+                    $action .= '<a href="javascript:void(0);" class="action-icon" onclick="return get_add_modal(\'notes\', '.$notes->id.')"> <i class="mdi mdi-square-edit-outline"></i></a>';
+                }
+                if(Auth::user()->hasAccess('notes', 'is_delete')) {
+                    $action .= '<a href="javascript:void(0);" class="action-icon" onclick="return common_soft_delete(\'notes\', '.$notes->id.')"> <i class="mdi mdi-delete"></i></a>';
+                }
 
                 $nested_data[ 'id' ]                = '<div class="form-check">
                     <input type="checkbox" class="form-check-input" id="customCheck2" value="'.$notes->id.'">
                     <label class="form-check-label" for="customCheck2">&nbsp;</label>
                 </div>';
                 $nested_data[ 'notes' ]             = ucwords($notes->notes);
-                $nested_data[ 'user' ]              = ucfirst($notes->user->name ?? '' );
+                $nested_data[ 'assigned_to' ]       = ucfirst($notes->user->name ?? '' );
+                $nested_data[ 'assigned_by' ]       = ucfirst($notes->added->name ?? '' );
                 $nested_data[ 'lead' ]              = $notes->lead->lead_subject ?? $notes->lead->lead_description ?? '';
                 $nested_data[ 'status' ]            = $notes_status;
                 $nested_data[ 'action' ]            = $action;
@@ -168,10 +175,17 @@ class NoteController extends Controller
     {
         $id = $request->id;
         $status = $request->status;
-        $role = Note::find($id);
-        $role->status = $status;
-        $role->update();
-        $update_msg = 'Updated successfully';
-        return response()->json(['error'=>[$update_msg], 'status' => '0']);
+        if(Auth::user()->hasAccess('notes', 'is_edit')) {
+            $role = Note::find($id);
+            $role->status = $status;
+            $role->update();
+            $update_msg = 'Updated successfully';
+            $status = '0';
+        } else {
+            $update_msg = 'You Do not have access to change status';
+            $status = '1';
+        }
+        
+        return response()->json(['error'=>$update_msg, 'status' => $status]);
     }
 }
