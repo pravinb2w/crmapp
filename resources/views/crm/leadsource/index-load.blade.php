@@ -15,7 +15,7 @@
                         <li class="breadcrumb-item active">Lead Source</li>
                     </ol>
                 </div>
-                <h4 class="page-title">Settings </h4>
+                <h4 class="page-title">Lead Source </h4>
             </div>
         </div>
     </div>     

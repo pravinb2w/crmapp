@@ -98,7 +98,7 @@ form#activites-form>div>label>i {
                         <li class="breadcrumb-item active">Deals</li>
                     </ol>
                 </div>
-                <h4 class="page-title">Overview deal </h4>
+                <h4 class="page-title">Overview Deal </h4>
             </div>
         </div>
     </div>  
@@ -110,6 +110,7 @@ form#activites-form>div>label>i {
     </div>
     <div class="card shadow-sm">
         <ul class="nav nav-pills bg-nav-pills nav-justified custom">
+            @if(Auth::user()->hasAccess('deals', 'is_edit') )
             <li class="nav-item">
                 <a href="#Notes" data-bs-toggle="tab" data-id="note" aria-expanded="false" class="nav-link rounded-0 active deal-tab">
                     <i class="uil uil-pen"></i>
@@ -136,6 +137,7 @@ form#activites-form>div>label>i {
                     <span>Invoices</span>
                 </a>
             </li>
+            @endif
             <li class="nav-item">
                 <a href="#History" data-bs-toggle="tab" data-id="history" aria-expanded="false" class="nav-link rounded-0 deal-tab">
                     <i class="uil uil-invoice"></i>
@@ -146,7 +148,9 @@ form#activites-form>div>label>i {
         
         <div class="tab-content p-3">
             <div class="tab-pane active" id="dealtab">
-                @include('crm.deals._note_form')
+                @if(Auth::user()->hasAccess('deals', 'is_edit') )
+                    @include('crm.deals._note_form')
+                @endif
             </div>
             <div class="loader"></div>
         </div>

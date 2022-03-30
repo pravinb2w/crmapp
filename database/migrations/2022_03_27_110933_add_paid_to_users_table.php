@@ -27,7 +27,8 @@ class AddPaidToUsersTable extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
-            //
+            $table->dropColumn('primary_color');
+            $table->dropColumn('secondary_color');
         });
     }
 }

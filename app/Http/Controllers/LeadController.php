@@ -69,10 +69,17 @@ class LeadController extends Controller
                     $leads_status                     = '<div class="badge bg-success" role="button" > Converted To Deal </div>';
 
                 }
-                $action = '<a href="'.route('leads.view',['id' => $leads->id]).'" class="action-icon"> <i class="mdi mdi-eye"></i></a>';
+                $action = '';
+                if(Auth::user()->hasAccess('leads', 'is_view')) {
+                    $action .= '<a href="'.route('leads.view',['id' => $leads->id]).'" class="action-icon"> <i class="mdi mdi-eye"></i></a>';
+                }
                 if( $leads->status != 2 ) {
-                    $action .= '<a href="javascript:void(0);" class="action-icon" onclick="return get_add_modal(\'leads\', '.$leads->id.')"> <i class="mdi mdi-square-edit-outline"></i></a>';
-                    $action .= '<a href="javascript:void(0);" class="action-icon" onclick="return common_soft_delete(\'leads\', '.$leads->id.')"> <i class="mdi mdi-delete"></i></a>';
+                    if(Auth::user()->hasAccess('leads', 'is_edit')) {
+                        $action .= '<a href="javascript:void(0);" class="action-icon" onclick="return get_add_modal(\'leads\', '.$leads->id.')"> <i class="mdi mdi-square-edit-outline"></i></a>';
+                    }
+                    if(Auth::user()->hasAccess('leads', 'is_delete')) {
+                        $action .= '<a href="javascript:void(0);" class="action-icon" onclick="return common_soft_delete(\'leads\', '.$leads->id.')"> <i class="mdi mdi-delete"></i></a>';
+                    }
                 }
 
                 $nested_data[ 'id' ]                = '<div class="form-check">
@@ -405,11 +412,17 @@ class LeadController extends Controller
         $id = $request->id;
         $status = $request->status;
         $ins['status'] = $status;
-        $leadtype = Lead::find($id);
-        $leadtype->status = $status;
-        $leadtype->update();
-        $update_msg = 'Updated successfully';
-        return response()->json(['error'=>[$update_msg], 'status' => '0']);
+        if(Auth::user()->hasAccess('leadsource', 'is_edit')) {
+            $leadtype = Lead::find($id);
+            $leadtype->status = $status;
+            $leadtype->update();
+            $update_msg = 'Updated successfully';
+            $status = '0';
+        } else {
+            $update_msg = 'You Do not have access to change status';
+            $status = '1';
+        }
+        return response()->json(['error'=>$update_msg, 'status' => $status]);
     }
 
     public function mark_as_done(Request $request) {

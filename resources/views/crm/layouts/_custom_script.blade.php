@@ -29,11 +29,20 @@ function make_stage_completed(stage_id, deal_id ){
                         $('.pipeline-loader').show();
                     },
                     success: function(response) {
-                        $('#pipline-view').html(response);
                         $('.pipeline-loader').hide();
+                        if( response.status == '1' ) {
+                            if( response.view){
+                                $('#pipline-view').html(response.view);
+                            }
+                            Swal.fire('Updated!', '', 'success')
+
+                        } else {
+                            Swal.fire(response.error, '', 'error');
+
+                        }   
+                        
                     }            
                 });
-                Swal.fire('Updated!', '', 'success')
             } 
         })
         return false;

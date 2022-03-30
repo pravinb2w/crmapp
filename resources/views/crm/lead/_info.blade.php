@@ -18,15 +18,21 @@
     <div class="col-md-6 mb-3">
         <div class="d-flex align-items-center justify-content-end">
             @if( isset( $info->status ) && $info->status != 2 )
+            @if(Auth::user()->hasAccess('leads', 'is_edit') || Auth::user()->hasAccess('leads', 'is_delete'))
             <div class="dropdown">
                 <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <i class="mdi mdi-dots-vertical"></i>
                 </button>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <a class="dropdown-item" href="#" onclick="return get_deal_modal('{{ $info->id }}')">Convert to Deal</a>
-                    <a class="dropdown-item" href="#" onclick="return common_soft_delete('lead_delete', '{{ $info->id }}')">Delete Lead</a>
+                    @if(Auth::user()->hasAccess('leads', 'is_edit'))
+                        <a class="dropdown-item" href="#" onclick="return get_deal_modal('{{ $info->id }}')">Convert to Deal</a>
+                    @endif
+                    @if(Auth::user()->hasAccess('leads', 'is_delete'))
+                        <a class="dropdown-item" href="#" onclick="return common_soft_delete('lead_delete', '{{ $info->id }}')">Delete Lead</a>
+                    @endif
                 </div>
             </div>
+            @endif
             @else 
             <div>
                 <button class="btn btn-success">Converted to Deal</button>

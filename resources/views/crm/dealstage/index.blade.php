@@ -15,7 +15,7 @@
                         <li class="breadcrumb-item active">Deal stages</li>
                     </ol>
                 </div>
-                <h4 class="page-title">Settings </h4>
+                <h4 class="page-title">Deal Stages </h4>
             </div>
         </div>
     </div>     

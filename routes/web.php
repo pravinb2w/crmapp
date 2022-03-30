@@ -127,7 +127,7 @@ Route::middleware([SetViewVariable::class, 'auth'])->group(function(){
         Route::post('/mark_as_done', [App\Http\Controllers\DealsController::class, 'mark_as_done'])->name('deals.mark_as_done');
         Route::post('/files/save', [App\Http\Controllers\DealsController::class, 'files_save'])->name('deals.save-files');
         Route::post('/stage/complete', [App\Http\Controllers\DealsController::class, 'make_stage_completed'])->name('deals.make_stage_completed');
-        Route::post('/finalize', [App\Http\Controllers\DealsController::class, 'deal_finalize'])->name('deals.finalize');
+        Route::post('/finalize', [App\Http\Controllers\DealsController::class, 'deal_finalize'])->name('deals.finalize')->middleware('checkAccess:is_edit');
         Route::post('/insert/invoice', [App\Http\Controllers\DealsController::class, 'insert_invoice'])->name('deals.save-invoice');
         Route::post('/get/items', [App\Http\Controllers\DealsController::class, 'invoice_product_list'])->name('invoices.add_items');
         Route::post('/invoice/unlink', [App\Http\Controllers\DealsController::class, 'unlink_invoice'])->name('deals.unlink');

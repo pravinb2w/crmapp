@@ -62,15 +62,21 @@
                     <button class="btn btn-sm" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <i class="mdi mdi-dots-vertical"></i>
                     </button>
+                    @if(Auth::user()->hasAccess('leads', 'is_edit') || Auth::user()->hasAccess('leads', 'is_delete'))
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        @if( $litem['activity_type'] != 'Notes')
-                        <a class="dropdown-item" href="javascript:;"  onclick="edit_activity('history','{{ $litem['id'] }}', '{{ $info->id }}')">Edit</a>
-                            @if( !$litem['done_by'])
-                                <a class="dropdown-item" href="javascript:;" onclick="mark_as_done('{{ $litem['id'] }}', '{{ $info->id }}')">Mark as Done</a>
+                        @if(Auth::user()->hasAccess('leads', 'is_edit') )
+                            @if( $litem['activity_type'] != 'Notes')
+                            <a class="dropdown-item" href="javascript:;"  onclick="edit_activity('history','{{ $litem['id'] }}', '{{ $info->id }}')">Edit</a>
+                                @if( !$litem['done_by'])
+                                    <a class="dropdown-item" href="javascript:;" onclick="mark_as_done('{{ $litem['id'] }}', '{{ $info->id }}')">Mark as Done</a>
+                                @endif
                             @endif
                         @endif
-                        <a class="dropdown-item" href="#"  onclick="change_activity_status('{{ $info->id ?? '' }}','{{ $litem['id'] ?? '' }}', '{{ $litem['activity_type'] ?? '' }}' )">Delete</a>
+                        @if(Auth::user()->hasAccess('leads', 'is_delete') )
+                            <a class="dropdown-item" href="#"  onclick="change_activity_status('{{ $info->id ?? '' }}','{{ $litem['id'] ?? '' }}', '{{ $litem['activity_type'] ?? '' }}' )">Delete</a>
+                        @endif
                     </div>
+                    @endif
                 </div> 
             </td>
         </tr>

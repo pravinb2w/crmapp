@@ -108,23 +108,33 @@
                         <i class="mdi mdi-dots-vertical"></i>
                     </button>
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        @if($litem['activity_type'] == 'invoice')
-                            @if( $litem['pending_at'] == null )
-                                <a class="dropdown-item" href="#"  onclick="submit_approve_invoice('{{ $info->id }}','{{ $litem['id'] }}', 'done')">
-                                    Submit for Approval 
-                                </a>
+                        @if(Auth::user()->hasAccess('deals', 'is_edit') ||  Auth::user()->hasAccess('deals', 'is_view')  )
+                            @if($litem['activity_type'] == 'invoice')
+                            @if(Auth::user()->hasAccess('deals', 'is_edit'))
+                                @if( $litem['pending_at'] == null )
+                                    <a class="dropdown-item" href="#"  onclick="submit_approve_invoice('{{ $info->id }}','{{ $litem['id'] }}', 'done')">
+                                        Submit for Approval 
+                                    </a>
+                                @endif
                             @endif
-                            <a class="dropdown-item" href="#"  onclick="unlink_invoice('{{ $info->id }}','{{ $litem['id'] }}', 'done')">Unlink from Deal</a>
-                            <a class="dropdown-item" target="_blank" href="{{ asset('invoice').'/'.$litem['invoice_no'].'.pdf' }}">Download Pdf</a>
+                                @if(Auth::user()->hasAccess('deals', 'is_edit') )
+                                <a class="dropdown-item" href="#"  onclick="unlink_invoice('{{ $info->id }}','{{ $litem['id'] }}', 'done')">Unlink from Deal</a>
+                                @endif
+                                @if(Auth::user()->hasAccess('deals', 'is_view') )
+                                <a class="dropdown-item" target="_blank" href="{{ asset('invoice').'/'.$litem['invoice_no'].'.pdf' }}">Download Pdf</a>
+                                @endif
 
-                        @elseif( $litem['activity_type'] != 'Notes' && $litem['activity_type'] != 'files' )
-                        <a class="dropdown-item" href="javascript:;"  onclick="edit_activity('history','{{ $litem['id'] }}', '','{{ $info->id }}')">Edit</a>
-                            @if( isset($litem['done_by'])&& empty($litem['done_by']))
-                                <a class="dropdown-item" href="javascript:;" onclick="mark_as_done('{{ $litem['id'] }}', '{{ $info->id }}', 'deal')">Mark as Done</a>
+                            @elseif( $litem['activity_type'] != 'Notes' && $litem['activity_type'] != 'files' )
+                            <a class="dropdown-item" href="javascript:;"  onclick="edit_activity('history','{{ $litem['id'] }}', '','{{ $info->id }}')">Edit</a>
+                                @if( isset($litem['done_by'])&& empty($litem['done_by']))
+                                    <a class="dropdown-item" href="javascript:;" onclick="mark_as_done('{{ $litem['id'] }}', '{{ $info->id }}', 'deal')">Mark as Done</a>
+                                @endif
                             @endif
                         @endif
-                        @if($litem['activity_type'] != 'invoice')
-                        <a class="dropdown-item" href="#"  onclick="change_activity_status('{{ $info->id ?? '' }}','{{ $litem['id'] ?? '' }}', '{{ $litem['activity_type'] ?? '' }}' )">Delete</a>
+                        @if(Auth::user()->hasAccess('deals', 'is_delete') )
+                            @if($litem['activity_type'] != 'invoice')
+                            <a class="dropdown-item" href="#"  onclick="change_activity_status('{{ $info->id ?? '' }}','{{ $litem['id'] ?? '' }}', '{{ $litem['activity_type'] ?? '' }}' )">Delete</a>
+                            @endif
                         @endif
                     </div>
                 </div> 

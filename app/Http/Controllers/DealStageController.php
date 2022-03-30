@@ -57,10 +57,16 @@ class DealStageController extends Controller
                 if( $dealstages->status == 1 ) {
                     $dealstages_status                     = '<div class="badge bg-success" role="button" onclick="change_status(\'dealstages\','.$dealstages->id.', 0)"> Active </div>';
                 }
-                $action = '
-                <a href="javascript:void(0);" class="action-icon" onclick="return view_modal(\'dealstages\', '.$dealstages->id.')"> <i class="mdi mdi-eye"></i></a>
-                <a href="javascript:void(0);" class="action-icon" onclick="return get_add_modal(\'dealstages\', '.$dealstages->id.')"> <i class="mdi mdi-square-edit-outline"></i></a>
-                <a href="javascript:void(0);" class="action-icon" onclick="return common_soft_delete(\'dealstages\', '.$dealstages->id.')"> <i class="mdi mdi-delete"></i></a>';
+                $action = '';
+                if(Auth::user()->hasAccess('dealstages', 'is_view')) {
+                    $action .= '<a href="javascript:void(0);" class="action-icon" onclick="return view_modal(\'dealstages\', '.$dealstages->id.')"> <i class="mdi mdi-eye"></i></a>';
+                }
+                if(Auth::user()->hasAccess('dealstages', 'is_edit')) {
+                    $action .= '<a href="javascript:void(0);" class="action-icon" onclick="return get_add_modal(\'dealstages\', '.$dealstages->id.')"> <i class="mdi mdi-square-edit-outline"></i></a>';
+                }
+                if(Auth::user()->hasAccess('dealstages', 'is_delete')) {
+                    $action .= '<a href="javascript:void(0);" class="action-icon" onclick="return common_soft_delete(\'dealstages\', '.$dealstages->id.')"> <i class="mdi mdi-delete"></i></a>';
+                }
 
                 $nested_data[ 'id' ]                = '<div class="form-check">
                     <input type="checkbox" class="form-check-input" id="customCheck2" value="'.$dealstages->id.'">
@@ -166,10 +172,17 @@ class DealStageController extends Controller
     {
         $id = $request->id;
         $status = $request->status;
-        $deal = DealStage::find($id);
-        $deal->status = $status;
-        $deal->update();
-        $update_msg = 'Updated successfully';
-        return response()->json(['error'=>[$update_msg], 'status' => '0']);
+        if(Auth::user()->hasAccess('dealstages', 'is_edit')) {
+            $deal = DealStage::find($id);
+            $deal->status = $status;
+            $deal->update();
+            $update_msg = 'Updated successfully';
+            $status = '0';
+        } else {
+            $update_msg = 'You Do not have access to change status';
+            $status = '1';
+        }
+        
+        return response()->json(['error'=>$update_msg, 'status' => $status]);
     }
 }

@@ -112,22 +112,27 @@ form#activites-form>div>label>i {
                                 </div>
                             </div>
                         </div>
-                        @if( isset( $info->status ) && $info->status != 2 )
                         <div class="col-12"> 
                             <div class="card shadow-sm">
                                 <ul class="nav nav-pills bg-nav-pills nav-justified custom">
-                                    <li class="nav-item">
-                                        <a href="#Notes" data-bs-toggle="tab" data-id="note" aria-expanded="false" class="nav-link rounded-0 active lead-tab">
-                                            <i class="uil uil-pen"></i>
-                                            <span>Notes</span>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="#Activity" data-bs-toggle="tab" data-id="activity" aria-expanded="true" class="nav-link rounded-0 lead-tab">
-                                            <i class="uil uil-user"></i>
-                                            <span >Activity</span>
-                                        </a>
-                                    </li>  
+                                    @if( isset( $info->status ) && $info->status != 2 )
+
+                                        @if(Auth::user()->hasAccess('leads', 'is_edit'))
+                                        <li class="nav-item">
+                                            <a href="#Notes" data-bs-toggle="tab" data-id="note" aria-expanded="false" class="nav-link rounded-0 active lead-tab">
+                                                <i class="uil uil-pen"></i>
+                                                <span>Notes</span>
+                                            </a>
+                                        </li>
+
+                                        <li class="nav-item">
+                                            <a href="#Activity" data-bs-toggle="tab" data-id="activity" aria-expanded="true" class="nav-link rounded-0 lead-tab">
+                                                <i class="uil uil-user"></i>
+                                                <span >Activity</span>
+                                            </a>
+                                        </li>  
+                                        @endif
+                                    @endif
                                     <li class="nav-item">
                                         <a href="#History" data-bs-toggle="tab" data-id="history" aria-expanded="true" class="nav-link rounded-0 lead-tab">
                                             <i class="uil uil-envelope-alt"></i>
@@ -137,13 +142,14 @@ form#activites-form>div>label>i {
                                 </ul>
                                 <div class="tab-content p-3">
                                     <div class="tab-pane active" id="leadstab" >
+                                        @if(Auth::user()->hasAccess('leads', 'is_edit'))
                                         @include('crm.lead._note_form')
+                                        @endif
                                     </div>
                                     <div class="loader"></div>
                                 </div>
                             </div>
                         </div> 
-                        @endif 
                     </div>
                 </div>  <!-- end card-body -->
             </div>  <!-- end card -->

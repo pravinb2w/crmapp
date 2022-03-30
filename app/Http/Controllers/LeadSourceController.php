@@ -66,10 +66,16 @@ class LeadSourceController extends Controller
                 if( $leadsource->status == 1 ) {
                     $leadsource_status                     = '<div class="badge bg-success" role="button" onclick="change_status(\'leadsource\','.$leadsource->id.', 0)"> Active </div>';
                 }
-                $action = '
-                <a href="javascript:void(0);" class="action-icon" onclick="return view_modal(\'leadsource\', '.$leadsource->id.')"> <i class="mdi mdi-eye"></i></a>
-                <a href="javascript:void(0);" class="action-icon" onclick="return get_add_modal(\'leadsource\', '.$leadsource->id.')"> <i class="mdi mdi-square-edit-outline"></i></a>
-                <a href="javascript:void(0);" class="action-icon" onclick="return common_soft_delete(\'leadsource\', '.$leadsource->id.')"> <i class="mdi mdi-delete"></i></a>';
+                $action = '';
+                if(Auth::user()->hasAccess('leadsource', 'is_view')) {
+                    $action = '<a href="javascript:void(0);" class="action-icon" onclick="return view_modal(\'leadsource\', '.$leadsource->id.')"> <i class="mdi mdi-eye"></i></a>';
+                }
+                if(Auth::user()->hasAccess('leadsource', 'is_edit')) {
+                    $action .= '<a href="javascript:void(0);" class="action-icon" onclick="return get_add_modal(\'leadsource\', '.$leadsource->id.')"> <i class="mdi mdi-square-edit-outline"></i></a>';
+                }
+                if(Auth::user()->hasAccess('leadsource', 'is_delete')) {
+                    $action .= '<a href="javascript:void(0);" class="action-icon" onclick="return common_soft_delete(\'leadsource\', '.$leadsource->id.')"> <i class="mdi mdi-delete"></i></a>';
+                }
 
                 $nested_data[ 'id' ]                = '<div class="form-check">
                     <input type="checkbox" class="form-check-input" id="customCheck2" value="'.$leadsource->id.'">
@@ -172,10 +178,17 @@ class LeadSourceController extends Controller
         $id = $request->id;
         $status = $request->status;
         $ins['status'] = $status;
-        $lead = LeadSource::find($id);
-        $lead->status = $status;
-        $lead->update();
-        $update_msg = 'Updated successfully';
-        return response()->json(['error'=>[$update_msg], 'status' => '0']);
+        if(Auth::user()->hasAccess('leadsource', 'is_edit')) {
+            $lead = LeadSource::find($id);
+            $lead->status = $status;
+            $lead->update();
+            $update_msg = 'Updated successfully';
+            $status = '0';
+        } else {
+            $update_msg = 'You Do not have access to change status';
+            $status = '1';
+        }
+        
+        return response()->json(['error'=> $update_msg, 'status' => $status]);
     }
 }

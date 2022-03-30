@@ -73,9 +73,16 @@ class DealsController extends Controller
                 if( $deals->status == 1 ) {
                     $deals_status                     = '<div class="badge bg-success" role="button" onclick="change_status(\'deals\','.$deals->id.', 0)"> Active </div>';
                 }
-                $action = '<a href="'.route('deals.view',['id' => $deals->id]).'" class="action-icon"> <i class="mdi mdi-eye"></i></a>
-                <a href="javascript:void(0);" class="action-icon" onclick="return get_add_modal(\'deals\', '.$deals->id.')"> <i class="mdi mdi-square-edit-outline"></i></a>
-                <a href="javascript:void(0);" class="action-icon" onclick="return common_soft_delete(\'deals\', '.$deals->id.')"> <i class="mdi mdi-delete"></i></a>';
+                $action = '';
+                if(Auth::user()->hasAccess('deals', 'is_view')) {
+                    $action .= '<a href="'.route('deals.view',['id' => $deals->id]).'" class="action-icon"> <i class="mdi mdi-eye"></i></a>';   
+                }
+                if(Auth::user()->hasAccess('deals', 'is_edit')) {
+                    $action .= '<a href="javascript:void(0);" class="action-icon" onclick="return get_add_modal(\'deals\', '.$deals->id.')"> <i class="mdi mdi-square-edit-outline"></i></a>';
+                }
+                if(Auth::user()->hasAccess('deals', 'is_delete')) {
+                    $action .= '<a href="javascript:void(0);" class="action-icon" onclick="return common_soft_delete(\'deals\', '.$deals->id.')"> <i class="mdi mdi-delete"></i></a>';
+                }
 
                 $nested_data[ 'id' ]                = '<div class="form-check">
                     <input type="checkbox" class="form-check-input" id="customCheck2" value="'.$deals->id.'">
@@ -287,11 +294,18 @@ class DealsController extends Controller
         $id = $request->id;
         $status = $request->status;
         $ins['status'] = $status;
-        $leadtype = Deal::find($id);
-        $leadtype->status = $status;
-        $leadtype->update();
-        $update_msg = 'Updated successfully';
-        return response()->json(['error'=>[$update_msg], 'status' => '0']);
+        if(Auth::user()->hasAccess('deals', 'is_edit')) {
+            $leadtype = Deal::find($id);
+            $leadtype->status = $status;
+            $leadtype->update();
+            $update_msg = 'Updated successfully';
+            $status = '0';
+        } else {
+            $update_msg = 'You Do not have access to change status';
+            $status = '1';
+        }
+        
+        return response()->json(['error'=>$update_msg, 'status' => $status]);
     }
 
     public function refresh_timeline(Request $request) {
@@ -439,49 +453,59 @@ class DealsController extends Controller
         $deal_info  = Deal::find( $deal_id );
         $deal_stage_info = DealStage::find($deal_info->current_stage_id);
         $new_stage_info = DealStage::find($stage_id);
+        if(Auth::user()->hasAccess('deals', 'is_edit')) {
+            $status = '1';
 
-        $stage = DealStage::orderBy('order_by', 'asc')->get();
-        $all_stages = DealStage::where('order_by', '>', $deal_stage_info->order_by )->where('order_by', '<=', $new_stage_info->order_by )->orderBy('order_by', 'asc')->get();
-        // 
-        //condition 1 -> change current stage to completed from pending
-        $pipe = DealPipline::where('deal_id', $deal_id)->where('status', 'pending')->first();
-        $pipe->status = 'completed';
-        $pipe->completed_at = date('Y-m-d H:i:s');
-        $pipe->update();
+            $stage = DealStage::orderBy('order_by', 'asc')->get();
+            $all_stages = DealStage::where('order_by', '>', $deal_stage_info->order_by )->where('order_by', '<=', $new_stage_info->order_by )->orderBy('order_by', 'asc')->get();
+            // 
+            //condition 1 -> change current stage to completed from pending
+            $pipe = DealPipline::where('deal_id', $deal_id)->where('status', 'pending')->first();
+            $pipe->status = 'completed';
+            $pipe->completed_at = date('Y-m-d H:i:s');
+            $pipe->update();
 
-        $deal_info->current_stage_id = $stage_id;
-        $deal_info->update();
-        //condition 2 -> 
-        //insert in pipeline
-        if( isset($all_stages) && !empty($all_stages)) {
-            foreach ($all_stages as $key => $value) {
-                $status                 = 'completed';
-                $completed_at           = date('Y-m-d H:i:s');
-                if( $value->id == $stage_id ) {
-                    $status             = 'pending';
-                    $completed_at       = null;
+            $deal_info->current_stage_id = $stage_id;
+            $deal_info->update();
+            //condition 2 -> 
+            //insert in pipeline
+            if( isset($all_stages) && !empty($all_stages)) {
+                foreach ($all_stages as $key => $value) {
+                    $status                 = 'completed';
+                    $completed_at           = date('Y-m-d H:i:s');
+                    if( $value->id == $stage_id ) {
+                        $status             = 'pending';
+                        $completed_at       = null;
+                    }
+                    $sins                   = [];
+                    $sins['deal_id']        = $deal_id;
+                    $sins['stage_id']       = $value->id;
+                    $sins['status']         = $status;
+                    $sins['completed_at']   = $completed_at;
+                    $sins['added_by']       = Auth::id();
+                    DealPipline::create($sins);
                 }
-                $sins                   = [];
-                $sins['deal_id']        = $deal_id;
-                $sins['stage_id']       = $value->id;
-                $sins['status']         = $status;
-                $sins['completed_at']   = $completed_at;
-                $sins['added_by']       = Auth::id();
-                DealPipline::create($sins);
             }
-        }
 
-        $info = Deal::find( $deal_id );
-        $completed_stage = [];
-        $pipeline = [];
-        if( isset( $info->pipeline ) && !empty($info->pipeline ) ) {
-            foreach ($info->pipeline as $key => $value) {
-                $completed_stage[] = $value->stage_id;
-                $pipeline[] = array( 'id' => $value->id, 'stage_id' => $value->stage_id, 'completed_at' => $value->completed_at, 'created_at' => $value->created_at);
+            $info = Deal::find( $deal_id );
+            $completed_stage = [];
+            $pipeline = [];
+            if( isset( $info->pipeline ) && !empty($info->pipeline ) ) {
+                foreach ($info->pipeline as $key => $value) {
+                    $completed_stage[] = $value->stage_id;
+                    $pipeline[] = array( 'id' => $value->id, 'stage_id' => $value->stage_id, 'completed_at' => $value->completed_at, 'created_at' => $value->created_at);
+                }
             }
+            $view = view('crm.deals._pipeline_view', ['info' => $info, 'stage' => $stage, 
+                            'completed_stage' => $completed_stage, 'pipeline' => $pipeline, 'id' => $deal_id]);
+        } else {
+            $status = '0';
+            $error = 'You Do not have access to change status';
+            $view = '';
         }
-        return view('crm.deals._pipeline_view', ['info' => $info, 'stage' => $stage, 
-                        'completed_stage' => $completed_stage, 'pipeline' => $pipeline, 'id' => $deal_id]);
+        
+        return response()->json(['error'=> $error, 'status' => $status, 'view' => $view]);
+
         
     }
 
