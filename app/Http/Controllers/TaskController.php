@@ -56,12 +56,14 @@ class TaskController extends Controller
         if( $list ) {
             $i=1;
             foreach( $list as $tasks ) {
+                $comp = '&emsp;<span class="badge bg-warning" role="button" onclick="return complete_task('.$tasks->id.')"> Click To Complete</span>';
+
                 $tasks_status                         = '<div class="badge bg-danger" role="button" onclick="change_status(\'tasks\','.$tasks->id.', 1)"> Inactive </div>';
                 if( $tasks->status == 1 ) {
                     $tasks_status                     = '<div class="badge bg-success" role="button" onclick="change_status(\'tasks\','.$tasks->id.', 0)"> Active </div>';
                 } else if( $tasks->status == 2) {
-                    $tasks_status                     = '<div class="badge bg-primary" role="button" > Done </div>';
-
+                    $tasks_status                     = '<div class="badge bg-primary" role="button" > Completed </div>';
+                    $comp = '';
                 }
                 $action = '';
                 if(Auth::user()->hasAccess('tasks', 'is_view')) {
@@ -78,10 +80,12 @@ class TaskController extends Controller
                     <input type="checkbox" class="form-check-input" id="customCheck2" value="'.$tasks->id.'">
                     <label class="form-check-label" for="customCheck2">&nbsp;</label>
                 </div>';
+
+
                 $nested_data[ 'task_name' ]         = $tasks->task_name;
                 $nested_data[ 'assigned_to' ]       = $tasks->assigned->name ?? '';
                 $nested_data[ 'assigned_by' ]       = $tasks->added->name ?? '';
-                $nested_data[ 'assigned_date' ]     = date('d-m-Y H:i A', strtotime($tasks->created_at ) ) ?? '';
+                $nested_data[ 'assigned_date' ]     = (date('d-m-Y H:i A', strtotime($tasks->created_at ) ) ?? '' ).' '.$comp;
                 $nested_data[ 'status' ]            = $tasks_status;
                 $nested_data[ 'action' ]            = $action;
                 $data[]                             = $nested_data;
@@ -175,6 +179,23 @@ class TaskController extends Controller
     {
         $id = $request->id;
         $status = $request->status;
+        if(Auth::user()->hasAccess('tasks', 'is_edit')) {
+
+            $page = Task::find($id);
+            $page->status = $status;
+            $page->update();
+            $update_msg = 'Updated successfully';
+            $status = '0';
+        } else {
+            $update_msg = 'You Do not have access to change status';
+            $status = '1';
+        }
+        return response()->json(['error'=> $update_msg, 'status' => $status]);
+    }
+
+    public function complete_task(Request $request) {
+        $id = $request->id;
+        $status = 2;
         if(Auth::user()->hasAccess('tasks', 'is_edit')) {
 
             $page = Task::find($id);

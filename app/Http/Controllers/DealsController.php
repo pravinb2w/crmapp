@@ -713,7 +713,7 @@ class DealsController extends Controller
     }
 
     public function make_stage_completed_pipline(Request $request) {
-        $stage   = $request->stage;
+        $stage      = $request->stage;
         $deal_id    = $request->deal_id;
 
         $deal_info  = Deal::find( $deal_id );
@@ -766,7 +766,6 @@ class DealsController extends Controller
             $status = '0';
             $error = 'You Do not have access to change status';
         }
-        
         return response()->json(['error'=> $error, 'status' => $status]);
     }
 

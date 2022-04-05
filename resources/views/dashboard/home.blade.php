@@ -62,7 +62,7 @@
             <div class="card shadow-sm" style="background:linear-gradient(-30deg, #6AD5E6,#B1ECEC)">
                 <div class="card-body p-2 d-flex flex-x"> 
                     <div>
-                        <h3 class="mt-0">254</h3> 
+                        <h3 class="mt-0">{{ $open_task ?? 0 }}</h3> 
                         <h5 class="m-0 text-dark" title="Total Tasks">Open Tasks</h5>
                     </div>
                     <div>
@@ -75,7 +75,7 @@
             <div class="card shadow-sm" style="background:linear-gradient(-30deg, #6AD5E6,#B1ECEC)">
                 <div class="card-body p-2 d-flex flex-x"> 
                     <div>
-                        <h3 class="mt-0">254</h3> 
+                        <h3 class="mt-0">{{ $today_count ?? 0 }}</h3> 
                         <h5 class="m-0 text-dark" title="Total Tasks">Today Tasks</h5>
                     </div>
                     <div>
@@ -88,7 +88,7 @@
             <div class="card shadow-sm" style="background:linear-gradient(-30deg, #6AD5E6,#B1ECEC)">
                 <div class="card-body p-2 d-flex flex-x"> 
                     <div>
-                        <h3 class="mt-0">254</h3> 
+                        <h3 class="mt-0">{{ $closed_count ?? '' }}</h3> 
                         <h5 class="m-0 text-dark" title="Total Tasks">Closed Tasks</h5>
                     </div>
                     <div>
@@ -101,7 +101,7 @@
             <div class="card shadow-sm" style="background:linear-gradient(-30deg, #6AD5E6,#B1ECEC)">
                 <div class="card-body p-2 d-flex flex-x"> 
                     <div>
-                        <h3 class="mt-0">254</h3> 
+                        <h3 class="mt-0">{{ $planned_count ?? 0 }}</h3> 
                         <h5 class="m-0 text-dark" title="Total Tasks">Planed Tasks</h5>
                     </div>
                     <div>
@@ -185,6 +185,13 @@
         </div>
     </div>    
 </div> 
+@php
+
+    $enc = json_encode($close_week);
+
+    $done = json_encode($planned_done);
+
+@endphp
 @endsection
 
 @section('add_on_script')
@@ -192,15 +199,73 @@
     <script src="{{ asset('assets/js/ui/component.dragula.js') }}"></script>
 
     <!-- third party:js -->
-    <script src="assets/js/vendor/apexcharts.min.js"></script>
+    <script src="{{ asset('assets/js/vendor/apexcharts.min.js') }}"></script>
     <!-- third party end -->
     <!-- demo:js -->
     <script>
+        var cweek = '<?= $enc ?>';
+        var cdone = '<?= $done ?>';
+        cweek = JSON.parse(cweek);
+        cdone = JSON.parse(cdone);
         var colors=["#727cf5","#0acf97","#fa5c7c"],dataColors=$("#basic-column").data("colors");
         dataColors&&(colors=dataColors.split(","));
-        var options={chart:{height:250,type:"bar",toolbar:{show:!1}},plotOptions:{bar:{horizontal:!1,endingShape:"rounded",columnWidth:"55%"}},dataLabels:{enabled:!1},stroke:{show:!0,width:2,colors:["transparent"]},colors:colors,series:[{name:"Tasks",data:[44,55,57,56,61,58,63,60,66]},{name:"Leads",data:[76,85,101,98,87,105,91,114,94]},{name:"Deals",data:[35,41,36,26,45,48,52,53,41]}],xaxis:{categories:["Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct"]},legend:{offsetY:7},yaxis:{title:{text:"Count"}},fill:{opacity:1},grid:{row:{colors:["transparent","transparent"],opacity:.2},borderColor:"#f1f3fa",padding:{bottom:5}},tooltip:{y:{formatter:function(o){return"$ "+o+" thousands"}}}},chart=new ApexCharts(document.querySelector("#basic-column"),options);
+        var options={
+            chart:{height:250,type:"bar",toolbar:{show:!1}},
+            plotOptions:{bar:{horizontal:!1,endingShape:"rounded",columnWidth:"55%"}},
+            dataLabels:{enabled:!1},
+            stroke:{show:!0,width:2,colors:["transparent"]},
+            colors:colors,
+            series:[
+                {name:"Tasks",data:cweek.task},
+                {name:"Leads",data:cweek.lead},
+                {name:"Deals",data:cweek.deal}
+            ],
+            xaxis:{
+                categories:cweek.month
+            },
+            legend:{offsetY:7},
+            yaxis:{title:{text:"Count"}},
+            fill:{opacity:1},
+            grid:{
+                row:{
+                    colors:["transparent","transparent"],opacity:.2
+                },
+                borderColor:"#f1f3fa",padding:{bottom:5}
+            },
+            tooltip:{
+                y:{formatter:function(o){return"$ "+o+" thousands"}}
+            }
+        },
+        chart=new ApexCharts(document.querySelector("#basic-column"),options);
         chart.render();
-    
+    // 
+    $('#close_week_type').change(function(){
+        var close_week_type = $('#close_week_type').val();
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        $.ajax({
+            url: "{{ route('get-closeweek-data') }}",
+            method:'POST',
+            data: { close_week_type:close_week_type},
+            success:function(response){
+                console.log( response.lead );
+                chart.updateSeries([{
+                    name: 'Tasks',
+                    data: response.task
+                },{
+                    name: 'Leads',
+                    data: response.lead
+                },{
+                    name: 'Deals',
+                    data: response.deal
+                } 
+            ])
+            }      
+        });
+    });
 
     !function(o){"use strict";
     function e(){this.$body=o("body"),this.charts=[]}e.prototype.initCharts=function(){window.Apex={chart:{parentHeightOffset:0,toolbar:{show:!1}},grid:{padding:{left:0,right:0}},colors:["#727cf5","#0acf97","#fa5c7c","#ffbc00"]};
@@ -215,16 +280,18 @@
         plotOptions:{bar:{horizontal:!1,columnWidth:"20%"}},
         dataLabels:{enabled:!1},
         stroke:{show:!0,width:2,colors:["transparent"]},
-        series:[{name:"Done",data:[65,59,80,81,56,89,40,32,65,59,80,81]},{name:"Planned",data:[89,40,32,65,59,80,81,56,89,40,65,59]}],
+        series:[
+            {name:"Done",data:cdone.done},
+            {name:"Planned",data:cdone.planned}],
         zoom:{enabled:!1},
         legend:{show:!1},
         colors:e,
-        xaxis:{categories:["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],axisBorder:{show:!1}},
+        xaxis:{categories:cdone.month,axisBorder:{show:!1}},
         yaxis:{labels:{formatter:function(e){return e+"k"},offsetX:-15}},
         fill:{opacity:1},
         tooltip:{y:{formatter:function(e){return"$"+e+"k"}}}
     };
-    new ApexCharts(document.querySelector("#high-performing-product"),r).render();
+    chart1 = new ApexCharts(document.querySelector("#high-performing-product"),r).render();
     
     },e.prototype.init=function(){o("#dash-daterange").daterangepicker({singleDatePicker:!0}),this.initCharts(),this.initMaps()},o.Dashboard=new e,o.Dashboard.Constructor=e
 }
@@ -233,18 +300,38 @@
     t(document).ready(function(e){t.Dashboard.init()})
 }(window.jQuery);
 
+$('#from_type').change(function(){
+    var from_type = $('#from_type').val();
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+    $.ajax({
+        url: "{{ route('get-planned-data') }}",
+        method:'POST',
+        data: { from_type:from_type},
+        success:function(response){
+            console.log( response.done );
+            chart1.updateSeries([{
+                name: 'Done',
+                data: response.done
+            },{
+                name: 'Planned',
+                data: response.planned
+            }
+        ])
+        }      
+    });
+});
+
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script>
-   function allowDrop(ev) {
-  ev.preventDefault();
-}
-
-function drag(ev) {
-  alert('stete');
-}
-
+    function allowDrop(ev) {
+        ev.preventDefault();
+    }
 </script>
 <script>
     //   Deals Started

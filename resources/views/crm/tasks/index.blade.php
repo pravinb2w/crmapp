@@ -12,10 +12,10 @@
                     <ol class="breadcrumb m-0">
                         <li class="breadcrumb-item"><a href="javascript: void(0);">CRM</a></li>
                         <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
-                        <li class="breadcrumb-item active">Page Type</li>
+                        <li class="breadcrumb-item active">Tasks</li>
                     </ol>
                 </div>
-                <h4 class="page-title">Settings </h4>
+                <h4 class="page-title">Tasks </h4>
             </div>
         </div>
     </div>     
@@ -95,6 +95,43 @@
     function ReloadDataTableModal(id) {
         var roletable = $('#'+id).DataTable();
         roletable.ajax.reload();
+    }
+
+    function complete_task(task_id) {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: 'You are trying to complete the task',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, do it!'
+            }).then((result) => {
+                /* Read more about isConfirmed, isDenied below */
+                if (result.isConfirmed) {
+                    var ajax_url = "{{ route('tasks.complete') }}";
+                    $.ajaxSetup({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        }
+                    });
+                    $.ajax({
+                        url: ajax_url,
+                        method:'POST',
+                        data: { id:task_id},
+                        success:function(response){
+                            if(response.error.length > 0 && response.status == "1" ) {
+                                Swal.fire( response.error, '', 'error')
+                            } else {
+                                Swal.fire('Updated!', '', 'success')
+                                ReloadDataTableModal('tasks-datatable');
+                            }
+                        }      
+                    });
+                   
+                } 
+            })
+            return false;
     }
 
     </script>

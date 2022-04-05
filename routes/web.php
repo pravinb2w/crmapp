@@ -25,6 +25,8 @@ Auth::routes();
 Route::middleware([SetViewVariable::class, 'auth'])->group(function(){
     
     Route::get('/dashboard', [App\Http\Controllers\HomeController::class, 'index'])->name('dashboard');
+    Route::post('/get/closeweek/data', [App\Http\Controllers\HomeController::class, 'close_week'])->name('get-closeweek-data');
+    Route::post('/get/planned/data', [App\Http\Controllers\HomeController::class, 'get_done_planed'])->name('get-planned-data');
     Route::get('/deals-dashboard', [App\Http\Controllers\HomeController::class, 'dealsIndex'])->name('deals-dashboard');
     Route::get('/deals-pipelines', [App\Http\Controllers\HomeController::class, 'dealsPipeline'])->name('deals-pipeline');
 
@@ -155,6 +157,7 @@ Route::middleware([SetViewVariable::class, 'auth'])->group(function(){
         Route::post('/list', [App\Http\Controllers\TaskController::class, 'ajax_list'])->name('tasks.list')->middleware('checkAccess:is_view');
         Route::post('/delete', [App\Http\Controllers\TaskController::class, 'delete'])->name('tasks.delete');
         Route::post('/status', [App\Http\Controllers\TaskController::class, 'change_status'])->name('tasks.status');
+        Route::post('/complete/status', [App\Http\Controllers\TaskController::class, 'complete_task'])->name('tasks.complete');
     });
 
     Route::prefix('organizations')->group(function () {

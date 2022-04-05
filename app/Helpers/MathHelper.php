@@ -38,3 +38,12 @@ function AmountInWords(float $amount)
         " . $change_words[$amount_after_decimal % 10]) . ' Paise' : '';
         return ($implode_to_Rupees ? $implode_to_Rupees . 'Rupees ' : '') . $get_paise;
     }
+
+    function lastYearByMonth() {
+        $months[date('M y')] = date("Y-m-01", strtotime( date( 'Y-m-01' )));
+        for ($i = 1; $i < 12; $i++) {
+            $dat = date("Y-m-01", strtotime( date( 'Y-m-01' )." -$i months"));
+            $months[date('M y', strtotime($dat))] = $dat;
+        }
+        return $months;
+    }
