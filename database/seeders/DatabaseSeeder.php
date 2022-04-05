@@ -23,6 +23,7 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             LandingPageSeeder::class,
             TaxGroupSeeder::class,
+            PositionSeeder::class,
         ]);
     }
 }

@@ -11,17 +11,19 @@ use App\Http\Middleware\SetViewVariable;
 | routes are loaded by the RouteServiceProvider within a group which
 | contains the "web" middleware group. Now create something great!
 |
-*/
+*/ 
 Route::get('/', function () {
     return  redirect(route('landing.index'));
 });
+Route::get('generate-pdf', [App\Http\Controllers\PDFController::class, 'generatePDF']);
+
 Route::get('/crm/{permalink?}', [App\Http\Controllers\LandingController::class, 'index'])->name('landing.index');
 Route::post('/enquiry', [App\Http\Controllers\LandingController::class, 'enquiry_save'])->name('enquiry.save'); 
 Route::get('/approve/invoice/{id}',[App\Http\Controllers\InvoiceController::class, 'approve_invoice'])->name('approve-invoice');
 Route::get('/reject/invoice/{id}',[App\Http\Controllers\InvoiceController::class, 'reject_invoice'])->name('reject-invoice');
 Auth::routes();
 Route::middleware([SetViewVariable::class, 'auth'])->group(function(){
-
+    
     Route::get('/dashboard', [App\Http\Controllers\HomeController::class, 'index'])->name('dashboard');
     Route::get('/deals-dashboard', [App\Http\Controllers\HomeController::class, 'dealsIndex'])->name('deals-dashboard');
     Route::get('/deals-pipelines', [App\Http\Controllers\HomeController::class, 'dealsPipeline'])->name('deals-pipeline');
@@ -127,6 +129,7 @@ Route::middleware([SetViewVariable::class, 'auth'])->group(function(){
         Route::post('/mark_as_done', [App\Http\Controllers\DealsController::class, 'mark_as_done'])->name('deals.mark_as_done');
         Route::post('/files/save', [App\Http\Controllers\DealsController::class, 'files_save'])->name('deals.save-files');
         Route::post('/stage/complete', [App\Http\Controllers\DealsController::class, 'make_stage_completed'])->name('deals.make_stage_completed');
+        Route::post('/stage/complete/pipeline', [App\Http\Controllers\DealsController::class, 'make_stage_completed_pipline'])->name('deals.make_stage_completed_pipline');
         Route::post('/finalize', [App\Http\Controllers\DealsController::class, 'deal_finalize'])->name('deals.finalize')->middleware('checkAccess:is_edit');
         Route::post('/insert/invoice', [App\Http\Controllers\DealsController::class, 'insert_invoice'])->name('deals.save-invoice');
         Route::post('/get/items', [App\Http\Controllers\DealsController::class, 'invoice_product_list'])->name('invoices.add_items');

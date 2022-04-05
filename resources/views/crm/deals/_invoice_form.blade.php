@@ -12,7 +12,7 @@
             </div>
             <div class="form-group  d-flex mt-1">
                 <label for="" class="col-3"> Address : </label>
-                <textarea name="address" id="address" cols="30" rows="3" class="form-control">{{ $info->company->address ?? '' }}</textarea>
+                <textarea name="address" id="address" cols="30" rows="3" class="form-control">{{ $info->customer->company->address ?? '' }}</textarea>
             </div>
             <div class="form-group d-flex mt-1">
                 <label for="" class="col-3">Email</label>
@@ -31,8 +31,8 @@
                 <input type="text" name="issue_date" id="issue_date" class="form-control datepicker w-100" value="{{ date('d-m-Y', strtotime($info->created_at)) }}">
             </div>
             <div class="form-group d-flex mt-1">
-                <label for="" class="col-3"> Due Date : </label>
-                <input type="text" name="due_date" id="due_date" class="form-control datepicker w-100" value="{{ date('d-m-Y', strtotime($info->expected_completed_date)) }}">
+                <label for="" class="col-3"> Due Days : </label>
+                <input type="number" name="due_days" id="due_days" class="form-control w-100" value="" min="1">
             </div>
             <div class="form-group d-flex mt-1">
                 <label for="" class="col-3">Currency</label>

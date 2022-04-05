@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\DealStage;
+use App\Models\DashboardOrder;
 
 class HomeController extends Controller
 {
@@ -25,7 +26,14 @@ class HomeController extends Controller
     public function index()
     {
         // $info = CompanySettings::find(1);
-        return view('dashboard.home');
+        $orders = DashboardOrder::all();
+        $params = [];
+        if( isset($orders) && !empty($orders)) {
+            foreach ($orders as $key => $value) {
+                $params[ $value->content ] = $value->position;
+            }
+        }
+        return view('dashboard.home', $params);
     }
 
     public function dealsIndex()

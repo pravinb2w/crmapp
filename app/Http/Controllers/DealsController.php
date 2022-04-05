@@ -458,12 +458,14 @@ class DealsController extends Controller
 
             $stage = DealStage::orderBy('order_by', 'asc')->get();
             $all_stages = DealStage::where('order_by', '>', $deal_stage_info->order_by )->where('order_by', '<=', $new_stage_info->order_by )->orderBy('order_by', 'asc')->get();
-            // 
+            
             //condition 1 -> change current stage to completed from pending
             $pipe = DealPipline::where('deal_id', $deal_id)->where('status', 'pending')->first();
-            $pipe->status = 'completed';
-            $pipe->completed_at = date('Y-m-d H:i:s');
-            $pipe->update();
+            if( isset($pipe) && !empty($pipe)) {
+                $pipe->status = 'completed';
+                $pipe->completed_at = date('Y-m-d H:i:s');
+                $pipe->update();
+            }
 
             $deal_info->current_stage_id = $stage_id;
             $deal_info->update();
@@ -558,7 +560,7 @@ class DealsController extends Controller
         $email = $request->email;
         $invoice_no = $request->invoice_no;
         $issue_date = $request->issue_date;
-        $due_date = $request->due_date;
+        $due_days = $request->due_days;
         $currency = $request->currency;
         $limit = $request->limit;
         $total_cost = $request->total_cost;
@@ -566,10 +568,12 @@ class DealsController extends Controller
         $ins['deal_id'] = $deal_id;
         $ins['invoice_no'] = $invoice_no;
         $ins['issue_date'] = date('Y-m-d', strtotime($issue_date));
-        $ins['due_date'] = date('Y-m-d', strtotime($due_date));
+        $ins['due_days'] = $request->due_days;
+        $ins['due_date'] = date('Y-m-d', strtotime( $ins['issue_date'].'+'.$due_days.' Days'));
         $ins['customer_id'] = $customer_id;
         $ins['address'] = $address;
         $ins['email'] = $email;
+
         // $ins['subtotal'] = 
         // $ins['tax'] = 
         // $ins['discount'] = 
@@ -706,6 +710,64 @@ class DealsController extends Controller
         $product_info = Product::find($product_id);
         $response = ['cgst' => $product_info->cgst ?? '', 'sgst' => $product_info->sgst ?? '', 'igst' => $product_info->igst ];
         return response()->json($response);
+    }
+
+    public function make_stage_completed_pipline(Request $request) {
+        $stage   = $request->stage;
+        $deal_id    = $request->deal_id;
+
+        $deal_info  = Deal::find( $deal_id );
+        $deal_stage_info = DealStage::find($deal_info->current_stage_id);
+        $new_stage_info = DealStage::where('stages', $stage)->first();
+      
+        if(Auth::user()->hasAccess('deals', 'is_edit')) {
+            $status = '1';
+            if( $deal_stage_info->order_by < $new_stage_info->order_by ) {
+            
+                $stage = DealStage::orderBy('order_by', 'asc')->get();
+                $all_stages = DealStage::where('order_by', '>', $deal_stage_info->order_by )->where('order_by', '<=', $new_stage_info->order_by )->orderBy('order_by', 'asc')->get();
+               
+                //condition 1 -> change current stage to completed from pending
+                $pipe = DealPipline::where('deal_id', $deal_id)->where('status', 'pending')->first();
+                if( isset( $pipe ) && !empty( $pipe ) ) {
+                    $pipe->status = 'completed';
+                    $pipe->completed_at = date('Y-m-d H:i:s');
+                    $pipe->update();
+                }
+
+                $deal_info->current_stage_id = $new_stage_info->id;
+                $deal_info->update();
+                //condition 2 -> 
+                //insert in pipeline
+                if( isset($all_stages) && !empty($all_stages)) {
+                    foreach ($all_stages as $key => $value) {
+                        $status                 = 'completed';
+                        $completed_at           = date('Y-m-d H:i:s');
+                        if( $value->id == $new_stage_info->id ) {
+                            $status             = 'pending';
+                            $completed_at       = null;
+                        }
+                        $sins                   = [];
+                        $sins['deal_id']        = $deal_id;
+                        $sins['stage_id']       = $value->id;
+                        $sins['status']         = $status;
+                        $sins['completed_at']   = $completed_at;
+                        $sins['added_by']       = Auth::id();
+                        DealPipline::create($sins);
+                    }
+                }
+                $status = '1';
+                $error = 'Stage moved successfully';
+            } else {
+                $status = '0';
+                $error = 'You can not move to already done stages';
+            }
+        } else {
+            $status = '0';
+            $error = 'You Do not have access to change status';
+        }
+        
+        return response()->json(['error'=> $error, 'status' => $status]);
     }
 
    
