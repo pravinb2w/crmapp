@@ -31,7 +31,16 @@
         <div class="col-md-6 px-1" id="handle-dragula-{{ $mytask ?? 'bottom-right' }}" data-id="planned">
             <div class="card">
                 <div class="card-body">
-                    @include('dashboard._planned_done')
+                    <h4 class="header-title">Planned vs Done <span class="dragula-handle float-end"></span></h4>
+                    <select name="from_type" id="from_type" class="bar-select">
+                        <option value="">All</option>
+                        <option value="lead">Leads</option>
+                        <option value="deal"> Collection</option>
+                        <option value="task"> Tasks </option>
+                    </select>
+                    <div id="planned_done">
+                        @include('dashboard._planned_done')
+                    </div>
                 </div>
                 <!-- end card body-->
             </div>
@@ -39,8 +48,4 @@
         </div>
         <!-- end col -->
     </div> <!-- end row -->
-    <script>
-        function change_drop() {
-            alert('teste');
-        }
-    </script>
+    

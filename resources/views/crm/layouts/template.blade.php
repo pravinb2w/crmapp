@@ -12,6 +12,7 @@
             <!-- ============================================================== -->
             <!-- Start Page Content here -->
             <!-- ============================================================== -->
+        @include('crm.layouts.script')
 
             <div class="content-page">
                 <div class="content">
@@ -56,7 +57,6 @@
         </div>
         <!-- END wrapper --> 
       
-        @include('crm.layouts.script')
         @yield('add_on_script')
 
         <div class="modal fade show" id="Mymodal" tabindex="-1" aria-labelledby="myLargeModalLabel" aria-modal="true" role="dialog">

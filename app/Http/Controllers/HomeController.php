@@ -46,12 +46,13 @@ class HomeController extends Controller
         $closed_task = Task::where('status', 2)->count();
         $closed_lead = Lead::where('status', 2)->count();
         $closed_deal = Deal::where('status', 2)->count();
-        $closed_count = $closed_task ?? 0 + $closed_lead ?? 0 + $closed_deal ?? 0;
+        $closed_count = ($closed_task ?? 0) + ($closed_lead ?? 0) + ($closed_deal ?? 0);
         //get planned task
         $planned_task = Task::count();
         $planned_lead = Lead::count();
         $planned_deal = Deal::count();
-        $planned_count = $planned_task ?? 0 + $planned_lead ?? 0 + $planned_deal ?? 0;
+        
+        $planned_count = ( $planned_task ?? 0 ) + ( $planned_lead ?? 0 ) + ( $planned_deal ?? 0 );
         //mytask
         $my_task = $this->my_task();
         //all task
@@ -216,6 +217,54 @@ class HomeController extends Controller
         }
         $arr = array('planned' => $planned, 'done' => $done, 'month' => $month );
         return $arr;
+    }
+
+    public function ajax_get_done_planed(){
+        $data_from = $_POST['from_type'] ?? '';
+        $months = lastYearByMonth();
+        $planned = [];
+        $month = [];
+        $done = [];
+        if( isset($months) && !empty($months)){
+            foreach ($months as $key => $value) {
+                $month[] = $key;
+                $planed_total = 0;
+                $done_total = 0;
+                $start_date = date('Y-m-d', strtotime($value));
+                $end_date = date('Y-m-t', strtotime($value));
+                $planned_task = 0;
+                $done_task = 0;
+                $planned_lead = 0;
+                $done_lead = 0;
+                $planned_deal = 0;
+                $done_deal = 0;
+                if( $data_from == 'task') {
+                    $planned_task = Task::whereDate('created_at', '>=', $start_date)->whereDate('created_at', '<=', $end_date)->count();
+                    $done_task = Task::whereDate('created_at', '>=', $start_date)->whereDate('created_at', '<=', $end_date)->where('status', 2)->count();
+                } else if( $data_from == 'lead') {
+                    $planned_lead = Lead::whereDate('created_at', '>=', $start_date)->whereDate('created_at', '<=', $end_date)->count();
+                    $done_lead = Lead::whereDate('created_at', '>=', $start_date)->whereDate('created_at', '<=', $end_date)->where('status', 2)->count();
+                } else if( $data_from == 'deal') {
+                    $planned_deal = Deal::whereDate('created_at', '>=', $start_date)->whereDate('created_at', '<=', $end_date)->count();
+                    $done_deal = Deal::whereDate('created_at', '>=', $start_date)->whereDate('created_at', '<=', $end_date)->where('status', 2)->count();
+                } else {
+                    $planned_task = Task::whereDate('created_at', '>=', $start_date)->whereDate('created_at', '<=', $end_date)->count();
+                    $done_task = Task::whereDate('created_at', '>=', $start_date)->whereDate('created_at', '<=', $end_date)->where('status', 2)->count();
+                    $planned_lead = Lead::whereDate('created_at', '>=', $start_date)->whereDate('created_at', '<=', $end_date)->count();
+                    $done_lead = Lead::whereDate('created_at', '>=', $start_date)->whereDate('created_at', '<=', $end_date)->where('status', 2)->count();
+                    $planned_deal = Deal::whereDate('created_at', '>=', $start_date)->whereDate('created_at', '<=', $end_date)->count();
+                    $done_deal = Deal::whereDate('created_at', '>=', $start_date)->whereDate('created_at', '<=', $end_date)->where('status', 2)->count();
+                }
+                $planed_total = ($planned_task ?? 0) + ($planned_lead ?? 0) + ($planned_deal ?? 0);
+                $done_total = ($done_task ?? 0) + ($done_lead ?? 0) + ($done_deal ?? 0);
+                
+                $planned[] = $planed_total ?? 0;
+                $done[] = $done_total ?? 0;
+            }
+        }
+        $arr = array('planned' => $planned, 'done' => $done, 'month' => $month );
+        $params['planned_done'] = $arr;
+        return view('dashboard._planned_done', $params );
     }
     
 }
