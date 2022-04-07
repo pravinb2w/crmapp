@@ -20,7 +20,7 @@
             <input type="number" id="igst" name="igst_{{ $limit }}" value="{{ $item->igst ?? '' }}"  class="form-control w-40" onchange="return get_total({{ $limit }})" placeholder="IGST%">
             <input type="number" id="amount" name="amount_{{ $limit }}" value="{{ $item->amount ?? '' }}" onchange="return get_total({{ $limit }})" class="form-control w-50" placeholder="Amount" readonly>
             <span class="text-danger p-1" role="button" onclick="return remove_items({{ $limit }})"><i class="fa fa-trash"></i></span>
-        </div>
+        </div> 
         @php
             $limit++;
         @endphp

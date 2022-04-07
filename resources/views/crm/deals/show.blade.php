@@ -264,6 +264,9 @@ form#activites-form>div>label>i {
         total = 0;
         $('.calc').each(function() {
             amount = 0;
+            pro_amount = 0;
+            dis_amount = 0;
+            sub_total = 0;
             price = $(this).find( '#unit_price' ).val();
             qty = $(this).find( '#qty' ).val();
 
@@ -272,6 +275,7 @@ form#activites-form>div>label>i {
             cgst = $(this).find( '#cgst' ).val();
             sgst = $(this).find( '#sgst' ).val();
             igst = $(this).find( '#igst' ).val();
+
             if( isNaN(price) || price == '' || price == undefined ){price=0;}
             if( isNaN(cgst) || cgst == '' || cgst == undefined ){cgst=0;}
             if( isNaN(sgst) || sgst == '' || sgst == undefined ){sgst=0;}
@@ -279,21 +283,23 @@ form#activites-form>div>label>i {
             if( isNaN(discount) || discount == '' || discount == undefined ){discount=0;}
             if( isNaN(qty) || qty == '' || qty == undefined ){qty=0;}
 
-            amount = parseInt(price) * parseInt(qty);
+            pro_amount = parseInt(price) * parseInt(qty);
+            
             if( discount != 0 ) {
-                amount = amount - ( amount * discount/100 ); 
+               dis_amount = ( pro_amount * discount/100 ); 
             }
             if( cgst != 0 ) {
-                amount = amount + ( amount * cgst/100 ); 
+                amount += ( pro_amount * cgst/100 ); 
             }
             if( sgst != 0 ) {
-                amount = amount + ( amount * sgst/100 ); 
+                amount += ( pro_amount * sgst/100 ); 
             }
             if( igst != 0 ) {
-                amount = amount + ( amount * igst/100 ); 
+                amount += ( pro_amount * igst/100 ); 
             }
-            total += amount;
-            $(this).find('#amount').val(amount.toFixed(2));
+            sub_total = (pro_amount + amount ) - dis_amount;
+            total += sub_total;
+            $(this).find('#amount').val(sub_total.toFixed(2));
 
         });
         $('#subtotal').html(total.toFixed(2));

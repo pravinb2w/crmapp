@@ -92,10 +92,10 @@
                 type: form.method,
                 data: $(form).serialize(),
                 beforeSend: function() {
-                    $('#save').html('Loading...');
+                    $('.loader').show();
                 },
                 success: function(response) {
-                    $('#save').html('Save');
+                    $('.loader').hide();
                     if(response.error.length > 0 && response.status == "1" ) {
                         toastr.error('Errors', response.error );
                     } else {
