@@ -305,5 +305,25 @@ Route::middleware([SetViewVariable::class, 'auth'])->group(function(){
         Route::post('/edit/{id?}', [App\Http\Controllers\EmailTemplateController::class, 'update'])->name('update.email_template');
         Route::post('/delete/{id?}', [App\Http\Controllers\EmailTemplateController::class, 'delete'])->name('delete.email_template');
     });
+
+    
+    Route::prefix('bulk_import')->group(function () {
+        Route::get('/', [App\Http\Controllers\BulkPdfImport::class, 'index'])->name('bulk_import.index');
+        Route::get('/create', [App\Http\Controllers\BulkPdfImport::class, 'create'])->name('create.bulk_import');
+        Route::post('/create', [App\Http\Controllers\BulkPdfImport::class, 'store'])->name('store.bulk_import');
+        Route::get('/edit/{id?}', [App\Http\Controllers\BulkPdfImport::class, 'edit'])->name('edit.bulk_import');
+        Route::post('/edit/{id?}', [App\Http\Controllers\BulkPdfImport::class, 'update'])->name('update.bulk_import');
+        Route::post('/delete/{id?}', [App\Http\Controllers\BulkPdfImport::class, 'delete'])->name('delete.bulk_import');
+    }); 
+
+    Route::prefix('announcement')->group(function () {
+        Route::get('/', [App\Http\Controllers\AnnouncementController::class, 'index'])->name('announcement.index');
+        Route::get('/create', [App\Http\Controllers\AnnouncementController::class, 'create'])->name('create.announcement');
+        Route::post('/create', [App\Http\Controllers\AnnouncementController::class, 'store'])->name('store.announcement');
+        Route::get('/edit/{id?}', [App\Http\Controllers\AnnouncementController::class, 'edit'])->name('edit.announcement');
+        Route::post('/edit/{id?}', [App\Http\Controllers\AnnouncementController::class, 'update'])->name('update.announcement');
+        Route::post('/delete/{id?}', [App\Http\Controllers\AnnouncementController::class, 'destroy'])->name('destroy.announcement');
+    }); 
+    
 });
 
