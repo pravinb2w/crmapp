@@ -220,7 +220,7 @@
                             <a href="{{ route("bulk_import.index") }}">Bulk Pdf Export</a>
                         </li>
                         <li>
-                            <a href="javascript:void(0)">Activity Log</a>
+                            <a href="{{ route("activity_log.index") }}">Activity Log</a>
                         </li>
                         <li>
                             <a href="{{ route("announcement.index") }}">Announcement</a>

@@ -66,15 +66,15 @@
                     var name = $(this).data("name");
                     event.preventDefault();
                     swal({
-                        title: `Are you sure you want to delete ?`,
+                        text: `Are you sure you want to delete ?`,
                         icon: "warning",
                         buttons: true,
                         dangerMode: true,
                     })
                     .then((willDelete) => {
-                    if (willDelete) {
-                        form.submit();
-                    }
+                        if (willDelete) {
+                            form.submit();
+                        }
                     });
                 });
             }); 
