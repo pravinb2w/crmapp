@@ -26,5 +26,19 @@ return [
         'master_data',
         'bulk_import',
         'organizations',
-    ]
+    ],
+    'payment_method' => [
+        'cash',
+        'card',
+        'cheque',
+        'imps',
+        'neft',
+        'rtgs',
+        'upi'
+    ],
+    'payment_status' => [
+        'pending',
+        'paid',
+        'failed'
+    ],
 ];

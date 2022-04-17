@@ -160,7 +160,7 @@
                         @if(Auth::user()->hasAccess('payments', 'is_view'))
                         
                         <li>
-                            <a href="javascript:void(0)">Payments</a>
+                            <a href="{{ route('payments') }}">Payments</a>
                         </li>
                         @endif
                     </ul>

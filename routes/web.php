@@ -149,9 +149,13 @@ Route::middleware([SetViewVariable::class, 'auth'])->group(function(){
         Route::post('/view', [App\Http\Controllers\InvoiceController::class, 'view'])->name('invoices.view')->middleware('checkAccess:is_view'); //set on modal
     });
 
-    //Invoice route
+    //Payment route
     Route::prefix('payments')->group(function () {
-        // Route::get('/', [App\Http\Controllers\InvoiceController::class, 'index'])->name('invoices')->middleware('checkAccess:is_view');
+        Route::get('/', [App\Http\Controllers\PaymentController::class, 'index'])->name('payments');
+        Route::get('/add', [App\Http\Controllers\PaymentController::class, 'add'])->name('payments.add');
+        Route::post('/save', [App\Http\Controllers\PaymentController::class, 'save'])->name('payments.save');
+        Route::post('/autocomplete_customer', [App\Http\Controllers\PaymentController::class, 'autocomplete_customer'])->name('payments.autocomplete.customer');
+        Route::post('/customer/deal', [App\Http\Controllers\PaymentController::class, 'customer_deal_info'])->name('payments.customer.deal_info');
     });
 
     //tasks route
