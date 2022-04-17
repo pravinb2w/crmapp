@@ -9,6 +9,7 @@ use App\Models\Task;
 use App\Models\Lead;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Deal;
+use App\Models\User;
 
 class HomeController extends Controller
 {
@@ -63,15 +64,28 @@ class HomeController extends Controller
 
         $planned_done = $this->get_done_planed();
         
-        $params['open_task'] = $open_task;
-        $params['today_count'] = $today_count;
-        $params['planned_count'] = $planned_count;
-        $params['closed_count'] = $closed_count;
-        $params['my_task'] = $my_task;
-        $params['close_week'] = $close_week;
-        $params['planned_done'] = $planned_done;
+        $params['open_task']        =   $open_task;
+        $params['today_count']      =   $today_count;
+        $params['planned_count']    =   $planned_count;
+        $params['closed_count']     =   $closed_count;
+        $params['my_task']          =   $my_task;
+        $params['close_week']       =   $close_week;
+        $params['planned_done']     =   $planned_done;
         
-        return view('dashboard.home', $params);
+        $user_dashboard     =   User::find(auth()->user()->id);
+        $starting_order     =   [["sortable-1","sortable-2","sortable-3","sortable-4","sortable-5","sortable-6","sortable-7","sortable-8","sortable-9"],["col-6","col-6","col-6","col-6","col-6","col-6","col-6","col-6","col-6"]];
+        
+        $sortable           =   json_decode($user_dashboard->sorting_order) ?? $starting_order;
+
+        return view('dashboard.home', $params , compact('sortable'));
+    }
+
+    public function save_dashboard_position(Request $request)
+    {
+        $sortable   =  User::find(auth()->user()->id);
+        $sortable->sorting_order = json_encode($request->data);
+        $sortable->save();
+        return json_decode($sortable->sorting_order);
     }
 
     public function dealsIndex()

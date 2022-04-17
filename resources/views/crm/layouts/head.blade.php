@@ -8,7 +8,6 @@
     <meta content="A fully featured admin theme which can be used to build CRM, CMS, etc." name="description" />
     <meta content="Coderthemes" name="author" />
     <meta name="csrf-token" content="{{ csrf_token() }}" />
-
     
     {{-- {{ dd($cm_favicon) }} --}}
     <!-- App favicon -->

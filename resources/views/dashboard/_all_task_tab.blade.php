@@ -1,17 +1,4 @@
-<div class="card-body task-pane">
-    <div class="dropdown float-end">
-        <select name="" id="" class="bar-select mb-2" style="top: 0;">
-            <option value="">All</option>
-            <option value="">Overdue</option>
-            <option value="">Recent</option>
-            <option value="">Overdue</option>
-            <option value="">Cancelled</option>
-
-        </select>
-        <span class="dragula-handle float-end"></span>
-    </div>
-    <h4 class="header-title mb-3">All Task</h4>
-
+<div class="card-body task-pane"> 
     @if( isset( $my_task ) && !empty($my_task))
         @foreach ($my_task as $item)
         @php
@@ -39,6 +26,5 @@
             No task available
         </div>
     </div>
-    @endif
-        
+    @endif 
 </div>

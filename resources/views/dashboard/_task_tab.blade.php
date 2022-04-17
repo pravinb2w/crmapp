@@ -1,11 +1,5 @@
 <div class="card-body task-pane">
-    <div class="dropdown float-end">
-        <a href="#" class=" arrow-none card-drop" data-bs-toggle="dropdown" aria-expanded="false">
-            <small>See All </small>
-        </a>
-        <span class="dragula-handle float-end"></span>
-    </div>
-    <h4 class="header-title mb-3">My Task</h4>
+   
     @if( isset( $my_task ) && !empty($my_task))
         @foreach ($my_task as $item)
         @php
