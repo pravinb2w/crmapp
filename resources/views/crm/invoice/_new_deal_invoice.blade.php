@@ -105,7 +105,7 @@
                                     </tr>
                                     <tr>
                                         <th style="text-align: left; width:50%;">Issued Date</th>
-                                        <td style="text-align: left; width:50%;">{{ date('d/M/Y', strtotime($info->issue_date)) }}</td>
+                                        <td style="text-align: left; width:50%;">{{ date('d/M/Y', strtotime( $info->due_date )) }}</td>
                                     </tr>
                                 </table>
                            </div>

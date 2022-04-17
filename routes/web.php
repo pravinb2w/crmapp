@@ -139,6 +139,7 @@ Route::middleware([SetViewVariable::class, 'auth'])->group(function(){
         Route::post('/invoice/submit', [App\Http\Controllers\DealsController::class, 'submit_for_approve'])->name('deals.submit-approve');
         Route::post('/get_tab', [App\Http\Controllers\DealsController::class, 'get_tab'])->name('deals.get_tab');
         Route::post('/get_product_tax', [App\Http\Controllers\DealsController::class, 'get_product_tax'])->name('deals.get_product_tax');
+        Route::post('/get_deal_common_sub_list', [App\Http\Controllers\DealsController::class, 'get_deal_common_sub_list'])->name('deals.common.list');
     });
 
     //Invoice route

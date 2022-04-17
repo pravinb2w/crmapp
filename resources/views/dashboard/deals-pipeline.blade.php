@@ -22,7 +22,7 @@
             <div class="board">
                 @if( isset( $stage ) && !empty($stage))
                 @php
-                    $bg = array('success','warning', 'info', 'primary', 'danger');
+                    $bg = array('success','warning', 'info', 'primary', 'danger', 'secondary', 'success', 'warning', 'info', 'primary');
                     $i=0;
                 @endphp
                 @foreach ($stage as $item)

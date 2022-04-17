@@ -609,13 +609,33 @@ function mark_as_done(id, lead_id='' , type = '') {
                     toastr.error('Errors', response.error );
                 } else {
                     $('#notes').val('');
+                    get_deal_common_sub_list(response.deal_id, 'notes');
                     toastr.success('Success', response.error );
                 }
             }            
         });
     }
 
-    
+    function get_deal_common_sub_list(deal_id, list_type) {
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        $.ajax({
+            url: "{{ route('deals.common.list') }}",
+            type: 'POST',
+            data: {'deal_id':deal_id,'list_type':list_type},
+            beforeSend: function() {
+                $('.loader').show();
+            },
+            success: function(response) {
+                $('.loader').hide();
+                $('#deal-sub-list').html(response);
+            }            
+        });
+    }
+
     function insert_deal_files() {
         
         let formData = new FormData(document.getElementById('deal-insert-files'));

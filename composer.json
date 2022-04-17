@@ -10,12 +10,13 @@
         "doctrine/dbal": "^3.3",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
+        "intervention/image": "dev-master",
         "laravel/framework": "^8.75",
         "laravel/sanctum": "^2.11",
         "laravel/tinker": "^2.5",
         "laravel/ui": "^3.4",
-        "owen-it/laravel-auditing": "^12.2",
-        "intervention/image": "dev-master"
+        "nesbot/carbon": "^2.57",
+        "owen-it/laravel-auditing": "^12.2"
     },
     "require-dev": {
         "facade/ignition": "^2.5",

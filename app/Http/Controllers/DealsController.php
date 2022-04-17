@@ -27,6 +27,7 @@ use Mail;
 use DB;
 
 
+
 class DealsController extends Controller
 {
     public function index(Request $request)
@@ -354,7 +355,7 @@ class DealsController extends Controller
                 Note::create($ins);
                 $success = 'Notes added successfully';
             }
-            return response()->json(['error'=>[$success], 'status' => '0', 'deal_id' => $deal_id, 'type' => 'done']);
+            return response()->json(['error'=>[$success], 'status' => '0', 'deal_id' => $deal_id]);
         }
         return response()->json(['error'=>$validator->errors()->all(), 'status' => '1']);
     }
@@ -767,6 +768,18 @@ class DealsController extends Controller
             $error = 'You Do not have access to change status';
         }
         return response()->json(['error'=> $error, 'status' => $status]);
+    }
+
+    public function get_deal_common_sub_list(Request $request){
+        $deal_id = $request->deal_id;
+        $list_type = $request->list_type;
+
+        $type = $request->type;
+        $deal_id = $request->deal_id;
+
+        $info = Deal::with(['all_activity', 'notes', 'files'])->find($deal_id);
+        $list = [];
+        return view('crm.deals._common_sub_list', ['info' => $info, 'list_type' => $list_type, 'deal_id' => $deal_id]);
     }
 
    

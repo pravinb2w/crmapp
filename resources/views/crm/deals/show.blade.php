@@ -152,6 +152,7 @@ form#activites-form>div>label>i {
                     @include('crm.deals._note_form')
                 @endif
             </div>
+            <div id="deal-sub-list"></div>
             <div class="loader"></div>
         </div>
     </div>
@@ -162,6 +163,7 @@ form#activites-form>div>label>i {
     </div> --}}
 </div>
 <script>
+    get_deal_common_sub_list('{{ $deal_id }}', 'notes');
     function deal_finalize(status, id) {
         var comman;
         status = parseInt(status);
