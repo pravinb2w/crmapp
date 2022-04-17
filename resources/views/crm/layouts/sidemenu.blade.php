@@ -226,7 +226,7 @@
                             <a href="{{ route("announcement.index") }}">Announcement</a>
                         </li>
                         <li>
-                            <a href="javascript:void(0)">Database Backup</a>
+                            <a href="{{ route('db-backup.index') }}">Database Backup</a>
                         </li>
                     </ul>
                 </div>

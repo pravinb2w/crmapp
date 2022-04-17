@@ -15,8 +15,8 @@ use App\Http\Middleware\SetViewVariable;
 Route::get('/', function () {
     return  redirect(route('landing.index'));
 });
+ 
 Route::get('generate-pdf', [App\Http\Controllers\PDFController::class, 'generatePDF']);
-
 Route::get('/crm/{permalink?}', [App\Http\Controllers\LandingController::class, 'index'])->name('landing.index');
 Route::post('/enquiry', [App\Http\Controllers\LandingController::class, 'enquiry_save'])->name('enquiry.save'); 
 Route::get('/approve/invoice/{id}',[App\Http\Controllers\InvoiceController::class, 'approve_invoice'])->name('approve-invoice');
@@ -337,5 +337,10 @@ Route::middleware([SetViewVariable::class, 'auth'])->group(function(){
     Route::prefix('activity_log')->group(function () {
         Route::get('/', [App\Http\Controllers\ActivityLogController::class, 'index'])->name('activity_log.index');
     }); 
+
+    Route::get('backup', [App\Http\Controllers\DataBaseBackupController::class, 'index'])->name('db-backup.index');
+    Route::post('create-backup', [App\Http\Controllers\DataBaseBackupController::class, 'backup'])->name('create.backup');
+    Route::delete('backup/{id}', [App\Http\Controllers\DataBaseBackupController::class, 'delete'])->name('delete.database-backup');
+    Route::post('backup/{id}', [App\Http\Controllers\DataBaseBackupController::class, 'download'])->name('download.database-backup');
 });
 
