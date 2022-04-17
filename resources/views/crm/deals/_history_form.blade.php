@@ -1,5 +1,13 @@
 <div>
-    <table class="table w-100">
+    <table class="table table-centered w-100 dt-responsive nowrap dataTable no-footer dtr-inline">
+        <thead class="table-light">
+            <tr>
+                <th>Log</th>
+                <th class="text-center">Added By</th>
+                <th class="text-center">Date</th>
+            </tr>
+        </thead>
+        <tbody>
         @if( (isset($info->all_activity ) && !empty($info->all_activity) ) || (isset($info->notes) && !empty($info->notes ) ) )
         @php
             $list = [];
@@ -65,79 +73,29 @@
             }
         @endphp
         @foreach ($list as $litem)
-        <tr @if($litem['activity_type'] == 'Notes') style="background: azure" @endif>
-            <td class="w-75">
-                <div>
-                    <div>{{ strtoupper($litem['activity_type']) }} 
+        <tr >
+            <td class="w-50">
+                @if($litem['activity_type'] != 'Notes' ) {{ strtoupper($litem['activity_type']) }}  - @endif {{ $litem['subject'] }}
 
-                        @if( isset( $litem['pending_at']) && !empty($litem['pending_at']) && $litem['approved_at'] == null && $litem['activity_type'] == 'invoice' )
-                        <span class="badge bg-info-lighten">Awaiting for Approval</span>
-                        @elseif( isset($litem['approved_at']) && $litem['activity_type'] == 'invoice')
-                        <span class="badge bg-success-lighten">Approved</span>
-                        @elseif( isset($litem['rejected_at']) && $litem['activity_type'] == 'invoice' )
-                        <span class="badge bg-danger-lighten">Rejected</span>
-                        @endif
-
-                        @if( isset( $litem['document'] ) && !empty($litem['document'])) 
-                            @if($litem['activity_type'] != 'invoice')
-                            <small class="ml-3">
-                                <a href="{{ asset('storage/'.$litem['document']) }}" target="_blank"> View Files </a>
-                            </small>
-                            @endif
-                        @endif
-                    </div>
-                    <p> @if($litem['activity_type'] != 'Notes' ) {{ strtoupper($litem['activity_type']) }}  - @endif {{ $litem['subject'] }}</p>
-                    
-                </div>
+                @if( isset( $litem['pending_at']) && !empty($litem['pending_at']) && $litem['approved_at'] == null && $litem['activity_type'] == 'invoice' )
+                <span class="badge bg-info-lighten">Awaiting for Approval</span>
+                @elseif( isset($litem['approved_at']) && $litem['activity_type'] == 'invoice')
+                <span class="badge bg-success-lighten">Approved</span>
+                @elseif( isset($litem['rejected_at']) && $litem['activity_type'] == 'invoice' )
+                <span class="badge bg-danger-lighten">Rejected</span>
+                @endif
                 
             </td>
-            <td style="position: relative">
-                <div>
-                    <small> {{ date('d M Y H:i A', strtotime($litem['done_at'] ) ); }}
-                    </small>
-                </div>
-                <div>
-                    @if( isset($litem['done_by'])&& !empty($litem['done_by']))
-                        <span class="badge badge-success-lighten"> CompletedBy : {{ $litem['done_by']->name ?? '' }}</span>
-                    @else
-                        <span class="badge badge-success-lighten"> AddedBy : {{ $litem['added']->name ?? '' }}</span>
-                    @endif
-                </div>
-                <div class="dropdown">
-                    <button class="btn btn-sm" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <i class="mdi mdi-dots-vertical"></i>
-                    </button>
-                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        @if(Auth::user()->hasAccess('deals', 'is_edit') ||  Auth::user()->hasAccess('deals', 'is_view')  )
-                            @if($litem['activity_type'] == 'invoice')
-                            @if(Auth::user()->hasAccess('deals', 'is_edit'))
-                                @if( $litem['pending_at'] == null )
-                                    <a class="dropdown-item" href="#"  onclick="submit_approve_invoice('{{ $info->id }}','{{ $litem['id'] }}', 'done')">
-                                        Submit for Approval 
-                                    </a>
-                                @endif
-                            @endif
-                                @if(Auth::user()->hasAccess('deals', 'is_edit') )
-                                <a class="dropdown-item" href="#"  onclick="unlink_invoice('{{ $info->id }}','{{ $litem['id'] }}', 'done')">Unlink from Deal</a>
-                                @endif
-                                @if(Auth::user()->hasAccess('deals', 'is_view') )
-                                <a class="dropdown-item" target="_blank" href="{{ asset('invoice').'/'.$litem['invoice_no'].'.pdf' }}">Download Pdf</a>
-                                @endif
-
-                            @elseif( $litem['activity_type'] != 'Notes' && $litem['activity_type'] != 'files' )
-                            <a class="dropdown-item" href="javascript:;"  onclick="edit_activity('history','{{ $litem['id'] }}', '','{{ $info->id }}')">Edit</a>
-                                @if( isset($litem['done_by'])&& empty($litem['done_by']))
-                                    <a class="dropdown-item" href="javascript:;" onclick="mark_as_done('{{ $litem['id'] }}', '{{ $info->id }}', 'deal')">Mark as Done</a>
-                                @endif
-                            @endif
-                        @endif
-                        @if(Auth::user()->hasAccess('deals', 'is_delete') )
-                            @if($litem['activity_type'] != 'invoice')
-                            <a class="dropdown-item" href="#"  onclick="change_activity_status('{{ $info->id ?? '' }}','{{ $litem['id'] ?? '' }}', '{{ $litem['activity_type'] ?? '' }}' )">Delete</a>
-                            @endif
-                        @endif
-                    </div>
-                </div> 
+            <td class="text-center">
+                @if( isset($litem['done_by'])&& !empty($litem['done_by']))
+                    <span class="badge badge-success-lighten"> CompletedBy : {{ $litem['done_by']->name ?? '' }}</span>
+                @else
+                    <span class="badge badge-success-lighten"> AddedBy : {{ $litem['added']->name ?? '' }}</span>
+                @endif
+            </td>
+            <td class="text-center">
+                <small> {{ date('d M Y H:i A', strtotime($litem['done_at'] ) ); }}
+                </small>
             </td>
         </tr>
         @endforeach
@@ -147,6 +105,7 @@
             <td></td>
         </tr>
     @endif
+        </tbody>
     </table>
 </div>
 

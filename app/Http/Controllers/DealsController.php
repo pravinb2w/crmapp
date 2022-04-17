@@ -501,6 +501,8 @@ class DealsController extends Controller
             }
             $view = view('crm.deals._pipeline_view', ['info' => $info, 'stage' => $stage, 
                             'completed_stage' => $completed_stage, 'pipeline' => $pipeline, 'id' => $deal_id]);
+            $error = 'Status changed successfully';
+
         } else {
             $status = '0';
             $error = 'You Do not have access to change status';

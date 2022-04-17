@@ -5,7 +5,7 @@
             @if(isset( $info) && !empty($info))
             
             @php
-                if( isset( $info->notes ) && !empty($info->notes ) && $list_type == 'notes' ){
+                if( isset( $info->notes ) && !empty($info->notes ) && $list_type == 'note' ){
                 foreach ($info->notes as $ionotes){
                     $tmp['activity_type'] = 'Notes';
                     $tmp['subject'] = $ionotes->notes;
@@ -18,7 +18,7 @@
                 }
             }
 
-            if( isset( $info->files ) && !empty($info->files ) && $list_type == 'files' ){
+            if( isset( $info->files ) && !empty($info->files ) && $list_type == 'file' ){
                 foreach ($info->files as $iofiles){
                     $tmp['activity_type'] = 'files';
                     $tmp['subject'] = 'Document Created';
@@ -61,6 +61,7 @@
                 }
             }
             @endphp
+            @if( isset( $list ) && !empty($list))
             @foreach ($list as $litem)
             <tr @if($litem['activity_type'] == 'Notes') style="background: azure" @endif>
                 <td class="w-75">
@@ -138,6 +139,11 @@
                 </td>
             </tr>
             @endforeach
+            @else
+            <tr>
+                <td colspan="2">No data found.</td>
+            </tr>
+            @endif
         @else
             <tr>
                 <td> </td>
@@ -150,9 +156,9 @@
 
 <script>
     function change_activity_status( deal_id, activity_id, lead_type = '' ) {
-       var ttt = 'You are trying to delete activity';
+        var ttt = 'You are trying to delete activity';
 
-       Swal.fire({
+        Swal.fire({
            title: 'Are you sure?',
            text: ttt,
            icon: 'warning',

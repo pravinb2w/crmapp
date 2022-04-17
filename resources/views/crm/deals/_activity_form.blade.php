@@ -119,6 +119,7 @@
                         toastr.error('Errors', response.error );
                     } else {
                         form.reset();
+                        get_deal_common_sub_list(response.deal_id, 'activity');
                         toastr.success('Success', response.error );
                     }
                 }            

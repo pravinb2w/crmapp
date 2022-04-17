@@ -163,7 +163,7 @@ form#activites-form>div>label>i {
     </div> --}}
 </div>
 <script>
-    get_deal_common_sub_list('{{ $deal_id }}', 'notes');
+    get_deal_common_sub_list('{{ $deal_id }}', 'note');
     function deal_finalize(status, id) {
         var comman;
         status = parseInt(status);
@@ -404,8 +404,14 @@ form#activites-form>div>label>i {
                 $('.loader').show();
             },
             success:function(response){
-               $('#dealtab').html(response);
-               $('.loader').hide();
+                $('#dealtab').html(response);
+                if( tab != 'history') {
+                    get_deal_common_sub_list(deal_id, tab);
+                } else {
+                    $('#deal-sub-list').hide();
+                }
+              
+                $('.loader').hide();
             }      
         });
     }

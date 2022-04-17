@@ -631,6 +631,7 @@ function mark_as_done(id, lead_id='' , type = '') {
             },
             success: function(response) {
                 $('.loader').hide();
+                $('#deal-sub-list').show();
                 $('#deal-sub-list').html(response);
             }            
         });
@@ -660,6 +661,7 @@ function mark_as_done(id, lead_id='' , type = '') {
                 } else {
                     var form = $('#deal-insert-files')[0];
                     form.reset();
+                    get_deal_common_sub_list(response.deal_id, 'file');
                     toastr.success('Success', response.error );
                 }
             }            
