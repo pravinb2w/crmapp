@@ -27,7 +27,7 @@ class EmailTemplateController extends Controller
             'created_by' => Auth()->user()->name,
         ]);
 
-        return redirect()->route('email.index')->with('success','Mail To Created successfully!');
+        return redirect()->route('email.index')->with('success','Mail Created successfully!');
     }
 
     public function edit($id)
@@ -45,12 +45,12 @@ class EmailTemplateController extends Controller
             'created_by' => Auth()->user()->name,
         ]);
 
-        return redirect()->route('email.index')->with('success','Mail To Updated successfully!');
+        return redirect()->route('email.index')->with('success','Mail Updated successfully!');
     }
 
     public function delete($id)
     {
         EmailTemplates::find($id)->delete();
-        return redirect()->route('email.index')->with('success','Mail To Deleted successfully!');
+        return redirect()->route('email.index')->with('success','Mail Deleted successfully!');
     }
 }

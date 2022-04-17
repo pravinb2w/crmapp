@@ -100,17 +100,14 @@
             processData: false,
             success: (response) => {
                 if(response.error.length > 0 && response.status == "1" ) {
-                    $('#error').addClass('alert alert-danger');
-                    response.error.forEach(display_errors);
+                    response.error.forEach(msg => toastr.error(msg) ); 
                 } else {
-                    $('#error').addClass('alert alert-success');
-                    response.error.forEach(display_errors);
+                    response.error.forEach(msg => toastr.success(msg) ); 
                     setTimeout(function(){
                         get_settings_tab('company');
                     },100);
                 }
             },
-            
         });
         return false;
     });

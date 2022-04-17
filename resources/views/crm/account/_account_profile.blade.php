@@ -79,11 +79,10 @@
                 $('.loader').show();
             },
             success: (response) => {
-                if( response.status == '1') {
-                    $('#error').addClass('alert alert-danger');
-                    $('#error').text(response.error);
+                if( response.status == '1') { 
+                    toastr.error(response.error);
                 } else {
-                    $('#error').addClass('alert alert-success');
+                    toastr.success(response.error);
                     get_settings_tab('profile');
                 }
                 $('.loader').hide();

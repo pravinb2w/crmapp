@@ -43,12 +43,10 @@
                     },
                     success: function(response) {
                         $('.loader').hide();
-                        if(response.error.length > 0 && response.status == "1" ) {
-                            $('#error').addClass('alert alert-danger');
-                            response.error.forEach(display_errors);
-                        } else {
-                            $('#error').addClass('alert alert-success');
-                            response.error.forEach(display_errors);
+                        if(response.error.length > 0 && response.status == "1" ) { 
+                            response.error.forEach(msg => toastr.error(msg) ); 
+                        } else { 
+                            response.error.forEach(msg => toastr.success(msg) );
                             setTimeout(function(){
                                 get_settings_tab('change');
                             },100);

@@ -217,13 +217,13 @@
                             <a class="{{ Route::is(['create.email_template','edit.email_template']) ? "active" : ""}}" href="{{ route('email.index') }}">Email Template</a>
                         </li>
                         <li>
-                            <a href="javascript:void(0)">Bulk Import</a>
+                            <a href="{{ route("bulk_import.index") }}">Bulk Pdf Export</a>
                         </li>
                         <li>
-                            <a href="javascript:void(0)">Activity Log</a>
+                            <a href="{{ route("activity_log.index") }}">Activity Log</a>
                         </li>
                         <li>
-                            <a href="javascript:void(0)">Announcement</a>
+                            <a href="{{ route("announcement.index") }}">Announcement</a>
                         </li>
                         <li>
                             <a href="javascript:void(0)">Database Backup</a>

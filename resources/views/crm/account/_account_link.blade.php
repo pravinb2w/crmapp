@@ -44,11 +44,9 @@
             processData: false,
             success: (response) => {
                 if(response.error.length > 0 && response.status == "1" ) {
-                    $('#error').addClass('alert alert-danger');
-                    response.error.forEach(display_errors);
+                    toastr.error(response.error);
                 } else {
-                    $('#error').addClass('alert alert-success');
-                    response.error.forEach(display_errors);
+                    toastr.success(response.error);
                     setTimeout(function(){
                         get_settings_tab('link');
                     },100);

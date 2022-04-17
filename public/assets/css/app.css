@@ -22561,3 +22561,36 @@ div.dataTables_scrollBody > table > :not(:first-child) {
 .CodeMirror .cm-spell-error:not(.cm-url):not(.cm-comment):not(.cm-tag):not(.cm-word) {
     background: none !important;
 }
+.x-y {
+    display: flex !important;
+    align-items: center !important;
+}
+.d-between {
+    justify-content: space-between !important;
+}
+.d-center {
+    justify-content: center !important;
+}
+.toast {
+    background-color: #030303;
+    opacity: 1 !important;; 
+}
+.toast-message {
+    font-weight: bold !important;
+    font-size: 16px !important;
+}
+.toast-info {
+    background-color: #3276b1;
+}
+.toast-info2 {
+    background-color: #2f96b4;
+}
+.toast-error {
+    background-color: #bd362f;
+}
+.toast-success {
+    background-color: #51a351;
+}
+.toast-warning {
+    background-color: #f89406; 
+}

@@ -164,41 +164,48 @@
         }
     </style>
 </head>
-@if ($message = Session::get('success'))
-    <div class="alert alert-success alert-dismissible bg-success text-white border-0 fade show" role="alert">
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        <strong>Success - </strong> {{ $message }}
-    </div>
-@endif
 
+<!-- CSS -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.0/css/toastr.css" rel="stylesheet" />
 
-@if ($message = Session::get('error'))
-<div class="alert alert-danger alert-dismissible bg-success text-white border-0 fade show" role="alert">
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    <strong>Oops - </strong> {{ $message }}
-</div>
-@endif
+<!-- JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.0/js/toastr.js"></script>
+ 
+<script>
+    $(document).ready(function() {
+        toastr.options = {
+            "closeButton": false,
+            "debug": false,
+            "newestOnTop": true,
+            "progressBar": true,
+            "positionClass": "toast-top-right",
+            "preventDuplicates": false,
+            "onclick": null,
+            "showDuration": "300",
+            "hideDuration": "1000",
+            "timeOut": "3000",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "slideDown",
+            "hideMethod": "slideUp",
+            "closeButton": true,
+        }
+        
+        @if (Session::has('error'))
+            toastr.error('{{ Session::get('error') }}');
 
+            @elseif(Session::has('success'))
+                toastr.success('{{ Session::get('success') }}');
+            
+            @elseif(Session::has('warning'))
+                toastr.warning('{{ Session::get('warning') }}');
 
-@if ($message = Session::get('warning'))
-<div class="alert alert-warning alert-dismissible bg-success text-white border-0 fade show" role="alert">
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    <strong>Oops - </strong> {{ $message }}
-</div>
-@endif
+        @endif 
 
+        @if ($errors->any())
+            toastr.info('{{ $message }}');
+        @endif
+    });
 
-@if ($message = Session::get('info'))
-<div class="alert alert-info alert-dismissible bg-success text-white border-0 fade show" role="alert">
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    <strong>Whoo </strong> {{ $message }}
-</div>
-@endif
-
-
-@if ($errors->any())
-<div class="alert alert-success alert-dismissible bg-success text-white border-0 fade show" role="alert">
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    <strong>  {{ $message }} </strong> 
-</div>
-@endif
+</script>
