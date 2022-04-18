@@ -241,6 +241,8 @@
             return ajax_url = '{{ route("permissions.view") }}';
         } else if(page_type=='taxgroup') {
             return ajax_url = '{{ route("tax.view") }}';
+        } else if(page_type=='payments') {
+            return ajax_url = '{{ route("payments.view") }}';
         }
     }
     function set_delete_url(page_type) {
@@ -286,6 +288,8 @@
             return ajax_url = '{{ route("deals.delete") }}';
         } else if(page_type=='taxgroup') {
             return ajax_url = '{{ route("tax.delete") }}';
+        } else if(page_type=='payments') {
+            return ajax_url = '{{ route("payments.delete") }}';
         }
     }
 

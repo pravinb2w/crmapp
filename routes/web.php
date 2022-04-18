@@ -155,10 +155,13 @@ Route::middleware([SetViewVariable::class, 'auth'])->group(function(){
     //Payment route
     Route::prefix('payments')->group(function () {
         Route::get('/', [App\Http\Controllers\PaymentController::class, 'index'])->name('payments');
+        Route::post('/list', [App\Http\Controllers\PaymentController::class, 'ajax_list'])->name('payments.list');
         Route::get('/add', [App\Http\Controllers\PaymentController::class, 'add'])->name('payments.add');
         Route::post('/save', [App\Http\Controllers\PaymentController::class, 'save'])->name('payments.save');
         Route::post('/autocomplete_customer', [App\Http\Controllers\PaymentController::class, 'autocomplete_customer'])->name('payments.autocomplete.customer');
         Route::post('/customer/deal', [App\Http\Controllers\PaymentController::class, 'customer_deal_info'])->name('payments.customer.deal_info');
+        Route::post('/view', [App\Http\Controllers\PaymentController::class, 'view'])->name('payments.view');
+        Route::post('/delete', [App\Http\Controllers\PaymentController::class, 'delete'])->name('payments.delete');
     });
 
     //tasks route

@@ -28,21 +28,16 @@
                     @include('crm.common.common_add_btn')
 
                     <div class="table-responsive">
-                        <table class="table table-centered w-100 dt-responsive nowrap" id="products-datatable">
+                        <table class="table table-centered w-100 dt-responsive nowrap" id="payments-datatable">
                             <thead class="table-light">
                                 <tr>
-                                    <th class="all" style="width: 20px;">
-                                        <div class="form-check">
-                                            <input type="checkbox" class="form-check-input" id="customCheck1">
-                                            <label class="form-check-label" for="customCheck1">&nbsp;</label>
-                                        </div>
-                                    </th>
-                                    <th>Product</th>
-                                    <th>Product Code</th>
-                                    <th>HSN No</th>
-                                    <th>Added By</th>
-                                    <th>Status</th>
-                                    <th style="width: 80px;">Action</th>
+                                    <th>Date</th>
+                                    <th>Customer</th>
+                                    <th>Payment Mode</th>
+                                    <th>Amount</th>
+                                    <th>Payment Method</th>
+                                    <th>Payment Status</th>
+                                    <th>Action</th>
                                 </tr>
                             </thead>
                             
@@ -68,22 +63,22 @@
     <script>
         $(document).ready(function(){"use strict";
         
-        const roletable = $('#products-datatable').DataTable( {
+        const roletable = $('#payments-datatable').DataTable( {
             
             "processing"    : true,
             "serverSide"    : true,
             "ajax"          : {
-                "url"       : "<?= route( 'products.list' ); ?>",
+                "url"       : "<?= route( 'payments.list' ); ?>",
                 "dataType"  : "json",
                 "type"      : "POST",
                 "data"      : { "_token" : "<?=csrf_token();?>" }
             },
             "columns"       : [
-                {"data" : "id"},
-                {"data" : "product_name"},
-                {"data" : "product_code"},
-                {"data" : "hsn_no"},
-                {"data" : "added"},
+                {"data" : "date"},
+                {"data" : "customer"},
+                {"data" : "payment_mode"},
+                {"data" : "amount"},
+                {"data" : "payment_method"},
                 {"data" : "status" },
                 {"data" : "action" },
             ],

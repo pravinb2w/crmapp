@@ -37,20 +37,19 @@
                                 @include('crm.payments._deal_select')
                             </div>
                             <div class="col-6">
-                                <label for="payment_type"> Payment Type </label>
+                                <label for="payment_type"> Payment Mode </label>
                                 <div class="row mt-2" >
                                     <div class="col-sm-3 rounded border p-2 text-center">
-                                        <input type="radio" name="payment_method" role="button" class="edit form-check-input" id="online" checked="checked">
+                                        <input type="radio" name="payment_mode" value="online" role="button" class="edit form-check-input" id="online" checked="checked">
                                         <label class="form-check-label" for="online" role="button" > Online </label>
                                     </div>
                                     <div class="col-sm-3 rounded border p-2 text-center">
-                                        <input type="radio" name="payment_method" role="button" class="edit form-check-input" id="offline" checked="checked">
+                                        <input type="radio" name="payment_mode" value="offline" role="button" class="edit form-check-input" id="offline" checked="checked">
                                         <label class="form-check-label" for="offline" role="button" > Offline </label>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        
                         <hr>
                         <div class="row" id="payment-content">
                             @include('crm.payments._offline')
@@ -85,15 +84,12 @@ $("#payments-form").validate({
             success: function(response) {
                 $('#save').html('Save');
                 if(response.error.length > 0 && response.status == "1" ) {
-                    $('#error').addClass('alert alert-danger');
-                    response.error.forEach(display_errors);
+                    toastr.error('Error', response.error );
                 } else {
-                    $('#error').addClass('alert alert-success');
-                    response.error.forEach(display_errors);
+                    toastr.success('Success', response.error );
                     setTimeout(function(){
-                        $('#Mymodal').modal('hide');
+                        window.location.href="{{ route('payments') }}";
                     },100);
-                    ReloadDataTableModal('pagetype-datatable');
                 }
             }            
         });

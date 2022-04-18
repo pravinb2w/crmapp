@@ -15,6 +15,8 @@ class Payment extends Model implements Auditable
 
     protected $fillable = [
         'payment_mode',
+        'customer_id',
+        'deal_id',
         'amount',
         'payment_method',
         'cheque_no',
@@ -27,4 +29,36 @@ class Payment extends Model implements Auditable
         'status',
         'added_by',
     ];
+
+    public function scopeLatests( Builder $query ) {
+        return $query->orderBy( static::CREATED_AT, 'desc' );
+    }
+
+    public function scopeSearch( Builder $query, $search ) {
+
+        if( empty( $search ) ) {
+            return $query;
+        }
+
+        return  $query->where( function( $query ) use( $search ) {
+                    $query->where( 'payment_mode', 'like', "%{$search}%" )
+                        ->orWhere( 'amount', 'like', "%{$search}%" )
+                        ->orWhere( 'payment_method', 'like', "%{$search}%" );
+                }); 
+    }
+
+    public function added()
+    {
+        return $this->hasOne(User::class, 'id', 'added_by');
+    }
+
+    public function customer()
+    {
+        return $this->hasOne(Customer::class, 'id', 'customer_id');
+    } 
+
+    public function deal()
+    {
+        return $this->hasOne(Deal::class, 'id', 'deal_id');
+    } 
 }

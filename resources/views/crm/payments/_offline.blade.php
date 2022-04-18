@@ -3,7 +3,7 @@
     <div class="row mt-2">
         <div class="col-3">
             <label for=""> Cash <span class="text-danger">*</span></label>
-            <input type="text" name="cash" id="cash" class="form-control price" required>
+            <input type="text" name="amount" id="amount" class="form-control price" required>
         </div>
         <div class="col-3">
             <label for=""> Payment Method <span class="text-danger">*</span></label>
