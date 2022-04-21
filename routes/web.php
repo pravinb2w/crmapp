@@ -160,6 +160,7 @@ Route::middleware([SetViewVariable::class, 'auth'])->group(function(){
         Route::post('/save', [App\Http\Controllers\PaymentController::class, 'save'])->name('payments.save');
         Route::post('/autocomplete_customer', [App\Http\Controllers\PaymentController::class, 'autocomplete_customer'])->name('payments.autocomplete.customer');
         Route::post('/customer/deal', [App\Http\Controllers\PaymentController::class, 'customer_deal_info'])->name('payments.customer.deal_info');
+        Route::post('/customer/deal/amount', [App\Http\Controllers\PaymentController::class, 'customer_deal_amount'])->name('payments.customer.deal_amount');
         Route::post('/view', [App\Http\Controllers\PaymentController::class, 'view'])->name('payments.view');
         Route::post('/delete', [App\Http\Controllers\PaymentController::class, 'delete'])->name('payments.delete');
     });

@@ -162,4 +162,16 @@ class PaymentController extends Controller
         $params = ['modal_title' => $modal_title, 'id' => $id ?? '', 'info' => $info ?? ''];
         return view('crm.payments.view', $params);
     }
+
+    public function customer_deal_amount(Request $request) {
+        if (! $request->ajax()) {
+            return response('Forbidden.', 403);
+        }
+        $deal_id = $request->deal_id;
+        $deal_info = Deal::find( $deal_id );
+        $amount = $deal_info->deal_value;
+        $params['amount'] = $amount;
+        return response()->json($params);
+
+    }
 }

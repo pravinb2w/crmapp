@@ -103,7 +103,6 @@
                     </td>
                </tr>
            </table>
-
         </footer>
 
         <!-- Wrap the content of your PDF inside a main tag -->
@@ -293,7 +292,6 @@
                                 <td style="padding:5px;"> IGST %</td>
                                 <td style="padding:5px;"> IGST Amnt</td>
                             </tr>
-                           
                             @if( isset( $taxable ) && !empty($taxable ) )
                             @php
                                 $grand_total = 0;
@@ -351,9 +349,6 @@
                     </td>
                 </tr>
             </table>
-            
-
-
         </main>
     </body>
 </html>

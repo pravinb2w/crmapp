@@ -287,8 +287,6 @@
         ];
         var DWyValues = [22,45,87,22,44,99,44,35,15,99,20,70];
         var DWbarColors = ["#10B9F1", "lightgray","#10B9F1","lightgray","#10B9F1", "lightgray","#10B9F1","lightgray","#10B9F1", "lightgray","#10B9F1","lightgray"];
-
-
         
         new Chart("myChart", {
         type: "bar",
@@ -303,6 +301,7 @@
             legend: {display: false}, 
         }
         });
+
         new Chart("myChart-deals-won", {
         type: "bar",
         data: {
@@ -316,6 +315,8 @@
             legend: {display: false}, 
         }
         });
+
+
         new Chart("myChart-deals-progress", {
         type: "bar",
         data: {
@@ -329,18 +330,19 @@
             legend: {display: false}, 
         }
         });
+
         new Chart("myChart-deals-conversion", {
-        type: "bar",
-        data: {
-            labels: DWxValues,
-            datasets: [{
-            backgroundColor: DWbarColors,
-            data: DWyValues
-            }]
-        },
-        options: {
-            legend: {display: false}, 
-        }
+            type: "bar",
+            data: {
+                labels: DWxValues,
+                datasets: [{
+                backgroundColor: DWbarColors,
+                data: DWyValues
+                }]
+            },
+            options: {
+                legend: {display: false}, 
+            }
         });
     </script>
     <script>

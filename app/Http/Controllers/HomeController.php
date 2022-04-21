@@ -61,8 +61,8 @@ class HomeController extends Controller
 
         //close of the week
         $close_week = $this->close_week();
-
         $planned_done = $this->get_done_planed();
+        $conversion = $this->get_deal_conversion();
         
         $params['open_task']        =   $open_task;
         $params['today_count']      =   $today_count;
@@ -281,4 +281,22 @@ class HomeController extends Controller
         return view('dashboard._planned_done', $params );
     }
     
+    public function get_deal_conversion() {
+        $months = lastYearByMonth();
+        $month = [];
+        $conversion = [];
+        if( isset($months) && !empty($months)){
+            foreach ($months as $key => $value) {
+                $month[] = $key;
+                $conversion_total = 0;
+                $start_date = date('Y-m-d', strtotime($value));
+                $end_date = date('Y-m-t', strtotime($value));
+                $convert = Lead::whereDate('created_at', '>=', $start_date)->whereDate('created_at', '<=', $end_date)->count();
+            }
+        }
+        $arr = array( 'month' => $month );
+        $params['planned_done'] = $arr;
+        return view('dashboard._planned_done', $params );
+
+    }
 }

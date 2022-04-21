@@ -143,6 +143,29 @@ function  get_payment_customer_typeahead(customer_id, first_name){
             }      
         });
 }
+
+function get_deal_amount(deal_id) {
+    $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+    $.ajax({
+            url: "{{ route('payments.customer.deal_amount') }}",
+            method:'POST',
+            data: {deal_id:deal_id},
+            beforeSend:function(){
+                $('#deal_amount').removeClass('badge bg-warning');
+                $('#deal_amount').html('');
+            },
+            success:function(response){
+                if( response.amount) {
+                    $('#deal_amount').addClass('badge bg-warning');
+                    $('#deal_amount').html('Amount: '+response.amount);
+                }
+            }      
+        });
+}
 </script>
 
 @endsection
