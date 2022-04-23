@@ -64,9 +64,10 @@
                         </li>
                         <li class="nav-item">
                             <a href="#horizontal-form-api" data-bs-toggle="tab" onclick="return get_settings_tab('api')" aria-expanded="true" class="nav-link">
-                                Api
+                                SMS & API
                             </a>
                         </li>
+                        
                         <li class="nav-item">
                             <a href="#horizontal-form-link" data-bs-toggle="tab" onclick="return get_settings_tab('link')" aria-expanded="true" class="nav-link">
                                 Link
@@ -92,13 +93,17 @@
                                 Common
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a href="#horizontal-form-code" data-bs-toggle="tab" onclick="return get_settings_tab('payment')" aria-expanded="true" class="nav-link @if($type=='payment') active @endif">
+                                Payment
+                            </a>
+                        </li>
                         @endif
                         <li class="nav-item">
                             <a href="#horizontal-form-code" data-bs-toggle="tab" onclick="return get_settings_tab('change')" aria-expanded="true" class="nav-link @if($type=='change') active @endif">
                                 Change Password
                             </a>
                         </li>
-                        
                     </ul> 
                     <!-- end nav-->
                     <div class="tab-content" style="position: relative">

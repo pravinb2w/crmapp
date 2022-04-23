@@ -605,7 +605,7 @@ class DealsController extends Controller
         }
         $this->generatePDF($invoice_id);
         $success = 'Invoice added successfully';
-        return response()->json(['error'=>[$success], 'status' => '0']);
+        return response()->json(['error'=>[$success], 'status' => '0', 'deal_id' => $deal_id]);
 
     }
 
@@ -634,7 +634,7 @@ class DealsController extends Controller
     public function unlink_invoice(Request $request) {
         $deal_id = $request->deal_id;
         $invoice_id = $request->invoice_id;
-        $type = $request->invoice_id;
+        $type = $request->invoice_id; 
 
         $invoice = Invoice::find($invoice_id);
         $invoice->delete();
@@ -685,12 +685,12 @@ class DealsController extends Controller
         } else if( $lead_type == 'invoice' ) {
             $invoice = Invoice::find($activity_id);
             $invoic->delete();
+        } else if($lead_type == 'note') {
+            $role = Note::find($activity_id);
+            $role->delete();    
         } else if( !empty( $lead_type ) ) {
             $role = Activity::find($activity_id);
             $role->delete();
-        } else {
-            $role = Note::find($activity_id);
-            $role->delete();    
         }
         return response()->json(['status' => '0', 'deal_id' => $deal_id, 'type' => $type]);
     }

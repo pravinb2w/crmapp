@@ -79,18 +79,22 @@
         </div>
     </div>
     <div class="form-group mt-3 text-end">
-        <button type="button" class="btn btn-light me-2" > Cancel </button>
+        <button type="button" class="btn btn-light me-2" onclick="return reset_form()"> Cancel </button>
         <button type="submit" class="btn btn-success"> Save </button>
     </div>
 </form>
 <script>
-    
+    function reset_form() {
+        $('#invoice-form')[0].reset();
+    }
+
     $("#invoice-form").validate({
         submitHandler:function(form) {
             $.ajax({
                 url: form.action,
                 type: form.method,
                 data: $(form).serialize(),
+                async: true,
                 beforeSend: function() {
                     $('.loader').show();
                 },
@@ -101,6 +105,9 @@
                     } else {
                         toastr.success('Success', response.error );
                         form.reset();
+                        if( response.deal_id){
+                            get_deal_common_sub_list(response.deal_id, 'invoice');
+                        }
                     }
                 }            
             });

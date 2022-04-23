@@ -10,6 +10,8 @@ use DB;
 use App\Models\User;
 use App\Models\CompanySettings;
 use App\Models\PrefixSetting;
+use App\Models\SmsIntegration;
+use App\Models\PaymentIntegration;
 use Illuminate\Support\Facades\Hash;
 
 
@@ -37,7 +39,9 @@ class AccountController extends Controller
         $id = Auth::id();
         $info = User::find($id);
         $prefix = PrefixSetting::where(['company_id' => $info->company_id, 'status' => 1])->get();
-        $params = ['type' => $type, 'info' => $info, 'prefix' => $prefix];
+        $sms = SmsIntegration::where('company_id', $info->company_id)->first();
+        $gateway = PaymentIntegration::all();
+        $params = ['type' => $type, 'info' => $info, 'prefix' => $prefix, 'sms' => $sms, 'gateway' => $gateway ];
         $view = 'crm.account._account_'.$type;
         return view($view, $params);
     }
@@ -119,6 +123,7 @@ class AccountController extends Controller
                     $sett->site_phone = $request->site_phone;
                     $sett->office_time = $request->office_time;
                     $sett->address = $request->address;
+                    $sett->gstin_no = $request->gstin_no;
 
                     if( $request->hasFile( 'site_logo' ) ) {
                         $file                       = $request->file( 'site_logo' )->store( 'account', 'public' );
@@ -167,6 +172,24 @@ class AccountController extends Controller
                 $sett->fcm_token = $request->fcm_token;
                 $sett->update();
 
+                $sms = SmsIntegration::where('company_id', $user->company_id)->first();
+                $enable_twilio = ($request->enable_twilio) ? 'yes' : 'no';
+
+                if( isset( $sms ) && !empty($sms)) {
+                    $sms->twilio_sid = $request->twilio_sid ?? null;
+                    $sms->twilio_auth_token = $request->twilio_auth_token ?? null;
+                    $sms->twilio_number = $request->twilio_number ?? null;
+                    $sms->enable_twilio = $enable_twilio;
+                    $sms->update();
+                } else {
+                    $sins['company_id'] = $user->company_id;
+                    $sins['twilio_sid'] = $request->twilio_sid ?? null;
+                    $sins['twilio_auth_token'] = $request->twilio_auth_token ?? null;
+                    $sins['twilio_number'] = $request->twilio_number ?? null;
+                    $sins['enable_twilio'] = $enable_twilio;
+                    $sms_ins = SmsIntegration::create($sins);
+                }
+
             } else if($type == 'link') {
                 $sett->facebook_url = $request->facebook_url;
                 $sett->twitter_url = $request->twitter_url;
@@ -206,6 +229,57 @@ class AccountController extends Controller
             $success = 'Account settings saved';
             return response()->json(['error'=>[$success], 'status' => '0']);
         }
-        
+    }
+
+    public function payment_save(Request $request) {
+
+        $payment_gateway        = $request->payment_gateway;
+        $status                 = $request->status;
+        $test_access_key        = $request->test_access_key;
+        $test_secret_key        = $request->test_secret_key;
+        $live_access_key        = $request->live_access_key;
+        $live_secret_key        = $request->live_secret_key;
+        $id                     = $request->id;
+
+        $tmp = [];
+
+        $user_id = Auth::id();
+        $user = User::find($user_id);
+
+        for ($i=0; $i < count($payment_gateway); $i++) { 
+            $tmp[] = [ 'id' => $id[$i] ?? '', 'payment_gateway' => $payment_gateway[$i] ?? '', 'test_access_key' => $test_access_key[$i], 
+                        'test_secret_key' => $test_secret_key[$i], 'live_access_key' => $live_access_key[$i],
+                        'live_secret_key' => $live_secret_key[$i], 'enabled' => (isset($status[$i]) ? 'live':'test')];
+        }
+        if( !empty($tmp)) {
+            foreach ($tmp as $key => $value) {
+                if( isset($value['payment_gateway']) && !empty($value['payment_gateway']) ) {
+
+                    if( isset( $value['id'] ) && !empty($value['id']) ){
+                        $pref = PaymentIntegration::find($value['id']);
+                        $pref->gateway = $value['payment_gateway'];
+                        $pref->test_access_key = $value['test_access_key'];
+                        $pref->test_secret_key = $value['test_secret_key'];
+                        $pref->live_access_key = $value['live_access_key'];
+                        $pref->live_secret_key = $value['live_secret_key'];
+                        $pref->enabled = $value['enabled'];
+                        $pref->update();
+                    } else {
+                        
+                        $ins[ 'gateway'] = $value['payment_gateway'];
+                        $ins[ 'test_access_key'] = $value['test_access_key'];
+                        $ins[ 'test_secret_key'] = $value['test_secret_key'];
+                        $ins[ 'live_access_key'] = $value['live_access_key'];
+                        $ins[ 'live_secret_key'] = $value['live_secret_key'];
+                        $ins[ 'enabled'] = $value['enabled'];
+                        $ins[ 'status'] = 1;
+                        $ins['company_id'] = $user->company_id;
+                        PaymentIntegration::create($ins);
+                    }
+                }
+            }
+        }
+        $success = 'Account settings saved';
+        return response()->json(['error'=>[$success], 'status' => '0']);
     }
 }

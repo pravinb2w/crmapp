@@ -7,7 +7,7 @@
             @php
                 if( isset( $info->notes ) && !empty($info->notes ) && $list_type == 'note' ){
                 foreach ($info->notes as $ionotes){
-                    $tmp['activity_type'] = 'Notes';
+                    $tmp['activity_type'] = 'note';
                     $tmp['subject'] = $ionotes->notes;
                     $tmp['deal_id'] = $info->id;
                     $tmp['id'] = $ionotes->id;
@@ -122,7 +122,7 @@
                                     <a class="dropdown-item" target="_blank" href="{{ asset('invoice').'/'.$litem['invoice_no'].'.pdf' }}">Download Pdf</a>
                                     @endif
 
-                                @elseif( $litem['activity_type'] != 'Notes' && $litem['activity_type'] != 'files' )
+                                @elseif( $litem['activity_type'] != 'note' && $litem['activity_type'] != 'files' )
                                 <a class="dropdown-item" href="javascript:;"  onclick="edit_activity('history','{{ $litem['id'] }}', '','{{ $deal_id }}')">Edit</a>
                                     @if( isset($litem['done_by'])&& empty($litem['done_by']))
                                         <a class="dropdown-item" href="javascript:;" onclick="mark_as_done('{{ $litem['id'] }}', '{{ $deal_id }}', 'deal')">Mark as Done</a>
@@ -131,7 +131,7 @@
                             @endif
                             @if(Auth::user()->hasAccess('deals', 'is_delete') )
                                 @if($litem['activity_type'] != 'invoice')
-                                <a class="dropdown-item" href="#"  onclick="change_activity_status('{{ $deal_id ?? '' }}','{{ $litem['id'] ?? '' }}', '{{ $litem['activity_type'] ?? '' }}' )">Delete</a>
+                                <a class="dropdown-item" href="#"  onclick="change_activity_status('{{ $deal_id ?? '' }}','{{ $litem['id'] ?? '' }}', '{{ strtolower($litem['activity_type']) ?? '' }}' )">Delete</a>
                                 @endif
                             @endif
                         </div>
@@ -181,7 +181,7 @@
                        data: {deal_id:deal_id, activity_id:activity_id, lead_type:lead_type},
                        success:function(response){
                            if(response.deal_id ) {
-                            get_tab('history', response.deal_id);
+                            get_deal_common_sub_list(response.deal_id, lead_type);
                            }
                        }      
                    });

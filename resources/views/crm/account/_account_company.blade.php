@@ -75,7 +75,7 @@
     <div class="row mb-3">
         <label for="site_phone" class="col-3 col-form-label"> GSTIN Number </label>
         <div class="col-9">
-            <input type="text" name="gstin_no" class="form-control" value="{{ $info->company->gstin_no ?? '' }}" id="gstin_no" placeholder="Copyrights">
+            <input type="text" name="gstin_no" class="form-control" value="{{ $info->company->gstin_no ?? '' }}" id="gstin_no" placeholder="GstinNo">
         </div>
     </div>
     <div class="justify-content-end row">

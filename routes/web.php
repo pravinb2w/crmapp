@@ -38,6 +38,7 @@ Route::middleware([SetViewVariable::class, 'auth'])->group(function(){
     Route::post('/account/settings/tab', [App\Http\Controllers\AccountController::class, 'get_settings_tab'])->name('settings.tab');
     Route::post('/account/save', [App\Http\Controllers\AccountController::class, 'save'])->name('account.save');
     Route::post('/company/save', [App\Http\Controllers\AccountController::class, 'company_save'])->name('account.company.save');
+    Route::post('/payment/save', [App\Http\Controllers\AccountController::class, 'payment_save'])->name('account.payment.save');
 
     Route::get('/customers', [App\Http\Controllers\CustomerController::class, 'index'])->name('customers');
     Route::post('/customers/add', [App\Http\Controllers\CustomerController::class, 'add_edit'])->name('customers.add');

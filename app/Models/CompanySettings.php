@@ -42,6 +42,12 @@ class CompanySettings extends Model implements Auditable
         return $this->hasOne(CompanySubscription::class, 'id', 'subscription_id');
     }
 
+    public function sms()
+    {
+        return $this->belongsTo(SmsIntegration::class, 'id', 'subscription_id');
+    }
+
+
     public function scopeLatests( Builder $query ) {
         return $query->orderBy( static::CREATED_AT, 'desc' );
     }

@@ -247,7 +247,7 @@
                                 get_tab('history',lead_id);
                             }
                             if( deal_id != '' && deal_id != undefined && deal_id != null ) {
-                                get_tab('history',deal_id);
+                                get_deal_common_sub_list(deal_id, 'activity');
 
                             }
                         }

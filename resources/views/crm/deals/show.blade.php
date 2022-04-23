@@ -335,7 +335,7 @@ form#activites-form>div>label>i {
                        data: {deal_id:deal_id, invoice_id:invoice_id, type:type},
                        success:function(response){
                             if(response.deal_id ) {
-                                get_tab('history', response.deal_id);
+                                get_deal_common_sub_list(response.deal_id, 'invoice');
                            }
                            
                        }      
@@ -373,7 +373,7 @@ form#activites-form>div>label>i {
                        async:true,
                        success:function(response){
                             if(response.deal_id ) {
-                                get_tab('history', response.deal_id);
+                                get_deal_common_sub_list(response.deal_id, 'invoice');
                             }
                        }      
                    });

@@ -73,7 +73,7 @@
                         <h3>{{ $company->site_name ?? '' }}</h3>
                         {{ $company->address ?? '' }} <br>
                         {{ $company->site_email ?? '' }}
-                        <h4>GSTIN: 89898999999999999</h4>
+                        <h4>GSTIN: {{ $company->gstin_no ?? 'n/a' }}</h4>
                      </address>
                     </td>
                 </tr>
@@ -114,7 +114,7 @@
                             <strong>Customer Details:</strong>
                              <address class="ps-2">
                                 {{ $info->customer->first_name ?? '' }} {{ $info->customer->last_name ?? '' }}<br />
-                                {{ $info->address ?? '' }}
+                                {{ $info->address ?? $info->customer->company->address ?? '' }}
                                 <br>
                                 {{ $info->customer->mobile_no ?? '' }}
                              </address>
