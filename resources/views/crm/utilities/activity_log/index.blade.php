@@ -31,8 +31,6 @@
                         <th>Logged By</th>
                         <th>Operation</th>
                         <th>Module</th>
-                        <th>Old Values</th>
-                        <th>New Values</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -67,8 +65,6 @@
                 {"data" : "logged_by"},
                 {"data" : "operation"},
                 {"data" : "module"},
-                {"data" : "old_values"},
-                {"data" : "new_values" },
                 {'data' : "action"}
             ],
             
