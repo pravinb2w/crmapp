@@ -318,7 +318,6 @@ Route::middleware([SetViewVariable::class, 'auth'])->group(function(){
         Route::post('/edit/{id?}', [App\Http\Controllers\EmailTemplateController::class, 'update'])->name('update.email_template');
         Route::post('/delete/{id?}', [App\Http\Controllers\EmailTemplateController::class, 'delete'])->name('delete.email_template');
     });
-
     
     Route::prefix('bulk_import')->group(function () {
         Route::get('/', [App\Http\Controllers\BulkPdfImport::class, 'index'])->name('bulk_import.index');
@@ -337,7 +336,6 @@ Route::middleware([SetViewVariable::class, 'auth'])->group(function(){
         Route::post('/edit/{id?}', [App\Http\Controllers\AnnouncementController::class, 'update'])->name('update.announcement');
         Route::post('/delete/{id?}', [App\Http\Controllers\AnnouncementController::class, 'destroy'])->name('destroy.announcement');
     }); 
-
  
     Route::prefix('activity_log')->group(function () {
         Route::get('/', [App\Http\Controllers\ActivityLogController::class, 'index'])->name('activity_log.index');

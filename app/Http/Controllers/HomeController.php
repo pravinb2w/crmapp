@@ -63,6 +63,8 @@ class HomeController extends Controller
         $close_week = $this->close_week();
         $planned_done = $this->get_done_planed();
         $conversion = $this->get_deal_conversion();
+        $overall_collection = $this->overall_collection();
+
         
         $params['open_task']        =   $open_task;
         $params['today_count']      =   $today_count;
@@ -71,6 +73,8 @@ class HomeController extends Controller
         $params['my_task']          =   $my_task;
         $params['close_week']       =   $close_week;
         $params['planned_done']     =   $planned_done;
+        $params['conversion']       =   $conversion;
+        $params['overall_collection'] = $overall_collection;
         
         $user_dashboard     =   User::find(auth()->user()->id);
         $starting_order     =   [["sortable-1","sortable-2","sortable-3","sortable-4","sortable-5","sortable-6","sortable-7","sortable-8","sortable-9"],["col-6","col-6","col-6","col-6","col-6","col-6","col-6","col-6","col-6"]];
@@ -285,18 +289,39 @@ class HomeController extends Controller
         $months = lastYearByMonth();
         $month = [];
         $conversion = [];
+        $started = [];
+        $won = [];
         if( isset($months) && !empty($months)){
             foreach ($months as $key => $value) {
                 $month[] = $key;
-                $conversion_total = 0;
                 $start_date = date('Y-m-d', strtotime($value));
                 $end_date = date('Y-m-t', strtotime($value));
-                $convert = Lead::whereDate('created_at', '>=', $start_date)->whereDate('created_at', '<=', $end_date)->count();
+                $convert = Deal::whereNotNull('lead_id')->whereDate('created_at', '>=', $start_date)->whereDate('created_at', '<=', $end_date)->count();
+                $start = Deal::whereDate('created_at', '>=', $start_date)->whereDate('created_at', '<=', $end_date)->count();
+                $won_deal = Deal::whereDate('won_at', '>=', $start_date)->whereDate('won_at', '<=', $end_date)->count();
+                $started[] = $start;
+                $conversion[] = $convert;
+                $won[] = $won_deal;
             }
         }
-        $arr = array( 'month' => $month );
-        $params['planned_done'] = $arr;
-        return view('dashboard._planned_done', $params );
+        $arr = array( 'month' => $month, 'conversion' => $conversion, 'started' => $started, 'won' => $won );
+        return $arr;
+    }
+
+    public function overall_collection() {
+        $year = date('Y');
+        $start = $year.'-01-01';
+        $start_date = date('Y-m-d', strtotime($start));
+
+        $end = $year.'-12-01';
+        $end_date = date('Y-m-t', strtotime($end));
+
+        $deal = Deal::whereDate('created_at', '>=', $start_date)->whereDate('created_at', '<=', $end_date)->count();
+        $lead = Lead::whereDate('created_at', '>=', $start_date)->whereDate('created_at', '<=', $end_date)->count();
+        $task = Task::whereDate('created_at', '>=', $start_date)->whereDate('created_at', '<=', $end_date)->count();
+
+        $arr = array( 'deal' => $deal, 'lead' => $lead, 'task' => $task );
+        return $arr;
 
     }
 }

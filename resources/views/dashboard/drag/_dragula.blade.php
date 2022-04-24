@@ -109,7 +109,7 @@
             <div class="card"> 
                 <div class="card-header">
                     <h3 class="header-title">
-                        Deals lost by resions
+                        Overall Collections
                         <span onclick="change_view_length('sortable-6')" class="ui-icon ui-icon-arrowthick-2-n-s"></span>
                     </h3>
                     <div class="x-y d-center">

@@ -133,6 +133,9 @@
 @php
     $enc = json_encode($close_week);
     $done = json_encode($planned_done);
+    $conversion = json_encode($conversion);
+    $overall_collection = json_encode($overall_collection);
+
 @endphp
 @endsection
 
@@ -147,6 +150,7 @@
     <script>
         var cweek = '<?= $enc ?>';
         var cdone = '<?= $done ?>';
+        var conversion = '<?= $conversion ?>';
         cweek = JSON.parse(cweek);
         cdone = JSON.parse(cdone);
         var colors=["#727cf5","#0acf97","#fa5c7c"],dataColors=$("#basic-column").data("colors");
@@ -209,8 +213,6 @@
             });
         });
 
-    
-
         $('#from_type').change(function(){
             var from_type = $('#from_type').val();
             $.ajaxSetup({
@@ -265,26 +267,14 @@
         } 
     </script>
     <script>
+        cconversion = JSON.parse(conversion);
         //   Deals Started
-        var xValues = ["0", "1", "2", "3", "4"];
-        var yValues = [55, 49, 44, 24, 15];
-        var barColors = ["#10B9F1", "lightgray","#10B9F1","lightgray","#10B9F1"];
+        var xValues = cconversion.month;
+        var yValues = cconversion.started;
+        var barColors = ["#10B9F1", "lightgray","#10B9F1","lightgray","#10B9F1", "lightgray","#10B9F1","lightgray","#10B9F1", "lightgray","#10B9F1","lightgray"];
     
         //  Deals Wond
-        var DWxValues = [
-            "JAN",
-            "FEB",
-            "MAR",
-            "APRL",
-            "MAY",
-            "JUN",
-            "JUL",
-            "AUG",
-            "SEP",
-            "OCT",
-            "NOV",
-            "DEC"
-        ];
+        var DWxValues = cconversion.month
         var DWyValues = [22,45,87,22,44,99,44,35,15,99,20,70];
         var DWbarColors = ["#10B9F1", "lightgray","#10B9F1","lightgray","#10B9F1", "lightgray","#10B9F1","lightgray","#10B9F1", "lightgray","#10B9F1","lightgray"];
         
@@ -305,10 +295,10 @@
         new Chart("myChart-deals-won", {
         type: "bar",
         data: {
-            labels: DWxValues,
+            labels: cconversion.month,
             datasets: [{
             backgroundColor: DWbarColors,
-            data: DWyValues
+            data: cconversion.won
             }]
         },
         options: {
@@ -334,10 +324,10 @@
         new Chart("myChart-deals-conversion", {
             type: "bar",
             data: {
-                labels: DWxValues,
+                labels: cconversion.month,
                 datasets: [{
                 backgroundColor: DWbarColors,
-                data: DWyValues
+                data: cconversion.conversion
                 }]
             },
             options: {
@@ -346,17 +336,19 @@
         });
     </script>
     <script>
+        var overall_collection = '<?= $overall_collection ?>';
+        overall_collection = JSON.parse(overall_collection);
+
         google.charts.load('current', {'packages':['corechart']});
         google.charts.setOnLoadCallback(drawChart);
         
         function drawChart() {
         var data = google.visualization.arrayToDataTable([
-        ['Contry', 'Mhl'],
-        ['Italy',54.8],
-        ['France',48.6],
-        ['Spain',44.4],
-        ['USA',23.9],
-        ['Argentina',14.5]
+        ['Collection', 'Mhl'],
+        ['Deal',overall_collection.deal],
+        ['Lead', overall_collection.lead],
+        ['Task', overall_collection.task],
+       
         ]); 
         
         var chart = new google.visualization.PieChart(document.getElementById('myChart-pie'));
