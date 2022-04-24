@@ -19,9 +19,9 @@
         </div>
     </div>     
     <div class="card">
-        <div class="card-header text-end bg-light">
+        {{-- <div class="card-header text-end bg-light">
             <a href="{{ route("create.announcement") }}" class="btn btn-danger">Clear Logs</a>
-        </div>
+        </div> --}}
         <div class="card-body">
             
             <table class="table table-centered w-100" id="log-datatable">
