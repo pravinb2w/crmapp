@@ -341,6 +341,8 @@ Route::middleware([SetViewVariable::class, 'auth'])->group(function(){
  
     Route::prefix('activity_log')->group(function () {
         Route::get('/', [App\Http\Controllers\ActivityLogController::class, 'index'])->name('activity_log.index');
+        Route::post('/log', [App\Http\Controllers\ActivityLogController::class, 'ajax_list'])->name('activity_log.log');
+        Route::post('/view', [App\Http\Controllers\ActivityLogController::class, 'view'])->name('activity_log.view');
     }); 
 
     Route::get('backup', [App\Http\Controllers\DataBaseBackupController::class, 'index'])->name('db-backup.index');

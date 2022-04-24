@@ -23,23 +23,19 @@
             <a href="{{ route("create.announcement") }}" class="btn btn-danger">Clear Logs</a>
         </div>
         <div class="card-body">
-            <table class="table table-bordered table-hover table-striped">
-                <thead>
+            
+            <table class="table table-centered w-100" id="log-datatable">
+                <thead class="table-light">
                     <tr>
-                        <th>Description</th>
-                        <th>Date </th>
-                        <th>Staff </th>
+                        <th>Log Date</th>
+                        <th>Logged By</th>
+                        <th>Operation</th>
+                        <th>Module</th>
+                        <th>Old Values</th>
+                        <th>New Values</th>
+                        <th>Action</th>
                     </tr>
                 </thead>
-                <tbody>
-                    @for ($i=0; $i<30; $i++)
-                        <tr>
-                            <td>User Successfully Logged In [User Id: 1, Is Staff Member: No, IP: 103.251.217.72]</td>
-                            <td>09/04/2022 7:57 AM</td>
-                            <td>Herbert Bosco</td>
-                        </tr>
-                    @endfor
-                </tbody>
             </table>
         </div>
         <div class="card-footer bg-light">
@@ -47,4 +43,60 @@
         </div>
     </div>
 </div>
+<script src="{{ asset('assets/js/vendor/jquery.dataTables.min.js') }}"></script>
+<script src="{{ asset('assets/js/vendor/dataTables.bootstrap5.js') }}"></script>
+<script src="{{ asset('assets/js/vendor/dataTables.responsive.min.js') }}"></script>
+<script src="{{ asset('assets/js/vendor/responsive.bootstrap5.min.js') }}"></script>
+<script src="{{ asset('assets/js/vendor/dataTables.checkboxes.min.js') }}"></script>
+{{-- <script src="{{ asset('assets/js/pages/demo.products.js') }}"></script> --}}
+<script>
+    $(document).ready(function(){"use strict";
+    
+    const roletable = $('#log-datatable').DataTable( {
+            
+            "processing"    : true,
+            "serverSide"    : true, 
+            "ajax"          : {
+                "url"       : "<?= route( 'activity_log.log' ); ?>",
+                "dataType"  : "json",
+                "type"      : "POST",
+                "data"      : { "_token" : "<?=csrf_token();?>" }
+            },
+            "columns"       : [
+                {"data" : "log_date"},
+                {"data" : "logged_by"},
+                {"data" : "operation"},
+                {"data" : "module"},
+                {"data" : "old_values"},
+                {"data" : "new_values" },
+                {'data' : "action"}
+            ],
+            
+        } );
+    });
+
+    function ReloadDataTableModal(id) {
+        var roletable = $('#'+id).DataTable();
+        roletable.ajax.reload();
+    }
+
+    function get_log_view(log_id){
+        var ajax_url = "{{ route('activity_log.view') }}";
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        $.ajax({
+            url: ajax_url,
+            method:'POST',
+            data: {log_id:log_id},
+            success:function(res){
+                $('#Mymodal').html(res);
+                $('#Mymodal').modal('show');
+            }
+        })
+        return false;
+    }
+</script>
 @endsection
