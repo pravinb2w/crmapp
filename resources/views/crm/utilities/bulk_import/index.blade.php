@@ -11,16 +11,16 @@
                     <ol class="breadcrumb m-0">
                         <li class="breadcrumb-item"><a href="javascript: void(0);">CRM</a></li>
                         <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
-                        <li class="breadcrumb-item active">Bulk Export</li>
+                        <li class="breadcrumb-item active">Bulk Import</li>
                     </ol>
                 </div>
-                <h4 class="page-title">Bulk Export </h4>
+                <h4 class="page-title">Bulk Import </h4>
             </div>
         </div>
     </div>     
     <div class="card">
         <div class="card-header bg-light">
-            <h3 class="lead">Bulk PDF Export</h3>
+            <h3 class="lead">Bulk Import</h3>
         </div>
         <div class="card-body">
             <form action="">

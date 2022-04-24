@@ -217,10 +217,10 @@
                             <a class="{{ Route::is(['create.email_template','edit.email_template']) ? "active" : ""}}" href="{{ route('email.index') }}">Email Template</a>
                         </li>
                         <li>
-                            <a href="{{ route("bulk_import.index") }}">Bulk Pdf Export</a>
+                            <a href="{{ route("bulk_import.index") }}"> Bulk Import </a>
                         </li>
                         <li>
-                            <a href="{{ route("activity_log.index") }}">Activity Log</a>
+                            <a href="{{ route("activity_log.index") }}"> Activity Log </a>
                         </li>
                         <li>
                             <a href="{{ route("announcement.index") }}">Announcement</a>
