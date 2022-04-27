@@ -10,7 +10,10 @@ use App\Models\CompanySettings;
 use App\Models\Customer;
 use App\Models\Deal;
 use App\Models\Payment;
-
+use App\Models\PaymentIntegration;
+use Illuminate\Support\Str;
+use Razorpay\Api\Api;
+use Session;
 
 class PaymentController extends Controller
 {
@@ -86,6 +89,8 @@ class PaymentController extends Controller
 
     public function add(Request $request) {
         $params[ 'title' ]  = 'Add Payment';
+        $request->session()->forget('pay_post');
+
         return view( 'crm.payments.add', $params );
     }
 
@@ -110,35 +115,51 @@ class PaymentController extends Controller
     }
 
     public function save(Request $request) {
+        $payment_mode = $request->payment_mode;
+        if( isset( $payment_mode ) && $payment_mode == 'online' ) {
+            //pay_gateway
+            $role_validator   = [
+                'pay_gateway'      => [ 'required', 'string', 'max:255'],
+            ];
+        } else {
+            $role_validator   = [
+                'payment_mode'      => [ 'required', 'string', 'max:255'],
+                'payment_method'      => [ 'required', 'string', 'max:255'],
+                'amount'      => [ 'required', 'string', 'max:255'],
+                'payment_status'      => [ 'required', 'string', 'max:255'],
+            ];
+        }
         
-        $role_validator   = [
-            'payment_mode'      => [ 'required', 'string', 'max:255'],
-            'payment_method'      => [ 'required', 'string', 'max:255'],
-            'amount'      => [ 'required', 'string', 'max:255'],
-            'payment_status'      => [ 'required', 'string', 'max:255'],
-        ];
         //Validate the product
         $validator                     = Validator::make( $request->all(), $role_validator );
         
         if ($validator->passes()) {
+            if( $request->payment_mode == 'online' ) {
+                $success = 'Redirect to Payment page';
+                $request->session()->put('pay_post', $_POST);
 
-            $ins['payment_mode'] = $request->payment_mode;
-            $ins['customer_id'] = $request->customer_id;
-            $ins['deal_id'] = $request->deal_id ?? null;
-            $ins['amount'] = $request->amount;
-            $ins['payment_method'] = $request->payment_method;
-            $ins['cheque_no'] = $request->cheque_no ?? null;
-            if( $request->cheque_date) {
-                $ins['cheque_date'] = date('Y-m-d', strtotime($request->cheque_date ));
+                return response()->json(['error'=>[$success], 'status' => '0', 'pay_gateway' => $request->pay_gateway]);
+            } else {
+                $ins['payment_mode'] = $request->payment_mode;
+                $ins['customer_id'] = $request->customer_id;
+                $ins['deal_id'] = $request->deal_id ?? null;
+                $ins['amount'] = $request->amount;
+                $ins['payment_method'] = $request->payment_method;
+                $ins['cheque_no'] = $request->cheque_no ?? null;
+                if( $request->cheque_date) {
+                    $ins['cheque_date'] = date('Y-m-d', strtotime($request->cheque_date ));
+                }
+                $ins['reference_no'] = $request->reference_no ?? null;
+                $ins['payment_status'] = $request->payment_status;
+                $ins['added_by'] = Auth::id();
+                
+                Payment::create($ins);
+                $success = 'Payment Added';
+                
+                return response()->json(['error'=>[$success], 'status' => '0']);
             }
-            $ins['reference_no'] = $request->reference_no ?? null;
-            $ins['payment_status'] = $request->payment_status;
-            $ins['added_by'] = Auth::id();
-            
-            Payment::create($ins);
-            $success = 'Payment Added';
-            
-            return response()->json(['error'=>[$success], 'status' => '0']);
+
+           
         }
         return response()->json(['error'=>$validator->errors()->all(), 'status' => '1']);
     }
@@ -173,5 +194,141 @@ class PaymentController extends Controller
         $params['amount'] = $amount;
         return response()->json($params);
 
+    }
+
+    public function get_page(Request $request) {
+        if (! $request->ajax()) {
+            return response('Forbidden.', 403);
+        }
+        $mode = $request->mode;
+        $request->session()->forget('pay_post');
+
+        if( $mode == 'offline') {
+            return view('crm.payments._offline');
+        } else {
+            return view('crm.payments._online');
+        }
+        
+    }
+
+    public function initiate_request(Request $request) {
+        $payment_gateway = $request->payment_gateway;
+        $pay_post = $request->session()->pull('pay_post');
+        if( $payment_gateway == 'razor') {
+            return view('crm.payments.razor.pay_form', $pay_post);
+        } else {
+            
+        }
+        
+    }
+
+    public function payment_initiate_request(Request $request) {
+        // Generate random receipt id
+        $receiptId = Str::random(20);
+        $pay_info = PaymentIntegration::where('gateway', 'Razorpay')->first();
+        // Create an object of razorpay
+        $api = new Api($pay_info->test_access_key, $pay_info->test_secret_key);
+
+        // In razorpay you have to convert rupees into paise we multiply by 100
+        // Currency will be INR
+        // Creating order
+        $order = $api->order->create(array(
+            'receipt' => $receiptId,
+            'amount' => $request->all()['amount'] * 100,
+            'currency' => 'INR'
+            )
+        );
+
+
+        // Return response on payment page
+        $response = [
+            'orderId' => $order['id'],
+            'razorpayId' => $pay_info->test_access_key,
+            'amount' => $request->all()['amount'] * 100,
+            'name' => $request->all()['name'],
+            'currency' => 'INR',
+            'email' => $request->all()['email'],
+            'contact_no' => $request->all()['contact_no'],
+            'address' => $request->all()['address'],
+            'description' => 'Testing description',
+            'customer_id' => $request->all()['customer_id'],
+            'deal_id' => $request->all()['deal_id'],
+        ];
+        //insert
+        $ins['payment_mode'] = 'online';
+        $ins['name'] = $request->all()['name'];
+        $ins['currency'] = 'INR';
+        $ins['email'] = $request->all()['email'];
+        $ins['contact_no'] = $request->all()['contact_no'];
+        $ins['address'] = $request->all()['address'];
+        $ins['description'] = 'Testing description';
+        $ins['customer_id'] = $request->all()['customer_id'];
+        $ins['deal_id'] = $request->all()['deal_id'];
+        $ins['session_id'] = session()->getId();
+        $ins['payment_method'] = 'razor';
+        $ins['amount'] = $request->all()['amount'];
+        $ins['payment_status'] = 'pending';
+        $ins['added_by'] = Auth::id();
+
+        Payment::create($ins);
+
+        // Session::put('pay_post', $response);
+        // Let's checkout payment page is it working
+        return view('crm.payments.razor.payment_page',compact('response'));
+    }
+
+
+
+    // In this function we return boolean if signature is correct
+    private function SignatureVerify($_signature,$_paymentId,$_orderId)
+    {
+        try
+        {
+            // Create an object of razorpay class
+            $pay_info = PaymentIntegration::where('gateway', 'Razorpay')->first();
+            $api = new Api($pay_info->test_access_key, $pay_info->test_secret_key);
+            $attributes  = array('razorpay_signature'  => $_signature,  'razorpay_payment_id'  => $_paymentId ,  'razorpay_order_id' => $_orderId);
+            $order  = $api->utility->verifyPaymentSignature($attributes);
+            return true;
+        }
+        catch(\Exception $e)
+        {
+            // If Signature is not correct its give a excetption so we use try catch
+            return false;
+        }
+    }
+
+    public function payment_complete(Request $request) {
+
+        // Now verify the signature is correct . We create the private function for verify the signature
+        $signatureStatus = $this->SignatureVerify(
+            $request->all()['rzp_signature'],
+            $request->all()['rzp_paymentid'],
+            $request->all()['rzp_orderid']
+        );
+
+        $pay_post = $request->session()->pull('pay_post');
+
+        $pay_info = Payment::where('session_id', session()->getId())->first();
+        
+        $pay_info->order_id = $request->all()['rzp_orderid'];
+        $pay_info->reference_no = $request->all()['rzp_paymentid'];
+        // If Signature status is true We will save the payment response in our database
+        // In this tutorial we send the response to Success page if payment successfully made
+        if($signatureStatus == true)
+        {
+            $pay_info->payment_status = 'paid';
+            $pay_info->update();
+            // You can create this page
+            return view('crm.payments.razor._payment_success');
+        }
+        else{
+            $pay_info->payment_status = 'failed';
+            $pay_info->update();
+            // You can create this page
+            return view('crm.payments.razor._payment_fail');
+        }
+
+        return view('crm.payments.razor._payment_success');
     }
 }

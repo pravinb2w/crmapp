@@ -28,6 +28,13 @@ class Payment extends Model implements Auditable
         'description',
         'status',
         'added_by',
+        'session_id',
+        'order_id',
+        'razorpay_id',
+        'name',
+        'email',
+        'contact_no',
+        'currency',
     ];
 
     public function scopeLatests( Builder $query ) {

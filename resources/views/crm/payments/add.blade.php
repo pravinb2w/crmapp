@@ -3,7 +3,30 @@
 @section('content')
 
 <div class="container-fluid">
-                        
+    <style>
+        .loader{
+        position: absolute;
+        top:0px;
+        right:0px;
+        border: 10px solid #f3f3f3; /* Light grey */
+        border-top: 10px solid #3498db; /* Blue */
+        border-radius: 50%;
+        width: 75px;
+        height: 75px;
+        animation: spin 0.5s linear infinite;
+        background-position:center;
+        z-index:10000000;
+        opacity: 0.4;
+        filter: alpha(opacity=40);
+        left: 50%;
+        top: 30%;
+        display: none;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    </style>                    
     <!-- start page title -->
     <div class="row">
         <div class="col-12">
@@ -40,11 +63,11 @@
                                 <label for="payment_type"> Payment Mode </label>
                                 <div class="row mt-2" >
                                     <div class="col-sm-3 rounded border p-2 text-center">
-                                        <input type="radio" name="payment_mode" value="online" role="button" class="edit form-check-input" id="online" checked="checked">
+                                        <input type="radio" name="payment_mode" onclick="return get_payment_page(this.value)" value="online" role="button" class="edit form-check-input" id="online" checked="checked">
                                         <label class="form-check-label" for="online" role="button" > Online </label>
                                     </div>
                                     <div class="col-sm-3 rounded border p-2 text-center">
-                                        <input type="radio" name="payment_mode" value="offline" role="button" class="edit form-check-input" id="offline" checked="checked">
+                                        <input type="radio" name="payment_mode" value="offline" onclick="return get_payment_page(this.value)" role="button" class="edit form-check-input" id="offline" checked="checked">
                                         <label class="form-check-label" for="offline" role="button" > Offline </label>
                                     </div>
                                 </div>
@@ -58,8 +81,10 @@
                             <div class="col-12 text-end">
                                 <a href="{{ route('payments') }}" class="btn btn-dark"> Cancel</a>
                                 <button type="submit" class="btn btn-info" id="save">Save</button>
+                                <button type="submit" class="btn btn-success" id="pay">Pay</button>
                             </div>
                         </div>
+                        <div class="loader"></div>
                     </form>
                 </div>  <!-- end card-body -->
             </div>  <!-- end card -->
@@ -87,9 +112,16 @@ $("#payments-form").validate({
                     toastr.error('Error', response.error );
                 } else {
                     toastr.success('Success', response.error );
-                    setTimeout(function(){
-                        window.location.href="{{ route('payments') }}";
-                    },100);
+                    if( response.pay_gateway == 'razor' ) {
+                        setTimeout(function(){
+                            window.location.href="{{ route('payments.initiate', ['payment_gateway' => 'razor']) }}";
+                        },100);
+                    } else {
+                        setTimeout(function(){
+                            window.location.href="{{ route('payments') }}";
+                        },100);
+                    }
+                    
                 }
             }            
         });
@@ -166,6 +198,38 @@ function get_deal_amount(deal_id) {
             }      
         });
 }
+
+$('#pay').hide();
+
+function get_payment_page(mode) {
+    $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+    $.ajax({
+        url: "{{ route('payments.get_page') }}",
+        method:'POST',
+        data: {mode:mode},
+        beforeSend:function(){
+            $('.loader').show();
+        },
+        success:function(response){
+            $('.loader').hide();
+            console.log(mode);
+            if(mode == 'online') {
+                $('#pay').show();
+                $('#save').hide();
+            } else {
+                $('#pay').hide();
+                $('#save').show();
+
+            }
+            $('#payment-content').html(response);
+        }      
+    });
+}
+
 </script>
 
 @endsection

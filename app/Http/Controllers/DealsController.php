@@ -589,7 +589,7 @@ class DealsController extends Controller
         $up_data = [];
         for ($i=1; $i <= $limit; $i++) { 
             $ups['invoice_id'] = $invoice_id;
-            if( $_POST['item_'.$i]) {
+            if( $_POST['item_'.$i] ) {
                 $ups['product_id'] = $_POST['item_'.$i] ?? '';
                 $ups['description'] = $_POST['description_'.$i] ?? '';
                 $ups['qty'] = $_POST['quantity_'.$i] ?? '';
@@ -624,8 +624,8 @@ class DealsController extends Controller
             'company' => $company,
             'taxable' => $taxable,
         ];
-        // return view('crm.invoice._new_deal_invoice', $data);
-        $pdf = PDF::loadView('myPdf', $data);
+        //return view('crm.invoice._new_deal_invoice', $data);
+        $pdf = PDF::loadView('myPDF', $data);
         $path = public_path('invoice');
         return $pdf->save($path . '/' . str_replace("/", "_", $info->invoice_no ).'.pdf');
         return $pdf->download($info->invoice_no.'.pdf');

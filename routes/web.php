@@ -164,6 +164,11 @@ Route::middleware([SetViewVariable::class, 'auth'])->group(function(){
         Route::post('/customer/deal/amount', [App\Http\Controllers\PaymentController::class, 'customer_deal_amount'])->name('payments.customer.deal_amount');
         Route::post('/view', [App\Http\Controllers\PaymentController::class, 'view'])->name('payments.view');
         Route::post('/delete', [App\Http\Controllers\PaymentController::class, 'delete'])->name('payments.delete');
+        Route::post('/get/page', [App\Http\Controllers\PaymentController::class, 'get_page'])->name('payments.get_page');
+        Route::get('/initiate-request/{payment_gateway}', [App\Http\Controllers\PaymentController::class, 'initiate_request'])->name('payments.initiate');
+        Route::post('/initiate-request/payment', [App\Http\Controllers\PaymentController::class, 'payment_initiate_request'])->name('payments.initiate.request');
+        Route::post('/payment/complete', [App\Http\Controllers\PaymentController::class, 'payment_complete'])->name('payments.complete');
+
     });
 
     //tasks route
