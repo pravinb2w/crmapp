@@ -5,9 +5,12 @@
 <div class="container-fluid mt-3">
     <div class="row">
         <div class="card col-6 offset-3">
-
+            <div class="col-12 text-center">
+                <img src="{{asset('assets/images/payments/razor.png')}}" alt="" for="razor">
+            </div>
             <form class="form-horizontal modal-body" id="payments-form" method="POST" action="{{ route('payments.initiate.request') }}" autocomplete="off">
                 @csrf
+                
                 <div class="col-12">
                     <div class="row mt-2">
                         <label for="name" class="col-3">Name</label>
@@ -38,7 +41,7 @@
                     <div class="row mt-2">
                         <label for="amount" class="col-3">Amount</label>
                         <div class="col-9">
-                            <input type="text" class="form-control price" id="amount" name="amount" required>
+                            <input type="text" class="form-control price" id="amount" name="amount" onkeypress="return isNumberKey(this, event);" required>
                         </div>
                     </div>
                     <div class="row mt-2">
@@ -51,5 +54,22 @@
         </div>
     </div>
 </div>
-
+<script>
+    function isNumberKey(txt, evt) {
+      var charCode = (evt.which) ? evt.which : evt.keyCode;
+      if (charCode == 46) {
+        //Check if the text already contains the . character
+        if (txt.value.indexOf('.') === -1) {
+          return true;
+        } else {
+          return false;
+        }
+      } else {
+        if (charCode > 31 &&
+          (charCode < 48 || charCode > 57))
+          return false;
+      }
+      return true;
+    }
+</script>
 @endsection
