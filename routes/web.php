@@ -168,7 +168,6 @@ Route::middleware([SetViewVariable::class, 'auth'])->group(function(){
         Route::get('/initiate-request/{payment_gateway}', [App\Http\Controllers\PaymentController::class, 'initiate_request'])->name('payments.initiate');
         Route::post('/initiate-request/payment', [App\Http\Controllers\PaymentController::class, 'payment_initiate_request'])->name('payments.initiate.request');
         Route::post('/payment/complete', [App\Http\Controllers\PaymentController::class, 'payment_complete'])->name('payments.complete');
-
     });
 
     //tasks route
@@ -326,7 +325,6 @@ Route::middleware([SetViewVariable::class, 'auth'])->group(function(){
     
     Route::prefix('bulk_import')->group(function () {
         Route::get('/', [App\Http\Controllers\BulkPdfImport::class, 'index'])->name('bulk_import.index');
-        Route::get('/create', [App\Http\Controllers\BulkPdfImport::class, 'create'])->name('create.bulk_import');
         Route::post('/create', [App\Http\Controllers\BulkPdfImport::class, 'store'])->name('store.bulk_import');
         Route::get('/edit/{id?}', [App\Http\Controllers\BulkPdfImport::class, 'edit'])->name('edit.bulk_import');
         Route::post('/edit/{id?}', [App\Http\Controllers\BulkPdfImport::class, 'update'])->name('update.bulk_import');

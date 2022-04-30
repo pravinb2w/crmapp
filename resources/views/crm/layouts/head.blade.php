@@ -203,7 +203,9 @@
         @endif 
 
         @if ($errors->any())
-            toastr.info('{{ $message }}');
+            @if( isset($message) )
+                toastr.info('{{ $message }}');
+            @endif
         @endif
     });
 

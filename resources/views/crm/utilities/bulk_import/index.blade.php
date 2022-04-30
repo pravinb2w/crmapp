@@ -23,28 +23,43 @@
             <h3 class="lead">Bulk Import</h3>
         </div>
         <div class="card-body">
-            <form action="">
-                <div class="mb-3">
-                    <strong class="mb-1">* Select Type </strong>
-                    <select class="form-select">
-                        <option selected>Open this select menu</option>
-                        <option value="1">One</option>
-                        <option value="2">Two</option>
-                        <option value="3">Three</option>
-                    </select>
+            <div class="row">
+                <div class="col-12">
+                    @if($errors->any())
+                        <div class="alert alert-danger">
+                            <ul class="list-unstyled">
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
+                    @if (Session::has('success'))
+                        <div class="alert alert-success mt-2">{{ Session::get('success') }} 
+                        </div>
+                    @endif
                 </div>
-                <div class="mb-3">
-                    <strong class="mb-1">* From Date </strong>
-                    <input type="date" name="" id="" class="form-control">
+                <div class="col-6">
+                    <form action="{{ route('store.bulk_import') }}" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        <div class="mb-3">
+                            <strong class="mb-1"> Customer Data File </strong>
+                            <input type="file" name="excel_file" id="excel_file" >
+                        </div>
+                        <div class="mb-3">
+                            <input type="submit" value="Import" name="" id="" class="btn btn-primary">
+                        </div>
+                    </form>
                 </div>
-                <div class="mb-3">
-                    <strong class="mb-1">* To Date </strong>
-                    <input type="date" name="" id="" class="form-control">
+                <div class="col-6">
+                    <label for="">Sample Customer Data Excel file </label>
+                    <span class="ml-3"> <a href="{{ asset('assets/bimport.xls') }}"> Click to Download Sample </a></span>
+                    <div class="text-danger">
+                        <small>( File should be excel. Excel format should be present same as sample document, other wise file will not be import, * If data contains duplicates it will insert, please check data before import )</small>
+                    </div>
                 </div>
-                <div class="mb-3">
-                    <input type="submit" value="Export" name="" id="" class="btn btn-primary">
-                </div>
-            </form>
+            </div>
+            
         </div>
         <div class="card-footer bg-light">
             
