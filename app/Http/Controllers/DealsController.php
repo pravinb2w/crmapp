@@ -625,7 +625,7 @@ class DealsController extends Controller
             'taxable' => $taxable,
         ];
         //return view('crm.invoice._new_deal_invoice', $data);
-        $pdf = PDF::loadView('myPDF', $data);
+        $pdf = PDF::loadView('mypdf', $data);
         $path = public_path('invoice');
         return $pdf->save($path . '/' . str_replace("/", "_", $info->invoice_no ).'.pdf');
         return $pdf->download($info->invoice_no.'.pdf');
