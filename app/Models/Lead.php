@@ -114,4 +114,5 @@ class Lead extends Model implements Auditable
     {
         return $this->hasMany(Note::class, 'lead_id')->orderBy('notes.created_at', 'desc');
     }
+    
 }

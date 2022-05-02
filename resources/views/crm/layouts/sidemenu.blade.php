@@ -242,10 +242,10 @@
                 <div class="collapse" id="sidebarTasks">
                     <ul class="side-nav-second-level">
                         <li>
-                            <a href="javascipt:void(0);">Sales</a>
+                            <a href="{{ route('reports.sales') }}">Sales</a>
                         </li>
                         <li>
-                            <a href="javascipt:void(0);">Deals Started/Convertion</a>
+                            <a href="{{ route('reports.started') }}">Deals Started/Convertion</a>
                         </li>
                         <li>
                             <a href="javascipt:void(0);">Activities Planned Vs Done</a>

@@ -331,6 +331,19 @@ Route::middleware([SetViewVariable::class, 'auth'])->group(function(){
         Route::post('/delete/{id?}', [App\Http\Controllers\BulkPdfImport::class, 'delete'])->name('delete.bulk_import');
     }); 
 
+    Route::prefix('reports')->group(function () {
+        Route::get('/', [App\Http\Controllers\ReportController::class, 'index'])->name('reports.sale');
+        Route::get('/started', [App\Http\Controllers\ReportController::class, 'deal_started'])->name('reports.started');
+        Route::post('/started/list', [App\Http\Controllers\ReportController::class, 'ajax_deal_started_list'])->name('reports.started.list');
+        Route::post('/started/download', [App\Http\Controllers\ReportController::class, 'deal_started_download'])->name('reports.started.download');
+        Route::post('/started/pdf/download', [App\Http\Controllers\ReportController::class, 'deal_started_pdf_download'])->name('reports.started_pdf.download');
+        Route::get('/sales', [App\Http\Controllers\ReportController::class, 'sales'])->name('reports.sales');
+        Route::post('/sales/list', [App\Http\Controllers\ReportController::class, 'ajax_deal_sales_list'])->name('reports.sales.list');
+        Route::post('/sales/download', [App\Http\Controllers\ReportController::class, 'deal_sales_download'])->name('reports.sales.download');
+        Route::post('/sales/pdf/download', [App\Http\Controllers\ReportController::class, 'deal_sales_pdf_download'])->name('reports.sales_pdf.download');
+        Route::get('/planned', [App\Http\Controllers\ReportController::class, 'planned_done'])->name('reports.planned');
+    }); 
+
     Route::prefix('announcement')->group(function () {
         Route::get('/', [App\Http\Controllers\AnnouncementController::class, 'index'])->name('announcement.index');
         Route::get('/create', [App\Http\Controllers\AnnouncementController::class, 'create'])->name('create.announcement');
