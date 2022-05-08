@@ -1,7 +1,7 @@
 <div class="leftside-menu">
     
     <!-- LOGO -->
-    <a href="#" class="logo text-center logo-light">
+    <a href="{{ route('dashboard') }}" class="logo text-center logo-light">
         <span class="logo-lg">
            <img src="{{ asset('assets/images/logo/logo-color.png') }}" height="30">
         </span>
@@ -15,7 +15,7 @@
     </a>
 
     <!-- LOGO -->
-    <a href="#" class="logo text-center logo-dark">
+    <a href="{{ route('dashboard') }}" class="logo text-center logo-dark">
         <span class="logo-lg">
             <img src="{{ asset('assets/images/logo-dark.png') }}" alt="" height="16">
         </span>
@@ -23,7 +23,7 @@
             <img src="{{ asset('assets/images/logo_sm_dark.png') }}" alt="" height="16">
         </span>
     </a>
-
+    
     <div class="h-100" id="leftside-menu-container" data-simplebar>
         <!--- Sidemenu -->
         <ul class="side-nav">
