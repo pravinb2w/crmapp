@@ -112,9 +112,9 @@ $("#payments-form").validate({
                     toastr.error('Error', response.error );
                 } else {
                     toastr.success('Success', response.error );
-                    if( response.pay_gateway == 'razor' ) {
+                    if( response.pay_gateway == 'razorpay' ) {
                         setTimeout(function(){
-                            window.location.href="{{ route('payments.initiate', ['payment_gateway' => 'razor']) }}";
+                            window.location.href="{{ route('payments.initiate', ['payment_gateway' => 'razorpay']) }}";
                         },100);
                     } else {
                         setTimeout(function(){
@@ -176,7 +176,7 @@ function  get_payment_customer_typeahead(customer_id, first_name){
         });
 }
 
-function get_deal_amount(deal_id) {
+function get_deal_amount(invoice_id) {
     $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -185,7 +185,7 @@ function get_deal_amount(deal_id) {
     $.ajax({
             url: "{{ route('payments.customer.deal_amount') }}",
             method:'POST',
-            data: {deal_id:deal_id},
+            data: {invoice_id:invoice_id},
             beforeSend:function(){
                 $('#deal_amount').removeClass('badge bg-warning');
                 $('#deal_amount').html('');

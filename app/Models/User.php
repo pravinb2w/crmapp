@@ -105,4 +105,23 @@ class User extends Authenticatable implements Auditable
         }
         return true;
     }
+
+    public function hasLimit($module) {
+            
+        $info = DB::table('company_subscriptions')
+                ->join('subscriptions', function ($join) {
+                    $join->on('company_subscriptions.subscription_id', '=', 'subscriptions.id');
+                })->where('company_subscriptions.status', 1)->first();
+
+        if( isset($info) && !empty($info)) {
+            
+            if( $module == 'template' ) {
+                return $info->no_of_email_templates ?? 0;
+            } else {
+                return false;
+            }
+            
+        }
+        return true;
+    }
 }

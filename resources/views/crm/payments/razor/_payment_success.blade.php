@@ -12,7 +12,7 @@
                 <div class="badge bg-success"> 
                     Payment Successfully Completed.
                 </div>
-                <div class="text-center mb-3">
+                <div class="text-center mb-3 mt-3">
                     <a href="{{ route('payments') }}" class="btn btn-success"> Go to Payment List</a>
                 </div>
             </div>

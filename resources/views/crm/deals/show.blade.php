@@ -370,9 +370,13 @@ form#activites-form>div>label>i {
                        url: ajax_url,
                        method:'POST',
                        data: {deal_id:deal_id, invoice_id:invoice_id, type:type},
-                       async:true,
+                    //    async:true,
+                        beforeSend:function(){
+                            $('.loader').show();
+                        },
                        success:function(response){
                             if(response.deal_id ) {
+                                $('.loader').hide();
                                 get_deal_common_sub_list(response.deal_id, 'invoice');
                             }
                        }      

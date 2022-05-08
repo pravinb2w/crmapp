@@ -26,7 +26,6 @@ Route::middleware([SetViewVariable::class, 'auth'])->group(function(){
     
     Route::get('/dashboard', [App\Http\Controllers\HomeController::class, 'index'])->name('dashboard');
     Route::post('/dashboard-save-position', [App\Http\Controllers\HomeController::class, 'save_dashboard_position'])->name('save.dashboard_position');
-
     
     Route::post('/get/closeweek/data', [App\Http\Controllers\HomeController::class, 'close_week'])->name('get-closeweek-data');
     Route::post('/get/planned/data', [App\Http\Controllers\HomeController::class, 'ajax_get_done_planed'])->name('get-planned-data');
@@ -71,6 +70,7 @@ Route::middleware([SetViewVariable::class, 'auth'])->group(function(){
         Route::post('/status', [App\Http\Controllers\ActivityController::class, 'change_status'])->name('activities.status');
         Route::post('/mark_as_done', [App\Http\Controllers\ActivityController::class, 'mark_as_done'])->name('activities.mark_as_done')->middleware('checkAccess:is_edit');
     });
+    
     //notes route
     Route::prefix('notes')->group(function () {
         Route::get('/', [App\Http\Controllers\NoteController::class, 'index'])->name('notes')->middleware('checkAccess:is_view');
@@ -309,6 +309,7 @@ Route::middleware([SetViewVariable::class, 'auth'])->group(function(){
     Route::get('invoice', function () {
         return view('invoice');
     });
+
     Route::get('mail-message', function () {
         return view('mail-message');
     }); 
@@ -316,7 +317,7 @@ Route::middleware([SetViewVariable::class, 'auth'])->group(function(){
     // Email Template Routes
     Route::prefix('email-template')->group(function () {
         Route::get('/', [App\Http\Controllers\EmailTemplateController::class, 'index'])->name('email.index');
-        Route::get('/create', [App\Http\Controllers\EmailTemplateController::class, 'create'])->name('create.email_template');
+        Route::get('/create', [App\Http\Controllers\EmailTemplateController::class, 'create'])->name('create.email_template')->middleware('checkLimit:template');
         Route::post('/create', [App\Http\Controllers\EmailTemplateController::class, 'store'])->name('store.email_template');
         Route::get('/edit/{id?}', [App\Http\Controllers\EmailTemplateController::class, 'edit'])->name('edit.email_template');
         Route::post('/edit/{id?}', [App\Http\Controllers\EmailTemplateController::class, 'update'])->name('update.email_template');

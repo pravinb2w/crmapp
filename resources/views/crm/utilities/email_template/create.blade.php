@@ -20,7 +20,7 @@
         </div>
     </div>     
     <div class="row m-0">
-        <div class="col-md-8 ps-0">
+        <div class="col-md-12 ps-0">
             <form class="card" id="mail_template_form" action="{{ route('store.email_template') }}" method="post">
                 @csrf
                 <div class="card-header list-group-item border-0 active">
@@ -36,19 +36,7 @@
                         <input type="text" name="subject" class="form-control" placeholder="Type here..." required>
                     </div>
                     <div>
-                        <textarea name="content" id="simplemde1" style="height: 800px;"class="form-control" required>
-                            Hi [name],
-
-                            Welcome to [product or brand name]. We’re thrilled to see you here!
-                            
-                            We’re confident that [product/service] will help you [summary of key benefit or benefits of product/service].
-                            
-                            Get to know us in our [title] video. You’ll be guided through [name of service/product] by our [name of employee and what they do] to ensure you get the very best out of our service.
-                            
-                            You can also find more of our guides here to learn more about [product/service name].
-                            
-                            Take care!
-                            [name]
+                        <textarea name="content" id="mceeditor" style="height: 800px;"class="form-control mceeditor" required>
                         </textarea>
                         <div class="mt-3 text-end">
                             <button class="btn btn-sm btn-primary" type="submit">Submit</button>
@@ -57,49 +45,11 @@
                 </div>
             </form>
         </div>
-        <div class="col-md-4 pe-0">
-            <div class="card">
-                <div class="card-body p-0">
-                    <ul class="list-group">
-                        
-                        <li class="list-group-item d-flex justify-content-between align-items-start active">
-                            <div class="ms-2 me-auto">
-                                <div class="fw-bold">Available merge fields</div>
-                            </div>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-start">
-                            <div class="ms-2 me-auto">
-                                <div class="fw-bold">Contact Firstname</div>
-                            </div>
-                            <span>{contact_firstname}</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-start">
-                            <div class="ms-2 me-auto">
-                                <div class="fw-bold">Contact Lastname</div>
-                            </div>
-                            <span>{contact_lastname}</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-start">
-                            <div class="ms-2 me-auto">
-                                <div class="fw-bold">Client Phone Number</div>
-                            </div>
-                            <span>{client_phonenumber}</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-start">
-                            <div class="ms-2 me-auto">
-                                <div class="fw-bold">Client Email Id</div>
-                            </div>
-                            <span>{contact_email}</span>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
+       
     </div>
 </div> 
 
 @endsection
-
 
 @section('add_on_styles')
     <link href="{{ asset('assets/css/vendor/simplemde.min.css') }}" rel="stylesheet" type="text/css" />
@@ -112,4 +62,22 @@
 
 @section('add_on_script')
     <script src="{{ asset('assets/js/vendor/simplemde.min.js') }}"></script>
+    <script src="{{ asset('assets/tinymce-4.9.9/js/tinymce/tinymce.min.js') }}"></script>
+    <script>
+        tinymce.init({
+            selector: 'textarea#mceeditor',
+            height: 500,
+            menubar: false,
+            plugins: [
+                'advlist autolink lists link image charmap print preview anchor',
+                'searchreplace visualblocks code fullscreen',
+                'insertdatetime media table paste code help wordcount'
+            ],
+            toolbar: 'undo redo | formatselect | ' +
+            'bold italic backcolor | alignleft aligncenter ' +
+            'alignright alignjustify | bullist numlist outdent indent | ' +
+            'removeformat | help',
+            content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
+        });
+    </script>
 @endsection

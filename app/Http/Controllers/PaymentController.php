@@ -9,6 +9,7 @@ use DB;
 use App\Models\CompanySettings;
 use App\Models\Customer;
 use App\Models\Deal;
+use App\Models\Invoice;
 use App\Models\Payment;
 use App\Models\PaymentIntegration;
 use Illuminate\Support\Str;
@@ -29,7 +30,7 @@ class PaymentController extends Controller
             return response('Forbidden.', 403);
         }
 
-        $columns            = [ 'id', 'page', 'status', 'id' ];
+        $columns            = [ 'created_at', 'order_id', 'page', 'status', 'id' ];
 
         $limit              = $request->input( 'length' );
         $start              = $request->input( 'start' );
@@ -39,7 +40,7 @@ class PaymentController extends Controller
        
         $total_list         = Payment::count();
         // DB::enableQueryLog();
-        if( $order != 'id') {
+        if( $order != 'created_at') {
             $list               = Payment::skip($start)->take($limit)->orderBy($order, $dir)
                                 ->search( $search )
                                 ->get();
@@ -62,6 +63,7 @@ class PaymentController extends Controller
             foreach( $list as $payment ) {
                
                 $nested_data[ 'date' ]              = date('d/M/Y h:i A', strtotime($payment->created_at) );
+                $nested_data[ 'order_id' ]          = $payment->order_id;
                 $nested_data[ 'customer' ]          = $payment->customer->first_name;
                 $nested_data[ 'payment_mode' ]      = ucwords($payment->payment_mode);
                 $nested_data[ 'amount' ]            = $payment->amount;
@@ -108,10 +110,11 @@ class PaymentController extends Controller
         return view('crm.common._autocomplete_pay_customer', $params);
     }
 
-    public function customer_deal_info(Request $request) {
+    public function customer_deal_info(Request $request) { 
         $customer_id = $request->customer_id;
-        $deal_info = Deal::where('customer_id', $customer_id)->get();
-        echo view('crm.payments._deal_select', ['info' => $deal_info ]);
+        $invoice_info = Invoice::where('customer_id', $customer_id)->whereNotNull('approved_at')->whereNull('paid_at')->get();
+        
+        echo view('crm.payments._deal_select', ['info' => $invoice_info ]);
     }
 
     public function save(Request $request) {
@@ -143,6 +146,7 @@ class PaymentController extends Controller
                 $ins['payment_mode'] = $request->payment_mode;
                 $ins['customer_id'] = $request->customer_id;
                 $ins['deal_id'] = $request->deal_id ?? null;
+                $ins['invoice_id'] = $request->invoice_id ?? null;
                 $ins['amount'] = $request->amount;
                 $ins['payment_method'] = $request->payment_method;
                 $ins['cheque_no'] = $request->cheque_no ?? null;
@@ -150,6 +154,7 @@ class PaymentController extends Controller
                     $ins['cheque_date'] = date('Y-m-d', strtotime($request->cheque_date ));
                 }
                 $ins['reference_no'] = $request->reference_no ?? null;
+                $ins['order_id'] = 'TXN'.date('mdyhis');
                 $ins['payment_status'] = $request->payment_status;
                 $ins['added_by'] = Auth::id();
                 
@@ -188,9 +193,9 @@ class PaymentController extends Controller
         if (! $request->ajax()) {
             return response('Forbidden.', 403);
         }
-        $deal_id = $request->deal_id;
-        $deal_info = Deal::find( $deal_id );
-        $amount = $deal_info->deal_value;
+        $invoice_id = $request->invoice_id;
+        $deal_info = Invoice::find( $invoice_id );
+        $amount = $deal_info->total;
         $params['amount'] = $amount;
         return response()->json($params);
 
@@ -206,7 +211,8 @@ class PaymentController extends Controller
         if( $mode == 'offline') {
             return view('crm.payments._offline');
         } else {
-            return view('crm.payments._online');
+            $gateways = PaymentIntegration::all();
+            return view('crm.payments._online', ['gateways' => $gateways]);
         }
         
     }
@@ -214,7 +220,11 @@ class PaymentController extends Controller
     public function initiate_request(Request $request) {
         $payment_gateway = $request->payment_gateway;
         $pay_post = $request->session()->pull('pay_post');
-        if( $payment_gateway == 'razor') {
+
+        $info = Invoice::find($pay_post['invoice_id']);
+        $pay_post['info'] = $info;
+        $pay_post['txn_no'] = 'TXN'.date('mdyhis');
+        if( $payment_gateway == 'razorpay') {
             return view('crm.payments.razor.pay_form', $pay_post);
         } else {
             
@@ -238,8 +248,6 @@ class PaymentController extends Controller
             'currency' => 'INR'
             )
         );
-
-
         // Return response on payment page
         $response = [
             'orderId' => $order['id'],
@@ -252,7 +260,8 @@ class PaymentController extends Controller
             'address' => $request->all()['address'],
             'description' => 'Testing description',
             'customer_id' => $request->all()['customer_id'],
-            'deal_id' => $request->all()['deal_id'],
+            'invoice_id' => $request->all()['invoice_id'],
+            'txn_no' => $request->all()['txn_no'],
         ];
         //insert
         $ins['payment_mode'] = 'online';
@@ -263,15 +272,15 @@ class PaymentController extends Controller
         $ins['address'] = $request->all()['address'];
         $ins['description'] = 'Testing description';
         $ins['customer_id'] = $request->all()['customer_id'];
-        $ins['deal_id'] = $request->all()['deal_id'];
+        $ins['invoice_id'] = $request->all()['invoice_id'];
         $ins['session_id'] = session()->getId();
         $ins['payment_method'] = 'razor';
         $ins['amount'] = $request->all()['amount'];
         $ins['payment_status'] = 'pending';
+        $ins['order_id'] = $request->all()['txn_no'];
         $ins['added_by'] = Auth::id();
 
         Payment::create($ins);
-
         // Session::put('pay_post', $response);
         // Let's checkout payment page is it working
         return view('crm.payments.razor.payment_page',compact('response'));
@@ -311,14 +320,20 @@ class PaymentController extends Controller
 
         $pay_info = Payment::where('session_id', session()->getId())->first();
         
-        $pay_info->order_id = $request->all()['rzp_orderid'];
+        $pay_info->razorpay_id = $request->all()['rzp_orderid'];
         $pay_info->reference_no = $request->all()['rzp_paymentid'];
         // If Signature status is true We will save the payment response in our database
         // In this tutorial we send the response to Success page if payment successfully made
         if($signatureStatus == true)
         {
             $pay_info->payment_status = 'paid';
+            $pay_info->session_id = '';
             $pay_info->update();
+            //update in invoice table
+            $invoice = Invoice::find($pay_info->invoice_id);
+            $invoice->paid_at = date('Y-m-d H:i:s');
+            $invoice->paid_amount = $pay_info->amount;
+            $invoice->update();
             // You can create this page
             return view('crm.payments.razor._payment_success');
         }

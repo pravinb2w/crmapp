@@ -41,4 +41,11 @@ return [
         'paid',
         'failed'
     ],
+    'payment_gateway' => [
+        'razorpay' => 'Razor Pay',
+        'ccavenue' => 'CCAvenue',
+        'payumoney' => 'PayUmoney',
+        'paybiz' => 'PayBiz',
+        'citrus' => 'Citrus'
+    ]
 ];

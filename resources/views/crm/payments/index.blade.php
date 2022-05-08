@@ -32,6 +32,7 @@
                             <thead class="table-light">
                                 <tr>
                                     <th>Date</th>
+                                    <th>Order No</th>
                                     <th>Customer</th>
                                     <th>Payment Mode</th>
                                     <th>Amount</th>
@@ -75,6 +76,7 @@
             },
             "columns"       : [
                 {"data" : "date"},
+                {"data" : "order_id"},
                 {"data" : "customer"},
                 {"data" : "payment_mode"},
                 {"data" : "amount"},

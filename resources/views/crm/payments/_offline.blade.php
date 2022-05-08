@@ -9,7 +9,7 @@
             <label for=""> Payment Method <span class="text-danger">*</span></label>
             <select name="payment_method" id="payment_method" class="form-control" required>
                 <option value="">--select--</option>
-                @if( config('constant.role_menu') )
+                @if( config('constant.payment_method') )
                     @foreach( config('constant.payment_method') as $item)
                         <option value="{{ $item }}"> {{ strtoupper($item) }}</option>
                     @endforeach
@@ -20,7 +20,7 @@
             <label for=""> Payment Status <span class="text-danger">*</span></label>
             <select name="payment_status" id="payment_status" class="form-control" required>
                 <option value="">--select--</option>
-                @if( config('constant.role_menu') )
+                @if( config('constant.payment_status') )
                     @foreach( config('constant.payment_status') as $item)
                         <option value="{{ $item }}"> {{ strtoupper($item) }}</option>
                     @endforeach

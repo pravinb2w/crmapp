@@ -122,4 +122,11 @@ class Deal extends Model implements Auditable
     {
         return $this->hasMany(DealDocument::class, 'deal_id')->where('status', 1)->orderBy('deal_documents.created_at', 'desc');
     }
+
+    public function invoice_topay()
+    {
+        return $this->hasMany(Invoice::class, 'deal_id')->where('status', 1)->whereNull('paid_at');
+    }
+
+
 }

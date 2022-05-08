@@ -19,7 +19,9 @@
         </div>
     </div>     
     <div class="text-end">
+        @if( $email_count < Auth::user()->hasLimit('template'))
         <a href="{{ route('create.email_template') }}" class="btn btn-sm btn-primary mb-2">+ Add Template</a>
+        @endif
     </div>
     <div class="card border shadow">
         <div class="card-body p-0">

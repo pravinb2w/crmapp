@@ -3,7 +3,8 @@
 @section('content')
 
 <div class="container-fluid">
-                        
+    <link rel="stylesheet" href="https://cdn.tiny.cloud/1/qagffr3pkuv17a8on1afax661irst1hbr4e6tbv888sz91jc/tinymce/5-stable/tinymce.min.js">              
+    
     <!-- start page title -->
     <div class="row">
         <div class="col-12">
@@ -20,7 +21,7 @@
         </div>
     </div>     
     <div class="row m-0">
-        <div class="col-md-8 ps-0">
+        <div class="col-md-12 ps-0">
             <form class="card" id="mail_template_form" action="{{ route('update.email_template', $data->id) }}" method="post">
                 @csrf
                 <div class="card-header list-group-item border-0 active">
@@ -36,7 +37,7 @@
                         <input type="text" name="subject" value="{{ $data->subject }}" class="form-control" placeholder="Type here..." required>
                     </div>
                     <div>
-                        <textarea name="content" id="MyEditor" style="height: 800px;"class="form-control" required>{{ $data->content }}</textarea>
+                        <textarea name="content" id="mceeditor" style="height: 800px;"class="form-control" required>{{ $data->content }}</textarea>
                         <div class="mt-3 text-end">
                             <button class="btn btn-sm btn-primary" type="submit">Submit</button>
                         </div>
@@ -44,53 +45,19 @@
                 </div>
             </form>
         </div>
-        <div class="col-md-4 pe-0">
-            <div class="card">
-                <div class="card-body p-0">
-                    <ul class="list-group">
-                        
-                        <li class="list-group-item d-flex justify-content-between align-items-start active">
-                            <div class="ms-2 me-auto">
-                                <div class="fw-bold">Available merge fields</div>
-                            </div>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-start">
-                            <div class="ms-2 me-auto">
-                                <div class="fw-bold">Contact Firstname</div>
-                            </div>
-                            <span>{contact_firstname}</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-start">
-                            <div class="ms-2 me-auto">
-                                <div class="fw-bold">Contact Lastname</div>
-                            </div>
-                            <span>{contact_lastname}</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-start">
-                            <div class="ms-2 me-auto">
-                                <div class="fw-bold">Client Phone Number</div>
-                            </div>
-                            <span>{client_phonenumber}</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-start">
-                            <div class="ms-2 me-auto">
-                                <div class="fw-bold">Client Email Id</div>
-                            </div>
-                            <span>{contact_email}</span>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
+        
     </div>
 </div> 
 
 @endsection
 
-
 @section('add_on_styles')
     <link href="{{ asset('assets/css/vendor/simplemde.min.css') }}" rel="stylesheet" type="text/css" />
     <style>
+        .CodeMirror .CodeMirror-code .cm-comment {
+            background: none !important;
+            border-radius: 2px;
+        }
         .CodeMirror.cm-s-paper.CodeMirror-wrap {
             min-height: 380px !important
         }
@@ -99,7 +66,22 @@
 
 @section('add_on_script')
     <script src="{{ asset('assets/js/vendor/simplemde.min.js') }}"></script>
+    <script src="{{ asset('assets/tinymce-4.9.9/js/tinymce/tinymce.min.js') }}"></script>
     <script>
-        var simplemde = new SimpleMDE({ element: document.getElementById("MyEditor") });
-        </script>
+        tinymce.init({
+            selector: 'textarea#mceeditor',
+            height: 500,
+            menubar: false,
+            plugins: [
+                'advlist autolink lists link image charmap print preview anchor',
+                'searchreplace visualblocks code fullscreen',
+                'insertdatetime media table paste code help wordcount'
+            ],
+            toolbar: 'undo redo | formatselect | ' +
+            'bold italic backcolor | alignleft aligncenter ' +
+            'alignright alignjustify | bullist numlist outdent indent | ' +
+            'removeformat | help',
+            content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
+        });
+    </script>
 @endsection

@@ -12,41 +12,53 @@
                 @csrf
                 
                 <div class="col-12">
-                    <div class="row mt-2">
-                        <label for="name" class="col-3">Name</label>
-                        <div class="col-9">
-                            <input type="text" class="form-control" id="name"  name="name" required>
+                    <div class="row mt-2 text-center">
+                        <label for="email" class="col-5 text-end">TXNno</label>
+                        <div class="col-6 text-start">
+                            {{ $txn_no }}
+                            <input type="hidden" class="form-control" id="txn_no" name="txn_no" value="{{ $txn_no }}">
+                        </div>
+                    </div>
+                    <div class="row mt-2 text-center">
+                        <label for="name" class="col-5 text-end">Name</label>
+                        <div class="col-6 text-start">
+                            {{ $info->customer->first_name }}
+                            <input type="hidden" class="form-control" id="name" name="name" value="{{ $info->customer->first_name }}">
+
                         </div>
                         <input type="hidden" name="customer_id" id="customer_id" value={{ $customer_id ?? '' }}>
-                        <input type="hidden" name="deal_id" id="deal_id" value={{ $deal_id ?? '' }}>
+                        <input type="hidden" name="invoice_id" id="invoice_id" value={{ $invoice_id ?? '' }}>
                     </div>
-                    <div class="row mt-2">
-                        <label for="email" class="col-3">Email</label>
-                        <div class="col-9">
-                            <input type="text" class="form-control" id="email" name="email">
+                    <div class="row mt-2 text-center">
+                        <label for="email" class="col-5 text-end">Email</label>
+                        <div class="col-6 text-start">
+                            {{ $info->customer->email }}
+                            <input type="hidden" name="email" id="email" value="{{ $info->customer->email }}">
+                        </div>
+                    </div>
+                    <div class="row mt-2 text-center">
+                        <label for="contact_no" class="col-5 text-end">Contact Number</label>
+                        <div class="col-6 text-start">
+                            {{ $info->customer->mobile_no }}
+                            <input type="hidden" name="contact_no" id="contact_no" value="{{ $info->customer->mobile_no }}">
+                        </div>
+                    </div>
+                    <div class="row mt-2 text-center">
+                        <label for="address" class="col-5 text-end">Address</label>
+                        <div class="col-6 text-start">
+                            <input type="hidden" class="form-control" id="address" name="address" value="{{ $info->address }}">
+                        </div>
+                    </div>
+                    <div class="row mt-2 mb-2 text-center">
+                        <label for="amount" class="col-5 text-end">Amount</label>
+                        <div class="col-6 text-start">
+                            {{ $info->total }}
+                            <input type="hidden" class="form-control price" id="amount" name="amount" value="{{ $info->total }}" onkeypress="return isNumberKey(this, event);" required>
                         </div>
                     </div>
                     <div class="row mt-2">
-                        <label for="contact_no" class="col-3">Contact Number</label>
-                        <div class="col-9">
-                            <input type="text" class="form-control" id="contact_no" name="contact_no">
-                        </div>
-                    </div>
-                    <div class="row mt-2">
-                        <label for="address" class="col-3">Address</label>
-                        <div class="col-9">
-                            <input type="text" class="form-control" id="address" name="address">
-                        </div>
-                    </div>
-                    <div class="row mt-2">
-                        <label for="amount" class="col-3">Amount</label>
-                        <div class="col-9">
-                            <input type="text" class="form-control price" id="amount" name="amount" onkeypress="return isNumberKey(this, event);" required>
-                        </div>
-                    </div>
-                    <div class="row mt-2">
-                        <div class="col-12 text-center">
-                            <button type="submit" class="btn btn-primary">Submit</button>
+                        <div class="col-12 text-center mt-3">
+                            <button type="submit" class="btn btn-primary">Proceed</button>
                         </div>
                     </div>
                 </div>

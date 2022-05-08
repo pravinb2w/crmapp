@@ -25,7 +25,14 @@
                                 <div class="col-6">
                                     <label for="">Payment Gateway</label>
                                     <input type="hidden" name="id[]" value="{{ $item->id }}">
-                                    <input type="text" name="payment_gateway[]" id="payment_gateway" value="{{ $item->gateway }}" class="form-control">
+                                    <select name="payment_gateway[]" id="payment_gateway" class="form-control">
+                                        <option value="">select</option>
+                                        @if( config('constant.payment_gateway') )
+                                            @foreach(config('constant.payment_gateway') as $gkey => $gvalue)
+                                                <option value="{{ $gkey }}" @if($item->gateway == $gkey) selected @endif>{{ $gvalue }}</option>
+                                            @endforeach
+                                        @endif
+                                    </select>
                                 </div>
                                 <div class="col-6">
                                     <label for="status" class="">Live Mode</label>

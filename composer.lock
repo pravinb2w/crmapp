@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "bd384fd4e570ba6b94dd35e03511d4d6",
+    "content-hash": "f6b99d1042d268454b11418f91ca61a9",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -1497,6 +1497,57 @@
                 }
             ],
             "time": "2021-10-06T17:43:30+00:00"
+        },
+        {
+            "name": "infyomlabs/laravel-payumoney",
+            "version": "v1.3.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/InfyOmLabs/laravel-payumoney.git",
+                "reference": "b3c9c1a6dfd9949edb155b24d4f488cc484fcb1e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/InfyOmLabs/laravel-payumoney/zipball/b3c9c1a6dfd9949edb155b24d4f488cc484fcb1e",
+                "reference": "b3c9c1a6dfd9949edb155b24d4f488cc484fcb1e",
+                "shasum": ""
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "InfyOm\\Payu\\PayuMoneyAppServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "InfyOm\\Payu\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Mitul Golakiya",
+                    "email": "me@mitul.me"
+                }
+            ],
+            "description": "Laravel Payumoney Integration Library",
+            "keywords": [
+                "laravel",
+                "payent-gateway",
+                "payment",
+                "payu",
+                "payu-money"
+            ],
+            "support": {
+                "issues": "https://github.com/InfyOmLabs/laravel-payumoney/issues",
+                "source": "https://github.com/InfyOmLabs/laravel-payumoney/tree/v1.3.0"
+            },
+            "time": "2021-04-22T07:00:24+00:00"
         },
         {
             "name": "intervention/image",

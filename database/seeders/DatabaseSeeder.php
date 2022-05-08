@@ -24,6 +24,7 @@ class DatabaseSeeder extends Seeder
             LandingPageSeeder::class,
             TaxGroupSeeder::class,
             PositionSeeder::class,
+            PaymentSeeder::class,
         ]);
     }
 }

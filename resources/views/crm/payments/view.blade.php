@@ -19,6 +19,10 @@
                                     <td> {{ date('d/M/Y h:i A', strtotime($info->created_at )) }}</td>
                                 </tr>
                                 <tr>
+                                    <th> Transaction No</th>
+                                    <td> {{ $info->order_id ?? 'n/a' }}</td>
+                                </tr>
+                                <tr>
                                     <th>Payment Mode</th>
                                     <td>{{ ucfirst($info->payment_mode) }}</td>
                                 </tr>
