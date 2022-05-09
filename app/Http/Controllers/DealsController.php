@@ -27,7 +27,6 @@ use Mail;
 use DB;
 
 
-
 class DealsController extends Controller
 {
     public function index(Request $request)

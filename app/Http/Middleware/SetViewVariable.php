@@ -22,9 +22,10 @@ class SetViewVariable
     {
         
         $user = User::find(Auth::id());
-        View::share('cm_favicon', $user->company->site_favicon ?? '');
-        View::share('cm_logo', $user->company->site_logo ?? '');
-        View::share('copyrights', $user->company->copyrights ?? '');
+        $company_info = CompanySettings::find(1);
+        View::share('cm_favicon', $company_info->site_favicon ?? '');
+        View::share('cm_logo', $company_info->site_logo ?? '');
+        View::share('copyrights', $company_info->copyrights ?? '');
 
         View::share('cm_profile_image', $user->image ?? '');
         View::share('cm_role', $user->role->role ?? 'SuperAdmin');

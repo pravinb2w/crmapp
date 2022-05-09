@@ -288,9 +288,9 @@
                             {{-- <img src="assets/images/logo.png" alt="" class="logo-dark" height="18" /> --}}
                             
                             <div class="aos-init"  data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="1400">
-                                <strong class="text-white"> PHOENIX</strong>
+                                <strong class="text-white"> {{ $site_name ?? '' }}</strong>
                             </div>
-                            <p class="text-white mt-4 aos-init" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="1500">PHOENIX TECH makes it easier to build better websites with
+                            <p class="text-white mt-4 aos-init" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="1500">{{ $site_name ?? '' }} makes it easier to build better websites with
                                 <br> great speed. Save hundreds of hours of design
                                 <br> and development by using it.</p>
 

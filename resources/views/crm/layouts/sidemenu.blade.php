@@ -3,7 +3,11 @@
     <!-- LOGO -->
     <a href="{{ route('dashboard') }}" class="logo text-center logo-light">
         <span class="logo-lg">
+            @if($cm_logo)
+            <img src="{{ asset('storage/'.$cm_logo) }}" alt="" height="16">
+            @else
            <img src="{{ asset('assets/images/logo/logo-color.png') }}" height="30">
+           @endif
         </span>
         <span class="logo-sm">
             @if($cm_logo)
