@@ -17,8 +17,8 @@ Route::get('/', function () {
     return  redirect(route('landing.index'));
 });
 
-// Route::get('/devlogin', [App\Http\Controllers\Auth\LoginController::class, 'login'])->name('login');
-// Auth::routes(['login' => false]);
+Route::get('/devlogin', [App\Http\Controllers\Auth\LoginController::class, 'login_page'])->name('login');
+Auth::routes(['login' => false]);
 
  
 Route::get('generate-pdf', [App\Http\Controllers\PDFController::class, 'generatePDF']);
