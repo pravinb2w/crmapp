@@ -12,9 +12,14 @@ use App\Http\Middleware\SetViewVariable;
 | contains the "web" middleware group. Now create something great!
 |
 */ 
+
 Route::get('/', function () {
     return  redirect(route('landing.index'));
 });
+
+// Route::get('/devlogin', [App\Http\Controllers\Auth\LoginController::class, 'login'])->name('login');
+// Auth::routes(['login' => false]);
+
  
 Route::get('generate-pdf', [App\Http\Controllers\PDFController::class, 'generatePDF']);
 Route::get('/crm/{permalink?}', [App\Http\Controllers\LandingController::class, 'index'])->name('landing.index');

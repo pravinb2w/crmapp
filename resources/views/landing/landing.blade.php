@@ -56,12 +56,12 @@
                             <li class="nav-item mx-lg-1">
                                 <a class="nav-link text-white" href="#contact-us">contact</a>
                             </li>
-                            <li class="nav-item me-0 ms-3">
+                            {{-- <li class="nav-item me-0 ms-3">
                                 <a href="https://themes.getbootstrap.com/product/hyper-responsive-admin-dashboard-template/" target="_blank" class="nav-link d-lg-none">Purchase now</a>
                                 <a href="login" target="_blank" class="btn btn-sm btn-primary rounded-pill d-none d-lg-inline-flex">
                                     <i class="mdi mdi-login-variant me-2"></i> LOGIN
                                 </a>
-                            </li>
+                            </li> --}}
                         </ul> 
 
                     </div>
