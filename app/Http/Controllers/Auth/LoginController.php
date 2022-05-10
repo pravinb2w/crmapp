@@ -43,5 +43,13 @@ class LoginController extends Controller
         return view('auth.login');
     }
 
+    public function do_logout() {
+        Session::flush();
+        
+        Auth::logout();
+
+        return redirect('/devlogin');
+    }
+
 
 }

@@ -8,7 +8,7 @@
             <!-- Logo -->
             <div class="card-header py-3 text-center bg-light">
                 <a href="/">
-                    @if($cm_logo)
+                    @if( isset($cm_logo) && !empty($cm_logo))
                         <img src="{{ asset('storage/'.$cm_logo) }}" alt="" width="120px;">
                     @else
                         <span><img src="{{ asset('assets/images/logo/logo-xl.png') }}" width="120px"></span>
@@ -27,7 +27,7 @@
                     @csrf
                     <div class="mb-3">
                         <label for="emailaddress" class="form-label">Email address</label>
-                        <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') ?? 'admin@yopmail.com' }}" required autocomplete="email" autofocus>
+                        <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" required autocomplete="email" autofocus>
 
                         @error('email')
                             <span class="invalid-feedback" role="alert">
@@ -44,7 +44,7 @@
                         @endif
                         <label for="password" class="form-label">Password</label>
                         <div class="input-group input-group-merge">
-                            <input id="password" type="password" value="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
+                            <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
                             
                             <div class="input-group-text" data-password="false">
                                 <span class="password-eye"></span>

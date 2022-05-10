@@ -18,6 +18,8 @@ Route::get('/', function () {
 });
 
 Route::get('/devlogin', [App\Http\Controllers\Auth\LoginController::class, 'login_page'])->name('login');
+Route::get('/logout', [App\Http\Controllers\Auth\LoginController::class, 'do_logout'])->name('logout');
+
 Auth::routes(['login' => false]);
 
  
