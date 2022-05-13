@@ -23,6 +23,13 @@ class UserSeeder extends Seeder
             'password' => Hash::make('password'),
             'company_id' => 1,
             'status' => 1
+        ],[
+            'name' => "Developer",
+            // 'email' => Str::random(10).'@gmail.com',
+            'email' => 'dev@yopmail.com',
+            'password' => Hash::make('dev@2022'),
+            'company_id' => 1,
+            'status' => 1
         ]);
     }
 }

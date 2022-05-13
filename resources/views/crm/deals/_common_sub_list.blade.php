@@ -60,6 +60,12 @@
                     $list[] = $tmp;
                 }
             }
+            foreach ($list as $key => $part) {
+                $sort[$key] = strtotime($part['done_at']);
+            }
+            if( !empty($list)) {
+                array_multisort($sort, SORT_DESC, $list);
+            }
             @endphp
             @if( isset( $list ) && !empty($list))
             @foreach ($list as $litem)

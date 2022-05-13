@@ -106,7 +106,8 @@
                         toastr.success('Success', response.error );
                         form.reset();
                         if( response.deal_id){
-                            get_deal_common_sub_list(response.deal_id, 'invoice');
+                            get_tab('invoice', response.deal_id);
+                            // get_deal_common_sub_list(response.deal_id, 'invoice');
                         }
                     }
                 }            

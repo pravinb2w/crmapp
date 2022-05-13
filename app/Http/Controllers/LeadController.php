@@ -321,7 +321,7 @@ class LeadController extends Controller
         $modal_title = 'Add Lead';
         $leadsource = LeadSource::all();
         $leadtype = LeadType::all();
-        $users = User::whereNotNull('role_id')->get();
+        $users = User::where('status', 1)->whereNotNull('role_id')->get();
 
         if( isset( $id ) && !empty($id) ) {
             $info = Lead::find($id);

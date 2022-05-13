@@ -66,6 +66,7 @@
                    </td>
                    <td style="width: 50%;text-align:center;">
                     <address class="ps-2">
+                        
                         <h3>{{ $company->site_name ?? '' }}</h3>
                         {{ $company->address ?? '' }} <br>
                         {{ $company->site_email ?? '' }}

@@ -623,11 +623,11 @@ class DealsController extends Controller
             'company' => $company,
             'taxable' => $taxable,
         ];
-        //return view('crm.invoice._new_deal_invoice', $data);
+        // return view('mypdf', $data);
         $pdf = PDF::loadView('mypdf', $data);
         $path = public_path('invoice');
         return $pdf->save($path . '/' . str_replace("/", "_", $info->invoice_no ).'.pdf');
-        return $pdf->download($info->invoice_no.'.pdf');
+        // return $pdf->download($info->invoice_no.'.pdf');
     }
 
     public function unlink_invoice(Request $request) {
