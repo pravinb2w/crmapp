@@ -198,6 +198,10 @@ class AccountController extends Controller
 
             } else if($type == 'common') {
                 $sett->invoice_terms = $request->invoice_terms;
+                $sett->lead_access = $request->lead_access ?? null;
+                $sett->deal_access = $request->deal_access ?? null;
+                $sett->workflow_automation = ( $request->workflow_automation ? '1' : null );
+                // dd( $sett );
                 $sett->update();
             } else if( $type == 'prefix' ) {
 

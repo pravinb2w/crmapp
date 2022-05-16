@@ -15219,7 +15219,7 @@ body[data-layout-mode="boxed"][data-layout="topnav"] .navbar-custom {
     position: fixed;
     -webkit-transition: all 200ms ease-out;
     transition: all 200ms ease-out;
-    width: 280px;
+    width: 300px;
     z-index: 9999;
     float: right !important;
     right: -290px;
@@ -15228,12 +15228,11 @@ body[data-layout-mode="boxed"][data-layout="topnav"] .navbar-custom {
     padding-bottom: 80px;
 }
 .end-bar .rightbar-title {
-    background-color: #313a46;
+    background-color: var(--bs-primary);
     padding: 27px 25px;
     color: #ffffff;
 }
 .end-bar .end-bar-toggle {
-    background-color: #444e5a;
     height: 24px;
     width: 24px;
     line-height: 22px;

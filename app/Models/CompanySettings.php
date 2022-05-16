@@ -35,6 +35,11 @@ class CompanySettings extends Model implements Auditable
         'mail_encryption',
         'copyrights',
         'invoice_terms',
+        'lead_access',
+        'deal_access',
+        'workflow_automation',
+        'last_lead_order',
+        'last_deal_order'
     ];
 
     public function subscription()

@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use DB;
+use CommonHelper;
 
 class UserController extends Controller
 {
@@ -157,7 +158,7 @@ class UserController extends Controller
             if( isset( $request->password ) ) {
                 $ins['password'] = Hash::make($request->password);
             }
-            // dd($ins);
+            // dd($ins); 
             if( isset($id) && !empty($id) ) {
                 $user = User::find($id);
                 $user->status = isset($request->status) ? 1 : 0;
@@ -180,9 +181,14 @@ class UserController extends Controller
                 $success = 'Updated User';
             } else {
                 $ins['added_by'] = Auth::id();
-                User::create($ins);
+                $id = User::create($ins)->id;
                 $success = 'Added new user';
             }
+            if(isset($request->status)) {
+                CommonHelper::set_lead_order($id, $request->role_id, 'add');
+                CommonHelper::set_deal_order($id, $request->role_id, 'add');
+            }
+            
             return response()->json(['error'=>[$success], 'status' => '0']);
         }
         return response()->json(['error'=>$validator->errors()->all(), 'status' => '1']);
@@ -191,8 +197,11 @@ class UserController extends Controller
     public function delete(Request $request)
     {
         $id = $request->id;
-        $role = User::find($id);
-        $role->delete();
+        $info = User::find($id);
+        $info->delete();
+        CommonHelper::set_lead_order($id, $info->role_id, 'delete');
+        CommonHelper::set_deal_order($id, $info->role_id, 'delete');
+
         $delete_msg = 'Deleted successfully';
         return response()->json(['error'=>[$delete_msg], 'status' => '0']);
     }
@@ -201,9 +210,19 @@ class UserController extends Controller
     {
         $id = $request->id;
         $status = $request->status;
-        $org = User::find($id);
-        $org->status = $status;
-        $org->update();
+        $info = User::find($id);
+        $info->status = $status;
+        $info->update();
+        if( $status == 1 ) {
+            CommonHelper::set_lead_order($id, $info->role_id, 'add');
+            CommonHelper::set_deal_order($id, $info->role_id, 'add');
+
+        } else {
+            CommonHelper::set_lead_order($id, $info->role_id, 'delete');
+            CommonHelper::set_deal_order($id, $info->role_id, 'delete');
+
+        }
+
         $update_msg = 'Updated successfully';
         return response()->json(['error'=>[$update_msg], 'status' => '0']);
     }

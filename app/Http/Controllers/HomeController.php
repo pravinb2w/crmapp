@@ -10,6 +10,7 @@ use App\Models\Lead;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Deal;
 use App\Models\User;
+use App\Models\Notification;
 
 class HomeController extends Controller
 {
@@ -323,5 +324,40 @@ class HomeController extends Controller
         $arr = array( 'deal' => $deal, 'lead' => $lead, 'task' => $task );
         return $arr;
 
+    }
+
+    public function notification_list(Request $request) {
+        $user_id = Auth::id();
+        $role_id = Auth::user()->role_id;
+        if( $role_id ) {
+            $result = Notification::where('user_id', $user_id)->orderBy('id', 'desc')->get();
+            $count = Notification::where('user_id', $user_id)->where('is_read', 0)->count();
+        } else {
+            $result = Notification::orderBy('id', 'desc')->get();
+            $count = Notification::where('is_read', 0)->count();
+        }
+        $params = array( 'list' => $result, 'count' => $count, 'role_id' => $role_id ?? '' );
+        // dd( view('crm.layouts._notification', $params)->render());
+        return view('crm.layouts._notification', $params);
+    }
+
+    public function make_noti_read(Request $request) {
+        $id = $request->id;
+        $info = Notification::find($id);
+        $info->is_read = 1;
+        $info->save();
+
+        $user_id = Auth::id();
+        $role_id = Auth::user()->role_id;
+        if( $role_id ) {
+            $result = Notification::where('user_id', $user_id)->orderBy('id', 'desc')->get();
+            $count = Notification::where('user_id', $user_id)->where('is_read', 0)->count();
+        } else {
+            $result = Notification::orderBy('id', 'desc')->get();
+            $count = Notification::where('is_read', 0)->count();
+        }
+        
+        $params = array( 'list' => $result, 'count' => $count, 'role_id' => $role_id ?? '' );
+        return view('crm.layouts._notification', $params);
     }
 }

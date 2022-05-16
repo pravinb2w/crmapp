@@ -7,6 +7,7 @@ use App\Models\CompanySettings;
 use App\Models\Customer;
 use App\Models\Lead;
 use App\Models\LandingPages;
+use CommonHelper;
 
 use Illuminate\Support\Facades\Validator;
 
@@ -52,12 +53,18 @@ class LandingController extends Controller
                 $ins['added_by'] = 1;
                 $customer_id = Customer::create($ins)->id;
             }
+            //get assigned user id 
+            $assigned_to = CommonHelper::getLeadAssigner();
+            $lea['assigned_to'] = $assigned_to;
+
             $lea['customer_id'] = $customer_id;
             $lea['status'] = 1;
             $lea['added_by'] = 1;
             $lea['lead_subject'] = $request->subject;
             $lea['lead_description'] = $request->message;
-            Lead::create($lea);
+            $lead_id = Lead::create($lea)->id;
+            //insert in notification
+            CommonHelper::send_lead_notification($lead_id, $assigned_to);
             $success = 'Enquiry has been sent';
             return response()->json(['error'=>[$success], 'status' => '0']);
         }

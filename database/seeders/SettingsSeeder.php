@@ -16,7 +16,10 @@ class SettingsSeeder extends Seeder
     {
         DB::table('company_settings')->insert([
             'site_name' => "PhoenixCRM",
-            'status' => 1
+            'status' => 1,
+            'lead_access' => 'visibileall', 
+            'deal_access' => 'visibileall', 
+            'workflow_automation' => 1
         ]);
     }
 }

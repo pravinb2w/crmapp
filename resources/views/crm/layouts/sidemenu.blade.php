@@ -125,7 +125,7 @@
             </li>
             @endif
 
-            @if(Auth::user()->hasAccess('deals', 'is_view'))
+            @if(Auth::user()->hasAccess('deals', 'is_view')) 
             <li class="side-nav-item">
                 <a data-bs-toggle="collapse" href="#sidebardeals" aria-expanded="false" aria-controls="sidebardeals" class="side-nav-link">
                     <i class="mdi mdi-thumbs-up-down"></i>

@@ -123,6 +123,155 @@ class CommonHelper
         config(['mail.mailers.smtp' => $mailConfig]);
     }
 
+    public static function set_lead_order($user_id, $role_id, $type) {
+        $check = DB::table('lead_orders')->where('user_id', $user_id)->where('status', 1)->first();
+
+        if( self::check_role_has_permission('leads', $role_id) && $type == 'add') {
+            if(isset($check) && !empty($check)) {
+
+            } else {
+                DB::table('lead_orders')->insert([
+                    'user_id' => $user_id, 
+                    'order' => self::get_leads_order_no(), 
+                    'status' => 1,
+                    'created_at' => date('Y-m-d H:i:s')    
+                ]);
+                return true;
+            }   
+        } else {
+            if(isset($check) && !empty($check)) {
+                $check = DB::table('lead_orders')->where('user_id', $user_id)->where('status', 1)->delete();
+            }
+            return true;
+        }
+    }
+
+    public static function check_role_has_permission($menu, $role_id) {
+        $info = DB::table('role_permissions')
+                    ->join('role_permission_menu', function ($join) use ($menu) {
+                        $join->on('role_permissions.id', '=', 'role_permission_menu.permission_id')
+                            ->where('role_permission_menu.menu', '=', $menu);
+                    })->where('role_permissions.role_id', $role_id)->first();
+
+        if( isset($info) && !empty($info)) {
+            
+            if( isset( $info->is_assign ) && $info->is_assign == 'on') {
+                return true;
+            } else {
+                return false;
+            }
+        }
+    }
+
+    public static function get_leads_order_no() {
+        $info = DB::table('lead_orders')->orderByDesc('id')->first();
+        $order = 0;
+        if( isset($info) && !empty($info)) {
+            $order = $info->order;
+        }
+        return $order + 1;
+    }
+
+    public static function get_deals_order_no() {
+        $info = DB::table('deal_orders')->orderByDesc('id')->first();
+        $order = 0;
+        if( isset($info) && !empty($info)) {
+            $order = $info->order;
+        }
+        return $order + 1;
+    }
+
+    public static function set_deal_order($user_id, $role_id, $type) {
+        $check = DB::table('deal_orders')->where('user_id', $user_id)->where('status', 1)->first();
+
+        if( self::check_role_has_permission('deals', $role_id) && $type == 'add') {
+            if(isset($check) && !empty($check)) {
+
+            } else {
+                DB::table('deal_orders')->insert([
+                    'user_id' => $user_id, 
+                    'order' => self::get_deals_order_no(), 
+                    'status' => 1,
+                    'created_at' => date('Y-m-d H:i:s')    
+                ]);
+                return true;
+            }   
+        } else {
+            if(isset($check) && !empty($check)) {
+                $check = DB::table('deal_orders')->where('user_id', $user_id)->where('status', 1)->delete();
+            }
+            return true;
+        }
+    }
+
+    public static function getLeadAssigner() {
+        $set_info = DB::table('company_settings')->where('id', 1)->first();
+        $user_id = '';
+        if( isset( $set_info ) && !empty($set_info) && $set_info->lead_access == 'roundrobin' ) {
+            if( isset($set_info->last_lead_order) && !empty($set_info->last_lead_order) ) {
+                $order_no = $set_info->last_lead_order;
+                $count = DB::table('lead_orders')->count();
+                $get_user = DB::table('lead_orders')->where('order', '>', $order_no)->orderBy('order')->first();
+                if( isset( $get_user ) && !empty($get_user ) ) {
+                    $user_id = $get_user->user_id;
+                } else {
+                    if( $count > 0 ) {
+                        $get_user = DB::table('lead_orders')->where('order', $order_no)->first();
+                        if( isset( $get_user ) && !empty($get_user ) ) {
+                            $user_id = $get_user->user_id;
+                        }
+
+                    }
+                }
+            } else {
+                $get_user = DB::table('lead_orders')->orderBy('order')->first();
+
+                if( isset( $get_user ) && !empty($get_user ) ) {
+                    $user_id = $get_user->user_id;
+                }
+            }
+        } 
+        if( !empty($user_id)) {
+            DB::table('company_settings')->where('id', 1)->update(['last_lead_order' => $get_user->order ?? null]);
+            return $user_id;
+        }
+        return null;
+        
+    }
+
+    public static function send_lead_notification( $lead_id, $user_id = '') {
+        $lead_order_info = DB::table('lead_orders')->get();
+        
+        if( $user_id ) {
+            $ins = array(
+                'title' => 'New Enquiry',
+                'message' => 'Customer has come, Please welcome customer',
+                'type' => 'lead',
+                'type_id' => $lead_id,
+                'user_id' => $user_id,
+                'created_at' => date('Y-m-d H:i:s')
+            );
+
+            
+        } else {
+            if( isset( $lead_order_info ) && !empty($lead_order_info)) {
+                foreach ($lead_order_info as $item) {
+                    $ins[] = array(
+                                'title' => 'New Enquiry',
+                                'message' => 'Customer has come, Please welcome customer',
+                                'type' => 'lead',
+                                'type_id' => $lead_id,
+                                'user_id' => $item->user_id,
+                                'created_at' => date('Y-m-d H:i:s')
+                    );
+                }
+            } 
+        }
+        if( !empty( $ins ) ) {
+            DB::table('notifications')->insert($ins);
+        }
+        return true;
+    }
 
     
 }

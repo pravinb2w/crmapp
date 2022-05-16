@@ -67,4 +67,36 @@ function make_stage_completed(stage_id, deal_id ){
         })
         return false;
     }
+    get_notifications();
+    function get_notifications() {
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        $.ajax({
+            url: "{{ route('common.notification.list') }}",
+            type: 'POST',
+            
+            success: function(response) {
+                $('#notification_tab').html(response);
+            }            
+        });
+    }
+
+    function make_read(id) {
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        $.ajax({
+            url: "{{ route('common.notification.read') }}",
+            type: 'POST',
+            data: {id:id},
+            success: function(response) {
+                $('#notification_tab').html(response);
+            }            
+        });
+    }
 </script>

@@ -30,7 +30,9 @@ Route::get('/approve/invoice/{id}',[App\Http\Controllers\InvoiceController::clas
 Route::get('/reject/invoice/{id}',[App\Http\Controllers\InvoiceController::class, 'reject_invoice'])->name('reject-invoice');
 Auth::routes();
 Route::middleware([SetViewVariable::class, 'auth'])->group(function(){
-    
+    Route::post('/notification/list', [App\Http\Controllers\HomeController::class, 'notification_list'] )->name('common.notification.list');
+    Route::post('/notification/read', [App\Http\Controllers\HomeController::class, 'make_noti_read'] )->name('common.notification.read');
+
     Route::get('/dashboard', [App\Http\Controllers\HomeController::class, 'index'])->name('dashboard');
     Route::post('/dashboard-save-position', [App\Http\Controllers\HomeController::class, 'save_dashboard_position'])->name('save.dashboard_position');
     
@@ -151,7 +153,7 @@ Route::middleware([SetViewVariable::class, 'auth'])->group(function(){
         Route::post('/get_tab', [App\Http\Controllers\DealsController::class, 'get_tab'])->name('deals.get_tab');
         Route::post('/get_product_tax', [App\Http\Controllers\DealsController::class, 'get_product_tax'])->name('deals.get_product_tax');
         Route::post('/get_deal_common_sub_list', [App\Http\Controllers\DealsController::class, 'get_deal_common_sub_list'])->name('deals.common.list');
-    });
+    }); 
 
     //Invoice route
     Route::prefix('invoices')->group(function () {

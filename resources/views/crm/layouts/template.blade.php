@@ -56,6 +56,25 @@
 
         </div>
         <!-- END wrapper --> 
+        <!-- Right Sidebar -->
+        <div class="end-bar">
+
+            <div class="rightbar-title">
+                <a href="javascript:void(0);" class="end-bar-toggle float-end">
+                    <i class="dripicons-cross noti-icon"></i>
+                </a>
+                <h5 class="m-0">Notification</h5>
+            </div>
+
+            <div class="rightbar-content h-100" data-simplebar id="notification_tab">
+
+                @include('crm.layouts._notification')
+
+            </div>
+        </div>
+
+        <div class="rightbar-overlay"></div>
+        <!-- /End-bar -->
       
         @yield('add_on_script')
         <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.0/sweetalert.min.js"></script>

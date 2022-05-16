@@ -1,14 +1,18 @@
 <div class="navbar-custom align-tems-center">
     <ul class="list-unstyled topbar-menu float-end mb-0">
         <li class="dropdown notification-list ">
-            <a class="nav-link dropdown-toggle arrow-none" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
+            {{-- <a class="nav-link dropdown-toggle arrow-none" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
                 <i class="dripicons-search noti-icon"></i>
             </a>
             <div class="dropdown-menu dropdown-menu-animated dropdown-lg p-0">
                 <form class="p-3">
                     <input type="text" class="form-control" placeholder="Search ..." aria-label="Recipient's username">
                 </form>
-            </div>
+            </div> --}}
+            <a class="nav-link end-bar-toggle arrow-none show" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="true">
+                <i class="dripicons-bell noti-icon"></i>
+                <span class="noti-icon-badge" id="noti-has"></span>
+            </a>
         </li>
  
         <li class="dropdown notification-list d-none d-sm-inline-block">
@@ -17,39 +21,55 @@
             </a>
             <div class="dropdown-menu dropdown-menu-end dropdown-menu-animated dropdown-md p-0">
                 <!-- item-->
-                
+            @if(Auth::user()->hasAccess('deals', 'is_view') && Auth::user()->hasAccess('deals', 'is_edit')) 
                 <a href="javascript:void(0);" class="dropdown-item notify-item" onclick="return get_add_modal('deals', '', 'dashboard');">
                     <i class="dripicons-plus"></i>
                     <span class="align-middle">Add Deals</span>
                 </a>
+            @endif
+            @if(Auth::user()->hasAccess('leads', 'is_view') && Auth::user()->hasAccess('leads', 'is_edit')) 
                 <a href="javascript:void(0);" class="dropdown-item notify-item" onclick="return get_add_modal('leads', '', 'dashboard');">
                     <i class="dripicons-plus"></i>
                     <span class="align-middle">Add Leads</span>
                 </a>
+            @endif
+            @if(Auth::user()->hasAccess('activities', 'is_view') && Auth::user()->hasAccess('activities', 'is_edit')) 
                 <a href="javascript:void(0);" class="dropdown-item notify-item" onclick="return get_add_modal('activities', '', 'dashboard');">
                     <i class="dripicons-plus"></i>
                     <span class="align-middle">Add Activity</span>
                 </a>
+            @endif
+            @if(Auth::user()->hasAccess('tasks', 'is_view') && Auth::user()->hasAccess('tasks', 'is_edit')) 
                 <a href="javascript:void(0);" class="dropdown-item notify-item" onclick="return get_add_modal('tasks', '', 'dashboard');">
                     <i class="dripicons-plus"></i>
                     <span class="align-middle">Add Tasks</span>
                 </a>
+            @endif
+            @if(Auth::user()->hasAccess('notes', 'is_view') && Auth::user()->hasAccess('notes', 'is_edit')) 
                 <a href="javascript:void(0);" class="dropdown-item notify-item" onclick="return get_add_modal('notes', '', 'dashboard');">
                     <i class="dripicons-plus"></i>
                     <span class="align-middle">Add Notes</span>
                 </a>
+            @endif
+            @if(Auth::user()->hasAccess('products', 'is_view') && Auth::user()->hasAccess('products', 'is_edit')) 
+
                 <a href="javascript:void(0);" class="dropdown-item notify-item" onclick="return get_add_modal('products', '', 'dashboard');">
                     <i class="dripicons-plus"></i>
                     <span class="align-middle">Add Product</span>
                 </a>
+            @endif
+            @if(Auth::user()->hasAccess('organizations', 'is_view') && Auth::user()->hasAccess('organizations', 'is_edit')) 
                 <a href="javascript:void(0);" class="dropdown-item notify-item" onclick="return get_add_modal('organizations', '', 'dashboard');" >
                     <i class="dripicons-plus"></i>
                     <span class="align-middle">Add Organization</span>
                 </a>
+            @endif
+            @if(Auth::user()->hasAccess('customers', 'is_view') && Auth::user()->hasAccess('customers', 'is_edit')) 
                 <a href="javascript:void(0);" class="dropdown-item notify-item" onclick="return get_add_modal('customers', '', 'dashboard');">
                     <i class="dripicons-plus"></i>
                     <span class="align-middle">Add Contact</span>
                 </a>
+            @endif
             </div>
         </li>
          
@@ -103,18 +123,25 @@
     </button>
     <div class="d-none d-lg-block  mt-md-3 text-center">
         <div class="btn-group">
-            <a class="btn-sm btn" href="{{ route('deals') }}">Deals</a>
-            <a class="btn-sm btn poniter-0" href="#">|</a>
-            <a class="btn-sm btn" href="{{ route('customers') }}">Contacts</a>
-            <a class="btn-sm btn poniter-0" href="#">|</a>
-
-            <a class="btn-sm btn" href="{{ route('organizations') }}">Organization</a>
-            <a class="btn-sm btn poniter-0" href="#">|</a>
-
-            <a class="btn-sm btn" href="{{ route('activities') }}">Activities</a>
-            <a class="btn-sm btn poniter-0" href="#">|</a>
-
-            <a class="btn-sm btn " href="{{ route('notes') }}">Notes</a>
+            @if(Auth::user()->hasAccess('deals', 'is_view') && Auth::user()->hasAccess('deals', 'is_edit')) 
+                <a class="btn-sm btn" href="{{ route('deals') }}">Deals</a>
+                <a class="btn-sm btn poniter-0" href="#">|</a>
+            @endif
+            @if(Auth::user()->hasAccess('customers', 'is_view') && Auth::user()->hasAccess('customers', 'is_edit')) 
+                <a class="btn-sm btn" href="{{ route('customers') }}">Contacts</a>
+                <a class="btn-sm btn poniter-0" href="#">|</a>
+            @endif
+            @if(Auth::user()->hasAccess('organizations', 'is_view') && Auth::user()->hasAccess('organizations', 'is_edit')) 
+                <a class="btn-sm btn" href="{{ route('organizations') }}">Organization</a>
+                <a class="btn-sm btn poniter-0" href="#">|</a>
+            @endif
+            @if(Auth::user()->hasAccess('activities', 'is_view') && Auth::user()->hasAccess('activities', 'is_edit')) 
+                <a class="btn-sm btn" href="{{ route('activities') }}">Activities</a>
+                <a class="btn-sm btn poniter-0" href="#">|</a>
+            @endif
+            @if(Auth::user()->hasAccess('notes', 'is_view') && Auth::user()->hasAccess('notes', 'is_edit')) 
+                <a class="btn-sm btn " href="{{ route('notes') }}">Notes</a>
+            @endif
         </div>
     </div>
 </div>
