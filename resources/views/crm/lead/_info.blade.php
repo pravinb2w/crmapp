@@ -17,7 +17,7 @@
     </div>
     <div class="col-md-6 mb-3">
         <div class="d-flex align-items-center justify-content-end">
-            @if( isset( $info->status ) && $info->status != 2 )
+            @if( isset( $info->status ) && $info->status != 2 && ( Auth::id() == $info->assigned_to || $info->assigned_to == null ) )
             @if(Auth::user()->hasAccess('leads', 'is_edit') || Auth::user()->hasAccess('leads', 'is_delete'))
             <div class="dropdown">
                 <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

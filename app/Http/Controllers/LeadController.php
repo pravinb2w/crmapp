@@ -74,10 +74,10 @@ class LeadController extends Controller
                     $action .= '<a href="'.route('leads.view',['id' => $leads->id]).'" class="action-icon"> <i class="mdi mdi-eye"></i></a>';
                 }
                 if( $leads->status != 2 ) {
-                    if(Auth::user()->hasAccess('leads', 'is_edit')) {
+                    if(Auth::user()->hasAccess('leads', 'is_edit') && $leads->assigned_to != null && $leads->assigned_to == Auth::id()) {
                         $action .= '<a href="javascript:void(0);" class="action-icon" onclick="return get_add_modal(\'leads\', '.$leads->id.')"> <i class="mdi mdi-square-edit-outline"></i></a>';
                     }
-                    if(Auth::user()->hasAccess('leads', 'is_delete')) {
+                    if(Auth::user()->hasAccess('leads', 'is_delete') && $leads->assigned_to != null && $leads->assigned_to == Auth::id()) {
                         $action .= '<a href="javascript:void(0);" class="action-icon" onclick="return common_soft_delete(\'leads\', '.$leads->id.')"> <i class="mdi mdi-delete"></i></a>';
                     }
                 }
@@ -90,6 +90,7 @@ class LeadController extends Controller
                 $nested_data[ 'type' ]              = $leads->leadType->type ?? 'N/A';
                 $nested_data[ 'source' ]            = $leads->leadSource->source ?? 'N/A';
                 $nested_data[ 'created_at' ]        = date('d-m-Y', strtotime($leads->created_at ) );
+                $nested_data['assigned_to']         = $leads->assignedTo->name ?? 'All';
                 $nested_data[ 'status' ]            = $leads_status;
                 $nested_data[ 'action' ]            = $action;
                 $data[]                             = $nested_data;
@@ -321,7 +322,12 @@ class LeadController extends Controller
         $modal_title = 'Add Lead';
         $leadsource = LeadSource::all();
         $leadtype = LeadType::all();
-        $users = User::where('status', 1)->whereNotNull('role_id')->get();
+        if( Auth::user()->hasAccess('leads', 'is_assign') || empty(Auth::user()->role_id) ) {
+            $users = User::where('status', 1)->whereNotNull('role_id')->get();
+        } else if( !empty(Auth::user()->role_id)) {
+            $users = User::where('status', 1)->where('id', Auth::id())->get();
+        }
+        
 
         if( isset( $id ) && !empty($id) ) {
             $info = Lead::find($id);

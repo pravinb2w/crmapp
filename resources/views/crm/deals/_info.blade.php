@@ -19,7 +19,7 @@
     <div class="col-md-6 mb-3">
         <div class="d-flex align-items-center justify-content-end">
             @if( $info->status == 0 || $info->status == 1 )
-                @if(Auth::user()->hasAccess('deals', 'is_edit') )
+                @if(Auth::user()->hasAccess('deals', 'is_edit') && ( Auth::id() == $info->assigned_to || $info->assigned_to == null ) )
                     <div class="btn me-2 btn-success" onclick="return deal_finalize('2', '{{ $info->id }}')">Won</div>
                     <div class="btn  me-2 btn-danger" onclick="return deal_finalize('3', '{{ $info->id }}')">Loss</div>
                 @endif
@@ -29,11 +29,11 @@
                 @else
                     <div class="btn  me-2 btn-danger" >Loss</div>
                 @endif
-                @if(Auth::user()->hasAccess('deals', 'is_edit') )
+                @if(Auth::user()->hasAccess('deals', 'is_edit')  && ( Auth::id() == $info->assigned_to || $info->assigned_to == null ) )
                     <div class="btn  me-2 btn-info" onclick="return deal_finalize('1', '{{ $info->id }}')">Reopen</div>
                 @endif
             @endif
-            @if(Auth::user()->hasAccess('deals', 'is_delete') )
+            @if(Auth::user()->hasAccess('deals', 'is_delete') && ( Auth::id() == $info->assigned_to || $info->assigned_to == null ) )
             <div class="dropdown">
                 <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <i class="mdi mdi-dots-vertical"></i>

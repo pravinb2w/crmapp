@@ -38,6 +38,7 @@
                                     <th> Title </th>
                                     <th> Customer </th>
                                     <th> Expected Delivery </th>
+                                    <th> Assigned To</th>
                                     <th> Status </th>
                                     <th style="width: 80px;">Action</th>
                                 </tr>
@@ -78,6 +79,7 @@
                 {"data" : "title"},
                 {"data" : "customer"},
                 {"data" : "expected_delivery"},
+                {"data" : "assigned_to"},
                 {"data" : "status" },
                 {"data" : "action" },
             ],

@@ -29,7 +29,10 @@
             $class = 'active';
             
         } else {
-            $onclick = 'onclick=make_stage_completed('.$item->id.','.$id.')';
+            if( ( Auth::id() == $info->assigned_to || $info->assigned_to == null ) ) {
+                $onclick = 'onclick=make_stage_completed('.$item->id.','.$id.')';
+
+            }
         }
     @endphp
         <span {{ $onclick }} class="pipeline-btn py-0 btn text-white btn-light {{ $class }}"  data-bs-container="#tooltip-container2" data-bs-toggle="tooltip" data-bs-placement="bottom" title="{{ $item->stages }}">

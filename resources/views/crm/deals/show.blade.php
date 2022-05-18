@@ -110,7 +110,8 @@ form#activites-form>div>label>i {
     </div>
     <div class="card shadow-sm">
         <ul class="nav nav-pills bg-nav-pills nav-justified custom">
-            @if(Auth::user()->hasAccess('deals', 'is_edit') )
+
+            @if(Auth::user()->hasAccess('deals', 'is_edit') && ( Auth::id() == $info->assigned_to || $info->assigned_to == null ) )
             <li class="nav-item">
                 <a href="#Notes" data-bs-toggle="tab" data-id="note" aria-expanded="false" class="nav-link rounded-0 active deal-tab">
                     <i class="uil uil-pen"></i>
@@ -145,14 +146,16 @@ form#activites-form>div>label>i {
                 </a>
             </li>
         </ul>
-        
+         
         <div class="tab-content p-3">
             <div class="tab-pane active" id="dealtab">
-                @if(Auth::user()->hasAccess('deals', 'is_edit') )
+                @if(Auth::user()->hasAccess('deals', 'is_edit') && ( Auth::id() == $info->assigned_to || $info->assigned_to == null ))
                     @include('crm.deals._note_form')
+                @else
+                    @include('crm.deals._history_form')
                 @endif
             </div>
-            <div id="deal-sub-list"></div>
+            {{-- <div id="deal-sub-list"></div> --}}
             <div class="loader"></div>
         </div>
     </div>

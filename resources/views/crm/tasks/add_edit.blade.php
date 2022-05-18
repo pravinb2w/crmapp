@@ -22,6 +22,8 @@
                             <input type="text" name="task_name" id="task_name" class="form-control" value="{{ $info->task_name ?? '' }}" required>
                         </div>
                     </div>
+                    @if(Auth::user()->hasAccess('tasks', 'is_assign'))
+
                     <div class="mb-3">
                         <label for="assigned_to" class="col-form-label">Assigned To<span class="text-danger">*</span></label>
                         <div>
@@ -35,6 +37,9 @@
                             </select>
                         </div>
                     </div>
+                    @else
+                    <input type="hidden" name="user_id" id="user_id" value="{{ Auth::id() }}">
+                    @endif
                     
                     <div class="mb-3">
                         <label for="description" class="col-form-label"> Description </label>

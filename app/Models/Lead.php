@@ -39,11 +39,12 @@ class Lead extends Model implements Auditable
         $role_id = auth()->user()->role_id;
         if($role_id){
             if( auth()->user()->hasAccess('leads', 'is_assign' ) ) {
-                return $query->where('assigned_to', auth()->user()->id )
-                            ->orWhere('assigned_to', null);
-
+                // return $query->where('assigned_to', auth()->user()->id )
+                //             ->orWhere('assigned_to', null);
             } else {
-                return $query->where('assigned_to', auth()->user()->id );
+                // return $query->where('assigned_to', auth()->user()->id );
+                return $query->where('assigned_to', auth()->user()->id )
+                                ->orWhere('assigned_to', null);
             }
 
         }

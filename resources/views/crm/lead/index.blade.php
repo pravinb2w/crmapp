@@ -42,6 +42,7 @@
                                     <th>Lead Type</th>
                                     <th>Lead Source</th>
                                     <th>Lead Created</th>
+                                    <th> Assigned To</th>
                                     <th>Status</th>
                                     <th style="width: 80px;">Action</th>
                                 </tr>
@@ -85,6 +86,7 @@
                 {"data" : "type" },
                 {"data" : "source" },
                 {"data" : "created_at" },
+                {"data" : "assigned_to" },
                 {"data" : "status" },
                 {"data" : "action" },
             ],
