@@ -74,10 +74,10 @@ class LeadController extends Controller
                     $action .= '<a href="'.route('leads.view',['id' => $leads->id]).'" class="action-icon"> <i class="mdi mdi-eye"></i></a>';
                 }
                 if( $leads->status != 2 ) {
-                    if(Auth::user()->hasAccess('leads', 'is_edit') && $leads->assigned_to != null && $leads->assigned_to == Auth::id()) {
+                    if( ( Auth::user()->hasAccess('leads', 'is_edit') && $leads->assigned_to != null && $leads->assigned_to == Auth::id()) || superadmin() ) {
                         $action .= '<a href="javascript:void(0);" class="action-icon" onclick="return get_add_modal(\'leads\', '.$leads->id.')"> <i class="mdi mdi-square-edit-outline"></i></a>';
                     }
-                    if(Auth::user()->hasAccess('leads', 'is_delete') && $leads->assigned_to != null && $leads->assigned_to == Auth::id()) {
+                    if( ( Auth::user()->hasAccess('leads', 'is_delete') && $leads->assigned_to != null && $leads->assigned_to == Auth::id()) || superadmin() ) {
                         $action .= '<a href="javascript:void(0);" class="action-icon" onclick="return common_soft_delete(\'leads\', '.$leads->id.')"> <i class="mdi mdi-delete"></i></a>';
                     }
                 }

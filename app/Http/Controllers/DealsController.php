@@ -77,10 +77,10 @@ class DealsController extends Controller
                 if(Auth::user()->hasAccess('deals', 'is_view')) {
                     $action .= '<a href="'.route('deals.view',['id' => $deals->id]).'" class="action-icon"> <i class="mdi mdi-eye"></i></a>';   
                 }
-                if(Auth::user()->hasAccess('deals', 'is_edit') && $deals->assigned_to != null && $deals->assigned_to == Auth::id()) {
+                if( (Auth::user()->hasAccess('deals', 'is_edit') && $deals->assigned_to != null && $deals->assigned_to == Auth::id()) || superadmin() ) {
                     $action .= '<a href="javascript:void(0);" class="action-icon" onclick="return get_add_modal(\'deals\', '.$deals->id.')"> <i class="mdi mdi-square-edit-outline"></i></a>';
                 }
-                if(Auth::user()->hasAccess('deals', 'is_delete') && $deals->assigned_to != null && $deals->assigned_to == Auth::id()) {
+                if( ( Auth::user()->hasAccess('deals', 'is_delete') && $deals->assigned_to != null && $deals->assigned_to == Auth::id()) || superadmin() ) {
                     $action .= '<a href="javascript:void(0);" class="action-icon" onclick="return common_soft_delete(\'deals\', '.$deals->id.')"> <i class="mdi mdi-delete"></i></a>';
                 }
 
