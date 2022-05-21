@@ -157,16 +157,19 @@
                 <div class="collapse" id="sidebarEmail_new">
                     <ul class="side-nav-second-level">
                         @if(Auth::user()->hasAccess('invoices', 'is_view'))
-                        <li>
-                            <a href="{{ route('invoices') }}">Invoices</a>
-                        </li>
+                            <li>
+                                <a href="{{ route('invoices') }}">Invoices</a>
+                            </li>
                         @endif
-                        @if(Auth::user()->hasAccess('payments', 'is_view'))
-                        
-                        <li>
-                            <a href="{{ route('payments') }}">Payments</a>
-                        </li>
+                        @if(Auth::user()->hasAccess('payments', 'is_view'))    
+                            <li>
+                                <a href="{{ route('payments') }}">Payments</a>
+                            </li>
                         @endif
+
+                        <li>
+                            <a href="{{ route('invoices-templates') }}">Templates</a>
+                        </li>
                     </ul>
                 </div>
             </li>
