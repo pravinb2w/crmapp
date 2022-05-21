@@ -123,5 +123,17 @@ class InvoiceController extends Controller
         }
         return view('mail-message', $params);
     }
+    public function template_index(Request $request)
+    {
+        return view('crm.invoice.templates.index');
+    }
+    public function template_download(Request $request)
+    {
+        $data = [
+            "title" => "New Invoice type"
+        ];
 
+        $pdf = PDF::loadView('crm.invoice.templates.invoice_type_one', $data);
+        return $pdf->download('test.pdf');
+    }
 }
