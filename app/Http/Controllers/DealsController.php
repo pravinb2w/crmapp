@@ -657,6 +657,7 @@ class DealsController extends Controller
         $body = [
             'name'=> $deal_info->customer->first_name,
             'info' => $info,
+            'invoice_no' => $info->invoice_no,
             'company' => $company,
             'html' => view('crm.invoice._mail_invoice', ['info' => $info, 'company' => $company]),
             'url_a'=> route('approve-invoice', ['id' => $invoice_id]),

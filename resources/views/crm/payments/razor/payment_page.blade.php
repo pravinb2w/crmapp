@@ -32,7 +32,7 @@ var options = {
         "address": "{{$response['address']}}"
     },
     "theme": {
-        "color": "#F37254"
+        "color": "#528FF0"
     }
 };
 var rzp1 = new Razorpay(options);

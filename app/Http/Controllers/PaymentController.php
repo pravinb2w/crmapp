@@ -112,7 +112,8 @@ class PaymentController extends Controller
 
     public function customer_deal_info(Request $request) { 
         $customer_id = $request->customer_id;
-        $invoice_info = Invoice::where('customer_id', $customer_id)->whereNotNull('approved_at')->whereNull('paid_at')->get();
+        // $invoice_info = Invoice::where('customer_id', $customer_id)->whereNotNull('approved_at')->whereNull('paid_at')->get();
+        $invoice_info = Invoice::where('customer_id', $customer_id)->whereNull('paid_at')->get();
         
         echo view('crm.payments._deal_select', ['info' => $invoice_info ]);
     }
@@ -234,24 +235,36 @@ class PaymentController extends Controller
 
     public function payment_initiate_request(Request $request) {
         // Generate random receipt id
-        $receiptId = Str::random(20);
+        $info = Invoice::find($request->all()['invoice_id']);
+
+        // $receiptId = $info->invoice_no.Str::random(5);
+        $receiptId = rand();
         $pay_info = PaymentIntegration::where('gateway', 'Razorpay')->first();
         // Create an object of razorpay
-        $api = new Api($pay_info->test_access_key, $pay_info->test_secret_key);
+        if( $pay_info->enabled == 'live') {
+            $razorpay_id = $pay_info->live_access_key;
+            $api = new Api($pay_info->live_access_key, $pay_info->live_secret_key);
+        } else {
+            $razorpay_id = $pay_info->test_access_key;
+
+            $api = new Api($pay_info->test_access_key, $pay_info->test_secret_key);
+        }
+        
 
         // In razorpay you have to convert rupees into paise we multiply by 100
         // Currency will be INR
         // Creating order
         $order = $api->order->create(array(
-            'receipt' => $receiptId,
+            'receipt' => now()->timestamp,
             'amount' => $request->all()['amount'] * 100,
             'currency' => 'INR'
             )
         );
+        
         // Return response on payment page
         $response = [
             'orderId' => $order['id'],
-            'razorpayId' => $pay_info->test_access_key,
+            'razorpayId' => $razorpay_id,
             'amount' => $request->all()['amount'] * 100,
             'name' => $request->all()['name'],
             'currency' => 'INR',
@@ -295,7 +308,11 @@ class PaymentController extends Controller
         {
             // Create an object of razorpay class
             $pay_info = PaymentIntegration::where('gateway', 'Razorpay')->first();
-            $api = new Api($pay_info->test_access_key, $pay_info->test_secret_key);
+            if( $pay_info->enabled == 'live') {
+                $api = new Api($pay_info->live_access_key, $pay_info->live_secret_key);
+            } else {
+                $api = new Api($pay_info->test_access_key, $pay_info->test_secret_key);
+            }
             $attributes  = array('razorpay_signature'  => $_signature,  'razorpay_payment_id'  => $_paymentId ,  'razorpay_order_id' => $_orderId);
             $order  = $api->utility->verifyPaymentSignature($attributes);
             return true;
@@ -317,8 +334,10 @@ class PaymentController extends Controller
         );
 
         $pay_post = $request->session()->pull('pay_post');
-
+        // echo '<pre>';
+        // print_r( $pay_post );
         $pay_info = Payment::where('session_id', session()->getId())->first();
+        // print_r( $pay_info );
         
         $pay_info->razorpay_id = $request->all()['rzp_orderid'];
         $pay_info->reference_no = $request->all()['rzp_paymentid'];
@@ -326,6 +345,7 @@ class PaymentController extends Controller
         // In this tutorial we send the response to Success page if payment successfully made
         if($signatureStatus == true)
         {
+            // dd( $pay_info );
             $pay_info->payment_status = 'paid';
             $pay_info->session_id = '';
             $pay_info->update();

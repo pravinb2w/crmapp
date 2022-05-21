@@ -38,7 +38,7 @@
                                     <label for="status" class="">Live Mode</label>
                                     <!-- Success Switch -->
                                     <div class="">
-                                        <input type="checkbox" name="status[]" id="status_{{ $item->id }}" {{ (isset($item->enabled) && $item->enabled == 'live' )  ? 'checked' : ((isset($item->enabled) && $item->enabled == 'test' ) ? '':'checked')}} data-switch="success"/>
+                                        <input type="checkbox" name="status[]" id="status_{{ $item->id }}" {{ (isset($item->enabled) && $item->enabled == 'on' )  ? 'checked' : ((isset($item->enabled) && $item->enabled == 'test' ) ? '':'checked')}} data-switch="success"/>
                                         <label for="status_{{ $item->id }}" data-on-label="" data-off-label=""></label>
                                     </div>
                                 </div>

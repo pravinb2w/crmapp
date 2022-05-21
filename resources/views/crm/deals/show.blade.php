@@ -155,7 +155,7 @@ form#activites-form>div>label>i {
                     @include('crm.deals._history_form')
                 @endif
             </div>
-            {{-- <div id="deal-sub-list"></div> --}}
+            <div id="deal-sub-list"></div>
             <div class="loader"></div>
         </div>
     </div>

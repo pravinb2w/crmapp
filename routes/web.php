@@ -161,7 +161,7 @@ Route::middleware([SetViewVariable::class, 'auth'])->group(function(){
         Route::post('/list', [App\Http\Controllers\InvoiceController::class, 'ajax_list'])->name('invoices.list')->middleware('checkAccess:is_view');
         Route::post('/view', [App\Http\Controllers\InvoiceController::class, 'view'])->name('invoices.view')->middleware('checkAccess:is_view'); //set on modal
     });
-
+ 
     //Payment route
     Route::prefix('payments')->group(function () {
         Route::get('/', [App\Http\Controllers\PaymentController::class, 'index'])->name('payments');
