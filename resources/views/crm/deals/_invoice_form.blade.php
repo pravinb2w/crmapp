@@ -18,6 +18,12 @@
                 <label for="" class="col-3">Email</label>
                 <input type="text" name="email" id="email" value="{{ $info->customer->email }}" class="form-control">
             </div>
+            <div class="form-group d-flex mt-1">
+                <label for="" class="col-3">Pdf Template</label>
+                <input type="hidden" name="pdf_template" id="pdf_template" required  value="default">
+                <span class="col-6" >Default</span>
+                <span class="btn btn-primary col-3" role="button" id="change_pdf_template">Change PDF Template</span>
+            </div>
         </div>
         
         <div class="col-6">
@@ -32,7 +38,7 @@
             </div>
             <div class="form-group d-flex mt-1">
                 <label for="" class="col-3"> Due Days : </label>
-                <input type="number" name="due_days" id="due_days" class="form-control w-100" value="" min="1">
+                <input type="number" name="due_days" id="due_days" class="form-control w-100" value="" min="1" required>
             </div>
             <div class="form-group d-flex mt-1">
                 <label for="" class="col-3">Currency</label>
@@ -117,5 +123,23 @@
 
     $('#with_tax').change(function(){
         $('#invoice-items').html('');
+    });
+
+    $('#change_pdf_template').click(function(){
+        var ajax_url = "{{ route('invoice.pdf.change') }}";
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        $.ajax({
+            url: ajax_url,
+            method:'POST',
+            success:function(res){
+                $('#Mymodal').html(res);
+                $('#Mymodal').modal('show');
+            }
+        })
+        return false;
     });
 </script>

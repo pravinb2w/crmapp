@@ -380,11 +380,12 @@ form#activites-form>div>label>i {
                        success:function(response){
                             if(response.deal_id ) {
                                 $('.loader').hide();
+                                Swal.fire('Updated!', '', 'success')
+
                                 get_deal_common_sub_list(response.deal_id, 'invoice');
                             }
                        }      
                    });
-                   Swal.fire('Updated!', '', 'success')
                } 
            })
            return false;

@@ -38,7 +38,7 @@
     @endphp
     @if(isset( $list))
     @forelse ($list as $item)
-        <a href="javascript:void(0);" class="new-item notify-item @if($item->is_read == 0) unread @endif" @if( isset( $role_id ) && !empty($role_id) ) onclick="return make_read('{{ $item->id }}')" @endif>
+        <a href="@if( superadmin() && isset($item->url) && !empty($item->url) ) {{ $item->url }} @else javascript:void(0); @endif" class="new-item notify-item @if($item->is_read == 0) unread @endif" @if( isset( $role_id ) && !empty($role_id) ) onclick="return make_read('{{ $item->id }}')" @endif>
             <p class="notify-details">{{ $item->title }}</p>
             <p class="text-muted mb-0 user-msg">
                 <small>{{ $item->message }}</small>

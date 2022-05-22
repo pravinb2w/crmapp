@@ -117,7 +117,7 @@ form#activites-form>div>label>i {
                                 <ul class="nav nav-pills bg-nav-pills nav-justified custom">
                                     @if( isset( $info->status ) && $info->status != 2 )
 
-                                        @if(Auth::user()->hasAccess('leads', 'is_edit') && ( Auth::id() == $info->assigned_to || $info->assigned_to == null ) )
+                                        @if( (Auth::user()->hasAccess('leads', 'is_edit') && ( Auth::id() == $info->assigned_to || $info->assigned_to == null ) ) || superadmin() )
                                         <li class="nav-item">
                                             <a href="#Notes" data-bs-toggle="tab" data-id="note" aria-expanded="false" class="nav-link rounded-0 active lead-tab">
                                                 <i class="uil uil-pen"></i>
@@ -142,7 +142,7 @@ form#activites-form>div>label>i {
                                 </ul>
                                 <div class="tab-content p-3">
                                     <div class="tab-pane active" id="leadstab" >
-                                        @if(Auth::user()->hasAccess('leads', 'is_edit') && ( Auth::id() == $info->assigned_to || $info->assigned_to == null ))
+                                        @if( ( Auth::user()->hasAccess('leads', 'is_edit') && ( Auth::id() == $info->assigned_to || $info->assigned_to == null )) || superadmin() )
                                         @include('crm.lead._note_form')
                                         @else
                                         @include('crm.lead._history_form')

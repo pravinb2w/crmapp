@@ -247,6 +247,7 @@ class CommonHelper
                 'title' => 'New Enquiry',
                 'message' => 'Customer has come, Please welcome customer',
                 'type' => 'lead',
+                'url' => route('leads.view', ['id' => $lead_id]),
                 'type_id' => $lead_id,
                 'user_id' => $user_id,
                 'created_at' => date('Y-m-d H:i:s')
@@ -260,6 +261,7 @@ class CommonHelper
                                 'title' => 'New Enquiry',
                                 'message' => 'Customer has come, Please welcome customer',
                                 'type' => 'lead',
+                                'url' => route('leads.view', ['id' => $lead_id]),
                                 'type_id' => $lead_id,
                                 'user_id' => $item->user_id,
                                 'created_at' => date('Y-m-d H:i:s')

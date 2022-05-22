@@ -333,7 +333,7 @@ class HomeController extends Controller
             $result = Notification::where('user_id', $user_id)->orderBy('id', 'desc')->get();
             $count = Notification::where('user_id', $user_id)->where('is_read', 0)->count();
         } else {
-            $result = Notification::orderBy('id', 'desc')->get();
+            $result = Notification::groupBy('type_id')->orderBy('id', 'desc')->get();
             $count = Notification::where('is_read', 0)->count();
         }
         $params = array( 'list' => $result, 'count' => $count, 'role_id' => $role_id ?? '' );
@@ -343,21 +343,28 @@ class HomeController extends Controller
 
     public function make_noti_read(Request $request) {
         $id = $request->id;
-        $info = Notification::find($id);
-        $info->is_read = 1;
-        $info->save();
+        
 
         $user_id = Auth::id();
         $role_id = Auth::user()->role_id;
         if( $role_id ) {
+            $info = Notification::find($id);
+            $info->is_read = 1;
+            $info->save();
             $result = Notification::where('user_id', $user_id)->orderBy('id', 'desc')->get();
             $count = Notification::where('user_id', $user_id)->where('is_read', 0)->count();
         } else {
+            
             $result = Notification::orderBy('id', 'desc')->get();
             $count = Notification::where('is_read', 0)->count();
         }
+        $params = array( 'list' => $result, 'count' => $count, 'role_id' => $role_id ?? '', 'url' => $info->url ?? '' );
+
+        if( isset($info->url) && !empty($info->url)) {
+            return $params;
+        } else {
+            return view('crm.layouts._notification', $params);
+        }
         
-        $params = array( 'list' => $result, 'count' => $count, 'role_id' => $role_id ?? '' );
-        return view('crm.layouts._notification', $params);
     }
 }

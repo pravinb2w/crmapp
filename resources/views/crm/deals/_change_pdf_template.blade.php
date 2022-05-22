@@ -1,29 +1,13 @@
-@extends('crm.layouts.template')
-
-@section('content')
-
-<div class="container-fluid">
-                        
-    <!-- start page title -->
-    <div class="row">
-        <div class="col-12">
-            <div class="page-title-box">
-                <div class="page-title-right">
-                    <ol class="breadcrumb m-0">
-                        <li class="breadcrumb-item"><a href="javascript: void(0);">CRM</a></li>
-                        <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
-                        <li class="breadcrumb-item active">Invoice Template</li>
-                    </ol>
-                </div>
-                <h4 class="page-title">Invoice Template</h4>
-            </div>
+<div class="modal-dialog modal-xl">
+    <form  id="dealstage-form" method="POST" action="{{ route('dealstages.save') }}" autocomplete="off" class="modal-content h-100">
+        <div class="modal-header">
+            <h4 class="modal-title" id="myLargeModalLabel">{{ $modal_title }}</h4>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-    </div>     
-    <!-- end page title --> 
-    <section>
-        <form action="{{ route('invoices-templates') }}" method="POST">
-            @csrf
+        <div class="modal-body p-3" >
             <div class="row">
+                <div class="col-12" id="error">
+                </div>
                 <div class="col-md-3">
                     <div class="card border shadow-sm">
                         <div class="card-header bg-light">
@@ -68,13 +52,19 @@
                         </div> 
                     </div>
                 </div>
-                <div class="col-12 text-center">
-                    <button type="submit" class="btn btn-primary">Download PDF</button>
-                </div>
+            </div> 
+        </div>
+        <div class="modal-footer">
+            <div class="col-12 text-end">
+                <button type="button" class="btn btn-light" data-bs-dismiss="modal" aria-label="Close"> Cancel</button>
+                <button type="submit" class="btn btn-info" id="save">Continue</button>
             </div>
-        </form>
-    </section>  
+        </div>
+    </form><!-- /.modal-content -->
 </div>
 
+<script>
+       
 
-@endsection 
+        
+</script>

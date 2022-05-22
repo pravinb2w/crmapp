@@ -10,15 +10,15 @@
             @if( isset($info->lead_value ) && !empty($info->lead_value))
             <div class="btn ps-0"><b class="h4">RS.{{ $info->lead_value }}</b></div>
             @endif
-            <div class="btn link">5 Products</div>
+            {{-- <div class="btn link">5 Products</div> --}}
             <div class="btn"><i class="me-1 dripicons-user"></i> {{ $info->customer->first_name ?? '' }} {{ $info->customer->email ?? '' }}</div>
             <div class="btn"><i class="me-1 mdi-office-building mdi"></i> {{ $info->customer->company->name ?? '' }}</div>
         </div>
     </div>
     <div class="col-md-6 mb-3">
         <div class="d-flex align-items-center justify-content-end">
-            @if( isset( $info->status ) && $info->status != 2 && ( Auth::id() == $info->assigned_to || $info->assigned_to == null ) )
-            @if(Auth::user()->hasAccess('leads', 'is_edit') || Auth::user()->hasAccess('leads', 'is_delete'))
+            @if( isset( $info->status ) && $info->status != 2 && ( Auth::id() == $info->assigned_to || $info->assigned_to == null || superadmin() ) )
+            @if(Auth::user()->hasAccess('leads', 'is_edit') || Auth::user()->hasAccess('leads', 'is_delete') || superadmin())
             <div class="dropdown">
                 <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <i class="mdi mdi-dots-vertical"></i>

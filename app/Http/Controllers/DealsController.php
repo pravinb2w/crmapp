@@ -785,5 +785,12 @@ class DealsController extends Controller
         return view('crm.deals._common_sub_list', ['info' => $info, 'list_type' => $list_type, 'deal_id' => $deal_id]);
     }
 
+    public function change_pdf_template(Request $request) {
+        $data = [
+            "modal_title" => "Change Invoice Template"
+        ];
+        return view('crm.deals._change_pdf_template', $data);
+    }
+
    
 }

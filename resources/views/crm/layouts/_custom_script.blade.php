@@ -95,7 +95,11 @@ function make_stage_completed(stage_id, deal_id ){
             type: 'POST',
             data: {id:id},
             success: function(response) {
-                $('#notification_tab').html(response);
+                if( response.url ) {
+                    window.location.href=response.url;
+                } else {
+                    $('#notification_tab').html(response);
+                }
             }            
         });
     }
