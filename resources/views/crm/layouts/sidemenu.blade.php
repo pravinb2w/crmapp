@@ -255,10 +255,10 @@
                             <a href="{{ route('reports.started') }}">Deals Started/Convertion</a>
                         </li>
                         <li>
-                            <a href="javascipt:void(0);">Activities Planned Vs Done</a>
+                            <a href="{{ route('reports.planned') }}">Activities Planned Vs Done</a>
                         </li>
                         <li>
-                            <a href="javascipt:void(0);">Revenue Forecast</a>
+                            <a href="{{ route('reports.forecast') }}">Revenue Forecast</a>
                         </li>
                     </ul>
                 </div>

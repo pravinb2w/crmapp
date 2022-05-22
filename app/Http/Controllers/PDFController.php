@@ -26,8 +26,8 @@ class PDFController extends Controller
             'company' => $company,
             'taxable' => $taxable,
         ];
-        // return view('myPDF', $data);
-        $pdf = PDF::loadView('myPDF', $data);
+        return view('mypdf', $data);
+        $pdf = PDF::loadView('mypdf', $data);
     
         return $pdf->download('nicesnippets.pdf');
     }

@@ -354,6 +354,14 @@ Route::middleware([SetViewVariable::class, 'auth'])->group(function(){
         Route::post('/sales/download', [App\Http\Controllers\ReportController::class, 'deal_sales_download'])->name('reports.sales.download');
         Route::post('/sales/pdf/download', [App\Http\Controllers\ReportController::class, 'deal_sales_pdf_download'])->name('reports.sales_pdf.download');
         Route::get('/planned', [App\Http\Controllers\ReportController::class, 'planned_done'])->name('reports.planned');
+        Route::get('/forecast', [App\Http\Controllers\ReportController::class, 'forecast'])->name('reports.forecast');
+        Route::post('/forecast/list', [App\Http\Controllers\ReportController::class, 'ajax_forecast_list'])->name('reports.forecast.list');
+        Route::post('/forecast/download', [App\Http\Controllers\ReportController::class, 'forecast_download'])->name('reports.forecast.download');
+        Route::post('/forecast/pdf/download', [App\Http\Controllers\ReportController::class, 'forecast_pdf_download'])->name('reports.forecast_pdf.download');
+        Route::post('/planned/list', [App\Http\Controllers\ReportController::class, 'ajax_planned_list'])->name('reports.planned.list');
+        Route::post('/planned/download', [App\Http\Controllers\ReportController::class, 'planned_download'])->name('reports.planned.download');
+        Route::post('/planned/pdf/download', [App\Http\Controllers\ReportController::class, 'planned_pdf_download'])->name('reports.planned_pdf.download');
+
     }); 
 
     Route::prefix('announcement')->group(function () {

@@ -202,7 +202,7 @@
                 var blob = new Blob([result]);
                 var link = document.createElement('a');
                 link.href = window.URL.createObjectURL(blob);
-                link.download = "Sample.pdf";
+                link.download = "started.pdf";
                 link.click();
                 console.log(result);
             }
