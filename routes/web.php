@@ -101,6 +101,17 @@ Route::middleware([SetViewVariable::class, 'auth'])->group(function(){
         Route::post('/delete', [App\Http\Controllers\CmsController::class, 'delete'])->name('pages.delete')->middleware('checkAccess:is_delete');
         Route::post('/status', [App\Http\Controllers\CmsController::class, 'change_status'])->name('pages.status')->middleware('checkAccess:is_edit');
     });
+    //Automation route
+    Route::prefix('automation')->group(function () {
+        Route::get('/', [App\Http\Controllers\AutomationController::class, 'index'])->name('automation')->middleware('checkAccess:is_view');         
+        Route::post('/add', [App\Http\Controllers\AutomationController::class, 'add_edit'])->name('automation.add')->middleware('checkAccess:is_edit');
+        Route::post('/save', [App\Http\Controllers\AutomationController::class, 'save'])->name('automation.save');
+        Route::post('/list', [App\Http\Controllers\AutomationController::class, 'ajax_list'])->name('automation.list')->middleware('checkAccess:is_view');
+        Route::post('/delete', [App\Http\Controllers\AutomationController::class, 'delete'])->name('automation.delete')->middleware('checkAccess:is_delete');
+        Route::post('/status', [App\Http\Controllers\AutomationController::class, 'change_status'])->name('automation.status')->middleware('checkAccess:is_edit');
+        Route::post('/view', [App\Http\Controllers\AutomationController::class, 'view'])->name('automation.view')->middleware('checkAccess:is_view');
+
+    });
     //products route
     Route::prefix('products')->group(function () {
         Route::get('/', [App\Http\Controllers\ProductController::class, 'index'])->name('products')->middleware('checkAccess:is_view');

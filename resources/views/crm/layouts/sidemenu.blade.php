@@ -235,6 +235,9 @@
                         <li>
                             <a href="{{ route('db-backup.index') }}">Database Backup</a>
                         </li>
+                        <li>
+                            <a href="{{ route('automation') }}"> Workflow Automation </a>
+                        </li>
                     </ul>
                 </div>
             </li>

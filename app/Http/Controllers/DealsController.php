@@ -455,7 +455,7 @@ class DealsController extends Controller
         $deal_stage_info = DealStage::find($deal_info->current_stage_id);
         $new_stage_info = DealStage::find($stage_id);
         if(Auth::user()->hasAccess('deals', 'is_edit')) {
-            $status = '1';
+            $err_status = '1';
 
             $stage = DealStage::orderBy('order_by', 'asc')->get();
             $all_stages = DealStage::where('order_by', '>', $deal_stage_info->order_by )->where('order_by', '<=', $new_stage_info->order_by )->orderBy('order_by', 'asc')->get();
@@ -504,12 +504,12 @@ class DealsController extends Controller
             $error = 'Status changed successfully';
 
         } else {
-            $status = '0';
+            $err_status = '0';
             $error = 'You Do not have access to change status';
             $view = '';
         }
         
-        return response()->json(['error'=> $error, 'status' => $status, 'view' => $view]);
+        return response()->json(['error'=> $error, 'status' => $err_status, 'view' => $view]);
 
         
     }

@@ -47,5 +47,19 @@ return [
         'payumoney' => 'PayUmoney',
         'paybiz' => 'PayBiz',
         'citrus' => 'Citrus'
+    ],
+    'workflow_type' => [
+        'New Customer Addition',
+        'New Lead Addition',
+        'New Deal Addition',
+        'New Organization Addition',
+        'Activity on all Leads',
+        'Activity on all Deals',
+        'Conversion from Lead to Deal',
+        'Deal stage changed',
+        'Invoice Creation',
+        'Deal won/lose',
+        'Payment Remainder',
+        'Thanks mail for the payment received',
     ]
 ];

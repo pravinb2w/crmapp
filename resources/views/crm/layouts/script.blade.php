@@ -22,6 +22,11 @@
         $('#error').append('<div>'+item+'</div>');
     }
 
+    function display_toast( item, index) {
+        toastr.error('Error', item );
+    }
+
+
     function get_add_modal(page_type, id = '', from = '') {
         var ajax_url = set_add_url(page_type);
         $.ajaxSetup({
@@ -199,6 +204,8 @@
             return ajax_url = '{{ route("deals.add") }}';
         } else if(page_type=='taxgroup') {
             return ajax_url = '{{ route("tax.add") }}';
+        } else if(page_type=='automation') {
+            return ajax_url = '{{ route("automation.add") }}';
         }
     }
 
@@ -243,6 +250,8 @@
             return ajax_url = '{{ route("tax.view") }}';
         } else if(page_type=='payments') {
             return ajax_url = '{{ route("payments.view") }}';
+        } else if(page_type=='automation') {
+            return ajax_url = '{{ route("automation.view") }}';
         }
     }
     function set_delete_url(page_type) {
@@ -290,6 +299,8 @@
             return ajax_url = '{{ route("tax.delete") }}';
         } else if(page_type=='payments') {
             return ajax_url = '{{ route("payments.delete") }}';
+        } else if(page_type=='automation') {
+            return ajax_url = '{{ route("automation.delete") }}';
         }
     }
 
@@ -334,10 +345,10 @@
             return ajax_url = '{{ route("deals.status") }}';
         } else if(page_type=='taxgroup') {
             return ajax_url = '{{ route("tax.status") }}';
+        } else if(page_type=='automation') {
+            return ajax_url = '{{ route("automation.status") }}';
         }
     }
-
-    
 
     // Restricts input for the given textbox to the given inputFilter.
 function setInputFilter(textbox, inputFilter) {

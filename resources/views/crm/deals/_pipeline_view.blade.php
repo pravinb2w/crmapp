@@ -29,9 +29,8 @@
             $class = 'active';
             
         } else {
-            if( ( Auth::id() == $info->assigned_to || $info->assigned_to == null ) ) {
+            if( ( Auth::id() == $info->assigned_to || $info->assigned_to == null ) || superadmin()) {
                 $onclick = 'onclick=make_stage_completed('.$item->id.','.$id.')';
-
             }
         }
     @endphp
