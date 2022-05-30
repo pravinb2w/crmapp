@@ -13,6 +13,9 @@
                     $tmp['done_at'] = $item->done_at ?? $item->created_at;
                     $tmp['done_by'] = $item->doneBy;
                     $tmp['added'] = $item->added;
+                    $tmp['created_by'] = $item->added_by;
+                    $tmp['user_id'] = $item->user_id;
+
                     $list[] = $tmp;
                 }
 
@@ -26,6 +29,9 @@
                     $tmp['done_at'] = Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $ionotes->updated_at)->format('Y-m-d H:i:s');
                     // $tmp['done_by'] = $ionotes->updatedBy;
                     $tmp['added'] = $ionotes->added;
+                    $tmp['created_by'] = $ionotes->user_id;
+                    $tmp['user_id'] = $item->user_id;
+
                     $list[] = $tmp;
                 }
 
@@ -44,7 +50,6 @@
                     <div>{{ strtoupper($litem['activity_type']) }}</div>
                     <p> @if($litem['activity_type'] != 'Notes' ) {{ strtoupper($litem['activity_type']) }}  - @endif {{ $litem['subject'] }}</p>
                 </div>
-                
             </td>
             <td style="position: relative">
                 <div>
@@ -58,21 +63,25 @@
                         <span class="badge badge-success-lighten"> AddedBy : {{ $litem['added']->name ?? '' }}</span>
                     @endif
                 </div>
-                <div class="dropdown">
+                
+                <div class="dropdown history-dropdown">
                     <button class="btn btn-sm" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <i class="mdi mdi-dots-vertical"></i>
                     </button>
-                    @if( (Auth::user()->hasAccess('leads', 'is_edit') || Auth::user()->hasAccess('leads', 'is_delete')) && ( Auth::id() == $info->assigned_to || $info->assigned_to == null ) )
+                    @if( (Auth::user()->hasAccess('leads', 'is_edit') || Auth::user()->hasAccess('leads', 'is_delete')) && ( Auth::id() == $info->assigned_to || $info->assigned_to == null || Auth::id() == $litem['user_id'] ) )
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        @if(Auth::user()->hasAccess('leads', 'is_edit') && ( Auth::id() == $info->assigned_to || $info->assigned_to == null ) )
+                        @if(Auth::user()->hasAccess('leads', 'is_edit') && ( Auth::id() == $litem['created_by'] || Auth::id() == $info->assigned_to || Auth::id() == $litem['user_id'] ) )
                             @if( $litem['activity_type'] != 'Notes')
                             <a class="dropdown-item" href="javascript:;"  onclick="edit_activity('history','{{ $litem['id'] }}', '{{ $info->id }}')">Edit</a>
                                 @if( !$litem['done_by'])
                                     <a class="dropdown-item" href="javascript:;" onclick="mark_as_done('{{ $litem['id'] }}', '{{ $info->id }}')">Mark as Done</a>
                                 @endif
                             @endif
+                        @else
+                            <a class="dropdown-item" href="javascript:;" >No Action</a>
+
                         @endif
-                        @if(Auth::user()->hasAccess('leads', 'is_delete') && ( Auth::id() == $info->assigned_to || $info->assigned_to == null ) )
+                        @if(Auth::user()->hasAccess('leads', 'is_delete') && ( Auth::id() == $litem['created_by'] ) )
                             <a class="dropdown-item" href="#"  onclick="change_activity_status('{{ $info->id ?? '' }}','{{ $litem['id'] ?? '' }}', '{{ $litem['activity_type'] ?? '' }}' )">Delete</a>
                         @endif
                     </div>

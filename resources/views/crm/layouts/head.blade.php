@@ -79,6 +79,12 @@
             --side-bar-text : white;
             --side-bar-size : 220px;
         }
+        div#notification_tab{
+            overflow-y: auto;
+        }
+        div#notification_tab::-webkit-scrollbar {width: 5px;/* color: darkred; */background: #70c0dbe0;}
+
+        div#notification_tab::-webkit-scrollbar-thumb {background: lightgray;}
     </style>
 
     <link href="{{ asset('assets/custom/css/effect.css') }}" rel="stylesheet" type="text/css" id="light-style" />

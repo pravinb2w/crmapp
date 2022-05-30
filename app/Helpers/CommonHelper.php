@@ -6,8 +6,14 @@ use Illuminate\Http\Request;
 use DB;
 use App\Models\Product;
 use App\Models\Invoice;
+use App\Models\Lead;
+use App\Models\Deal;
+use App\Models\Activity;
+use App\Models\User;
+use App\Models\DealStage;
 use App\Models\PrefixSetting;
 use App\Models\CompanySettings;
+use Auth;
 
 class CommonHelper
 {
@@ -239,17 +245,36 @@ class CommonHelper
         
     }
 
-    public static function send_lead_notification( $lead_id, $user_id = '') {
+    public static function send_lead_notification( $lead_id, $user_id = '', $is_manual = '', $update = '') {
         $lead_order_info = DB::table('lead_orders')->get();
+        $title = 'New Enquiry';
+        if( !empty($update)){
+            $title = 'Enquiry Updates';
+        }
+        $date_div = '<strong class="text-primary">'.date('d M Y h:i A').'</strong>';
         
         if( $user_id ) {
+            $lead_info = Lead::find($lead_id);
+            $user_info = User::find($user_id);
+            if( !empty($update)){
+                $message = 'Lead Enquiry '.$lead_info->lead_subject.' has made some changes please view to see changes. Changes made by <span class="text-success">'.Auth::user()->name.' '.(Auth::user()->last_name ?? '').'</span> at '.$date_div;
+            } else {
+                if( Auth::id() ) {
+                    $message = 'Lead Enquiry '.$lead_info->lead_subject.' has assigned to <span class="text-success">'.$user_info->name.' '.($user_info->last_name ?? '').'</span> and assigned by '.Auth::user()->name.' '.(Auth::user()->last_name ?? '').' at '.$date_div;
+                } else {
+                    $message = 'Lead Enquiry '.$lead_info->lead_subject.' has come to <span class="text-succes">'.$user_info->name.' '.($user_info->last_name ?? '').'</span> and it is autoassigned at '.$date_div;
+                }
+            }
+            
+            
             $ins = array(
-                'title' => 'New Enquiry',
-                'message' => 'Customer has come, Please welcome customer',
+                'title' => $title,
+                'message' => $message,
                 'type' => 'lead',
                 'url' => route('leads.view', ['id' => $lead_id]),
                 'type_id' => $lead_id,
                 'user_id' => $user_id,
+                'assigned_by' => Auth::id() ?? null,
                 'created_at' => date('Y-m-d H:i:s')
             );
 
@@ -257,15 +282,825 @@ class CommonHelper
         } else {
             if( isset( $lead_order_info ) && !empty($lead_order_info)) {
                 foreach ($lead_order_info as $item) {
+
+                    $lead_info = Lead::find($lead_id);
+                    $user_info = User::find($item->user_id);
+                    if( !empty($update)){
+                        $message = 'Lead Enquiry '.$lead_info->lead_subject.' has made some changes please view to see changes. Changes made by <span class="text-success">'.Auth::user()->name.' '.(Auth::user()->last_name ?? '').'</span> at '.$date_div;
+                    } else {
+                        if( Auth::id() ) {
+                            $message = 'Lead Enquiry '.$lead_info->lead_subject.' has assigned to <span class="text-success">'.$user_info->name.' '.($user_info->last_name ?? '').'</span> and assigned by '.Auth::user()->name.' '.(Auth::user()->last_name ?? '').' at '.$date_div;
+                        } else {
+                            $message = 'Lead Enquiry '.$lead_info->lead_subject.' has come to <span class="text-succes">'.$user_info->name.' '.($user_info->last_name ?? '').'</span> and it is autoassigned at '.$date_div;
+                        }
+                    }
+
                     $ins[] = array(
-                                'title' => 'New Enquiry',
-                                'message' => 'Customer has come, Please welcome customer',
+                                'title' => $title,
+                                'message' => $message,
                                 'type' => 'lead',
                                 'url' => route('leads.view', ['id' => $lead_id]),
                                 'type_id' => $lead_id,
+                                'assigned_by' => Auth::id() ?? null,
                                 'user_id' => $item->user_id,
                                 'created_at' => date('Y-m-d H:i:s')
-                    );
+                            );
+                }
+            } 
+        }
+        if( !empty( $ins ) ) {
+            DB::table('notifications')->insert($ins);
+        }
+        return true;
+    }
+
+    public static function send_lead_activity_notification( $activity_id, $assigned_to = '', $update = '') {
+        $lead_order_info = DB::table('lead_orders')->get();
+        $title = 'New Lead Activity Added';
+        if( !empty($update)){
+            $title = 'Changes Made on Lead Activity';
+        }
+        $act_info = Activity::find($activity_id);
+      
+        $date_div = '<strong class="text-primary">'.date('d M Y h:i A').'</strong>';
+        if( $assigned_to ) {
+            
+            if( !empty($update)){
+                $message = 'Activity '.$act_info->subject.' has made some changes please view to see changes. Changes made by <span class="text-info">'.Auth::user()->name.' '.(Auth::user()->last_name ?? '').'</span> at '.$date_div;
+            } else {
+                $message = 'Activity '.$act_info->subject.' has assigned to <span class="text-success">'.$act_info->user->name.'</span> created by <span class="text-info">'. Auth::user()->name.'</span> at '.$date_div;
+            }
+            
+            $ins = array(
+                'title' => $title,
+                'message' => $message,
+                'type' => 'lead-activity',
+                'url' => route('leads.view', ['id' => $act_info->lead_id]),
+                'type_id' => $activity_id,
+                'user_id' => $act_info->lead->assigned_to,
+                'assigned_by' => null,
+                'created_at' => date('Y-m-d H:i:s')
+            );
+
+            if( isset($act_info->lead->assigned_by) && !empty($act_info->lead->assigned_by)){
+                $user_info = User::find($act_info->lead->assigned_by);
+
+                $ins[] = array(
+                    'title' => $title,
+                    'message' => $message,
+                    'type' => 'lead-activity',
+                    'url' => route('leads.view', ['id' => $act_info->lead_id]),
+                    'type_id' => $activity_id,
+                    'user_id' => $act_info->lead->assigned_by,
+                    'assigned_by' => null,
+                    'created_at' => date('Y-m-d H:i:s')
+                );
+            }
+
+            
+        } else {
+            if( isset( $lead_order_info ) && !empty($lead_order_info)) {
+                foreach ($lead_order_info as $item) {
+
+                    $lead_info = Lead::find( $act_info->lead_id);
+                    $user_info = User::find($item->user_id);
+                    if( !empty($update)){
+                        $message = 'Activity '.$act_info->subject.' has made some changes please view to see changes. Changes made by <span class="text-info">'.Auth::user()->name.' '.(Auth::user()->last_name ?? '').'</span> at '.$date_div;
+                    } else {
+                        $message = 'Activity '.$act_info->subject.' has assigned to <span class="text-success">'.$act_info->user->name.'</span> created by <span class="text-info">'. Auth::user()->name.'</span> at '.$date_div;
+                    }
+
+                    $ins[] = array(
+                                'title' => $title,
+                                'message' => $message,
+                                'type' => 'lead',
+                                'url' => route('leads.view', ['id' => $act_info->lead_id]),
+                                'type_id' => $activity_id,
+                                'assigned_by' => Auth::id() ?? null,
+                                'user_id' => $item->user_id,
+                                'created_at' => date('Y-m-d H:i:s')
+                            );
+                }
+            } 
+        }
+        if( !empty( $ins ) ) {
+            DB::table('notifications')->insert($ins);
+        }
+        return true;
+    }
+
+    public static function send_lead_activity_done_notification( $activity_id, $lead_id) {
+        $lead_order_info = DB::table('lead_orders')->get();
+        $title = 'Lead Activity has been Done';
+        
+        $act_info = Activity::find($activity_id);
+        $lead_info = Lead::find($lead_id);
+      
+        $date_div = '<strong class="text-primary">'.date('d M Y h:i A').'</strong>';
+        if( isset($lead_info->assigned_to ) && !empty($lead_info->assigned_to) ) {
+           
+            $message = 'Activity '.$act_info->subject.' has been completed by <span class="text-info">'. Auth::user()->name.'</span> at '.$date_div;
+            
+            $ins = array(
+                'title' => $title,
+                'message' => $message,
+                'type' => 'lead-activity-done',
+                'url' => route('leads.view', ['id' => $act_info->lead_id]),
+                'type_id' => $activity_id,
+                'user_id' => $act_info->lead->assigned_to,
+                'assigned_by' => null,
+                'created_at' => date('Y-m-d H:i:s')
+            );
+
+            if( isset($act_info->lead->assigned_by) && !empty($act_info->lead->assigned_by)){
+                $user_info = User::find($act_info->lead->assigned_by);
+
+                $ins[] = array(
+                    'title' => $title,
+                    'message' => $message,
+                    'type' => 'lead-activity-done',
+                    'url' => route('leads.view', ['id' => $act_info->lead_id]),
+                    'type_id' => $activity_id,
+                    'user_id' => $act_info->lead->assigned_by,
+                    'assigned_by' => null,
+                    'created_at' => date('Y-m-d H:i:s')
+                );
+            }
+
+            
+        } else {
+            if( isset( $lead_order_info ) && !empty($lead_order_info)) {
+                foreach ($lead_order_info as $item) {
+
+                    $lead_info = Lead::find( $act_info->lead_id);
+                    $user_info = User::find($item->user_id);
+                    $message = 'Activity '.$act_info->subject.' has been completed by <span class="text-info">'. Auth::user()->name.'</span> at '.$date_div;
+
+                    $ins[] = array(
+                                'title' => $title,
+                                'message' => $message,
+                                'type' => 'lead-activity-done',
+                                'url' => route('leads.view', ['id' => $act_info->lead_id]),
+                                'type_id' => $activity_id,
+                                'assigned_by' => Auth::id() ?? null,
+                                'user_id' => $item->user_id,
+                                'created_at' => date('Y-m-d H:i:s')
+                            );
+                }
+            } 
+        }
+        if( !empty( $ins ) ) {
+            DB::table('notifications')->insert($ins);
+        }
+        return true;
+    }
+
+
+    public static function send_lead_activity_delete_notification( $activity_id, $lead_id) {
+        
+        $lead_order_info = DB::table('lead_orders')->get();
+        $act_info = Activity::find($activity_id);
+        $lead_info = Lead::find($lead_id);
+        $date_div = '<strong class="text-primary">'.date('d M Y h:i A').'</strong>';
+
+        $title = 'Lead Activity has been Deleted';
+        $message = 'Activity '.$act_info->subject.' has been deleted by <span class="text-info">'. Auth::user()->name.'</span> at '.$date_div;
+        
+        if( isset($lead_info->assigned_to ) && !empty($lead_info->assigned_to) ) {
+            
+            $ins = array(
+                'title' => $title,
+                'message' => $message,
+                'type' => 'lead-activity-done',
+                'url' => route('leads.view', ['id' => $act_info->lead_id]),
+                'type_id' => $activity_id,
+                'user_id' => $act_info->lead->assigned_to,
+                'assigned_by' => null,
+                'created_at' => date('Y-m-d H:i:s')
+            );
+
+            if( isset($act_info->lead->assigned_by) && !empty($act_info->lead->assigned_by)){
+                $user_info = User::find($act_info->lead->assigned_by);
+
+                $ins[] = array(
+                    'title' => $title,
+                    'message' => $message,
+                    'type' => 'lead-activity-done',
+                    'url' => route('leads.view', ['id' => $act_info->lead_id]),
+                    'type_id' => $activity_id,
+                    'user_id' => $act_info->lead->assigned_by,
+                    'assigned_by' => null,
+                    'created_at' => date('Y-m-d H:i:s')
+                );
+            }
+
+            
+        } else {
+            if( isset( $lead_order_info ) && !empty($lead_order_info)) {
+                foreach ($lead_order_info as $item) {
+
+                    $lead_info = Lead::find( $act_info->lead_id);
+                    $user_info = User::find($item->user_id);
+
+                    $ins[] = array(
+                                'title' => $title,
+                                'message' => $message,
+                                'type' => 'lead-activity-done',
+                                'url' => route('leads.view', ['id' => $act_info->lead_id]),
+                                'type_id' => $activity_id,
+                                'assigned_by' => Auth::id() ?? null,
+                                'user_id' => $item->user_id,
+                                'created_at' => date('Y-m-d H:i:s')
+                            );
+                }
+            } 
+        }
+        if( !empty( $ins ) ) {
+            DB::table('notifications')->insert($ins);
+        }
+        return true;
+    }
+
+    public static function send_lead_delete_notification($lead_id) {
+
+        $lead_order_info = DB::table('lead_orders')->get();
+        $lead_info = Lead::find($lead_id);
+
+        $title = 'Lead Deleted';
+        $date_div = '<strong class="text-primary">'.date('d M Y h:i A').'</strong>';
+
+        $message = 'Lead '.$lead_info->lead_subject.' has been deleted by <span class="text-success">'.Auth::user()->name.' '.(Auth::user()->last_name ?? '').'</span> at '.$date_div;
+        
+        if( isset($lead_info->assigned_to) && !empty($lead_info->assigned_to) ) {
+            
+            $ins = array(
+                'title' => $title,
+                'message' => $message,
+                'type' => 'lead-delete',
+                'url' => 'javascript:void(0)',
+                'type_id' => $lead_id,
+                'user_id' => $lead_info->assigned_to,
+                'assigned_by' => null,
+                'created_at' => date('Y-m-d H:i:s')
+            );
+
+            if( isset($lead_info->assigned_by) && !empty($lead_info->assigned_by)){
+                $user_info = User::find($lead_info->assigned_by);
+
+                $ins[] = array(
+                    'title' => $title,
+                    'message' => $message,
+                    'type' => 'lead-delete',
+                    'url' => 'javascript:void(0);',
+                    'type_id' => $lead_id,
+                    'user_id' => $lead_info->assigned_by,
+                    'assigned_by' => null,
+                    'created_at' => date('Y-m-d H:i:s')
+                );
+            }
+
+            
+        } else {
+            if( isset( $lead_order_info ) && !empty($lead_order_info)) {
+                foreach ($lead_order_info as $item) {
+
+                    $lead_info = Lead::find( $lead_id);
+                    $user_info = User::find( $item->user_id);
+
+                    $ins[] = array(
+                                'title' => $title,
+                                'message' => $message,
+                                'type' => 'lead-delete',
+                                'url' => 'javascript:void(0);',
+                                'type_id' => $lead_id,
+                                'assigned_by' => null,
+                                'user_id' => $item->user_id,
+                                'created_at' => date('Y-m-d H:i:s')
+                            );
+                }
+            } 
+        }
+        if( !empty( $ins ) ) {
+            DB::table('notifications')->insert($ins);
+        }
+        return true;
+    }
+
+    public static function send_deal_conversion_notification($lead_id) {
+
+        $lead_order_info = DB::table('lead_orders')->get();
+        $lead_info = Lead::find($lead_id);
+        $date_div = '<strong class="text-primary">'.date('d M Y h:i A').'</strong>';
+        
+        $title = 'Lead Converted to Deal';
+        $message = 'Lead '.$lead_info->lead_subject.' has been converted to Deal by '.Auth::user()->name.' '.(Auth::user()->last_name ?? '').' at '.$date_div;
+        
+        if( isset($lead_info->assigned_to) && !empty($lead_info->assigned_to) ) {
+            
+            $ins = array(
+                'title' => $title,
+                'message' => $message,
+                'type' => 'lead-conversion',
+                'url' => route('leads.view', ['id' => $act_info->lead_id]),
+                'type_id' => $lead_id,
+                'user_id' => $lead_info->assigned_to,
+                'assigned_by' => null,
+                'created_at' => date('Y-m-d H:i:s')
+            );
+
+            if( isset($lead_info->assigned_by) && !empty($lead_info->assigned_by)){
+                $user_info = User::find($lead_info->assigned_by);
+
+                $ins[] = array(
+                    'title' => $title,
+                    'message' => $message,
+                    'type' => 'lead-conversion',
+                    'url' => route('leads.view', ['id' => $act_info->lead_id]),
+                    'type_id' => $lead_id,
+                    'user_id' => $lead_info->assigned_by,
+                    'assigned_by' => null,
+                    'created_at' => date('Y-m-d H:i:s')
+                );
+            }
+            
+        } else {
+            if( isset( $lead_order_info ) && !empty($lead_order_info)) {
+                foreach ($lead_order_info as $item) {
+
+                    $lead_info = Lead::find( $lead_id);
+                    $user_info = User::find( $item->user_id);
+
+                    $ins[] = array(
+                                'title' => $title,
+                                'message' => $message,
+                                'type' => 'lead-conversion',
+                                'url' => route('leads.view', ['id' => $lead_id]),
+                                'type_id' => $lead_id,
+                                'assigned_by' => null,
+                                'user_id' => $item->user_id,
+                                'created_at' => date('Y-m-d H:i:s')
+                            );
+                }
+            } 
+        }
+        if( !empty( $ins ) ) {
+            DB::table('notifications')->insert($ins);
+        }
+        return true;
+    }
+
+    //deal notification started
+    public static function send_deal_notification( $deal_id, $user_id = '', $update = '') {
+
+        $deal_order_info = DB::table('deal_orders')->get();
+        $title = 'New Deal Added';
+        if( !empty($update)) {
+            $title = 'Deal made changes';
+        }
+        $date_div = '<strong class="text-primary">'.date('d M Y h:i A').'</strong>';
+        
+        if( $user_id ) {
+            $deal_info = Deal::find($deal_id);
+            $user_info = User::find($user_id);
+            if( !empty($update)){
+                $message = 'Deal '.$deal_info->deal_title.' has made some changes please view to see changes. Changes made by '.Auth::user()->name.' '.(Auth::user()->last_name ?? '').' at '.$date_div;
+            } else {
+                if( Auth::id() ) {
+                    $message = 'Deal '.$deal_info->deal_title.' has assigned to <span class="text-success">'.$user_info->name.' '.($user_info->last_name ?? '').'</span> and assigned by <span class="text-info">'.Auth::user()->name.' '.(Auth::user()->last_name ?? '').'</span> at '.$date_div;
+                } else {
+                    $message = 'Deal '.$deal_info->deal_title.' has come to <span class="text-success">'.$user_info->name.' '.($user_info->last_name ?? '').'</span> and it is autoassigned at '.$date_div;
+                }
+            }
+            
+            $ins = array(
+                'title' => $title,
+                'message' => $message,
+                'type' => 'deal',
+                'url' => route('deals.view', ['id' => $deal_id]),
+                'type_id' => $deal_id,
+                'user_id' => $user_id,
+                'assigned_by' => Auth::id() ?? null,
+                'created_at' => date('Y-m-d H:i:s')
+            );
+            
+        } else {
+            if( isset( $deal_order_info ) && !empty($deal_order_info)) {
+                foreach ($deal_order_info as $item) {
+
+                    $deal_info = Deal::find($deal_id);
+                    $user_info = User::find($item->user_id);
+                    if( !empty($update)){
+                        $message = 'Deal '.$deal_info->deal_title.' has made some changes please view to see changes. Changes made by '.Auth::user()->name.' '.(Auth::user()->last_name ?? '').' at '.$date_div;
+                    } else {
+                        if( Auth::id() ) {
+                            $message = 'Deal '.$deal_info->deal_title.' has assigned to <span class="text-success">'.$user_info->name.' '.($user_info->last_name ?? '').'</span> and assigned by <span class="text-info">'.Auth::user()->name.' '.(Auth::user()->last_name ?? '').'</span> at '.$date_div;
+                        } else {
+                            $message = 'Deal '.$deal_info->deal_title.' has come to <span class="text-success">'.$user_info->name.' '.($user_info->last_name ?? '').'</span> and it is autoassigned at '.$date_div;
+                        }
+                    }
+
+                    $ins[] = array(
+                                'title' => $title,
+                                'message' => $message,
+                                'type' => 'deal',
+                                'url' => route('deals.view', ['id' => $deal_id]),
+                                'type_id' => $deal_id,
+                                'assigned_by' => Auth::id() ?? null,
+                                'user_id' => $item->user_id,
+                                'created_at' => date('Y-m-d H:i:s')
+                            );
+                }
+            } 
+        }
+        if( !empty( $ins ) ) {
+            DB::table('notifications')->insert($ins);
+        }
+        return true;
+    }
+
+    public static function send_deal_activity_notification( $activity_id, $assigned_to = '', $update = '') {
+        $lead_order_info = DB::table('deal_orders')->get();
+        $title = 'New Deal Activity Added';
+        if( !empty($update)){
+            $title = 'Changes Made on Deal Activity';
+        }
+        $act_info = Activity::find($activity_id);
+      
+        $date_div = '<strong class="text-primary">'.date('d M Y h:i A').'</strong>';
+        if( $assigned_to ) {
+            
+            if( !empty($update)) {
+                $message = 'Activity '.$act_info->subject.' has made some changes please view to see changes. Changes made by <span class="text-info">'.Auth::user()->name.' '.(Auth::user()->last_name ?? '').'</span> at '.$date_div;
+            } else {
+                $message = 'Activity '.$act_info->subject.' has assigned to <span class="text-success">'.$act_info->user->name.'</span> created by <span class="text-info">'. Auth::user()->name.'</span> at '.$date_div;
+            }
+            
+            $ins = array(
+                'title' => $title,
+                'message' => $message,
+                'type' => 'deal-activity',
+                'url' => route('deals.view', ['id' => $act_info->deal_id]),
+                'type_id' => $activity_id,
+                'user_id' => $act_info->lead->assigned_to,
+                'assigned_by' => null,
+                'created_at' => date('Y-m-d H:i:s')
+            );
+
+            if( isset($act_info->deal->assigned_by) && !empty($act_info->deal->assigned_by)) {
+                $user_info = User::find($act_info->deal->assigned_by);
+
+                $ins[] = array(
+                    'title' => $title,
+                    'message' => $message,
+                    'type' => 'deal-activity',
+                    'url' => route('deals.view', ['id' => $act_info->deal_id]),
+                    'type_id' => $activity_id,
+                    'user_id' => $act_info->deal->assigned_by,
+                    'assigned_by' => null,
+                    'created_at' => date('Y-m-d H:i:s')
+                );
+            }
+
+            
+        } else {
+            if( isset( $lead_order_info ) && !empty($lead_order_info)) {
+                foreach ($lead_order_info as $item) {
+
+                    $user_info = User::find($item->user_id);
+                    if( !empty($update)){
+                        $message = 'Activity '.$act_info->subject.' has made some changes please view to see changes. Changes made by <span class="text-info">'.Auth::user()->name.' '.(Auth::user()->last_name ?? '').'</span> at '.$date_div;
+                    } else {
+                        $message = 'Activity '.$act_info->subject.' has assigned to <span class="text-success">'.$act_info->user->name.'</span> created by <span class="text-info">'. Auth::user()->name.'</span> at '.$date_div;
+                    }
+
+                    $ins[] = array(
+                                'title' => $title,
+                                'message' => $message,
+                                'type' => 'deal-activity',
+                                'url' => route('deals.view', ['id' => $act_info->deal_id]),
+                                'type_id' => $activity_id,
+                                'assigned_by' => Auth::id() ?? null,
+                                'user_id' => $item->user_id,
+                                'created_at' => date('Y-m-d H:i:s')
+                            );
+                }
+            } 
+        }
+        if( !empty( $ins ) ) {
+            DB::table('notifications')->insert($ins);
+        }
+        return true;
+    }
+
+    public static function send_deal_activity_delete_notification( $activity_id, $deal_id) {
+        
+        $deal_order_info = DB::table('deal_orders')->get();
+        $act_info = Activity::find($activity_id);
+        $deal_info = Deal::find($deal_id);
+        $date_div = '<strong class="text-primary">'.date('d M Y h:i A').'</strong>';
+
+        $title = 'Deal Activity has been Deleted';
+        $message = 'Activity '.$act_info->subject.' has been deleted by <span class="text-info">'. Auth::user()->name.'</span> at '.$date_div;
+        
+        if( isset($deal_info->assigned_to ) && !empty($deal_info->assigned_to) ) {
+            
+            $ins = array(
+                'title' => $title,
+                'message' => $message,
+                'type' => 'deal-activity-done',
+                'url' => route('deals.view', ['id' => $act_info->deal_id]),
+                'type_id' => $activity_id,
+                'user_id' => $act_info->deal->assigned_to,
+                'assigned_by' => null,
+                'created_at' => date('Y-m-d H:i:s')
+            );
+
+            if( isset($act_info->deal->assigned_by) && !empty($act_info->deal->assigned_by)) {
+                $user_info = User::find($act_info->deal->assigned_by);
+
+                $ins[] = array(
+                    'title' => $title,
+                    'message' => $message,
+                    'type' => 'deal-activity-done',
+                    'url' => route('deals.view', ['id' => $act_info->deal_id]),
+                    'type_id' => $activity_id,
+                    'user_id' => $act_info->deal->assigned_by,
+                    'assigned_by' => null,
+                    'created_at' => date('Y-m-d H:i:s')
+                );
+            }
+
+        } else {
+            if( isset( $deal_order_info ) && !empty($deal_order_info)) {
+                foreach ($deal_order_info as $item) {
+
+                    $ins[] = array(
+                                'title' => $title,
+                                'message' => $message,
+                                'type' => 'deal-activity-done',
+                                'url' => route('deals.view', ['id' => $act_info->deal_id]),
+                                'type_id' => $activity_id,
+                                'assigned_by' => Auth::id() ?? null,
+                                'user_id' => $item->user_id,
+                                'created_at' => date('Y-m-d H:i:s')
+                            );
+                }
+            } 
+        }
+        if( !empty( $ins ) ) {
+            DB::table('notifications')->insert($ins);
+        }
+        return true;
+    }
+
+    public static function send_deal_activity_done_notification( $activity_id, $deal_id) {
+        $deal_order_info = DB::table('deal_orders')->get();
+        $title = 'Deal Activity has been Done';
+        
+        $act_info = Activity::find($activity_id);
+        $deal_info = Deal::find($deal_id);
+      
+        $date_div = '<strong class="text-primary">'.date('d M Y h:i A').'</strong>';
+        if( isset($deal_info->assigned_to ) && !empty($deal_info->assigned_to) ) {
+           
+            $message = 'Activity '.$act_info->subject.' has been completed by <span class="text-info">'. Auth::user()->name.'</span> at '.$date_div;
+            
+            $ins = array(
+                'title' => $title,
+                'message' => $message,
+                'type' => 'deal-activity-done',
+                'url' => route('deals.view', ['id' => $act_info->deal_id]),
+                'type_id' => $activity_id,
+                'user_id' => $act_info->deal->assigned_to,
+                'assigned_by' => null,
+                'created_at' => date('Y-m-d H:i:s')
+            );
+
+            if( isset($act_info->deal->assigned_by) && !empty($act_info->deal->assigned_by)){
+                $user_info = User::find($act_info->deal->assigned_by);
+
+                $ins[] = array(
+                    'title' => $title,
+                    'message' => $message,
+                    'type' => 'deal-activity-done',
+                    'url' => route('deals.view', ['id' => $act_info->deal_id]),
+                    'type_id' => $activity_id,
+                    'user_id' => $act_info->deal->assigned_by,
+                    'assigned_by' => null,
+                    'created_at' => date('Y-m-d H:i:s')
+                );
+            }
+
+            
+        } else {
+            if( isset( $deal_order_info ) && !empty($deal_order_info)) {
+                foreach ($deal_order_info as $item) {
+
+                    $message = 'Activity '.$act_info->subject.' has been completed by <span class="text-info">'. Auth::user()->name.'</span> at '.$date_div;
+
+                    $ins[] = array(
+                                'title' => $title,
+                                'message' => $message,
+                                'type' => 'deal-activity-done',
+                                'url' => route('deals.view', ['id' => $act_info->deal_id]),
+                                'type_id' => $activity_id,
+                                'assigned_by' => Auth::id() ?? null,
+                                'user_id' => $item->user_id,
+                                'created_at' => date('Y-m-d H:i:s')
+                            );
+                }
+            } 
+        }
+        if( !empty( $ins ) ) {
+            DB::table('notifications')->insert($ins);
+        }
+        return true;
+    }
+
+    public static function send_deal_stage_notification( $deal_id, $stage_id) {
+        $deal_order_info = DB::table('deal_orders')->get();
+        $title = 'Deal Stage has been Completed';
+        
+        $deal_info = Deal::find($deal_id);
+        $deal_stage_info = DealStage::find($deal_info->current_stage_id);
+        $new_stage_info = DealStage::find($stage_id);
+      
+        $date_div = '<strong class="text-primary">'.date('d M Y h:i A').'</strong>';
+        $message = 'Deal Stage '.$deal_stage_info->stages.' has been completed by <span class="text-info">'. Auth::user()->name.'</span> at '.$date_div;
+
+        if( isset($deal_info->assigned_to ) && !empty($deal_info->assigned_to) ) {
+           
+            $ins = array(
+                'title' => $title,
+                'message' => $message,
+                'type' => 'deal-stage-done',
+                'url' => route('deals.view', ['id' => $deal_id]),
+                'type_id' => $stage_id,
+                'user_id' => $deal_info->assigned_to,
+                'assigned_by' => null,
+                'created_at' => date('Y-m-d H:i:s')
+            );
+
+            if( isset($deal_info->assigned_by) && !empty($deal_info->assigned_by)){
+                $user_info = User::find($deal_info->assigned_by);
+
+                $ins[] = array(
+                    'title' => $title,
+                    'message' => $message,
+                    'type' => 'deal-stage-done',
+                    'url' => route('deals.view', ['id' => $deal_id]),
+                    'type_id' => $stage_id,
+                    'user_id' => $deal_info->assigned_by,
+                    'assigned_by' => null,
+                    'created_at' => date('Y-m-d H:i:s')
+                );
+            }
+
+            
+        } else {
+            if( isset( $deal_order_info ) && !empty($deal_order_info)) {
+                foreach ($deal_order_info as $item) {
+
+
+                    $ins[] = array(
+                                'title' => $title,
+                                'message' => $message,
+                                'type' => 'deal-stage-done',
+                                'url' => route('deals.view', ['id' => $deal_id]),
+                                'type_id' => $stage_id,
+                                'assigned_by' => Auth::id() ?? null,
+                                'user_id' => $item->user_id,
+                                'created_at' => date('Y-m-d H:i:s')
+                            );
+                }
+            } 
+        }
+        if( !empty( $ins ) ) {
+            DB::table('notifications')->insert($ins);
+        }
+        return true;
+    }
+
+    public static function send_deal_winLoss_notification( $deal_id, $status) {
+        $deal_order_info = DB::table('deal_orders')->get();
+        $deal_info = Deal::find($deal_id);
+
+        $date_div = '<strong class="text-primary">'.date('d M Y h:i A').'</strong>';
+        if( $status == 2 ) {
+            $title = 'Deal has won';
+            $message = 'Deal has won by <span class="text-info">'. Auth::user()->name.'</span> at '.$date_div;
+        } else if( $status == 3 ) {
+            $title = 'Deal has lost';
+            $message = 'Deal has lost by <span class="text-info">'. Auth::user()->name.'</span> at '.$date_div;
+        } else if( $status == 1 ) {
+            $title = 'Deal has Reopened';
+            $message = 'Deal has reopened by <span class="text-info">'. Auth::user()->name.'</span> at '.$date_div;
+        }
+        
+        if( isset($deal_info->assigned_to ) && !empty($deal_info->assigned_to) ) {
+           
+            $ins = array(
+                'title' => $title,
+                'message' => $message,
+                'type' => 'deal-win-loss',
+                'url' => route('deals.view', ['id' => $deal_id]),
+                'type_id' => $deal_id,
+                'user_id' => $deal_info->assigned_to,
+                'assigned_by' => null,
+                'created_at' => date('Y-m-d H:i:s')
+            );
+
+            if( isset($deal_info->assigned_by) && !empty($deal_info->assigned_by)){
+                $user_info = User::find($deal_info->assigned_by);
+
+                $ins[] = array(
+                    'title' => $title,
+                    'message' => $message,
+                    'type' => 'deal-win-loss',
+                    'url' => route('deals.view', ['id' => $deal_id]),
+                    'type_id' => $deal_id,
+                    'user_id' => $deal_info->assigned_by,
+                    'assigned_by' => null,
+                    'created_at' => date('Y-m-d H:i:s')
+                );
+            }
+
+            
+        } else {
+            if( isset( $deal_order_info ) && !empty($deal_order_info)) {
+                foreach ($deal_order_info as $item) {
+
+
+                    $ins[] = array(
+                                'title' => $title,
+                                'message' => $message,
+                                'type' => 'deal-won-loss',
+                                'url' => route('deals.view', ['id' => $deal_id]),
+                                'type_id' => $deal_id,
+                                'assigned_by' => Auth::id() ?? null,
+                                'user_id' => $item->user_id,
+                                'created_at' => date('Y-m-d H:i:s')
+                            );
+                }
+            } 
+        }
+        if( !empty( $ins ) ) {
+            DB::table('notifications')->insert($ins);
+        }
+        return true;
+    }
+
+    public static function send_deal_delete_notification($deal_id) {
+
+        $deal_order_info = DB::table('deal_orders')->get();
+        $deal_info = Deal::find($deal_id);
+
+        $title = 'Deal Deleted';
+        $date_div = '<strong class="text-primary">'.date('d M Y h:i A').'</strong>';
+
+        $message = 'Deal '.$deal_info->deal_title.' has been deleted by <span class="text-success">'.Auth::user()->name.' '.(Auth::user()->last_name ?? '').'</span> at '.$date_div;
+        
+        if( isset($deal_info->assigned_to) && !empty($deal_info->assigned_to) ) {
+            
+            $ins = array(
+                'title' => $title,
+                'message' => $message,
+                'type' => 'deal-delete',
+                'url' => 'javascript:void(0)',
+                'type_id' => $deal_id,
+                'user_id' => $deal_info->assigned_to,
+                'assigned_by' => null,
+                'created_at' => date('Y-m-d H:i:s')
+            );
+
+            if( isset($deal_info->assigned_by) && !empty($deal_info->assigned_by)){
+                $user_info = User::find($deal_info->assigned_by);
+
+                $ins[] = array(
+                    'title' => $title,
+                    'message' => $message,
+                    'type' => 'deal-delete',
+                    'url' => 'javascript:void(0);',
+                    'type_id' => $deal_id,
+                    'user_id' => $deal_info->assigned_by,
+                    'assigned_by' => null,
+                    'created_at' => date('Y-m-d H:i:s')
+                );
+            }
+        } else {
+            if( isset( $deal_order_info ) && !empty($deal_order_info)) {
+                foreach ($deal_order_info as $item) {
+
+                    $ins[] = array(
+                                'title' => $title,
+                                'message' => $message,
+                                'type' => 'deal-delete',
+                                'url' => 'javascript:void(0);',
+                                'type_id' => $deal_id,
+                                'assigned_by' => null,
+                                'user_id' => $item->user_id,
+                                'created_at' => date('Y-m-d H:i:s')
+                            );
                 }
             } 
         }

@@ -9,6 +9,7 @@ use App\Models\Activity;
 use App\Models\Lead;
 use App\Models\User;
 use App\Models\Customer;
+use CommonHelper;
 
 class ActivityController extends Controller
 {
@@ -234,8 +235,12 @@ class ActivityController extends Controller
         $deal_id = '';
         if( isset( $type ) && !empty($type)){
             $deal_id = $request->lead_id;
+            CommonHelper::send_deal_activity_done_notification($id, $deal_id); 
+
         } else {
             $lead_id = $request->lead_id;
+            CommonHelper::send_lead_activity_done_notification($id, $lead_id); 
+
         }
         if( !$request->lead_id ) {
             $page_type = 'activities';

@@ -64,7 +64,7 @@ class LandingController extends Controller
             $lea['lead_description'] = $request->message;
             $lead_id = Lead::create($lea)->id;
             //insert in notification
-            CommonHelper::send_lead_notification($lead_id, $assigned_to);
+            CommonHelper::send_lead_notification($lead_id, $assigned_to); 
             $success = 'Enquiry has been sent';
             return response()->json(['error'=>[$success], 'status' => '0']);
         }

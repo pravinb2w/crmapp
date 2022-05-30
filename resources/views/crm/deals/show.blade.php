@@ -55,7 +55,7 @@ form#activites-form>div>label>i {
 .timeline-item-left>.timeline-desk>.timeline-box {
     background: rgb(255, 252, 220);
 }
-.dropdown {
+.deal-dropdown {
     position: absolute;
     right: 0;
     top: 0;

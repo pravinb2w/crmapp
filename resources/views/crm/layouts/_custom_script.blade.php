@@ -34,6 +34,7 @@ function make_stage_completed(stage_id, deal_id ){
                             if( response.view){
                                 $('#pipline-view').html(response.view);
                             }
+                            location.reload();
                             Swal.fire('Updated!', '', 'success')
 
                         } else {

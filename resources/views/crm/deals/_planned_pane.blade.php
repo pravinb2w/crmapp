@@ -12,7 +12,7 @@
                             <span class="arrow"></span>
                             <h4 class="mt-0 mb-1 font-16 w-85"><span class="timeline-icon">
                                 <i class="mdi mdi-adjust"></i> {{ strtoupper($item->activity_type) }}  - {{ $item->subject }}</span></h4>
-                            <div class="dropdown">
+                            <div class="deal-dropdown">
                                 <button class="btn btn-sm" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <i class="mdi mdi-dots-vertical"></i>
                                 </button>

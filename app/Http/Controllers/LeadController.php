@@ -16,6 +16,8 @@ use App\Models\Activity;
 use App\Models\DealDocument;
 use App\Models\InvoiceItem;
 use App\Models\Invoice;
+use CommonHelper;
+
 
 class LeadController extends Controller
 {
@@ -220,6 +222,7 @@ class LeadController extends Controller
             $ins['user_id'] = $request->user_id;
             
             if( isset($id) && !empty($id) ) {
+                $activity_id = $id;
                 $act = Activity::find($id);
                 $act->status = 1;
                 $act->subject = $request->activity_title;
@@ -235,9 +238,10 @@ class LeadController extends Controller
                 $act->update();
             } else {
                 $ins['added_by'] = Auth::id();
-                Activity::create($ins);
+                $activity_id = Activity::create($ins)->id;
                 $success = 'Acitivity added successfully';
             }
+            CommonHelper::send_lead_activity_notification($activity_id, $lead_info->assigned_to, $id); 
             return response()->json(['error'=>[$success], 'status' => '0', 'lead_id' => $lead_id, 'type' => 'planned']);
         }
         return response()->json(['error'=>$validator->errors()->all(), 'status' => '1']);
@@ -267,8 +271,11 @@ class LeadController extends Controller
             $role = Note::find($activity_id);
             $role->delete();    
         } else if( !empty( $lead_type ) ) {
+            CommonHelper::send_lead_activity_delete_notification($activity_id, $lead_id); 
             $role = Activity::find($activity_id);
             $role->delete();
+
+
         } 
         return response()->json(['status' => '0', 'lead_id' => $lead_id]);
     }
@@ -364,8 +371,14 @@ class LeadController extends Controller
             $ins['lead_source_id'] = $request->lead_source;
             $ins['lead_value'] = $request->lead_value;
             if( $request->assigned_to ) {
+                $assigned_to = $request->assigned_to;
                 $ins['assinged_by'] = Auth::id();
                 $ins['assigned_to'] = $request->assigned_to;
+            } else {
+                $assigned_to = CommonHelper::getLeadAssigner();
+                $ins['assigned_to'] = $request->assigned_to;
+                $ins['assinged_by'] = Auth::id();
+
             }
             if( $request->organization_id ) {
                 $cus = Customer::find($request->customer_id);
@@ -385,7 +398,9 @@ class LeadController extends Controller
                     $lead->assigned_to = $request->assigned_to;
                 }
                 $lead->update();
+                $lead_id = $id;
                 $success = 'Updated Lead';
+
             } else {
                 if( $request->assigned_to ) {
                     $assigned_info = User::find($request->assigned_to);
@@ -396,9 +411,11 @@ class LeadController extends Controller
                     }
                 }
                 $ins['added_by'] = Auth::id();
-                Lead::create($ins);
-                $success = 'Added new Lead';
+                $lead_id = Lead::create($ins)->id;
+                $success = 'Added new Lead'; 
             }
+            CommonHelper::send_lead_notification($lead_id, $assigned_to,'', $id); 
+
             return response()->json(['error'=>[$success], 'status' => '0']);
         }
         return response()->json(['error'=>$validator->errors()->all(), 'status' => '1']);
@@ -407,9 +424,12 @@ class LeadController extends Controller
     public function delete(Request $request)
     {
         $id = $request->id;
+        CommonHelper::send_lead_delete_notification($id); 
+
         $role = Lead::find($id);
         $role->delete();
         $delete_msg = 'Deleted successfully';
+
         return response()->json(['error'=>[$delete_msg], 'status' => '0']);
     }
 
@@ -437,7 +457,8 @@ class LeadController extends Controller
         $updata['done_at'] = date('Y-m-d H:i:s');
 
         $role = Activity::where('lead_id', $lead_id )->update($updata);
-       
+
+        
         $update_msg = 'Updated successfully';
         return response()->json(['error'=>[$update_msg], 'status' => '0', 'lead_id' => $lead_id]);
     }

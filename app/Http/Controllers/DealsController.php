@@ -216,11 +216,14 @@ class DealsController extends Controller
                 $id = Deal::create($ins)->id;
                 $success = 'Added new Deal';
             }
+
+            CommonHelper::send_deal_notification($id, $request->assigned_to, $request->id );
             if( $request->lead_id ) {
                 $lead = Lead::find($request->lead_id);
                 $lead->status = 2;
                 $lead->updated_by = Auth::id();
                 $lead->update();
+                CommonHelper::send_deal_conversion_notification($request->lead_id); 
             }
 
             DealProduct::where('deal_id', $id)->forceDelete();
@@ -284,6 +287,8 @@ class DealsController extends Controller
     public function delete(Request $request)
     {
         $id = $request->id;
+        CommonHelper::send_deal_delete_notification($id); 
+
         $role = Deal::find($id);
         $role->delete();
         $delete_msg = 'Deleted successfully';
@@ -424,6 +429,7 @@ class DealsController extends Controller
             $ins['user_id'] = $request->user_id;
 
             if( isset($id) && !empty($id) ) {
+                $activity_id = $id;
                 $act = Activity::find($id);
                 $act->status = 1;
                 $act->subject = $request->activity_title;
@@ -438,9 +444,12 @@ class DealsController extends Controller
                 $act->update();
             } else {
                 $ins['added_by'] = Auth::id();
-                Activity::create($ins);
+                $activity_id = Activity::create($ins)->id;
                 $success = 'Acitivity added successfully';
             }
+
+            CommonHelper::send_deal_activity_notification($activity_id, $deal_info->assigned_to, $id); 
+
             return response()->json(['error'=>[$success], 'status' => '0', 'deal_id' => $deal_id, 'type' => 'planned']);
         }
         return response()->json(['error'=>$validator->errors()->all(), 'status' => '1']);
@@ -470,6 +479,9 @@ class DealsController extends Controller
 
             $deal_info->current_stage_id = $stage_id;
             $deal_info->update();
+
+            CommonHelper::send_deal_stage_notification($deal_id, $stage_id); 
+
             //condition 2 -> 
             //insert in pipeline
             if( isset($all_stages) && !empty($all_stages)) {
@@ -529,6 +541,7 @@ class DealsController extends Controller
         }
         $deal->status = $status;
         $deal->update();
+        CommonHelper::send_deal_winLoss_notification($id, $status); 
 
 
         $stage = DealStage::orderBy('order_by', 'asc')->get();
@@ -690,6 +703,8 @@ class DealsController extends Controller
             $role = Note::find($activity_id);
             $role->delete();    
         } else if( !empty( $lead_type ) ) {
+            CommonHelper::send_deal_activity_delete_notification($activity_id, $deal_id); 
+
             $role = Activity::find($activity_id);
             $role->delete();
         }

@@ -53,6 +53,7 @@
                             @endif
                         </select>
                     </div>
+                    @if(Auth::user()->hasAccess('leads', 'is_assign'))
                     <div class="col-12 mb-4 mt-1">
                         <label for="assigned_to" class="col-form-label"> Assign To </label>
                         <select name="assigned_to" id="assigned_to" class="form-control">
@@ -64,6 +65,9 @@
                             @endif
                         </select>
                     </div>
+                    @else
+                        <input type="hidden" name="assigned_to" id="assigned_to" value="{{ Auth::id() }}">
+                    @endif
                     <div class="col-6">
                         <div class="d-flex align-items-center">
                             <label for="description" class="col-form-label me-2">Status</label>

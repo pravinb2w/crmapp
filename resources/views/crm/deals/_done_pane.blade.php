@@ -154,7 +154,7 @@
                                 </small>
                                 @endif
                             </h4>
-                            <div class="dropdown">
+                            <div class="deal-dropdown ">
                                 <button class="btn btn-sm" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <i class="mdi mdi-dots-vertical"></i>
                                 </button>

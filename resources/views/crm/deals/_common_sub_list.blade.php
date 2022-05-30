@@ -14,6 +14,10 @@
                     $tmp['done_at'] = Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $ionotes->updated_at)->format('Y-m-d H:i:s');
                     // $tmp['done_by'] = $ionotes->updatedBy;
                     $tmp['added'] = $ionotes->added;
+                    $tmp['user_id'] = '';
+                    $tmp['added_by'] = $ionotes->added_by ?? '';
+
+
                     $list[] = $tmp;
                 }
             }
@@ -27,6 +31,10 @@
                     $tmp['done_at'] = Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $iofiles->created_at)->format('Y-m-d H:i:s');
                     $tmp['added'] = $iofiles->added;
                     $tmp['document'] = $iofiles->document;
+                    $tmp['user_id'] = '';
+                    $tmp['added_by'] = $iofiles->added_by ?? '';
+
+
                     $list[] = $tmp;
                 }
             }
@@ -44,6 +52,9 @@
                     $tmp['pending_at'] = $inv->pending_at;
                     $tmp['approved_at'] = $inv->approved_at;
                     $tmp['rejected_at'] = $inv->rejected_at;
+                    $tmp['user_id'] = '';
+                    $tmp['added_by'] = $inv->added_by ?? '';
+
                     $list[] = $tmp;
                 }
             }
@@ -57,13 +68,16 @@
                     $tmp['done_at'] = $item->done_at ?? $item->created_at;
                     $tmp['done_by'] = $item->doneBy;
                     $tmp['added'] = $item->added;
+                    $tmp['added_by'] = $item->added_by;
+                    $tmp['user_id'] = $item->user_id;
                     $list[] = $tmp;
                 }
             }
-            foreach ($list as $key => $part) {
-                $sort[$key] = strtotime($part['done_at']);
-            }
+            
             if( !empty($list)) {
+                foreach ($list as $key => $part) {
+                    $sort[$key] = strtotime($part['done_at']);
+                }
                 array_multisort($sort, SORT_DESC, $list);
             }
             @endphp
@@ -107,7 +121,7 @@
                             <span class="badge badge-success-lighten"> AddedBy : {{ $litem['added']->name ?? '' }}</span>
                         @endif
                     </div>
-                    <div class="dropdown">
+                    <div class="deal-dropdown">
                         <button class="btn btn-sm" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <i class="mdi mdi-dots-vertical"></i>
                         </button>
@@ -128,17 +142,19 @@
                                     <a class="dropdown-item" target="_blank" href="{{ asset('invoice').'/'.$litem['invoice_no'].'.pdf' }}">Download Pdf</a>
                                     @endif
 
-                                @elseif( $litem['activity_type'] != 'note' && $litem['activity_type'] != 'files' )
-                                <a class="dropdown-item" href="javascript:;"  onclick="edit_activity('history','{{ $litem['id'] }}', '','{{ $deal_id }}')">Edit</a>
-                                    @if( isset($litem['done_by'])&& empty($litem['done_by']))
+                                @elseif( $litem['activity_type'] != 'note' && $litem['activity_type'] != 'files' && Auth::id() == $litem['user_id'] || Auth::id() == $litem['added_by']  )
+                                <a class="dropdown-item" href="javascript:;"  onclick="edit_activity('history','{{ $litem['id'] }}', '','{{ $deal_id }}')">Edit </a>
+                                    @if( !$litem['done_by'])
                                         <a class="dropdown-item" href="javascript:;" onclick="mark_as_done('{{ $litem['id'] }}', '{{ $deal_id }}', 'deal')">Mark as Done</a>
                                     @endif
                                 @endif
                             @endif
-                            @if(Auth::user()->hasAccess('deals', 'is_delete') )
+                            @if(Auth::user()->hasAccess('deals', 'is_delete') && Auth::id() == $litem['user_id'] || Auth::id() == $litem['added_by']  )
                                 @if($litem['activity_type'] != 'invoice')
                                 <a class="dropdown-item" href="#"  onclick="change_activity_status('{{ $deal_id ?? '' }}','{{ $litem['id'] ?? '' }}', '{{ strtolower($litem['activity_type']) ?? '' }}' )">Delete</a>
                                 @endif
+                            @else
+                                <a class="dropdown-item" href="#" >No Action</a>
                             @endif
                         </div>
                     </div> 

@@ -1,14 +1,6 @@
 <div class="navbar-custom align-tems-center">
     <ul class="list-unstyled topbar-menu float-end mb-0">
         <li class="dropdown notification-list ">
-            {{-- <a class="nav-link dropdown-toggle arrow-none" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
-                <i class="dripicons-search noti-icon"></i>
-            </a>
-            <div class="dropdown-menu dropdown-menu-animated dropdown-lg p-0">
-                <form class="p-3">
-                    <input type="text" class="form-control" placeholder="Search ..." aria-label="Recipient's username">
-                </form>
-            </div> --}}
             <a class="nav-link end-bar-toggle arrow-none show" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="true">
                 <i class="dripicons-bell noti-icon"></i>
                 <span class="noti-icon-badge" id="noti-has"></span>
@@ -26,6 +18,7 @@
                     <i class="dripicons-plus"></i>
                     <span class="align-middle">Add Deals</span>
                 </a>
+                
             @endif
             @if(Auth::user()->hasAccess('leads', 'is_view') && Auth::user()->hasAccess('leads', 'is_edit')) 
                 <a href="javascript:void(0);" class="dropdown-item notify-item" onclick="return get_add_modal('leads', '', 'dashboard');">
