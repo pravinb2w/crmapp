@@ -29,7 +29,8 @@ class UserSeeder extends Seeder
             'email' => 'dev@yopmail.com',
             'password' => Hash::make('dev@2022'),
             'company_id' => 1,
-            'status' => 1
+            'status' => 1,
+            'is_dev' => 1,
         ]);
     }
 }

@@ -55,7 +55,7 @@ class AccountController extends Controller
             $validator   = [
                 'first_name'      => [ 'required', 'string', 'max:255' ],
                 'email'      => [ 'required', 'string', 'max:255' ],
-                'mobile_no'      => [ 'required', 'string', 'max:255' ],
+                'mobile_no'      => [ 'required', 'string', 'unique:users,mobile_no,'.Auth::id() ],
                 'profile_image' => ['image', 'mimes:jpeg,png,jpg,gif,svg']
             ];
         }
@@ -212,21 +212,21 @@ class AccountController extends Controller
                 for ($i=0; $i < count($prefix_field); $i++) { 
                     $tmp[] = [ 'id' => $prefix_id[$i] ?? '', 'prefix_field' => $prefix_field[$i], 'prefix_value' => $prefix_value[$i]];
                 }
-                
+                $all = PrefixSetting::truncate();
                 if( !empty($tmp)) {
                     foreach ($tmp as $key => $value) {
-                        if( isset( $value['id'] ) && !empty($value['id']) ){
-                            $pref = PrefixSetting::find($value['id']);
-                            $pref->prefix_field = $value['prefix_field'];
-                            $pref->prefix_value = $value['prefix_value'];
-                            $pref->update();
-                        } else {
+                        // if( isset( $value['id'] ) && !empty($value['id']) ){
+                        //     $pref = PrefixSetting::find($value['id']);
+                        //     $pref->prefix_field = $value['prefix_field'];
+                        //     $pref->prefix_value = $value['prefix_value'];
+                        //     $pref->update();
+                        // } else {
                             $ins[ 'prefix_field'] = $value['prefix_field'];
                             $ins[ 'prefix_value'] = $value['prefix_value'];
                             $ins[ 'status'] = 1;
                             $ins['company_id'] = $user->company_id;
                             PrefixSetting::create($ins);
-                        }
+                        // }
                     }
                 }
             }

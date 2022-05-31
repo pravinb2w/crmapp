@@ -220,7 +220,6 @@ class UserController extends Controller
         } else {
             CommonHelper::set_lead_order($id, $info->role_id, 'delete');
             CommonHelper::set_deal_order($id, $info->role_id, 'delete');
-
         }
 
         $update_msg = 'Updated successfully';
