@@ -166,10 +166,6 @@
                                 <a href="{{ route('payments') }}">Payments</a>
                             </li>
                         @endif
-
-                        <li>
-                            <a href="{{ route('invoices-templates') }}">Templates</a>
-                        </li>
                     </ul>
                 </div>
             </li>
