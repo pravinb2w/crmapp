@@ -42,7 +42,7 @@
         legend:{show:!1},
         colors:e,
         xaxis:{categories:cdone.month,axisBorder:{show:!1}},
-        yaxis:{labels:{formatter:function(e){return e+"k"},offsetX:-15}},
+        yaxis:{labels:{formatter:function(e){return e.toFixed(0)+"k"},offsetX:-15}},
         fill:{opacity:1},
         tooltip:{y:{formatter:function(e){return"$"+e+"k"}}}
     };
