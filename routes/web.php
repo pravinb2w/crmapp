@@ -22,7 +22,6 @@ Route::get('/send-mail', [App\Http\Controllers\MailController::class, 'sendMail'
 Route::get('/devlogin', [App\Http\Controllers\Auth\LoginController::class, 'login_page'])->name('login');
 Route::post('/logout', [App\Http\Controllers\Auth\LoginController::class, 'logout' ])->name('logout');
 Route::post('/login/submit', [App\Http\Controllers\Auth\LoginController::class, 'check_login' ])->name('login.submit');
-
  
 Route::get('generate-pdf', [App\Http\Controllers\PDFController::class, 'generatePDF']);
 Route::get('/crm/{permalink?}', [App\Http\Controllers\LandingController::class, 'index'])->name('landing.index');

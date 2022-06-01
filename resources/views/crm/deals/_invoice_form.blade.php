@@ -21,7 +21,7 @@
             <div class="form-group d-flex mt-1">
                 <label for="" class="col-3">Pdf Template</label>
                 <input type="hidden" name="pdf_template" id="pdf_template" required  value="default">
-                <span class="col-6" >Default</span>
+                <span class="col-6" id="layout_selected" >Default</span>
                 <span class="btn btn-primary col-3" role="button" id="change_pdf_template">Change PDF Template</span>
             </div>
         </div>
@@ -32,6 +32,7 @@
                 <label for="" class="col-3"> Invoice No : </label>
                 <input type="text" name="invoice_no" id="invoice_no" value="{{ $invoice_no ?? '' }}" class="form-control">
             </div>
+            
             <div class="form-group d-flex mt-1">
                 <label for="" class="col-3"> Issue Date : </label>
                 <input type="text" name="issue_date" id="issue_date" class="form-control datepicker w-100" value="{{ date('d-m-Y', strtotime($info->created_at)) }}">

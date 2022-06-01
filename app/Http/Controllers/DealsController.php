@@ -616,13 +616,14 @@ class DealsController extends Controller
                 InvoiceItem::create($ups);
             }
         }
-        $this->generatePDF($invoice_id);
+        $pdf_template = $request->pdf_template;
+        $this->generatePDF($invoice_id, $pdf_template);
         $success = 'Invoice added successfully';
         return response()->json(['error'=>[$success], 'status' => '0', 'deal_id' => $deal_id]);
 
     }
 
-    public function generatePDF( $id)
+    public function generatePDF( $id, $pdf_template = '')
     {
         $info = Invoice::find( $id );
         $company = CompanySettings::find(1);
@@ -637,10 +638,18 @@ class DealsController extends Controller
             'company' => $company,
             'taxable' => $taxable,
         ];
-        // return view('mypdf', $data);
-        $pdf = PDF::loadView('mypdf', $data);
-        $path = public_path('invoice');
-        return $pdf->save($path . '/' . str_replace("/", "_", $info->invoice_no ).'.pdf');
+        // return view('crm.invoice.templates.invoice_template_two', $data);
+
+        if( !empty($pdf_template)) {
+            $pdf = PDF::loadView('crm.invoice.templates.invoice_template_'.$pdf_template, $data);
+            $path = public_path('invoice');
+            return $pdf->save($path . '/' . str_replace("/", "_", $info->invoice_no ).'.pdf');
+        } else {
+            $pdf = PDF::loadView('mypdf', $data);
+            $path = public_path('invoice');
+            return $pdf->save($path . '/' . str_replace("/", "_", $info->invoice_no ).'.pdf');
+        }
+        
         // return $pdf->download($info->invoice_no.'.pdf');
     }
 
