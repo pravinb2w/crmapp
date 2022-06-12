@@ -3,7 +3,12 @@
 @section('content')
 
 <div class="container-fluid">
-                        
+    <style>
+        .status-dropdown {
+            border-color: #ddd;
+            background: aliceblue;
+        }
+    </style>              
     <!-- start page title -->
     <div class="row">
         <div class="col-12">
@@ -42,20 +47,18 @@
                                     <th>Assigned To</th>
                                     <th>Assigned By</th>
                                     <th>Assigned Date</th>
+                                    <th>Progress Status</th>
                                     <th>Status</th>
                                     <th style="width: 80px;">Action</th>
                                 </tr>
                             </thead>
-                            
                         </table>
                     </div>
-               
                 </div>  <!-- end card-body -->
             </div>  <!-- end card -->
         </div>
     </div>
 </div>
-
 
 @endsection
 @section('add_on_script')
@@ -85,6 +88,7 @@
                 {"data" : "assigned_to"},
                 {"data" : "assigned_by"},
                 {"data" : "assigned_date"},
+                {"data" : "progress_status"},
                 {"data" : "status" },
                 {"data" : "action" },
             ],
@@ -129,6 +133,42 @@
                         }      
                     });
                    
+                } 
+            })
+            return false;
+    }
+
+    function change_act_status(task_id, status_id) {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You try to change status!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, change it!'
+            }).then((result) => {
+                /* Read more about isConfirmed, isDenied below */
+                if (result.isConfirmed) {
+                    var ajax_url = "{{ route('tasks.status') }}"
+                    $.ajaxSetup({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        }
+                    });
+                    $.ajax({
+                        url: ajax_url,
+                        method:'POST',
+                        data: {task_id:task_id, status_id:status_id},
+                        success:function(response){
+                            if( response.status == "1" ) {
+                                Swal.fire( response.error, '', 'error')
+                            } else {
+                                ReloadDataTableModal('tasks-datatable');
+                                Swal.fire('Changed!', '', 'success')
+                            }
+                        }      
+                    });
                 } 
             })
             return false;

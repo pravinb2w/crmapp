@@ -367,4 +367,20 @@ class HomeController extends Controller
         }
         
     }
+
+    public function show_notification_toast(Request $request) {
+        $noti_count = Notification::where('user_id', Auth::id())->count();
+        $session_count = $request->session()->get('notification_count');
+        $toast = [];
+        if( $noti_count != $session_count ) {
+            $latest = Notification::where('user_id', Auth::id())->latest()->first();
+            if( isset($latest) && !empty($latest)) {
+                $toast['title'] = $latest->title ?? '';
+                $toast['message'] = $latest->message ?? ''; 
+                
+                $request->session()->put('notification_count', $noti_count);
+            }
+        }
+        return $toast;
+    }
 }

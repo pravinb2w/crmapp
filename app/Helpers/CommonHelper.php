@@ -1110,5 +1110,56 @@ class CommonHelper
         return true;
     }
 
+    public static function send_activity_status_change_notification( $activity_id ) {
+        
+        $lead_order_info = DB::table('lead_orders')->get();
+        $act_info = Activity::find($activity_id);
+        $date_div = '<strong class="text-primary">'.date('d M Y h:i A').'</strong>';
+        
+        $title = 'Activity status has been Changed';
+        $message = 'Activity '.$act_info->subject.' status has been changed to '.$act_info->statusAll->status_name.' by <span class="text-info">'. Auth::user()->name.'</span> at '.$date_div;
+        $ins = [];
+        if( $act_info->added_by == $act_info->user_id ) {
+            
+            $ins = array(
+                'title' => $title,
+                'message' => $message,
+                'type' => 'activity-change-status',
+                'url' => route('activities'),
+                'type_id' => $activity_id,
+                'user_id' => $act_info->added_by,
+                'assigned_by' => null,
+                'created_at' => date('Y-m-d H:i:s')
+            );
+        } else if( $act_info->added_by != $act_info->user_id ) {
+            
+            $ins[] = array(
+                'title' => $title,
+                'message' => $message,
+                'type' => 'activity-change-status',
+                'url' => route('activities'),
+                'type_id' => $activity_id,
+                'user_id' => $act_info->added_by,
+                'assigned_by' => null,
+                'created_at' => date('Y-m-d H:i:s')
+            );
+            $ins[] = array(
+                'title' => $title,
+                'message' => $message,
+                'type' => 'activity-change-status',
+                'url' => route('activities'),
+                'type_id' => $activity_id,
+                'user_id' => $act_info->user_id,
+                'assigned_by' => null,
+                'created_at' => date('Y-m-d H:i:s')
+            );
+        }
+       
+        if( !empty( $ins ) ) {
+            DB::table('notifications')->insert($ins);
+        }
+        return true;
+    }
+
     
 }

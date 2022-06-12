@@ -9,23 +9,28 @@
         Permission</a>
     {{-- <a href="{{ route('tax') }}" class="list-group-item list-group-item-action {{ Request::segment(2) == 'tax' ? 'active' : '' }}">
             Tax Groups</a> --}}
+    <a href="{{ route('activity-status') }}" class="list-group-item list-group-item-action {{ Request::segment(2) == 'activity-status' ? 'active' : '' }}">
+        Activity Status</a>
+    <a href="{{ route('task-status') }}" class="list-group-item list-group-item-action {{ Request::segment(2) == 'task-status' ? 'active' : '' }}">
+        Task Status</a>
     <a href="{{ route('teams') }}" class="list-group-item list-group-item-action {{ Request::segment(2) == 'teams' ? 'active' : '' }}">
         Teams</a>
     
     <a href="{{ route('country') }}" class="list-group-item list-group-item-action {{ Request::segment(2) == 'country' ? 'active' : '' }}">
         Country</a>
-    
-    {{-- <a href="{{ route('pagetype') }}" class="list-group-item list-group-item-action {{ Request::segment(2) == 'pagetype' ? 'active' : '' }}">
-        Page Type</a> --}}
-    <a href="{{ route('subscriptions') }}" class="list-group-item list-group-item-action {{ Request::segment(2) == 'subscriptions' ? 'active' : '' }}">
-        Subcriptions
-        </a>
-    {{-- <a href="{{ route('company') }}" class="list-group-item list-group-item-action {{ Request::segment(2) == 'company' ? 'active' : '' }}">
-        Company
-    </a> --}}
-    <a href="{{ route('company-subscriptions') }}" class="list-group-item list-group-item-action {{ Request::segment(2) == 'company-subscriptions' ? 'active' : '' }}">
-        Company Subcriptions
-        </a>
+    @if (Auth::user()->is_dev)
+        {{-- <a href="{{ route('pagetype') }}" class="list-group-item list-group-item-action {{ Request::segment(2) == 'pagetype' ? 'active' : '' }}">
+            Page Type</a> --}}
+        <a href="{{ route('subscriptions') }}" class="list-group-item list-group-item-action {{ Request::segment(2) == 'subscriptions' ? 'active' : '' }}">
+            Subcriptions
+            </a>
+        {{-- <a href="{{ route('company') }}" class="list-group-item list-group-item-action {{ Request::segment(2) == 'company' ? 'active' : '' }}">
+            Company
+        </a> --}}
+        <a href="{{ route('company-subscriptions') }}" class="list-group-item list-group-item-action {{ Request::segment(2) == 'company-subscriptions' ? 'active' : '' }}">
+            Company Subcriptions
+            </a>
+    @endif
         
 </div>
 

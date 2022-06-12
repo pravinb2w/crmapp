@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use DB;
 use CommonHelper;
 use App\Models\Task;
+use App\Models\Status;
 use App\Models\User;
 
 class TaskController extends Controller
@@ -56,6 +57,22 @@ class TaskController extends Controller
         if( $list ) {
             $i=1;
             foreach( $list as $tasks ) {
+
+                $all_status = '<select class="status-dropdown" name="status_id" id="status_id" onchange="return change_act_status('.$tasks->id.', this.value)">';
+                $all_status .= '<option value="">--select--</option>';
+                $all_status_info = Status::where(['is_active' => 1, 'type' => 'activity'])
+                                    ->orderBy('order', 'asc')->get();
+                if( isset($all_status_info) && !empty($all_status_info) ) {
+                    foreach ($all_status_info as $stat) {
+                        $selected = '';
+                        if( isset( $tasks->status_id ) && $tasks->status_id == $stat->id ) {
+                            $selected = 'selected';
+                        }
+                        $all_status .= '<option value="'.$stat->id.'" '.$selected.' >'.$stat->status_name.'</option>'; 
+                    }
+                }
+                $all_status .= '</select>';
+
                 $comp = '&emsp;<span class="badge bg-warning" role="button" onclick="return complete_task('.$tasks->id.')"> Click To Complete</span>';
 
                 $tasks_status                         = '<div class="badge bg-danger" role="button" onclick="change_status(\'tasks\','.$tasks->id.', 1)"> Inactive </div>';
@@ -85,7 +102,9 @@ class TaskController extends Controller
                 $nested_data[ 'task_name' ]         = $tasks->task_name;
                 $nested_data[ 'assigned_to' ]       = $tasks->assigned->name ?? '';
                 $nested_data[ 'assigned_by' ]       = $tasks->added->name ?? '';
-                $nested_data[ 'assigned_date' ]     = (date('d-m-Y H:i A', strtotime($tasks->created_at ) ) ?? '' ).' '.$comp;
+                // $nested_data[ 'assigned_date' ]     = (date('d-m-Y H:i A', strtotime($tasks->created_at ) ) ?? '' ).' '.$comp;
+                $nested_data[ 'assigned_date' ]     = (date('d-m-Y H:i A', strtotime($tasks->created_at ) ) ?? '' );
+                $nested_data[ 'progress_status' ]   = $all_status;
                 $nested_data[ 'status' ]            = $tasks_status;
                 $nested_data[ 'action' ]            = $action;
                 $data[]                             = $nested_data;
@@ -133,27 +152,36 @@ class TaskController extends Controller
     public function save(Request $request)
     {
         $id = $request->id;
-        $role_validator   = [
-            'task_name'      => [ 'required', 'string', 'max:255'],
-            'assigned_to'      => [ 'required', 'string', 'max:255'],
-        ];
-        
+        if(Auth::user()->hasAccess('tasks', 'is_assign')) {
+            $role_validator   = [
+                'task_name'      => [ 'required', 'string', 'max:255'],
+                'assigned_to'      => [ 'required', 'string', 'max:255'],
+                'end_date' => ['required']
+            ];
+        } else {
+            $role_validator   = [
+                'task_name'      => [ 'required', 'string', 'max:255'],
+                'end_date' => ['required']
+            ];
+        }
         //Validate the task
         $validator                     = Validator::make( $request->all(), $role_validator );
         
         if ($validator->passes()) {
             $ins['status']          = isset($request->status) ? 1 : 0;
             $ins['task_name']       = $request->task_name;
-            $ins['assigned_to']     = $request->assigned_to;
+            $ins['assigned_to']     = $request->assigned_to ?? Auth::id();
             $ins['description']     = $request->description;
+            $ins['end_date']        = date('Y-m-d', strtotime($request->end_date));
             
             if( isset($id) && !empty($id) ) {
                 $page = Task::find($id);
                 $page->status = isset($request->status) ? 1 : 0;
                 $page->task_name = $request->task_name;
-                $page->assigned_to = $request->assigned_to;
+                $page->assigned_to = $request->assigned_to ?? Auth::id();
                 $page->updated_by = Auth::id();
                 $page->description = $request->description;
+                $page->end_date = date('Y-m-d', strtotime($request->end_date));
                 $page->update();
                 $success = 'Updated Task';
             } else {
@@ -177,15 +205,16 @@ class TaskController extends Controller
 
     public function change_status(Request $request)
     {
-        $id = $request->id;
-        $status = $request->status;
+        $id = $request->task_id;
+        $status_id = $request->status_id;
         if(Auth::user()->hasAccess('tasks', 'is_edit')) {
 
             $page = Task::find($id);
-            $page->status = $status;
+            $page->status_id = $status_id;
             $page->update();
             $update_msg = 'Updated successfully';
             $status = '0';
+
         } else {
             $update_msg = 'You Do not have access to change status';
             $status = '1';

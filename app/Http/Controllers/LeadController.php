@@ -457,7 +457,6 @@ class LeadController extends Controller
         $updata['done_at'] = date('Y-m-d H:i:s');
 
         $role = Activity::where('lead_id', $lead_id )->update($updata);
-
         
         $update_msg = 'Updated successfully';
         return response()->json(['error'=>[$update_msg], 'status' => '0', 'lead_id' => $lead_id]);

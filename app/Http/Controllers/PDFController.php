@@ -26,9 +26,9 @@ class PDFController extends Controller
             'company' => $company,
             'taxable' => $taxable,
         ];
-        // return view('crm.invoice.templates.invoice_template_two', $data);
+        // return view('crm.invoice.templates.invoice_template_four', $data);
 
-        $pdf = PDF::loadView('crm.invoice.templates.invoice_template_two', $data);    
+        $pdf = PDF::loadView('crm.invoice.templates.invoice_template_three', $data);    
         // $pdf = PDF::loadView('mypdf', $data);    
         return $pdf->download('testing.pdf');
     }

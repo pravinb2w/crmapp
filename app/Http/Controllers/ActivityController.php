@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Activity;
 use App\Models\Lead;
 use App\Models\User;
+use App\Models\Status;
 use App\Models\Customer;
 use CommonHelper;
 
@@ -56,6 +57,22 @@ class ActivityController extends Controller
         if( $list ) {
             $i=1;
             foreach( $list as $activities ) {
+
+                $all_status = '<select class="status-dropdown" name="status_id" id="status_id" onchange="return change_act_status('.$activities->id.', this.value)">';
+                $all_status .= '<option value="">--select--</option>';
+                $all_status_info = Status::where(['is_active' => 1, 'type' => 'activity'])
+                                    ->orderBy('order', 'asc')->get();
+                if( isset($all_status_info) && !empty($all_status_info) ) {
+                    foreach ($all_status_info as $stat) {
+                        $selected = '';
+                        if( isset( $activities->status_id ) && $activities->status_id == $stat->id ) {
+                            $selected = 'selected';
+                        }
+                        $all_status .= '<option value="'.$stat->id.'" '.$selected.' >'.$stat->status_name.'</option>'; 
+                    }
+                }
+                $all_status .= '</select>';
+
                 if( empty($activities->done_at) ) {
                     $activities_done                        = '<div class="badge badge-warning-lighten" role="button" onclick="mark_as_done('.$activities->id.')"> Mark as done </div>';
                 } else {
@@ -82,13 +99,13 @@ class ActivityController extends Controller
                     <input type="checkbox" class="form-check-input" id="customCheck2" value="'.$activities->id.'">
                     <label class="form-check-label" for="customCheck2">&nbsp;</label>
                 </div>';
-                // $nested_data[ 'subject' ]           = ucwords($activities->subject);
+                // $nested_data[ 'subject' ]        = ucwords($activities->subject);
                 $nested_data[ 'type' ]              = ucfirst($activities->activity_type);
                 $nested_data[ 'lead' ]              = $activities->lead->lead_subject ?? $activities->lead->lead_description ?? $activities->deal->deal_title ?? '';
                 $nested_data[ 'customer' ]          = $activities->customer->first_name ?? '';
                 $nested_data[ 'startAt' ]           = date('d M Y H:i A', strtotime($activities->started_at ) );
                 $nested_data[ 'dueAt' ]             = date('d M Y H:i A', strtotime($activities->due_at ) );
-                $nested_data['done']                = $activities_done;
+                $nested_data['done']                = $all_status;
                 $nested_data['assigned_to']         = $activities->user->name;
                 $nested_data['assigned_by']         = $activities->added->name;
                 $nested_data[ 'status' ]            = $activities_status;
@@ -210,14 +227,19 @@ class ActivityController extends Controller
 
     public function change_status(Request $request)
     {
-        $id = $request->id;
-        $status = $request->status;
-        if(Auth::user()->hasAccess('notes', 'is_edit')) {
+        $id = $request->activity_id;
+        $status_id = $request->status_id;
+
+        if(Auth::user()->hasAccess('activities', 'is_edit')) {
             $role = Activity::find($id);
-            $role->status = $status;
+            $role->status_id = $status_id;
+
             $role->update();
             $update_msg = 'Updated successfully';
             $status = '0';
+
+            CommonHelper::send_activity_status_change_notification($id); 
+
         } else {
             $update_msg = 'You Do not have access to change status';
             $status = '1';

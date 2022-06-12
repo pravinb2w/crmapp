@@ -30,6 +30,9 @@ Route::get('/approve/invoice/{id}',[App\Http\Controllers\InvoiceController::clas
 Route::get('/reject/invoice/{id}',[App\Http\Controllers\InvoiceController::class, 'reject_invoice'])->name('reject-invoice');
 
 Route::middleware([SetViewVariable::class, 'auth'])->group(function(){
+
+
+    Route::post('/notification/check', [App\Http\Controllers\HomeController::class, 'show_notification_toast'] )->name('notification.check');
     Route::post('/notification/list', [App\Http\Controllers\HomeController::class, 'notification_list'] )->name('common.notification.list');
     Route::post('/notification/read', [App\Http\Controllers\HomeController::class, 'make_noti_read'] )->name('common.notification.read');
 
@@ -246,6 +249,21 @@ Route::middleware([SetViewVariable::class, 'auth'])->group(function(){
 
     Route::prefix('settings')->group(function () {
         Route::get('/', [App\Http\Controllers\SettingController::class, 'index'])->name('settings');
+        //activity status route
+        Route::get('/activity-status', [App\Http\Controllers\ActivityStatusController::class, 'index'])->name('activity-status');
+        Route::post('/activity-status/add', [App\Http\Controllers\ActivityStatusController::class, 'add_edit'])->name('activity-status.add');
+        Route::post('/activity-status/save', [App\Http\Controllers\ActivityStatusController::class, 'save'])->name('activity-status.save');
+        Route::post('/activity-status/list', [App\Http\Controllers\ActivityStatusController::class, 'ajax_list'])->name('activity-status.list');
+        Route::post('/activity-status/delete', [App\Http\Controllers\ActivityStatusController::class, 'delete'])->name('activity-status.delete');
+        Route::post('/activity-status/status', [App\Http\Controllers\ActivityStatusController::class, 'change_status'])->name('activity-status.status');
+
+        Route::get('/task-status', [App\Http\Controllers\ActivityStatusController::class, 'index'])->name('task-status');
+        Route::post('/task-status/add', [App\Http\Controllers\ActivityStatusController::class, 'add_edit'])->name('task-status.add');
+        Route::post('/task-status/save', [App\Http\Controllers\ActivityStatusController::class, 'save'])->name('task-status.save');
+        Route::post('/task-status/list', [App\Http\Controllers\ActivityStatusController::class, 'ajax_list'])->name('task-status.list');
+        Route::post('/task-status/delete', [App\Http\Controllers\ActivityStatusController::class, 'delete'])->name('task-status.delete');
+        Route::post('/task-status/status', [App\Http\Controllers\ActivityStatusController::class, 'change_status'])->name('task-status.status');
+
         //users route
         Route::get('/users', [App\Http\Controllers\UserController::class, 'index'])->name('users');
         Route::post('/users/add', [App\Http\Controllers\UserController::class, 'add_edit'])->name('users.add');

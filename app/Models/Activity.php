@@ -28,6 +28,7 @@ class Activity extends Model implements Auditable
         'done_by',
         'available',
         'status',
+        'status_id',
         'added_by',
         'updated_by'
     ];
@@ -62,10 +63,10 @@ class Activity extends Model implements Auditable
         return $this->hasOne(User::class, 'id', 'updated_by');
     }
 
-    // public function lead()
-    // {
-    //     return $this->hasOne(Lead::class, 'id', 'lead_id');
-    // }
+    public function statusAll()
+    {
+        return $this->hasOne(Status::class, 'id', 'status_id');
+    }
 
     public function customer()
     {

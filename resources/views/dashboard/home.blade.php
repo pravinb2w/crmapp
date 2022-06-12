@@ -128,7 +128,6 @@
     <!-- end row --> 
     <!-- end row-->
     @include('dashboard.drag._dragula')
-    
 </div> 
 @php
     $enc = json_encode($close_week);

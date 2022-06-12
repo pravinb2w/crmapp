@@ -47,13 +47,13 @@
                             <textarea name="description" class="form-control" id="description" cols="30" rows="3">{{ $info->description ?? '' }}</textarea>
                         </div>
                     </div>
-                    {{-- <div class="mb-3">
-                        <label for="description" class="col-form-label"> Task Time </label>
+                    <div class="mb-3">
+                        
+                        <label for="description" class="col-form-label"> Task End Date <span class="text-danger">*</span></label>
                         <div class="mb-3 col-8">
-                            <input type="text" name="task_time" class="form-control date" id="datetimepicker1" >
-                            <input type="text" id="datepicker">
+                            <input type="text" required name="end_date" id="end_date" class="form-control datepicker" value="<?= isset($info->end_date) ? date('d-m-Y', strtotime($info->end_date)): date('M d,Y')?>">
                         </div>
-                    </div> --}}
+                    </div>
 
                     <div class="mb-3">
                         <label for="description" class="col-form-label">Status</label>
@@ -116,7 +116,13 @@
             }
         });
 
-        
+        $(function(){
+        $('.datepicker').datepicker({
+            format: 'M dd,yyyy',
+            // endDate: '+0d',
+            autoclose: true
+        });
+    });
 </script>
 
 @section('add_on_script')

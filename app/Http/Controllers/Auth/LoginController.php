@@ -49,6 +49,9 @@ class LoginController extends Controller
     {
         $credentials = $request->only('email', 'password');
         if (Auth::attempt($credentials)) {
+            //here check notification count and set in session
+            $noti_count = \DB::table('notifications')->where('user_id', Auth::id())->count();
+            $request->session()->put('notification_count', $noti_count);
             return redirect()->route('dashboard');
         } else {
             return redirect('/devlogin')->with('error', 'Invalid Email address or Password');

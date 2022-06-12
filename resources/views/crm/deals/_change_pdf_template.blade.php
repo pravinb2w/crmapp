@@ -52,6 +52,32 @@
                         </div> 
                     </div>
                 </div>
+                <div class="col-md-3">
+                    <div class="card border shadow-sm">
+                        <div class="card-header bg-light">
+                            <label  for="three"><b>Layout Three</b></label>
+                        </div>
+                        <div class="card-body text-center">
+                            <label>
+                                <input type="radio" name="layout_type" value="three" >
+                                <img src="{{ asset('assets/images/logo/three-layout.jpg') }}" class="mx-auto border" style="height: 300px;object-fit:cover">
+                            </label>
+                        </div> 
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card border shadow-sm">
+                        <div class="card-header bg-light">
+                            <label  for="four"><b>Layout Four</b></label>
+                        </div>
+                        <div class="card-body text-center">
+                            <label>
+                                <input type="radio" name="layout_type" value="four" >
+                                <img src="{{ asset('assets/images/logo/four-layout.jpg') }}" class="mx-auto border" style="height: 300px;object-fit:cover">
+                            </label>
+                        </div> 
+                    </div>
+                </div>
             </div> 
         </div>
         <div class="modal-footer">

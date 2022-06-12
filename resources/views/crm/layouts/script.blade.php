@@ -26,7 +26,6 @@
         toastr.error('Error', item );
     }
 
-
     function get_add_modal(page_type, id = '', from = '') {
         var ajax_url = set_add_url(page_type);
         $.ajaxSetup({
@@ -97,7 +96,6 @@
                         method:'POST',
                         data: {page_type:page_type, id:id},
                         success:function(response){
-                            console.log( response );
                             if( response.status == "1" ) {
                                 Swal.fire( response.error, '', 'error')
                             } else {
@@ -107,7 +105,6 @@
                                     window.location.href = "{{ route('leads') }}";
                                 } else {
                                     ReloadDataTableModal(page_type+'-datatable');
-
                                 }
                                 Swal.fire('Deleted!', '', 'success')
                             }
@@ -206,6 +203,10 @@
             return ajax_url = '{{ route("tax.add") }}';
         } else if(page_type=='automation') {
             return ajax_url = '{{ route("automation.add") }}';
+        } else if(page_type=='activity-status') {
+            return ajax_url = '{{ route("activity-status.add") }}';
+        } else if(page_type=='task-status') {
+            return ajax_url = '{{ route("task-status.add") }}';
         }
     }
 
@@ -301,6 +302,10 @@
             return ajax_url = '{{ route("payments.delete") }}';
         } else if(page_type=='automation') {
             return ajax_url = '{{ route("automation.delete") }}';
+        } else if(page_type=='activity-status') {
+            return ajax_url = '{{ route("activity-status.delete") }}';
+        } else if(page_type=='task-status') {
+            return ajax_url = '{{ route("task-status.delete") }}';
         }
     }
 
@@ -347,6 +352,10 @@
             return ajax_url = '{{ route("tax.status") }}';
         } else if(page_type=='automation') {
             return ajax_url = '{{ route("automation.status") }}';
+        } else if(page_type == 'activity-status' ) {
+            return ajax_url = '{{ route("activity-status.status") }}';
+        } else if(page_type == 'task-status' ) {
+            return ajax_url = '{{ route("task-status.status") }}';
         }
     }
 

@@ -81,6 +81,7 @@ function make_stage_completed(stage_id, deal_id ){
             
             success: function(response) {
                 $('#notification_tab').html(response);
+                check_notification();
             }            
         });
     }
@@ -100,6 +101,24 @@ function make_stage_completed(stage_id, deal_id ){
                     window.location.href=response.url;
                 } else {
                     $('#notification_tab').html(response);
+                }
+            }            
+        });
+    }
+
+    function check_notification() {
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        $.ajax({
+            url: "{{ route('notification.check') }}",
+            type: 'POST',
+            success: function(response) {
+                if( response.title ) {
+                    toastr.options.positionClass = 'toast-bottom-right';
+                    toastr.info(response.title, response.message, { timeOut: 9500 } );
                 }
             }            
         });

@@ -23,7 +23,9 @@ class Task extends Model implements Auditable
         'added_by',
         'updated_by',
         'status',
+        'status_id'
     ];
+    
     public function scopeLatests( Builder $query ) {
         return $query->orderBy( static::CREATED_AT, 'desc' );
     }
@@ -63,5 +65,10 @@ class Task extends Model implements Auditable
     public function assigned()
     {
         return $this->hasOne(User::class, 'id', 'assigned_to');
+    }
+
+    public function statusAll()
+    {
+        return $this->hasOne(Status::class, 'id', 'status_id');
     }
 }
