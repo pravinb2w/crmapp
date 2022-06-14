@@ -27,7 +27,7 @@
         <!-- end page -->
 
         <footer class="footer footer-alt">
-            2022 © DuraiBytes
+        {{$copyrights}}
         </footer>
 
         <!-- bundle -->
