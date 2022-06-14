@@ -11,7 +11,7 @@
         </span>
         <span class="logo-sm">
             @if($cm_logo)
-            <img src="{{ asset('storage/'.$cm_logo) }}" alt="" height="16">
+            <img src="{{ asset('storage/'.$cm_favicon) }}" alt="" height="16">
             @else
             <img src="{{ asset('assets/images/logo/logo.png') }}" alt="" height="16">
             @endif
