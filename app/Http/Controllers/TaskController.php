@@ -60,7 +60,7 @@ class TaskController extends Controller
 
                 $all_status = '<select class="status-dropdown" name="status_id" id="status_id" onchange="return change_act_status('.$tasks->id.', this.value)">';
                 $all_status .= '<option value="">--select--</option>';
-                $all_status_info = Status::where(['is_active' => 1, 'type' => 'activity'])
+                $all_status_info = Status::where(['is_active' => 1, 'type' => 'task'])
                                     ->orderBy('order', 'asc')->get();
                 if( isset($all_status_info) && !empty($all_status_info) ) {
                     foreach ($all_status_info as $stat) {
@@ -98,15 +98,24 @@ class TaskController extends Controller
                     <label class="form-check-label" for="customCheck2">&nbsp;</label>
                 </div>';
 
+                $due_color = $tasks->statusAll->color ?? '';
+                $time = date('Y-m-d');
+                $time = strtotime($time);
+                $due_at = strtotime($tasks->end_date);
+                if( $due_at < $time ) {
+                    $due_color = 'red';
+                }
 
-                $nested_data[ 'task_name' ]         = $tasks->task_name;
-                $nested_data[ 'assigned_to' ]       = $tasks->assigned->name ?? '';
-                $nested_data[ 'assigned_by' ]       = $tasks->added->name ?? '';
+
+                $nested_data[ 'task_name' ]         = '<div style="color:'.$due_color.'">'.$tasks->task_name.'</div>';
+                $nested_data[ 'assigned_to' ]       = '<div style="color:'.$due_color.'">'.($tasks->assigned->name ?? '').'</div>';
+                $nested_data[ 'assigned_by' ]       = '<div style="color:'.$due_color.'">'.($tasks->added->name ?? ''.'</div>');
                 // $nested_data[ 'assigned_date' ]     = (date('d-m-Y H:i A', strtotime($tasks->created_at ) ) ?? '' ).' '.$comp;
-                $nested_data[ 'assigned_date' ]     = (date('d-m-Y H:i A', strtotime($tasks->created_at ) ) ?? '' );
-                $nested_data[ 'progress_status' ]   = $all_status;
-                $nested_data[ 'status' ]            = $tasks_status;
-                $nested_data[ 'action' ]            = $action;
+                $nested_data[ 'assigned_date' ]     = '<div style="color:'.$due_color.'">'.(date('d-m-Y H:i A', strtotime($tasks->created_at ) ) ?? '' ). '</div>';
+                $nested_data[ 'due_date' ]          = '<div style="color:'.$due_color.'">'.(date('d-m-Y', strtotime($tasks->end_date ) ) ?? '' ).'</div>';
+                $nested_data[ 'progress_status' ]   = '<div style="color:'.$due_color.'">'.$all_status.'</div>';
+                $nested_data[ 'status' ]            = '<div style="color:'.$due_color.'">'.$tasks_status.'</div>';
+                $nested_data[ 'action' ]            = '<div style="color:'.$due_color.'">'.$action.'</div>';
                 $data[]                             = $nested_data;
             }
         }

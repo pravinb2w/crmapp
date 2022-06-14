@@ -1,5 +1,5 @@
 <div class="modal-dialog modal-md modal-right">
-    <form id="status-form" method="POST" action="{{ route('activity-status.save') }}" autocomplete="off" class="modal-content h-100">
+    <form id="role-form" method="POST" action="{{ route('roles.save') }}" autocomplete="off" class="modal-content h-100">
         <div class="modal-header">
             <h4 class="modal-title" id="myLargeModalLabel">{{ $modal_title }}</h4>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -12,23 +12,24 @@
             <div>
                 @csrf
                 <input type="hidden" name="id" value="{{ $id ?? '' }}">
-                <input type="hidden" name="type" value="{{ $type ?? '' }}">
+                
                 <div class="mb-3">
-                    <label for="status_name" class="col-3 col-form-label"> Status Name <span class="text-danger">*</span></label>
+                    <label for="role" class="col-3 col-form-label">Role <span class="text-danger">*</span></label>
                     <div>
-                        <input type="text" name="status_name" class="form-control" id="status_name" placeholder="Name" value="{{ $info->status_name ?? '' }}" required>
+                        <input type="text" name="role" class="form-control" id="role" placeholder="Name" value="{{ $info->role ?? '' }}" required>
                     </div>
                 </div>
                 <div class="mb-3">
-                    <label for="order" class="col-3 col-form-label"> Order<span class="text-danger">*</span></label>
+                    <label for="description" class="col-3 col-form-label">Description</label>
                     <div>
-                        <input type="number" name="order" min="1" class="form-control" id="order" placeholder="Order Number" value="{{ $info->order ?? '' }}" required>
+                        <textarea  class="form-control" name="description" id="description" cols="30" rows="3" >{{ $info->description ?? '' }}</textarea>
                     </div>
                 </div>
                <div class="d-flex align-items-center">
                     <label for="description" class="me-2 col-form-label">Status</label>
+                    <!-- Success Switch-->
                     <div>
-                        <input type="checkbox" name="is_active" id="switch3" {{ (isset($info->is_active) && $info->is_active == '1' )  ? 'checked' : ((isset($info->is_active) && $info->is_active == '0' ) ? '':'checked')}} data-switch="success"/>
+                        <input type="checkbox" name="status" id="switch3" {{ (isset($info->status) && $info->status == '1' )  ? 'checked' : ((isset($info->status) && $info->status == '0' ) ? '':'checked')}} data-switch="success"/>
                         <label for="switch3" data-on-label="" data-off-label=""></label>
                     </div>
                </div> 
@@ -42,7 +43,7 @@
 </div>
 
 <script>
-        $("#status-form").validate({
+        $("#role-form").validate({
             submitHandler:function(form) {
                 $.ajax({
                     url: form.action,
@@ -63,8 +64,7 @@
                             setTimeout(function(){
                                 $('#Mymodal').modal('hide');
                             },100);
-                            let tableurl = '{{ $type }}-status-datatable';
-                            ReloadDataTableModal(tableurl);
+                            ReloadDataTableModal('roles-datatable');
                         }
                     }            
                 });

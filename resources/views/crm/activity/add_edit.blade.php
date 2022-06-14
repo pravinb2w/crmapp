@@ -75,7 +75,7 @@
                     <div class="form-group mt-3">
                         <span><i class="dripicons-user"></i></span>
                         <label for="name" class="col-form-label"> Lead / Deal </label>                   
-                        <input type="text" name="lead_deal" id="lead_deal" value="{{ $info->lead->lead_subject ?? '' }}" class="form-control" autocomplete="off">
+                        <input type="text" name="lead_deal" id="lead_deal" value="{{ $info->lead->lead_subject ?? '' }}" class="form-control" autocomplete="off" required>
                         <input type="hidden" name="lead_id" id="lead_id" value="{{ $info->lead_id ?? '' }}">
                         <input type="hidden" name="deal_id" id="deal_id" value="{{ $info->deal_id ?? '' }}">
                         <div id="lead-result" class="typeahead-custom"></div>

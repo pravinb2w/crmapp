@@ -47,6 +47,7 @@
                                     <th>Assigned To</th>
                                     <th>Assigned By</th>
                                     <th>Assigned Date</th>
+                                    <th>Due Date</th>
                                     <th>Progress Status</th>
                                     <th>Status</th>
                                     <th style="width: 80px;">Action</th>
@@ -88,6 +89,7 @@
                 {"data" : "assigned_to"},
                 {"data" : "assigned_by"},
                 {"data" : "assigned_date"},
+                {"data" : "due_date"},
                 {"data" : "progress_status"},
                 {"data" : "status" },
                 {"data" : "action" },

@@ -18,6 +18,7 @@ class Status extends Model
         "status_name",
         "order",
         "is_active",
+        "color"
     ];
     public function scopeLatests( Builder $query ) {
         return $query->orderBy( static::CREATED_AT, 'desc' );

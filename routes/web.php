@@ -30,7 +30,9 @@ Route::get('/approve/invoice/{id}',[App\Http\Controllers\InvoiceController::clas
 Route::get('/reject/invoice/{id}',[App\Http\Controllers\InvoiceController::class, 'reject_invoice'])->name('reject-invoice');
 
 Route::middleware([SetViewVariable::class, 'auth'])->group(function(){
-
+    Route::any('payu-money-payment',[App\Http\Controllers\PayuMoneyController::class, 'redirectToPayU'])->name('redirectToPayU');
+    Route::any('payu-money-payment-cancel', [App\Http\Controllers\PayuMoneyController::class, 'paymentCancel'])->name('payumoney-cancel');
+    Route::any('payu-money-payment-success', [App\Http\Controllers\PayuMoneyController::class, 'paymentSuccess'])->name('payumoney-success');
 
     Route::post('/notification/check', [App\Http\Controllers\HomeController::class, 'show_notification_toast'] )->name('notification.check');
     Route::post('/notification/list', [App\Http\Controllers\HomeController::class, 'notification_list'] )->name('common.notification.list');
@@ -81,6 +83,7 @@ Route::middleware([SetViewVariable::class, 'auth'])->group(function(){
         Route::post('/delete', [App\Http\Controllers\ActivityController::class, 'delete'])->name('activities.delete')->middleware('checkAccess:is_delete');
         Route::post('/status', [App\Http\Controllers\ActivityController::class, 'change_status'])->name('activities.status');
         Route::post('/mark_as_done', [App\Http\Controllers\ActivityController::class, 'mark_as_done'])->name('activities.mark_as_done')->middleware('checkAccess:is_edit');
+        Route::post('/comment/save', [App\Http\Controllers\ActivityController::class, 'comment_save'])->name('activities.comment.save');
     });
     
     //notes route

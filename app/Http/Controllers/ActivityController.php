@@ -94,22 +94,29 @@ class ActivityController extends Controller
                 if(Auth::user()->hasAccess('activities', 'is_delete')) {
                     $action .= '<a href="javascript:void(0);" class="action-icon" onclick="return common_soft_delete(\'activities\', '.$activities->id.')"> <i class="mdi mdi-delete"></i></a>';
                 }
+                $due_color = $activities->statusAll->color ?? '';
+                $time = date('Y-m-d H:i:s');
+                $time = strtotime($time);
+                $due_at = strtotime($activities->due_at);
+                if( $due_at < $time ) {
+                    $due_color = 'red';
+                }
 
                 $nested_data[ 'id' ]                = '<div class="form-check">
                     <input type="checkbox" class="form-check-input" id="customCheck2" value="'.$activities->id.'">
                     <label class="form-check-label" for="customCheck2">&nbsp;</label>
                 </div>';
                 // $nested_data[ 'subject' ]        = ucwords($activities->subject);
-                $nested_data[ 'type' ]              = ucfirst($activities->activity_type);
-                $nested_data[ 'lead' ]              = $activities->lead->lead_subject ?? $activities->lead->lead_description ?? $activities->deal->deal_title ?? '';
-                $nested_data[ 'customer' ]          = $activities->customer->first_name ?? '';
-                $nested_data[ 'startAt' ]           = date('d M Y H:i A', strtotime($activities->started_at ) );
-                $nested_data[ 'dueAt' ]             = date('d M Y H:i A', strtotime($activities->due_at ) );
-                $nested_data['done']                = $all_status;
-                $nested_data['assigned_to']         = $activities->user->name;
-                $nested_data['assigned_by']         = $activities->added->name;
-                $nested_data[ 'status' ]            = $activities_status;
-                $nested_data[ 'action' ]            = $action;
+                $nested_data[ 'type' ]              = '<div style="color:'.$due_color.'";>'.ucfirst($activities->activity_type).'<div>';
+                $nested_data[ 'lead' ]              = '<div style="color:'.$due_color.'";>'.($activities->lead->lead_subject ?? $activities->lead->lead_description ?? $activities->deal->deal_title ?? ''). '</div>';
+                $nested_data[ 'customer' ]          = '<div style="color:'.$due_color.'";>'.($activities->customer->first_name ?? ''). '</div>' ;
+                $nested_data[ 'startAt' ]           = '<div style="color:'.$due_color.'";>'.date('d M Y H:i A', strtotime($activities->started_at ) ).'</div>';
+                $nested_data[ 'dueAt' ]             = '<div style="color:'.$due_color.'";>'.date('d M Y H:i A', strtotime($activities->due_at ) ).'</div>';
+                $nested_data['done']                = '<div style="color:'.$due_color.'";>'.$all_status.'</div>';
+                $nested_data['assigned_to']         = '<div style="color:'.$due_color.'";>'.$activities->user->name.'</div>';
+                $nested_data['assigned_by']         = '<div style="color:'.$due_color.'";>'.$activities->added->name.'</div>';
+                $nested_data[ 'status' ]            = '<div style="color:'.$due_color.'";>'.$activities_status.'</div>';
+                $nested_data[ 'action' ]            = '<div style="color:'.$due_color.'";>'.$action.'</div>';
                 $data[]                             = $nested_data;
             }
         }
@@ -293,5 +300,9 @@ class ActivityController extends Controller
                     'customers' => $customers, 'lead_id' => $lead_id, 'deal_id' => $deal_id, 'page_type' => $page_type ];
         return view('crm.activity.edit_modal', $params);
        
+    }
+
+    public function comment_save(Request $request) {
+        
     }
 }

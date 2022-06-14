@@ -78,6 +78,7 @@ class ActivityStatusController extends Controller
                 </div>';
                 $nested_data[ 'status_name' ]       = $roles->status_name;
                 $nested_data[ 'order' ]             = $roles->order;
+                $nested_data[ 'color' ]             = '<div style="background:'.$roles->color.';padding: 10px;width: 22px;border-radius: 3px;"></div>';
                 $nested_data[ 'status' ]            = $all_status;
                 $nested_data[ 'action' ]            = $action;
                 $data[]                             = $nested_data;
@@ -110,7 +111,7 @@ class ActivityStatusController extends Controller
             $modal_title = 'Update '.ucwords(str_replace('-', " ", $urls_name));
         }
         $params = ['modal_title' => $modal_title, 'id' => $id ?? '', 'info' => $info ?? '', 'type' => $status_type];
-        return view('crm.roles.add_edit', $params);
+        return view('crm.status.add_edit', $params);
         
     }
 
@@ -132,12 +133,14 @@ class ActivityStatusController extends Controller
             $ins['is_active'] = isset($request->is_active) ? 1 : 0;
             $ins['status_name'] = $request->status_name;
             $ins['order'] = $request->order;
+            $ins['color'] = $request->color;
             $ins['type'] = $request->type;
             if( isset($id) && !empty($id) ) {
                 $role = Status::find($id);
                 $role->is_active = isset($request->is_active) ? 1 : 0;
                 $role->status_name = $request->status_name;
                 $role->order = $request->order;
+                $role->color = $request->color;
                 $role->type = $request->type;
                 $role->update();
                 $success = 'Updated';

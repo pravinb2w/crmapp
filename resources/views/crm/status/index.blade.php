@@ -44,6 +44,7 @@
                                     </th>
                                     <th class="all">Status Name</th>
                                     <th>Order</th>
+                                    <th>Color</th>
                                     <th>Status</th>
                                     <th style="width: 80px;">Action</th>
                                 </tr>
@@ -85,6 +86,7 @@
                 {"data" : "id"},
                 {"data" : "status_name"},
                 {"data" : "order"},
+                {"data" : "color"},
                 {"data" : "status" },
                 {"data" : "action" },
             ],
