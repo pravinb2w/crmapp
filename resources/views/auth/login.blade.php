@@ -9,7 +9,7 @@
             <div class="card-header py-3 text-center bg-light">
                 <a href="/">
                     @if( isset($cm_logo) && !empty($cm_logo))
-                        <img src="{{ asset('storage/'.$cm_logo) }}" alt="" width="120px;">
+                        <img src="{{ asset('storage/'.$cm_logo) }}" alt="" width="350px;">
                     @else
                         <span><img src="{{ asset('assets/images/logo/logo-xl.png') }}" width="120px"></span>
                     @endif
