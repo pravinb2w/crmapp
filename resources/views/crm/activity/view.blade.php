@@ -62,6 +62,7 @@
                                 <div class="card col-12">
                                     <div class="card-body">
                                         <form action="{{ route('activities.comment.save') }}" id="comment_form" method="POST">
+                                            <input type="hidden" name="activity_id" id="activity_id" value="{{ $info->id }}">
                                             <div class="row">
                                                 <div class="col-8">
                                                     <input type="text" required class="form-control" placeholder="Add comment" id="comment" name="comment">
@@ -74,13 +75,6 @@
                                     </div>
                                 </div>
                                 <div class="col-12" id="comment_list">
-                                    <table class="table">
-                                        <tr>
-                                            <td colspan="2">
-                                               No comments
-                                            </td>
-                                        </tr>
-                                    </table>
                                 </div>
                             </div>
                             
@@ -95,28 +89,33 @@
     </div><!-- /.modal-content -->
 </div>
 <script>
+    comment_list('{{ $info->id }}');
     $("#comment_form").validate({
             submitHandler:function(form) {
                 $.ajax({
                     url: form.action,
                     type: form.method,
                     data: $(form).serialize(),
-                    beforeSend: function() {
-                        $('#error').removeClass('alert alert-danger');
-                        $('#error').html('');
-                        $('#error').removeClass('alert alert-success');
-                        $('#save').html('Loading...');
-                    },
                     success: function(response) {
-                        var from = $('#from').val();
-                        $('#save').html('Save');
-                        if(response.error.length > 0 && response.status == "1" ) {
-                            toastr.error('Error', response.error );
-                        } else {
-                            toastr.success('Success', response.error );
+                        if( response.activity_id ) {
+                            toastr.success('Success', 'Added successfully' );
+                            form.reset();
+                            comment_list(response.activity_id);
                         }
+                        
                     }            
                 });
             }
         });
+
+        function comment_list(activity_id) {
+            $.ajax({
+                url: "{{ route('activities.comment.list') }}",
+                type: 'POST',
+                data: {activity_id:activity_id},
+                success: function(response) {
+                    $('#comment_list').html(response);
+                }            
+            });
+        }
 </script>

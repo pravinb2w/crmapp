@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f6b99d1042d268454b11418f91ca61a9",
+    "content-hash": "81ca102205f15ff8136fcbb409739da2",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -1633,6 +1633,56 @@
                 }
             ],
             "time": "2022-02-09T18:49:45+00:00"
+        },
+        {
+            "name": "kishanio/ccavenue",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/kishanio/CCAvenue-PHP-Library.git",
+                "reference": "29f5447ea90d2001e1fa1bc2088903a138fe6127"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/kishanio/CCAvenue-PHP-Library/zipball/29f5447ea90d2001e1fa1bc2088903a138fe6127",
+                "reference": "29f5447ea90d2001e1fa1bc2088903a138fe6127",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.5"
+            },
+            "suggest": {
+                "ext-mcrypt": "Required for most features of CCAvenue"
+            },
+            "default-branch": true,
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Kishanio\\CCAvenue\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Kishan Thobhani",
+                    "email": "thobhanikishan@gmail.com"
+                }
+            ],
+            "description": "CCAvenue Payment Gateway PHP Library",
+            "keywords": [
+                "ccavenue",
+                "library",
+                "payment gateway",
+                "php"
+            ],
+            "support": {
+                "issues": "https://github.com/kishanio/CCAvenue-PHP-Library/issues",
+                "source": "https://github.com/kishanio/CCAvenue-PHP-Library/tree/master"
+            },
+            "time": "2019-03-15T05:41:54+00:00"
         },
         {
             "name": "laravel/framework",
@@ -9451,7 +9501,8 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "intervention/image": 20
+        "intervention/image": 20,
+        "kishanio/ccavenue": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,

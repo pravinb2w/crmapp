@@ -34,6 +34,9 @@ Route::middleware([SetViewVariable::class, 'auth'])->group(function(){
     Route::any('payu-money-payment-cancel', [App\Http\Controllers\PayuMoneyController::class, 'paymentCancel'])->name('payumoney-cancel');
     Route::any('payu-money-payment-success', [App\Http\Controllers\PayuMoneyController::class, 'paymentSuccess'])->name('payumoney-success');
 
+    Route::any('ccavenue', [App\Http\Controllers\PaymentController::class, 'ccavenue_form'])->name('ccavenue');
+    Route::any('/ccavenue/response', [App\Http\Controllers\PaymentController::class, 'ccavenue_response'])->name('ccavenue-response');
+
     Route::post('/notification/check', [App\Http\Controllers\HomeController::class, 'show_notification_toast'] )->name('notification.check');
     Route::post('/notification/list', [App\Http\Controllers\HomeController::class, 'notification_list'] )->name('common.notification.list');
     Route::post('/notification/read', [App\Http\Controllers\HomeController::class, 'make_noti_read'] )->name('common.notification.read');
@@ -84,6 +87,7 @@ Route::middleware([SetViewVariable::class, 'auth'])->group(function(){
         Route::post('/status', [App\Http\Controllers\ActivityController::class, 'change_status'])->name('activities.status');
         Route::post('/mark_as_done', [App\Http\Controllers\ActivityController::class, 'mark_as_done'])->name('activities.mark_as_done')->middleware('checkAccess:is_edit');
         Route::post('/comment/save', [App\Http\Controllers\ActivityController::class, 'comment_save'])->name('activities.comment.save');
+        Route::post('/comment/list', [App\Http\Controllers\ActivityController::class, 'comment_list'])->name('activities.comment.list');
     });
     //notes route
     Route::prefix('notes')->group(function () {

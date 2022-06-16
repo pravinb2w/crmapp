@@ -14,6 +14,8 @@ use App\Models\Payment;
 use App\Models\PaymentIntegration;
 use Illuminate\Support\Str;
 use Razorpay\Api\Api;
+use Kishanio\CCAvenue\Payment as CCAvenueClient;
+
 use Session;
 
 class PaymentController extends Controller
@@ -366,4 +368,32 @@ class PaymentController extends Controller
 
         return view('crm.payments.razor._payment_success');
     }
+    // ccavenue integration started
+
+    public function ccavenue_form(Request $request) {
+        $ccavenue = new CCAvenueClient( '976366', '81E0204433275CCA7E007B7781545845', route('ccavenue-response') );
+
+        // set details 
+        $ccavenue->setAmount( '1' );
+        $ccavenue->setOrderId( 'ORD12345' );
+        $ccavenue->setBillingName( 'dURIARJ' );
+        $ccavenue->setBillingAddress( 'CHENNAI ANNANAAGR' );
+        $ccavenue->setBillingCity( 'Chennai' );
+        $ccavenue->setBillingZip( '600099' );
+        $ccavenue->setBillingState( 'Tamilnadu' );
+        $ccavenue->setBillingCountry( 'India' );
+        $ccavenue->setBillingEmail( 'duraibytes@gmail.com' );
+        $ccavenue->setBillingTel( '9551706025' );
+        $ccavenue->setBillingNotes( 'for testing' );
+
+        // copy all the billing details to chipping details
+        $ccavenue->billingSameAsShipping();
+        // get encrpyted data to be passed
+        $data = $ccavenue->getEncryptedData();
+        // merchant id to be passed along the param
+        $merchant = $ccavenue->getMerchantId();
+        return view('crm.payments.ccavenue.form', compact('data', 'merchant'));
+    }
+
+    
 }

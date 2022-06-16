@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Activity;
+use App\Models\ActivityComment;
 use App\Models\Lead;
 use App\Models\User;
 use App\Models\Status;
@@ -303,6 +304,18 @@ class ActivityController extends Controller
     }
 
     public function comment_save(Request $request) {
-        
+        $comment = $request->comment;
+
+        $ins['comments'] = $comment;
+        $ins['added_by'] = Auth::id();
+        $ins['activity_id'] = $request->activity_id;
+
+        ActivityComment::create($ins);
+        $params = array('activity_id' => $request->activity_id, 'status' => '1');
+        return response()->json($params);
+    }
+    public function comment_list(Request $request) {
+        $comment_list = ActivityComment::where('activity_id', $request->activity_id)->orderBy('id', 'desc')->get();
+        return view('crm.activity.comment_list', compact('comment_list'));
     }
 }

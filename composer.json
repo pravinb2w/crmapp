@@ -12,6 +12,7 @@
         "guzzlehttp/guzzle": "^7.0.1",
         "infyomlabs/laravel-payumoney": "1.3.0",
         "intervention/image": "dev-master",
+        "kishanio/ccavenue": "dev-master",
         "laravel/framework": "^8.75",
         "laravel/sanctum": "^2.11",
         "laravel/tinker": "^2.5",
