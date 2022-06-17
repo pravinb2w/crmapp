@@ -123,4 +123,32 @@ function make_stage_completed(stage_id, deal_id ){
             }            
         });
     }
+
+    function activity_comments(activity_id) {
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        $.ajax({
+            url: "{{ route('activities.comment.modal') }}",
+            type: 'POST',
+            data: {activity_id:activity_id},
+            success: function(response) {
+                $('#Mymodal').html(response);
+                $('#Mymodal').modal('show');
+            }            
+        });
+    }
+
+    function comment_list(activity_id) {
+        $.ajax({
+            url: "{{ route('activities.comment.list') }}",
+            type: 'POST',
+            data: {activity_id:activity_id},
+            success: function(response) {
+                $('#comment_list').html(response);
+            }            
+        });
+    }
 </script>

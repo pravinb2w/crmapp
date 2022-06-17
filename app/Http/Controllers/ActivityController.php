@@ -318,4 +318,12 @@ class ActivityController extends Controller
         $comment_list = ActivityComment::where('activity_id', $request->activity_id)->orderBy('id', 'desc')->get();
         return view('crm.activity.comment_list', compact('comment_list'));
     }
-}
+
+    public function comment_modal(Request $request) {
+        $id = $request->activity_id;
+        $info = Activity::find($id);
+        $modal_title = 'Activity Comments';
+        return view('crm.activity.comment_modal', compact('id','modal_title', 'info'));
+
+    }
+ }

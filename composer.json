@@ -20,7 +20,8 @@
         "maatwebsite/excel": "^3.1",
         "nesbot/carbon": "^2.57",
         "owen-it/laravel-auditing": "^12.2",
-        "razorpay/razorpay": "^2.8"
+        "razorpay/razorpay": "^2.8",
+        "unisharp/laravel-filemanager": "^2.5"
     },
     "require-dev": {
         "facade/ignition": "^2.5",

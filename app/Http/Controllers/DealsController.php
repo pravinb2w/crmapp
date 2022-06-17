@@ -404,7 +404,7 @@ class DealsController extends Controller
         ];
         //Validate the product
         $validator                     = Validator::make( $request->all(), $role_validator );
-        
+         
         if ($validator->passes()) {
             $deal_id  = $request->deal_id;
             $deal_info = Deal::find($deal_id);

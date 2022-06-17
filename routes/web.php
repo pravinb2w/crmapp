@@ -88,6 +88,7 @@ Route::middleware([SetViewVariable::class, 'auth'])->group(function(){
         Route::post('/mark_as_done', [App\Http\Controllers\ActivityController::class, 'mark_as_done'])->name('activities.mark_as_done')->middleware('checkAccess:is_edit');
         Route::post('/comment/save', [App\Http\Controllers\ActivityController::class, 'comment_save'])->name('activities.comment.save');
         Route::post('/comment/list', [App\Http\Controllers\ActivityController::class, 'comment_list'])->name('activities.comment.list');
+        Route::post('/comment/modal', [App\Http\Controllers\ActivityController::class, 'comment_modal'])->name('activities.comment.modal');
     });
     //notes route
     Route::prefix('notes')->group(function () {

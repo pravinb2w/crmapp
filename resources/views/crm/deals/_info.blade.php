@@ -18,7 +18,6 @@
     </div>
     <div class="col-md-6 mb-3">
         <div class="d-flex align-items-center justify-content-end">
-            {{ dd( $info ) }}
             @if( $info->status == 0 || $info->status == 1 )
                 @if(Auth::user()->hasAccess('deals', 'is_edit') && ( Auth::id() == $info->assigned_to || $info->assigned_to == null ) )
                     <div class="btn me-2 btn-success" onclick="return deal_finalize('2', '{{ $info->id }}')">Won</div>

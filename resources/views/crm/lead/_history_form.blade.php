@@ -68,11 +68,12 @@
                     <button class="btn btn-sm" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <i class="mdi mdi-dots-vertical"></i>
                     </button>
-                    @if( (Auth::user()->hasAccess('leads', 'is_edit') || Auth::user()->hasAccess('leads', 'is_delete')) && ( Auth::id() == $info->assigned_to || $info->assigned_to == null || Auth::id() == $litem['user_id'] ) )
+                    @if( ( (Auth::user()->hasAccess('leads', 'is_edit') || Auth::user()->hasAccess('leads', 'is_delete')) && ( Auth::id() == $info->assigned_to || $info->assigned_to == null || Auth::id() == $litem['user_id'] ) ) || superadmin() )
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                         @if(Auth::user()->hasAccess('leads', 'is_edit') && ( Auth::id() == $litem['created_by'] || Auth::id() == $info->assigned_to || Auth::id() == $litem['user_id'] ) )
                             @if( $litem['activity_type'] != 'Notes')
                             <a class="dropdown-item" href="javascript:;"  onclick="edit_activity('history','{{ $litem['id'] }}', '{{ $info->id }}')">Edit</a>
+                            <a class="dropdown-item" href="javascript:;"  onclick="activity_comments('{{ $litem['id'] }}')">Comments</a>
                                 @if( !$litem['done_by'])
                                     <a class="dropdown-item" href="javascript:;" onclick="mark_as_done('{{ $litem['id'] }}', '{{ $info->id }}')">Mark as Done</a>
                                 @endif
@@ -81,7 +82,7 @@
                             <a class="dropdown-item" href="javascript:;" >No Action</a>
 
                         @endif
-                        @if(Auth::user()->hasAccess('leads', 'is_delete') && ( Auth::id() == $litem['created_by'] ) )
+                        @if( (Auth::user()->hasAccess('leads', 'is_delete') && ( Auth::id() == $litem['created_by'] ) ) || superadmin() )
                             <a class="dropdown-item" href="#"  onclick="change_activity_status('{{ $info->id ?? '' }}','{{ $litem['id'] ?? '' }}', '{{ $litem['activity_type'] ?? '' }}' )">Delete</a>
                         @endif
                     </div>
@@ -90,7 +91,7 @@
             </td>
         </tr>
         @endforeach
-    @else
+    @else 
         <tr>
             <td> No History Found</td>
             <td></td>

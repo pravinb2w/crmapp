@@ -4,6 +4,7 @@
             <h4 class="modal-title" id="myLargeModalLabel">{{ $modal_title }}</h4>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
+        <link href="{{ asset('vendor/file-manager/css/file-manager.css') }}" rel="stylesheet">
         <div class="modal-body p-3" style="width: 400px">
             <div class="row">
                 <div class="col-12" id="error">
@@ -84,7 +85,17 @@
         </div>
     </form>  
 </div>
-
+<script src="{{ asset('vendor/file-manager/js/file-manager.js') }}"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        document.getElementById('fm-main-block').setAttribute('style', 'height:' + window.innerHeight + 'px');
+  
+        fm.$store.commit('fm/setFileCallBack', function(fileUrl) {
+          window.opener.fmSetLink(fileUrl);
+          window.close();
+        });
+      });
+    </script>
 <script>
         $("#product-form").validate({
             submitHandler:function(form) {

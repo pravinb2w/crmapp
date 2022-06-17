@@ -32,37 +32,13 @@
                             <div class="col-12" id="error"></div>
                         </div>
                         <div class="row">
-                            <div class="col-12">
-                                <table class="table">
-                                    <thead>
-                                        <tr>
-                                            <th>Subject</th>
-                                            <th>Type</th>
-                                            <th>Started At</th>
-                                            <th>Due At</th>
-                                            <th>Customer</th>
-                                            <th>Notes</th>
-                                            <th> Lead / Deal </th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>{{ $info->subject ?? '' }}</td>
-                                            <td>{{ $info->activity_type ?? '' }}</td>
-                                            <td>  {{ date('d M, Y H:i A', strtotime($info->started_at)) }} </td>
-                                            <td> {{ date('d M, Y H:i A', strtotime($info->due_at)) }} </td>
-                                            <td>{{ $info->customer->first_name ?? 'N/A' }}</td>
-                                            <td> {{ $info->notes ?? 'N/A' }} </td>
-                                            <td> {{ $info->deal->deal_title ?? $info->lead->lead_subject  ?? 'N/A' }} </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
+                            
                             <div class="row">
                                 <div class="card col-12">
                                     <div class="card-body">
+                                        <h4 style="text-transform: uppercase">{{ $info->subject }} : {{ $info->activity_type }}</h4>
                                         <form action="{{ route('activities.comment.save') }}" id="comment_form" method="POST">
-                                            <input type="hidden" name="activity_id" id="activity_id" value="{{ $info->id }}">
+                                            <input type="hidden" name="activity_id" id="activity_id" value="{{ $id }}">
                                             <div class="row">
                                                 <div class="col-8">
                                                     <input type="text" required class="form-control" placeholder="Add comment" id="comment" name="comment">
@@ -89,7 +65,7 @@
     </div><!-- /.modal-content -->
 </div>
 <script>
-    comment_list('{{ $info->id }}');
+    comment_list('{{ $id }}');
     $("#comment_form").validate({
             submitHandler:function(form) {
                 $.ajax({

@@ -741,7 +741,7 @@ class CommonHelper
                 'type' => 'deal-activity',
                 'url' => route('deals.view', ['id' => $act_info->deal_id]),
                 'type_id' => $activity_id,
-                'user_id' => $act_info->lead->assigned_to,
+                'user_id' => $act_info->deal->assigned_to,
                 'assigned_by' => null,
                 'created_at' => date('Y-m-d H:i:s')
             );
