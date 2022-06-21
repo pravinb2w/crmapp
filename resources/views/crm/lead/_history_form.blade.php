@@ -30,7 +30,7 @@
                     // $tmp['done_by'] = $ionotes->updatedBy;
                     $tmp['added'] = $ionotes->added;
                     $tmp['created_by'] = $ionotes->user_id;
-                    $tmp['user_id'] = $item->user_id;
+                    $tmp['user_id'] = $ionotes->user_id;
 
                     $list[] = $tmp;
                 }
