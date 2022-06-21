@@ -181,7 +181,6 @@ class ActivityController extends Controller
             $start_date = $start_date.' '.$request->start_time.':00';
             $started_at = date('Y-m-d H:i:s', strtotime($start_date));
 
-
             $due_date = $request->due_date;
             $due_date = date('Y-m-d', strtotime($due_date));
             $due_date = $due_date.' '.$request->due_time.':00';
@@ -200,6 +199,8 @@ class ActivityController extends Controller
             $ins['user_id'] = $request->user_id;
             
             if( isset($id) && !empty($id) ) {
+                
+                $activity_id = $id;
                 $act = Activity::find($id);
                 $act->status = isset($request->status) ? $status : 1;
                 $act->subject = $request->activity_title;
@@ -214,11 +215,20 @@ class ActivityController extends Controller
                 $act->updated_by = Auth::id();
                 $act->update();
                 $success = 'Updated Activity';
+
             } else {
                 $ins['added_by'] = Auth::id();
-                Activity::create($ins);
+                $activity_id = Activity::create($ins)->id;
                 $success = 'Added new Activity';
             }
+
+            if( $request->lead_id ){
+                CommonHelper::send_lead_activity_notification($activity_id, $request->user_id, $id); 
+            }
+            if( $request->deal_id ) {
+                CommonHelper::send_deal_activity_notification($activity_id, $request->user_id, $id);
+            }
+
             return response()->json(['error'=>[$success], 'status' => '0']);
         }
         return response()->json(['error'=>$validator->errors()->all(), 'status' => '1']);

@@ -68,7 +68,7 @@ function make_stage_completed(stage_id, deal_id ){
         })
         return false;
     }
-    get_notifications();
+    setInterval(function() { get_notifications(); }, 6000);
     function get_notifications() {
         $.ajaxSetup({
             headers: {
@@ -76,7 +76,7 @@ function make_stage_completed(stage_id, deal_id ){
             }
         });
         $.ajax({
-            url: "{{ route('common.notification.list') }}",
+            url: "{{ route('common.notification.list') }}"+'?_token=' + '{{ csrf_token() }}',
             type: 'POST',
             
             success: function(response) {
