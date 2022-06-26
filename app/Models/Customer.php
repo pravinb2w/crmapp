@@ -27,6 +27,7 @@ class Customer extends Model implements Auditable
         'status',
         'updated_by',
         'organization_id',
+        'password'
     ];
 
     public function company()

@@ -16,9 +16,11 @@ class TestEmail extends Mailable
      * @return void
      */
     public $body;
-    public function __construct($body)
+    public $subject;
+    public function __construct($body, $subject)
     {
         $this->body = $body;
+        $this->subject = $subject;
     }
 
     /**
@@ -29,6 +31,6 @@ class TestEmail extends Mailable
     public function build()
     {
         
-        return $this->markdown('emails.test', $this->body )->subject('Durai test');
+        return $this->markdown('emails.test', $this->body )->subject($this->subject);
     }
 }

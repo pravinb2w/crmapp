@@ -18,7 +18,15 @@ class SmsIntegration extends Model implements Auditable
         'twilio_sid',
         'twilio_auth_token',
         'twilio_number',
-        'enable_twilio'
+        'enable_twilio',
+        'sms_type',
+        'user_name',
+        'api_key',
+        'sender_id',
+        'template_id',
+        'type',
+        'template',
+        'variables'
     ];
 
     public function sms()

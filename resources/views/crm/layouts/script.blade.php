@@ -520,8 +520,6 @@ function mark_as_done(id, lead_id='' , type = '') {
 
     }
 
-    
-
     function get_deal_modal(lead_id = '', id = '') {
         if( lead_id ){
             var planned = $('#planned_count').val();

@@ -33,6 +33,17 @@
                         <input type="text" name="title" value="{{ $data->title }}" class="form-control" placeholder="Type here..." required>
                     </div>
                     <div class="mb-3">
+                        <label class="form-label"><sup class="text-danger">*</sup> Template Type</label>
+                        <select name="email_type" id="email_type" class="form-control" required>
+                            <option value="">--select--</option>
+                            @if( isset($email_type) && !empty($email_type))
+                                @foreach ($email_type as $item)
+                                    <option value="{{ $item }}" @if($data->email_type == $item) selected @endif>{{ ucwords( str_replace('_', " " ,$item) ) }}</option>
+                                @endforeach
+                            @endif
+                        </select>
+                    </div>
+                    <div class="mb-3">
                         <label class="form-label"> Subject</label>
                         <input type="text" name="subject" value="{{ $data->subject }}" class="form-control" placeholder="Type here..." required>
                     </div>
@@ -48,7 +59,8 @@
         
     </div>
 </div> 
-
+<script>
+</script>
 @endsection
 
 @section('add_on_styles')
@@ -71,17 +83,10 @@
         tinymce.init({
             selector: 'textarea#mceeditor',
             height: 500,
-            menubar: false,
-            plugins: [
-                'advlist autolink lists link image charmap print preview anchor',
-                'searchreplace visualblocks code fullscreen',
-                'insertdatetime media table paste code help wordcount'
-            ],
-            toolbar: 'undo redo | formatselect | ' +
-            'bold italic backcolor | alignleft aligncenter ' +
-            'alignright alignjustify | bullist numlist outdent indent | ' +
-            'removeformat | help',
-            content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
-        });
+            plugins: "textcolor",
+            toolbar: "forecolor backcolor",
+            
+            });
+        
     </script>
 @endsection

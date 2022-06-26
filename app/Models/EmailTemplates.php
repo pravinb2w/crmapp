@@ -13,6 +13,7 @@ class EmailTemplates extends Model
         'content',
         'status',
         'subject',
+        'email_type',
         'created_by',
     ];
 }

@@ -26,17 +26,34 @@
                 <div class="card-header list-group-item border-0 active">
                     <strong>Template Creation</strong>
                 </div>
+                
+                @if ($errors->any())
+                    @foreach ($errors->all() as $error)
+                        <div class="alert alert-danger">{{$error}}</div>
+                    @endforeach
+                @endif
                 <div class="card-body">
                     <div class="mb-3">
                         <label class="form-label"><sup class="text-danger">*</sup> Template Title</label>
-                        <input type="text" name="title" class="form-control" placeholder="Type here..." required>
+                        <input type="text" name="title" value="{{ old('title') }}" class="form-control" placeholder="Type here..." required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label"><sup class="text-danger">*</sup> Template Type</label>
+                        <select name="email_type" id="email_type" class="form-control" required >
+                            <option value="">--select--</option>
+                            @if( isset($email_type) && !empty($email_type))
+                                @foreach ($email_type as $item)
+                                    <option value="{{ $item }}" @if(old('email_type') == $item) selected @endif>{{ ucwords( str_replace('_', " " ,$item) ) }}</option>
+                                @endforeach
+                            @endif
+                        </select>
                     </div>
                     <div class="mb-3">
                         <label class="form-label"> Subject</label>
-                        <input type="text" name="subject" class="form-control" placeholder="Type here..." required>
+                        <input type="text" name="subject" value="{{ old('subject') }}" class="form-control" placeholder="Type here..." required>
                     </div>
                     <div>
-                        <textarea name="content" id="mceeditor" style="height: 800px;"class="form-control mceeditor" required>
+                        <textarea name="content" id="mceeditor" style="height: 800px;"class="form-control mceeditor" required>{{ old('content') }}
                         </textarea>
                         <div class="mt-3 text-end">
                             <button class="btn btn-sm btn-primary" type="submit">Submit</button>
@@ -67,17 +84,10 @@
         tinymce.init({
             selector: 'textarea#mceeditor',
             height: 500,
-            menubar: false,
-            plugins: [
-                'advlist autolink lists link image charmap print preview anchor',
-                'searchreplace visualblocks code fullscreen',
-                'insertdatetime media table paste code help wordcount'
-            ],
-            toolbar: 'undo redo | formatselect | ' +
-            'bold italic backcolor | alignleft aligncenter ' +
-            'alignright alignjustify | bullist numlist outdent indent | ' +
-            'removeformat | help',
-            content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
-        });
+            plugins: "textcolor",
+            toolbar: "forecolor backcolor",
+            
+            });
+        
     </script>
 @endsection

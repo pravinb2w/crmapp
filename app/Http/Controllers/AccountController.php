@@ -39,7 +39,7 @@ class AccountController extends Controller
         $id = Auth::id();
         $info = User::find($id);
         $prefix = PrefixSetting::where(['company_id' => $info->company_id, 'status' => 1])->get();
-        $sms = SmsIntegration::where('company_id', $info->company_id)->first();
+        $sms = SmsIntegration::where('company_id', $info->company_id)->get();
         $gateway = PaymentIntegration::all();
         $params = ['type' => $type, 'info' => $info, 'prefix' => $prefix, 'sms' => $sms, 'gateway' => $gateway ];
         $view = 'crm.account._account_'.$type;
@@ -84,6 +84,7 @@ class AccountController extends Controller
 
     public function company_save(Request $request)
     {
+        
         $type = $request->type;
         if( isset($type ) && ( $type != 'api' && $type != 'link' && $type != 'prefix' && $type != 'common')) {
             if( $type == 'company' ) {
@@ -167,27 +168,45 @@ class AccountController extends Controller
             $sett = CompanySettings::find($user->company_id);
 
             if( $type == 'api') {
-                $sett->aws_access_key = $request->aws_access_key;
-                $sett->aws_secret_key = $request->aws_secret_key;
-                $sett->fcm_token = $request->fcm_token;
-                $sett->update();
-
+               
                 $sms = SmsIntegration::where('company_id', $user->company_id)->first();
-                $enable_twilio = ($request->enable_twilio) ? 'yes' : 'no';
-
-                if( isset( $sms ) && !empty($sms)) {
-                    $sms->twilio_sid = $request->twilio_sid ?? null;
-                    $sms->twilio_auth_token = $request->twilio_auth_token ?? null;
-                    $sms->twilio_number = $request->twilio_number ?? null;
-                    $sms->enable_twilio = $enable_twilio;
-                    $sms->update();
-                } else {
-                    $sins['company_id'] = $user->company_id;
-                    $sins['twilio_sid'] = $request->twilio_sid ?? null;
-                    $sins['twilio_auth_token'] = $request->twilio_auth_token ?? null;
-                    $sins['twilio_number'] = $request->twilio_number ?? null;
-                    $sins['enable_twilio'] = $enable_twilio;
-                    $sms_ins = SmsIntegration::create($sins);
+                $sms_type = $request->sms_type;
+                $user_name = $request->user_name;
+                $api_key = $request->api_key;
+                $sender_id = $request->sender_id;
+                $template_id = $request->template_id;
+                $template_type = $request->template_type;
+                $variables = $request->variables;
+                $template = $request->template;
+                $tmp = [];
+                for ($i=0; $i < count($sms_type); $i++) { 
+                    $tmp[] = [ 
+                                'sms_type' => $sms_type[$i] ?? '', 
+                                'user_name' => $user_name[$i] ?? '', 
+                                'api_key' => $api_key[$i] ?? '',
+                                'sender_id' => $sender_id[$i] ?? '',
+                                'template_id' => $template_id[$i] ?? '',
+                                'type' => $template_type[$i] ?? '',
+                                'template' => $template[$i] ?? '',
+                                'variables' => $variables[$i] ?? '',
+                            ];
+                }
+                $all = SmsIntegration::truncate();
+                if( !empty($tmp)) {
+                    foreach ($tmp as $key => $value) {
+                       
+                        $ins[ 'sms_type'] = $value['sms_type'];
+                        $ins[ 'user_name'] = $value['user_name'];
+                        $ins[ 'api_key'] = $value['api_key'];
+                        $ins[ 'sender_id'] = $value['sender_id'];
+                        $ins[ 'template_id'] = $value['template_id'];
+                        $ins[ 'type'] = $value['type'];
+                        $ins[ 'template'] = $value['template'];
+                        $ins[ 'variables'] = $value['variables'];
+                        $ins['company_id'] = $user->company_id;
+                        SmsIntegration::create($ins);
+                       
+                    }
                 }
 
             } else if($type == 'link') {

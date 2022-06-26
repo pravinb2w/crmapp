@@ -149,7 +149,6 @@
                 </div>
             </section> 
 
-
             <section class="py-5 text-center " style="background: linear-gradient(30deg, {{ $result->primary_color }} ,{{ $result->secondary_color }}">
                 <div class="media-body"> 
                     <h3 data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="1000"  class="aos-init text-white display-5">Want to try CRM Software for Free?</h3>
@@ -160,57 +159,6 @@
                 </div>
             </section>
     
-            {{-- <section class="py-5 ">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-sm-12">
-                            <div class="section-head text-center">
-                                <h1 class="text-primary aos-init" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="1000">Latest Blogs</h1>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-4 p-md-3">
-                            <!-- InfoBox Left  <Start> -->
-                            <div class="mt-4 shadow aos-init" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="1000">
-                                <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80" alt="" class="img-fluid blog-img mb-2">
-                                <div class="card-body">
-                                    <h4 class="text-primary">Quality Resources</h4>
-                                    <p>Sed ut perspiciatis remque laudan unde omnis iste natus error sit voluptatem accusantium dolo remque laudan tiuotam.</p>
-                                    <a href="#contact-us" class="rounded-pill btn btn-outline-primary"><b>Read More..</b></a>
-                                </div>
-                            </div>
-                            <!-- InfoBox Left </End> -->
-                        </div>
-                        <div class="col-md-4 p-md-3">
-                            <!-- InfoBox Center  <Start> -->
-                            <div class="mt-4 shadow aos-init" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="1200">
-                                <img src="https://images.unsplash.com/photo-1599658880436-c61792e70672?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80" alt="" class="img-fluid blog-img mb-2">
-                                <div class="card-body">
-                                    <h4 class="text-primary">At solmen va esser</h4>
-                                    <p>Sed ut perspiciatis remque laudan unde omnis iste natus error sit voluptatem accusantium dolo remque laudan tiuotam.</p>
-                                    <a href="#contact-us" class="rounded-pill btn btn-outline-primary"><b>Read More..</b></a>
-                                </div>
-                            </div>
-                            <!-- InfoBox Center </End> -->
-                        </div>
-                        <div class="col-md-4 p-md-3">
-                            <!-- InfoBox Center  <Start> -->
-                            <div class="mt-4 shadow aos-init" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="1400">
-                                <img src="https://images.unsplash.com/photo-1608222351212-18fe0ec7b13b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1074&q=80" alt="" class="img-fluid blog-img mb-2">
-                                <div class="card-body">
-                                    <h4 class="text-primary">Pronunciation sommun</h4>
-                                    <p>Sed ut perspiciatis remque laudan unde omnis iste natus error sit voluptatem accusantium dolo remque laudan tiuotam.</p>
-                                    <a href="#contact-us" class="rounded-pill btn btn-outline-primary"><b>Read More..</b></a>
-                                </div>
-                            </div>
-                            <!-- InfoBox Center </End> -->
-                        </div>
-                        
-                    </div>
-                </div>
-            </section>  --}}
-
             <section class=" py-5 bg-light" id="contact-us"> 
                 <div class="container">
                     <div class="row align-items-center">
@@ -245,7 +193,7 @@
                                 </div>
                             </div>
                             <div class="card h-100 padding-left-250" style="min-height: 80vh">
-                                <div class="card-body py-lg-5" >
+                                <div class="card-body py-lg-5" style="position: relative;">
                                     <div class="px-2">
                                         <h3 class="h3">CONTACT US</h3>
                                         <p>Enter your details to receive a call back from us</p>
@@ -376,10 +324,13 @@
                             $('#error').removeClass('alert alert-danger');
                             $('#error').html('');
                             $('#error').removeClass('alert alert-success');
-                            $('#save').html('Loading...');
+                            $('.loader').show();
+                            $('#send_msg').prop('disabled', true);
                         },
                         success: function(response) {
-                            $('#save').html('Save');
+                            $('.loader').hide();
+                            $('#send_msg').prop('disabled', false);
+
                             if(response.error.length > 0 && response.status == "1" ) {
                                 $('#error').addClass('alert alert-danger');
                                 response.error.forEach(display_errors);

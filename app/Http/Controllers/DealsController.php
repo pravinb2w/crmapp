@@ -21,6 +21,8 @@ use App\Models\DealDocument;
 use App\Models\InvoiceItem;
 use App\Models\Invoice;
 use App\Models\CompanySettings;
+use App\Models\EmailTemplates;
+use App\Mail\TestEmail;
 use PDF;
 use App\Mail\SubmitApproval;
 use Mail;
@@ -224,6 +226,33 @@ class DealsController extends Controller
                 $lead->updated_by = Auth::id();
                 $lead->update();
                 CommonHelper::send_deal_conversion_notification($request->lead_id); 
+
+                //send conversion email to customer
+                $data   = EmailTemplates::where('email_type', 'deal_conversion')->first();
+                CommonHelper::setMailConfig();
+                $company = CompanySettings::find(1);
+                $extract = array(
+                                    'name' => $lead->customer->first_name, 
+                                    'app_name' =>env('APP_NAME'), 
+                                    'unsbusribe_link' => 'Unsubscribe',
+                                    'company_address' => $company->address ?? '',
+                                    'lead' => $lead->lead_subject ?? '',
+                                    'deal' => $deal->deal_title ?? '',
+                                    'date' => date('d-M-Y h:i A')
+                                );
+                $templateMessage = $data->content;
+                $templateMessage = str_replace("{","",addslashes($templateMessage));
+                $templateMessage = str_replace("}","",$templateMessage);
+                extract($extract);
+                eval("\$templateMessage = \"$templateMessage\";");
+                
+                $body = [
+                    'content' => $templateMessage
+                ];
+                $send_mail = new TestEmail($body, $data->title ?? '');
+                // return $send_mail->render();
+                Mail::to( $lead->customer->email ?? 'duraibytes@gmail.com')->send($send_mail);
+                // end send mail conversion
             }
 
             DealProduct::where('deal_id', $id)->forceDelete();

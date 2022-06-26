@@ -61,5 +61,16 @@ return [
         'Deal won/lose',
         'Payment Remainder',
         'Thanks mail for the payment received',
-    ]
+    ],
+    'email_type' => [
+        'new_registration',
+        'forgot_password',
+        'deal_conversion',
+        'stage_completed',
+        'success_deal',
+        'loss_deal',
+        'invoice_approval',
+        'success_payment',
+        'payment_remainder'
+    ],
 ];

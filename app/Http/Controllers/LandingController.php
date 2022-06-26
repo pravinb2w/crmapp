@@ -8,7 +8,11 @@ use App\Models\Customer;
 use App\Models\Lead;
 use App\Models\LandingPages;
 use CommonHelper;
-
+use App\Models\EmailTemplates;
+use App\Mail\TestEmail;
+use Mail;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
 class LandingController extends Controller
@@ -42,16 +46,22 @@ class LandingController extends Controller
         
         if ($validator->passes()) {
             $customer = Customer::where('email',$request->email)->first();
-
+            
             if( isset($customer) && !empty($customer)) {
                 $customer_id = $customer->id;
             } else {
+                $randomString = rand(0, 999999);
+                $password = Hash::make($randomString);
                 $ins['status'] = 1;
                 $ins['first_name'] = $request->fullname;
                 $ins['email'] = $request->email;
+                $ins['password'] = $password;
                 $ins['mobile_no'] = $request->mobile_no;
                 $ins['added_by'] = 1;
                 $customer_id = Customer::create($ins)->id;
+                //send password in sms 
+                $params = array('password' => $randomString);
+                sendSMS($request->mobile_no, 'new_registration', $params );
             }
             //get assigned user id 
             $assigned_to = CommonHelper::getLeadAssigner();
@@ -65,6 +75,35 @@ class LandingController extends Controller
             $lead_id = Lead::create($lea)->id;
             //insert in notification
             CommonHelper::send_lead_notification($lead_id, $assigned_to); 
+
+            //send email to new customer
+            if( isset($customer) && !empty($customer)) {} else {
+            $data   = EmailTemplates::where('email_type', 'new_registration')->first();
+            CommonHelper::setMailConfig();
+            $company = CompanySettings::find(1);
+            $extract = array(
+                                'name' => $request->fullname,
+                                'app_name' =>env('APP_NAME'), 
+                                'unsbusribe_link' => 'Unsubscribe',
+                                'company_address' => $company->address ?? '',
+                                'password' => $randomString,
+                            );
+            $templateMessage = $data->content;
+            $templateMessage = str_replace("{","",addslashes($templateMessage));
+            $templateMessage = str_replace("}","",$templateMessage);
+            extract($extract);
+            eval("\$templateMessage = \"$templateMessage\";");
+            
+            $body = [
+                'content' => $templateMessage
+            ];
+            
+                $send_mail = new TestEmail($body, $data->title ?? '');
+                // return $send_mail->render();
+                Mail::to( $request->email ?? 'duraibytes@gmail.com')->send($send_mail);
+                // end send mail conversion
+            }
+
             $success = 'Enquiry has been sent';
             return response()->json(['error'=>[$success], 'status' => '0']);
         }

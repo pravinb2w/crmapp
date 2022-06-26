@@ -4,62 +4,190 @@
 </div>
 <form class="form-horizontal account_form" enctype="multipart/form-data" id="company_setting_form">
     <input type="hidden" name="type" value="{{ $type ?? '' }}">
-    <div class="row mb-3">
-        <label for="aws_access_key" class="col-3 col-form-label">Aws Access Key</label>
-        <div class="col-9">
-            <input type="text" name="aws_access_key" value="{{ $info->company->aws_access_key ?? '' }}" class="form-control" id="aws_access_key" placeholder="Aws access key">
-        </div>
+
+    <div class="text-end mb-3">
+        <button id="addprefRow" type="button" class="btn btn-success">Add More</button>
+        <button type="submit" class="btn btn-info">Update</button>
     </div>
-    <div class="row mb-3">
-        <label for="aws_secret_key" class="col-3 col-form-label">Aws Secret Key</label>
-        <div class="col-9">
-            <input type="text" name="aws_secret_key" class="form-control" value="{{ $info->company->aws_secret_key ?? '' }}"  id="aws_secret_key" placeholder="Aws secret key">
-        </div>
-    </div>
-    <div class="row mb-3">
-        <label for="fcm_token" class="col-3 col-form-label">FCM Token</label>
-        <div class="col-9">
-            <input type="text" name="fcm_token" value="{{ $info->company->fcm_token ?? '' }}"  class="form-control" id="fcm_token" placeholder="Fcm Token">
-        </div>
-    </div>
-    <hr>
-    
-    <div class="row mb-3">
-        <label for="enable_twilio" class="col-3 col-form-label">Enable Twilio Sms</label>
-        <!-- Success Switch-->
-        <div class="col-8">
-            <input type="checkbox" name="enable_twilio" id="switch3" {{ (isset($sms->enable_twilio) && $sms->enable_twilio == 'yes' )  ? 'checked' : ((isset($sms->enable_twilio) && $sms->enable_twilio == 'no' ) ? '':'checked')}} data-switch="success"/>
-            <label for="switch3" data-on-label="" data-off-label=""></label>
-        </div>
-    </div>
-    <div class="row mb-3">
-        <label for="description" class="col-3 col-form-label">Twilio SID</label>
-        <!-- Success Switch-->
-        <div class="col-8">
-            <input type="text" name="twilio_sid" id="twilio_sid" value="{{ $sms->twilio_sid ?? '' }}" class="form-control">
-        </div>
-    </div>
-    <div class="row mb-3">
-        <label for="description" class="col-3 col-form-label">Twilio Auth Token</label>
-        <!-- Success Switch-->
-        <div class="col-8">
-            <input type="text" name="twilio_auth_token" id="twilio_auth_token" value="{{ $sms->twilio_auth_token ?? '' }}" class="form-control">
-        </div>
-    </div>
-    <div class="row mb-3">
-        <label for="description" class="col-3 col-form-label">Twilio Number</label>
-        <!-- Success Switch-->
-        <div class="col-8">
-            <input type="text" name="twilio_number" id="twilio_number" value="{{ $sms->twilio_number ?? '' }}" class="form-control">
-        </div>
-    </div>
-    <div class="justify-content-end row">
-        <div class="col-9">
-            <button type="submit" class="btn btn-info">Update</button>
-        </div>
-    </div>
+    <table class="table table-bordered">
+        <thead class="bg-light">
+            <tr>
+                <th>SMS Integration</th>
+                <th width="60px" class="text-center">Action</th>
+            </tr>
+        </thead>
+        <tbody  id="prefRow"> 
+            @php
+                // dd( $sms );
+            @endphp           
+            @if( isset( $sms ) && !empty($sms ))
+                @foreach ($sms as $isms)
+                <tr id="inputFormRow" >
+                    <td style="padding: 5px !important">
+                        <div class="row p-2">
+                            <div class="col-6">
+                                <label for="">Sms Type</label>
+                                <select name="sms_type[]" id="sms_type" class="form-control">
+                                    <option value="">--select--</option>
+                                    @if( config('constant.email_type'))
+                                        @foreach (config('constant.email_type') as $item)
+                                            <option value="{{ $item }}" @if(isset($isms) && $isms->sms_type == $item ) selected @endif>{{ $item }}</option>
+                                        @endforeach
+                                    @endif
+                                </select>
+                            </div>
+                            <div class="col-6">
+                                <label for="">User Name</label>
+                                <input type="text" name="user_name[]" value="{{ $isms->user_name ?? '' }}" id="user_name" class="form-control">
+                            </div>
+                            <div class="col-6">
+                                <label for="">Api Key</label>
+                                <input type="text" name="api_key[]" value="{{ $isms->api_key ?? '' }}" id="api_key" class="form-control">
+                            </div>
+                            
+                            <div class="col-6">
+                                <label for="">SenderId</label>
+                                <input type="text" name="sender_id[]" value="{{ $isms->sender_id ?? '' }}" id="sender_id" class="form-control">
+                            </div>
+                            <div class="col-6">
+                                <label for="">Template Id (tid)</label>
+                                <input type="text" name="template_id[]" value="{{ $isms->template_id ?? '' }}" id="template_id" class="form-control">
+                            </div>
+                            <div class="col-6">
+                                <label for="">Type</label>
+                                <input type="text" name="template_type[]" value="{{ $isms->type ?? '' }}" id="template_type" class="form-control">
+                            </div>
+                            <div class="col-6">
+                                <label for="">Variables</label>
+                                <input type="text" name="variables[]" id="variables" value="{{ $isms->variables ?? '' }}" class="form-control">
+                            </div>
+                            <div class="col-6">
+                                <label for="">Template</label>
+                                <textarea name="template[]" id="template" class="form-control" cols="10" rows="5">{{ $isms->template ?? '' }}</textarea>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="text-center" style="padding: 0 !important;vertical-align: middle;"><button id="removeprefRow" type="button" class="btn btn-danger">Remove</button></td>
+                </tr>  
+                @endforeach
+               
+            @else
+            <tr id="inputFormRow" >
+                <td style="padding: 5px !important">
+                    <div class="row p-2">
+                        <div class="col-6">
+                            <label for="">Sms Type</label>
+                            <select name="sms_type[]" id="sms_type" class="form-control">
+                                <option value="">--select--</option>
+                                @if( config('constant.email_type'))
+                                    @foreach (config('constant.email_type') as $item)
+                                        <option value="{{ $item }}">{{ str_replace("_", " ", $item ) }}</option>
+                                    @endforeach
+                                @endif
+                            </select>
+                        </div>
+                        <div class="col-6">
+                            <label for="">User Name</label>
+                            <input type="text" name="user_name[]" id="user_name" class="form-control">
+                        </div>
+                        <div class="col-6">
+                            <label for="">Api Key</label>
+                            <input type="text" name="api_key[]" id="api_key" class="form-control">
+                        </div>
+                        
+                        <div class="col-6">
+                            <label for="">SenderId</label>
+                            <input type="text" name="sender_id[]" id="sender_id" class="form-control">
+                        </div>
+                        <div class="col-6">
+                            <label for="">Template Id (tid)</label>
+                            <input type="text" name="template_id[]" id="template_id" class="form-control">
+                        </div>
+                        <div class="col-6">
+                            <label for="">Type</label>
+                            <input type="text" name="template_type[]" id="template_type" class="form-control">
+                        </div>
+                        <div class="col-6">
+                            <label for="">Variables</label>
+                            <input type="text" name="variables[]" id="variables" class="form-control">
+                        </div>
+                        <div class="col-6">
+                            <label for="">Template</label>
+                            <textarea name="template[]" id="template" class="form-control" cols="10" rows="5"></textarea>
+                        </div>
+                    </div>
+                </td>
+                <td class="text-center" style="padding: 0 !important;vertical-align: middle;"><button id="removeprefRow" type="button" class="btn btn-danger">Remove</button></td>
+            </tr>  
+            @endif            
+        </tbody>
+    </table>
+
 </form> 
 <script>
+var count = 0;
+var sms_type = <?php echo json_encode(config('constant.email_type')) ?>;
+
+$("#addprefRow").click(function () {
+    var html = '';
+    if( sms_type ) {
+        for (let index = 0; index < sms_type.length; index++) {
+            html += '<option value="'+sms_type[index]+'">'+sms_type[index].replace("_", " ")+'</option>';            
+        }
+    }
+
+    count++;
+    $('#prefRow').append(`
+    <tr id="inputFormRow" >
+                <td style="padding: 5px !important">
+                    <div class="row p-2">
+                        <div class="col-6">
+                            <label for="">Sms Type</label>
+                            <select name="sms_type" id="sms_type" class="form-control">
+                                <option value="">--select--</option>
+                                `+html+`
+                            </select>
+                        </div>
+                        <div class="col-6">
+                            <label for="">User Name</label>
+                            <input type="text" name="user_name[]" id="user_name" class="form-control">
+                        </div>
+                        <div class="col-6">
+                            <label for="">Api Key</label>
+                            <input type="text" name="api_key[]" id="api_key" class="form-control">
+                        </div>
+                        
+                        <div class="col-6">
+                            <label for="">SenderId</label>
+                            <input type="text" name="sender_id[]" id="sender_id" class="form-control">
+                        </div>
+                        <div class="col-6">
+                            <label for="">Template Id (tid)</label>
+                            <input type="text" name="template_id[]" id="template_id" class="form-control">
+                        </div>
+                        <div class="col-6">
+                            <label for="">Type</label>
+                            <input type="text" name="template_type[]" id="template_type" class="form-control">
+                        </div>
+                        <div class="col-6">
+                            <label for="">Variables</label>
+                            <input type="text" name="variables[]" id="variables" class="form-control">
+                        </div>
+                        <div class="col-6">
+                            <label for="">Template</label>
+                            <textarea name="template[]" id="template" class="form-control" cols="10" rows="5"></textarea>
+                        </div>
+                    </div>
+                </td>
+                <td class="text-center" style="padding: 0 !important;vertical-align: middle;"><button id="removeprefRow" type="button" class="btn btn-danger">Remove</button></td>
+            </tr>  
+    `);
+});
+
+// remove row
+$(document).on('click', '#removeprefRow', function () {
+    $(this).closest('#inputFormRow').remove();
+});
     $('#company_setting_form').submit(function(e) {
         e.preventDefault();
        
@@ -83,7 +211,6 @@
                     },100);
                 }
             },
-            
         });
         return false;
     });
