@@ -77,6 +77,7 @@ class ProductController extends Controller
                 $nested_data[ 'product_name' ]      = $products->product_name;
                 $nested_data[ 'product_code' ]      = $products->product_code;
                 $nested_data[ 'hsn_no' ]            = $products->hsn_no ?? '';
+                $nested_data[ 'price' ]            = $products->price ?? '';
                 $nested_data[ 'added' ]             = $products->added->name;
                 $nested_data[ 'status' ]            = $products_status;
                 $nested_data[ 'action' ]            = $action;
@@ -147,10 +148,14 @@ class ProductController extends Controller
             $ins['product_name']    = $request->product_name;
             $ins['product_code']    = $request->product_code;
             $ins['hsn_no']          = $request->hsn_no;
-            $ins['cgst']          = $request->cgst;
-            $ins['sgst']          = $request->sgst;
-            $ins['igst']          = $request->igst;
+            $ins['cgst']            = $request->cgst;
+            $ins['sgst']            = $request->sgst;
+            $ins['igst']            = $request->igst;
+            $ins['price']            = $request->price;
             $ins['description']     = $request->description;
+            if( $request->product_image ) {
+                $ins['image']       = $request->product_image;
+            }
             
             if( isset($id) && !empty($id) ) {
                 $page = Product::find($id);
@@ -158,10 +163,15 @@ class ProductController extends Controller
                 $page->product_name = $request->product_name;
                 $page->product_code = $request->product_code;
                 $page->hsn_no       = $request->hsn_no;
-                $page->cgst       = $request->cgst;
-                $page->sgst       = $request->sgst;
-                $page->igst       = $request->igst;
+                $page->cgst         = $request->cgst;
+                $page->sgst         = $request->sgst;
+                $page->igst         = $request->igst;
+                $page->price        = $request->price;
                 $page->updated_by   = Auth::id();
+                if( $request->product_image ) {
+                    $page->image    = $request->product_image;
+                }
+
                 $page->description  = $request->description;
                 $page->update();
                 $success = 'Updated Product';

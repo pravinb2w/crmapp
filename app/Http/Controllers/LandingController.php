@@ -10,6 +10,7 @@ use App\Models\LandingPages;
 use CommonHelper;
 use App\Models\EmailTemplates;
 use App\Mail\TestEmail;
+use App\Models\Product;
 use Mail;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
@@ -20,16 +21,17 @@ class LandingController extends Controller
     public function index($permalink=null)
     {
         $info           = CompanySettings::find(1);
+        $products       = Product::where('status', 1)->get();
         $params['info'] = $info;
         if($permalink  != null) {
-            $result   = LandingPages::where('permalink', '=', $permalink)->first();
+            $result     = LandingPages::where('permalink', '=', $permalink)->first();
             if(empty($result)) {
-                $result   = LandingPages::latest()->first();
+                $result = LandingPages::latest()->first();
             }
         }else {
             $result   = LandingPages::latest()->first();
         }
-        return view('landing.landing', $params, compact('result'));
+        return view('landing.landing', $params, compact('result', 'products'));
     } 
     public function enquiry_save(Request $request) {
         $id = $request->id;

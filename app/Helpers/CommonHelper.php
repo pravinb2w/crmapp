@@ -721,7 +721,7 @@ class CommonHelper
     public static function send_deal_activity_notification( $activity_id, $assigned_to = '', $update = '') {
         $lead_order_info = DB::table('deal_orders')->get();
         $title = 'New Deal Activity Added';
-        if( !empty($update)){
+        if( !empty($update)) {
             $title = 'Changes Made on Deal Activity';
         }
         $act_info = Activity::find($activity_id);
@@ -741,7 +741,7 @@ class CommonHelper
                 'type' => 'deal-activity',
                 'url' => route('deals.view', ['id' => $act_info->deal_id]),
                 'type_id' => $activity_id,
-                'user_id' => $act_info->deal->assigned_to,
+                'user_id' => $act_info->deal->assigned_to ?? $assigned_to,
                 'assigned_by' => null,
                 'created_at' => date('Y-m-d H:i:s')
             );

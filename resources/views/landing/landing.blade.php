@@ -158,6 +158,37 @@
                     </div>
                 </div>
             </section>
+            @if( isset( $products ) && !empty($products))
+                <link rel="stylesheet" href="{{ asset('assets/custom/css/product-list.css') }}">
+                <section class="py-5">
+                    <div class="row bg-white">
+                        <div class="col-12 text-center p-2">
+                            <h1 class="text-primary w-100"> Purchase Products </h1>
+                        </div>
+                        <div class="listing-section bg-white row">
+                            @foreach ($products as $item)
+
+                            <div class="col-sm-3 col-md-4 col-lg-6 col-xl-3 p-pane">
+                                <div class="image-box">
+                                    @if($item->image)
+                                    <div class="images" id="image-1" style="background-image: url('{{ str_replace('localhost', '127.0.0.1:8000',$item->image) }}')"></div>
+
+                                    @else
+                                    <div class="images" id="image-1" style="background-image: url('{{ asset('assets/images/products/noimage.png') }}')"></div>
+                                    @endif
+                                </div>
+                                <div class="text-box">
+                                    <h2 class="item">{{ $item->product_name }}</h2>
+                                    <h3 class="price">INR {{ $item->price }}</h3>
+                                    <p class="description">{{ mb_strimwidth($item->description ?? '', 0, 100, "...") }}</p>
+                                    <button type="button" name="item-1-button" class="btn btn-primary" onclick="return get_buy_form('{{ $item->id }}')">Buy Now</button>
+                                </div>
+                            </div>
+                            @endforeach
+                        </div>
+                    </div>
+                </section>
+            @endif
     
             <section class=" py-5 bg-light" id="contact-us"> 
                 <div class="container">
@@ -307,6 +338,9 @@
                     </div>
                 </div>
             </footer>
+            <div class="modal fade show" id="Mymodal" tabindex="-1" aria-labelledby="myLargeModalLabel" aria-modal="true" role="dialog">
+                <!-- /.modal-dialog -->
+            </div>
            
             <!-- bundle -->
             <script src="{{ asset('assets/js/vendor.min.js') }}"></script>
@@ -345,6 +379,18 @@
                     });
                 }
             });
+
+            function get_buy_form(product_id) {
+                $.ajax({
+                    url: "{{ route('get.buy.form') }}",
+                    type: 'GET',
+                    data: {product_id:product_id},
+                    success: function(res) {
+                        $('#Mymodal').html(res);
+                        $('#Mymodal').modal('show');
+                    }            
+                });
+            }
 
             function display_errors( item, index) {
                 $('#error').append('<div>'+item+'</div>');

@@ -5,11 +5,16 @@
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <link href="{{ asset('vendor/file-manager/css/file-manager.css') }}" rel="stylesheet">
-        <div class="modal-body p-3" style="width: 400px">
+        <div class="modal-body p-3" style="width: 600px">
             <div class="row">
                 <div class="col-12" id="error">
                 </div>
             </div>
+            <style>
+                .img-product {
+                    width:200px;border-radius: 5px;
+                }
+            </style>
             <div class="w-100" >
                 @csrf
                 <input type="hidden" name="id" value="{{ $id ?? '' }}">
@@ -58,6 +63,14 @@
                                 <input type="text" name="igst" value="{{ $info->igst ?? '' }}"  placeholder="IGST %" class="form-control">
                             </div>
                         </div>
+                        <div class="col-3">
+                            <label for="">
+                                PRICE
+                            </label>
+                            <div>
+                                <input type="text" name="price" value="{{ $info->price ?? '' }}"  placeholder="" class="form-control">
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="mb-3">
@@ -67,8 +80,10 @@
                                 <i class="fa fa-picture-o"></i> Choose
                             </a>
                         </span>
-                        <input id="thumbnail2" class="form-control" type="text" name="TestImages">
+                        <input id="thumbnail2" class="form-control" type="text" name="product_image">
                     </div>
+                    <img src="{{ str_replace('localhost', '127.0.0.1:8000', $info->image ?? '') }}" class="img-product mt-2" alt="" >
+
                 </div>
                 
                 <div class="mb-3">

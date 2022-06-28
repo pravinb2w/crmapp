@@ -5,6 +5,11 @@
             <h4>{{ $modal_title }}</h4>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
+        <style>
+            .img-product {
+                width:200px;border-radius: 5px;
+            }
+        </style>
         <div class="modal-body" style="max-height: 95vh;overflow:auto">
 
                 <div class="modal-body d-flex justify-content-center align-items-center h-100 p-3">
@@ -45,6 +50,12 @@
                                 <tr>
                                     <th>IGST</th>
                                     <td>{{ $info->igst ?? '' }}</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2" class="text-center">
+
+                                        <img src="{{ str_replace('localhost', '127.0.0.1:8000',$info->image) }}" class="img-product" alt="" >
+                                    </td>
                                 </tr>
                             </table>
                             

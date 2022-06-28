@@ -29,6 +29,9 @@ Route::post('/enquiry', [App\Http\Controllers\LandingController::class, 'enquiry
 Route::get('/approve/invoice/{id}',[App\Http\Controllers\InvoiceController::class, 'approve_invoice'])->name('approve-invoice');
 Route::get('/reject/invoice/{id}',[App\Http\Controllers\InvoiceController::class, 'reject_invoice'])->name('reject-invoice');
 
+Route::get('/get/buy/form', [App\Http\Controllers\front\BuyController::class, 'get_buy_form'])->name('get.buy.form');
+Route::post('/submit/buy/form', [App\Http\Controllers\front\BuyController::class, 'submit_buy_form'])->name('submit.buy.form');
+
 Route::middleware([SetViewVariable::class, 'auth'])->group(function(){
 
     Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web']], function () {
