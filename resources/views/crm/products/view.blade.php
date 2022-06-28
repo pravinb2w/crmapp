@@ -54,7 +54,7 @@
                                 <tr>
                                     <td colspan="2" class="text-center">
 
-                                        <img src="{{ str_replace('localhost', '127.0.0.1:8000',$info->image) }}" class="img-product" alt="" >
+                                        <img src="{{ $info->image }}" class="img-product" alt="" >
                                     </td>
                                 </tr>
                             </table>

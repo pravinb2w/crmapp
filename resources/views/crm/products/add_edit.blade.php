@@ -82,7 +82,7 @@
                         </span>
                         <input id="thumbnail2" class="form-control" type="text" name="product_image">
                     </div>
-                    <img src="{{ str_replace('localhost', '127.0.0.1:8000', $info->image ?? '') }}" class="img-product mt-2" alt="" >
+                    <img src="{{ $info->image ?? '' }}" class="img-product mt-2" alt="" >
 
                 </div>
                 

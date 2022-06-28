@@ -171,7 +171,7 @@
                             <div class="col-sm-3 col-md-4 col-lg-6 col-xl-3 p-pane">
                                 <div class="image-box">
                                     @if($item->image)
-                                    <div class="images" id="image-1" style="background-image: url('{{ str_replace('localhost', '127.0.0.1:8000',$item->image) }}')"></div>
+                                    <div class="images" id="image-1" style="background-image: url('{{ $item->image }}')"></div>
 
                                     @else
                                     <div class="images" id="image-1" style="background-image: url('{{ asset('assets/images/products/noimage.png') }}')"></div>
