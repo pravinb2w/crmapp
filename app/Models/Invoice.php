@@ -16,6 +16,7 @@ class Invoice extends Model implements Auditable
     protected $fillable = [
         'deal_id',
         'invoice_no',
+        'order_no',
         'issue_date',
         'due_date',
         'customer_id',
@@ -38,23 +39,25 @@ class Invoice extends Model implements Auditable
         'paid_amount'
     ];
 
-    public function scopeLatests( Builder $query ) {
-        return $query->orderBy( static::CREATED_AT, 'desc' );
+    public function scopeLatests(Builder $query)
+    {
+        return $query->orderBy(static::CREATED_AT, 'desc');
     }
 
-    public function scopeSearch( Builder $query, $search ) {
+    public function scopeSearch(Builder $query, $search)
+    {
 
-        if( empty( $search ) ) {
+        if (empty($search)) {
             return $query;
         }
 
-        return  $query->where( function( $query ) use( $search ) {
-                    $query->where( 'invoice_no', 'like', "%{$search}%" )
-                        ->orWhere( 'issue_date', 'like', "%{$search}%" )
-                        ->orWhere( 'due_date', 'like', "%{$search}%" )
-                        ->orWhere( 'address', 'like', "%{$search}%" )
-                        ->orWhere( 'total', 'like', "%{$search}%" );
-                }); 
+        return  $query->where(function ($query) use ($search) {
+            $query->where('invoice_no', 'like', "%{$search}%")
+                ->orWhere('issue_date', 'like', "%{$search}%")
+                ->orWhere('due_date', 'like', "%{$search}%")
+                ->orWhere('address', 'like', "%{$search}%")
+                ->orWhere('total', 'like', "%{$search}%");
+        });
     }
 
     public function customer()
@@ -75,7 +78,7 @@ class Invoice extends Model implements Auditable
     public function updatedBy()
     {
         return $this->hasOne(User::class, 'id', 'updated_by');
-    } 
+    }
 
     public function items()
     {

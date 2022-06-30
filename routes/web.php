@@ -11,7 +11,7 @@ use App\Http\Middleware\SetViewVariable;
 | routes are loaded by the RouteServiceProvider within a group which
 | contains the "web" middleware group. Now create something great!
 |
-*/ 
+*/
 
 Route::get('/', function () {
     return  redirect(route('landing.index'));
@@ -20,45 +20,49 @@ Route::get('/', function () {
 Route::get('/send-mail', [App\Http\Controllers\MailController::class, 'sendMail'])->name('send');
 
 Route::get('/devlogin', [App\Http\Controllers\Auth\LoginController::class, 'login_page'])->name('login');
-Route::post('/logout', [App\Http\Controllers\Auth\LoginController::class, 'logout' ])->name('logout');
-Route::post('/login/submit', [App\Http\Controllers\Auth\LoginController::class, 'check_login' ])->name('login.submit');
- 
+Route::post('/logout', [App\Http\Controllers\Auth\LoginController::class, 'logout'])->name('logout');
+Route::post('/login/submit', [App\Http\Controllers\Auth\LoginController::class, 'check_login'])->name('login.submit');
+
 Route::get('generate-pdf', [App\Http\Controllers\PDFController::class, 'generatePDF']);
 Route::get('/crm/{permalink?}', [App\Http\Controllers\LandingController::class, 'index'])->name('landing.index');
-Route::post('/enquiry', [App\Http\Controllers\LandingController::class, 'enquiry_save'])->name('enquiry.save'); 
-Route::get('/approve/invoice/{id}',[App\Http\Controllers\InvoiceController::class, 'approve_invoice'])->name('approve-invoice');
-Route::get('/reject/invoice/{id}',[App\Http\Controllers\InvoiceController::class, 'reject_invoice'])->name('reject-invoice');
+Route::post('/enquiry', [App\Http\Controllers\LandingController::class, 'enquiry_save'])->name('enquiry.save');
+Route::get('/approve/invoice/{id}', [App\Http\Controllers\InvoiceController::class, 'approve_invoice'])->name('approve-invoice');
+Route::get('/reject/invoice/{id}', [App\Http\Controllers\InvoiceController::class, 'reject_invoice'])->name('reject-invoice');
 
 Route::get('/get/buy/form', [App\Http\Controllers\front\BuyController::class, 'get_buy_form'])->name('get.buy.form');
 Route::post('/submit/buy/form', [App\Http\Controllers\front\BuyController::class, 'submit_buy_form'])->name('submit.buy.form');
+Route::get('/razor/init/request', [App\Http\Controllers\front\BuyController::class, 'razorpay_initiate_request'])->name('razorpay.request');
+Route::post('/razor/complete', [App\Http\Controllers\front\BuyController::class, 'razor_payment_complete'])->name('razor.payments.complete');
+Route::post('/', [App\Http\Controllers\LandingController::class, 'payment_response_page'])->name('razor.payments.finish');
 
-Route::middleware([SetViewVariable::class, 'auth'])->group(function(){
+
+Route::middleware([SetViewVariable::class, 'auth'])->group(function () {
 
     Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web']], function () {
         \UniSharp\LaravelFilemanager\Lfm::routes();
     });
 
-    Route::any('payu-money-payment',[App\Http\Controllers\PayuMoneyController::class, 'redirectToPayU'])->name('redirectToPayU');
+    Route::any('payu-money-payment', [App\Http\Controllers\PayuMoneyController::class, 'redirectToPayU'])->name('redirectToPayU');
     Route::any('payu-money-payment-cancel', [App\Http\Controllers\PayuMoneyController::class, 'paymentCancel'])->name('payumoney-cancel');
     Route::any('payu-money-payment-success', [App\Http\Controllers\PayuMoneyController::class, 'paymentSuccess'])->name('payumoney-success');
 
     Route::any('ccavenue', [App\Http\Controllers\PaymentController::class, 'ccavenue_form'])->name('ccavenue');
     Route::any('/ccavenue/response', [App\Http\Controllers\PaymentController::class, 'ccavenue_response'])->name('ccavenue-response');
 
-    Route::post('/notification/check', [App\Http\Controllers\HomeController::class, 'show_notification_toast'] )->name('notification.check');
-    Route::post('/notification/list', [App\Http\Controllers\HomeController::class, 'notification_list'] )->name('common.notification.list');
-    Route::post('/notification/read', [App\Http\Controllers\HomeController::class, 'make_noti_read'] )->name('common.notification.read');
+    Route::post('/notification/check', [App\Http\Controllers\HomeController::class, 'show_notification_toast'])->name('notification.check');
+    Route::post('/notification/list', [App\Http\Controllers\HomeController::class, 'notification_list'])->name('common.notification.list');
+    Route::post('/notification/read', [App\Http\Controllers\HomeController::class, 'make_noti_read'])->name('common.notification.read');
 
     Route::get('/dashboard', [App\Http\Controllers\HomeController::class, 'index'])->name('dashboard');
     Route::post('/dashboard-save-position', [App\Http\Controllers\HomeController::class, 'save_dashboard_position'])->name('save.dashboard_position');
-    
+
     Route::post('/get/closeweek/data', [App\Http\Controllers\HomeController::class, 'close_week'])->name('get-closeweek-data');
     Route::post('/get/planned/data', [App\Http\Controllers\HomeController::class, 'ajax_get_done_planed'])->name('get-planned-data');
     Route::get('/deals-dashboard', [App\Http\Controllers\HomeController::class, 'dealsIndex'])->name('deals-dashboard');
     Route::get('/deals-pipelines', [App\Http\Controllers\HomeController::class, 'dealsPipeline'])->name('deals-pipeline');
 
     Route::get('/account', [App\Http\Controllers\AccountController::class, 'index'])->name('account');
-    Route::get('/account/change-password',[App\Http\Controllers\AccountController::class, 'index'])->name('change_password');
+    Route::get('/account/change-password', [App\Http\Controllers\AccountController::class, 'index'])->name('change_password');
     Route::post('/account/settings/tab', [App\Http\Controllers\AccountController::class, 'get_settings_tab'])->name('settings.tab');
     Route::post('/account/save', [App\Http\Controllers\AccountController::class, 'save'])->name('account.save');
     Route::post('/company/save', [App\Http\Controllers\AccountController::class, 'company_save'])->name('account.company.save');
@@ -80,7 +84,7 @@ Route::middleware([SetViewVariable::class, 'auth'])->group(function(){
 
     Route::post('/autocomplete_lead_deal', [App\Http\Controllers\LeadController::class, 'autocomplete_lead_deal'])->name('autocomplete_lead_deal');
     Route::post('/autocomplete_lead_deal_set', [App\Http\Controllers\LeadController::class, 'autocomplete_lead_deal_set'])->name('autocomplete_lead_deal_set');
-    
+
     Route::get('pdf/{id}', [App\Http\Controllers\DealsController::class, 'generatePDF'])->name('pdf');
 
     //Activities
@@ -110,7 +114,7 @@ Route::middleware([SetViewVariable::class, 'auth'])->group(function(){
     });
     //pages route
     Route::prefix('pages')->group(function () {
-        Route::get('/', [App\Http\Controllers\CmsController::class, 'index'])->name('pages')->middleware('checkAccess:is_view');         
+        Route::get('/', [App\Http\Controllers\CmsController::class, 'index'])->name('pages')->middleware('checkAccess:is_view');
         Route::get('/add/{id?}', [App\Http\Controllers\CmsController::class, 'add'])->name('pages.add')->middleware('checkAccess:is_edit');
         Route::get('/edit/{id?}', [App\Http\Controllers\CmsController::class, 'edit'])->name('pages.edit')->middleware('checkAccess:is_edit');
         Route::post('/save/{type?}', [App\Http\Controllers\CmsController::class, 'save'])->name('pages.save');
@@ -121,14 +125,13 @@ Route::middleware([SetViewVariable::class, 'auth'])->group(function(){
     });
     //Automation route
     Route::prefix('automation')->group(function () {
-        Route::get('/', [App\Http\Controllers\AutomationController::class, 'index'])->name('automation')->middleware('checkAccess:is_view');         
+        Route::get('/', [App\Http\Controllers\AutomationController::class, 'index'])->name('automation')->middleware('checkAccess:is_view');
         Route::post('/add', [App\Http\Controllers\AutomationController::class, 'add_edit'])->name('automation.add')->middleware('checkAccess:is_edit');
         Route::post('/save', [App\Http\Controllers\AutomationController::class, 'save'])->name('automation.save');
         Route::post('/list', [App\Http\Controllers\AutomationController::class, 'ajax_list'])->name('automation.list')->middleware('checkAccess:is_view');
         Route::post('/delete', [App\Http\Controllers\AutomationController::class, 'delete'])->name('automation.delete')->middleware('checkAccess:is_delete');
         Route::post('/status', [App\Http\Controllers\AutomationController::class, 'change_status'])->name('automation.status')->middleware('checkAccess:is_edit');
         Route::post('/view', [App\Http\Controllers\AutomationController::class, 'view'])->name('automation.view')->middleware('checkAccess:is_view');
-
     });
     //products route
     Route::prefix('products')->group(function () {
@@ -141,7 +144,7 @@ Route::middleware([SetViewVariable::class, 'auth'])->group(function(){
         Route::post('/status', [App\Http\Controllers\ProductController::class, 'change_status'])->name('products.status');
     });
     //leads route
-    Route::prefix('leads')->group(function () { 
+    Route::prefix('leads')->group(function () {
         Route::get('/', [App\Http\Controllers\LeadController::class, 'index'])->name('leads')->middleware('checkAccess:is_view');
         Route::get('/view/{id}', [App\Http\Controllers\LeadController::class, 'view'])->name('leads.view')->middleware('checkAccess:is_view');
         Route::post('/add', [App\Http\Controllers\LeadController::class, 'add_edit'])->name('leads.add')->middleware('checkAccess:is_edit');
@@ -165,7 +168,7 @@ Route::middleware([SetViewVariable::class, 'auth'])->group(function(){
         Route::post('/delete', [App\Http\Controllers\DealsController::class, 'delete'])->name('deals.delete')->middleware('checkAccess:is_delete');
         Route::post('/status', [App\Http\Controllers\DealsController::class, 'change_status'])->name('deals.status');
         Route::post('/list', [App\Http\Controllers\DealsController::class, 'ajax_list'])->name('deals.list');
-        Route::post('/product/list', [App\Http\Controllers\DealsController::class, 'product_list'])->name('deals.product-list'); 
+        Route::post('/product/list', [App\Http\Controllers\DealsController::class, 'product_list'])->name('deals.product-list');
         Route::post('/activity/save', [App\Http\Controllers\DealsController::class, 'activity_save'])->name('deals.save-activity');
         Route::post('/notes/save', [App\Http\Controllers\DealsController::class, 'notes_save'])->name('deals.save-notes');
         Route::post('/refresh/timeline', [App\Http\Controllers\DealsController::class, 'refresh_timeline'])->name('deals.refresh-timeline');
@@ -183,7 +186,7 @@ Route::middleware([SetViewVariable::class, 'auth'])->group(function(){
         Route::post('/get_product_tax', [App\Http\Controllers\DealsController::class, 'get_product_tax'])->name('deals.get_product_tax');
         Route::post('/get_deal_common_sub_list', [App\Http\Controllers\DealsController::class, 'get_deal_common_sub_list'])->name('deals.common.list');
         Route::post('/change/pdf', [App\Http\Controllers\DealsController::class, 'change_pdf_template'])->name('invoice.pdf.change');
-    }); 
+    });
 
     //Invoice route
     Route::prefix('invoices')->group(function () {
@@ -193,7 +196,7 @@ Route::middleware([SetViewVariable::class, 'auth'])->group(function(){
         Route::post('/list', [App\Http\Controllers\InvoiceController::class, 'ajax_list'])->name('invoices.list')->middleware('checkAccess:is_view');
         Route::post('/view', [App\Http\Controllers\InvoiceController::class, 'view'])->name('invoices.view')->middleware('checkAccess:is_view'); //set on modal
     });
- 
+
     //Payment route
     Route::prefix('payments')->group(function () {
         Route::get('/', [App\Http\Controllers\PaymentController::class, 'index'])->name('payments');
@@ -302,7 +305,7 @@ Route::middleware([SetViewVariable::class, 'auth'])->group(function(){
         Route::post('/permissions/save', [App\Http\Controllers\PermissionController::class, 'save'])->name('permissions.save');
         Route::post('/permissions/list', [App\Http\Controllers\PermissionController::class, 'ajax_list'])->name('permissions.list');
         Route::post('/permissions/delete', [App\Http\Controllers\PermissionController::class, 'delete'])->name('permissions.delete');
-         //subscriptions route
+        //subscriptions route
         Route::get('/subscriptions', [App\Http\Controllers\SubscriptionController::class, 'index'])->name('subscriptions');
         Route::post('/subscriptions/add', [App\Http\Controllers\SubscriptionController::class, 'add_edit'])->name('subscriptions.add');
         Route::post('/subscriptions/view', [App\Http\Controllers\SubscriptionController::class, 'view'])->name('subscriptions.view');
@@ -311,7 +314,7 @@ Route::middleware([SetViewVariable::class, 'auth'])->group(function(){
         Route::post('/subscriptions/delete', [App\Http\Controllers\SubscriptionController::class, 'delete'])->name('subscriptions.delete');
         Route::post('/subscriptions/status', [App\Http\Controllers\SubscriptionController::class, 'change_status'])->name('subscriptions.status');
         //company subscriptions route
-         //subscriptions route
+        //subscriptions route
         Route::get('/company-subscriptions', [App\Http\Controllers\CompanySubscriptionController::class, 'index'])->name('company-subscriptions');
         Route::post('/company-subscriptions/add', [App\Http\Controllers\CompanySubscriptionController::class, 'add_edit'])->name('company-subscriptions.add');
         Route::post('/company-subscriptions/view', [App\Http\Controllers\CompanySubscriptionController::class, 'view'])->name('company-subscriptions.view');
@@ -343,7 +346,7 @@ Route::middleware([SetViewVariable::class, 'auth'])->group(function(){
         Route::post('/country/list', [App\Http\Controllers\CountryController::class, 'ajax_list'])->name('country.list');
         Route::post('/country/delete', [App\Http\Controllers\CountryController::class, 'delete'])->name('country.delete');
         Route::post('/country/status', [App\Http\Controllers\CountryController::class, 'change_status'])->name('country.status');
- 
+
         Route::get('/teams', [App\Http\Controllers\TeamController::class, 'index'])->name('teams');
         Route::post('/teams/add', [App\Http\Controllers\TeamController::class, 'add_edit'])->name('teams.add');
         Route::post('/teams/view', [App\Http\Controllers\TeamController::class, 'view'])->name('teams.view');
@@ -359,16 +362,15 @@ Route::middleware([SetViewVariable::class, 'auth'])->group(function(){
         Route::post('/tax/list', [App\Http\Controllers\TaxController::class, 'ajax_list'])->name('tax.list');
         Route::post('/tax/delete', [App\Http\Controllers\TaxController::class, 'delete'])->name('tax.delete');
         Route::post('/tax/status', [App\Http\Controllers\TaxController::class, 'change_status'])->name('tax.status');
-
     });
-    
+
     Route::get('invoice', function () {
         return view('invoice');
     });
 
     Route::get('mail-message', function () {
         return view('mail-message');
-    }); 
+    });
 
     // Email Template Routes
     Route::prefix('email-template')->group(function () {
@@ -379,14 +381,14 @@ Route::middleware([SetViewVariable::class, 'auth'])->group(function(){
         Route::post('/edit/{id?}', [App\Http\Controllers\EmailTemplateController::class, 'update'])->name('update.email_template');
         Route::post('/delete/{id?}', [App\Http\Controllers\EmailTemplateController::class, 'delete'])->name('delete.email_template');
     });
-    
+
     Route::prefix('bulk_import')->group(function () {
         Route::get('/', [App\Http\Controllers\BulkPdfImport::class, 'index'])->name('bulk_import.index');
         Route::post('/create', [App\Http\Controllers\BulkPdfImport::class, 'store'])->name('store.bulk_import');
         Route::get('/edit/{id?}', [App\Http\Controllers\BulkPdfImport::class, 'edit'])->name('edit.bulk_import');
         Route::post('/edit/{id?}', [App\Http\Controllers\BulkPdfImport::class, 'update'])->name('update.bulk_import');
         Route::post('/delete/{id?}', [App\Http\Controllers\BulkPdfImport::class, 'delete'])->name('delete.bulk_import');
-    }); 
+    });
 
     Route::prefix('reports')->group(function () {
         Route::get('/', [App\Http\Controllers\ReportController::class, 'index'])->name('reports.sale');
@@ -406,8 +408,7 @@ Route::middleware([SetViewVariable::class, 'auth'])->group(function(){
         Route::post('/planned/list', [App\Http\Controllers\ReportController::class, 'ajax_planned_list'])->name('reports.planned.list');
         Route::post('/planned/download', [App\Http\Controllers\ReportController::class, 'planned_download'])->name('reports.planned.download');
         Route::post('/planned/pdf/download', [App\Http\Controllers\ReportController::class, 'planned_pdf_download'])->name('reports.planned_pdf.download');
-
-    }); 
+    });
 
     Route::prefix('announcement')->group(function () {
         Route::get('/', [App\Http\Controllers\AnnouncementController::class, 'index'])->name('announcement.index');
@@ -416,17 +417,16 @@ Route::middleware([SetViewVariable::class, 'auth'])->group(function(){
         Route::get('/edit/{id?}', [App\Http\Controllers\AnnouncementController::class, 'edit'])->name('edit.announcement');
         Route::post('/edit/{id?}', [App\Http\Controllers\AnnouncementController::class, 'update'])->name('update.announcement');
         Route::post('/delete/{id?}', [App\Http\Controllers\AnnouncementController::class, 'destroy'])->name('destroy.announcement');
-    }); 
- 
+    });
+
     Route::prefix('activity_log')->group(function () {
         Route::get('/', [App\Http\Controllers\ActivityLogController::class, 'index'])->name('activity_log.index');
         Route::post('/log', [App\Http\Controllers\ActivityLogController::class, 'ajax_list'])->name('activity_log.log');
         Route::post('/view', [App\Http\Controllers\ActivityLogController::class, 'view'])->name('activity_log.view');
-    }); 
+    });
 
     Route::get('backup', [App\Http\Controllers\DataBaseBackupController::class, 'index'])->name('db-backup.index');
     Route::post('create-backup', [App\Http\Controllers\DataBaseBackupController::class, 'backup'])->name('create.backup');
     Route::delete('backup/{id}', [App\Http\Controllers\DataBaseBackupController::class, 'delete'])->name('delete.database-backup');
     Route::post('backup/{id}', [App\Http\Controllers\DataBaseBackupController::class, 'download'])->name('download.database-backup');
 });
-

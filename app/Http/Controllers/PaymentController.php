@@ -251,8 +251,6 @@ class PaymentController extends Controller
 
             $api = new Api($pay_info->test_access_key, $pay_info->test_secret_key);
         }
-        
-
         // In razorpay you have to convert rupees into paise we multiply by 100
         // Currency will be INR
         // Creating order

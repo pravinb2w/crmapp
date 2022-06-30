@@ -17,10 +17,12 @@ class TestEmail extends Mailable
      */
     public $body;
     public $subject;
-    public function __construct($body, $subject)
+    public $attachment;
+    public function __construct($body, $subject, $attachment = '')
     {
         $this->body = $body;
         $this->subject = $subject;
+        $this->attachment = $attachment;
     }
 
     /**
@@ -30,7 +32,12 @@ class TestEmail extends Mailable
      */
     public function build()
     {
-        
-        return $this->markdown('emails.test', $this->body )->subject($this->subject);
+        if (!empty($this->attachment)) {
+            $invoice_no = str_replace("/", "_", $this->body['invoice_no']);
+            $file = $invoice_no . '.pdf';
+            return $this->markdown('emails.test', $this->body)->subject($this->subject)->attach(public_path('/invoice/' . $file));
+        } else {
+            return $this->markdown('emails.test', $this->body)->subject($this->subject);
+        }
     }
 }

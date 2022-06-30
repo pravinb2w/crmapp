@@ -70,22 +70,21 @@
                                                 <table class="table">
                                                     <tr>
                                                         <th>Product</th>
-                                                        <td> Name</td>
+                                                        <td> {{ $product_info->product_name }}</td>
                                                     </tr>
                                                     <tr>
                                                         <th>Price</th>
-                                                        <td> INR 90.00</td>
+                                                        <td> INR {{ $product_info->price }}</td>
                                                     </tr>
                                                     <tr>
                                                         <th>
                                                             Description
                                                         </th>
                                                         <td>
-                                                            Testing description
+                                                            {{ $product_info->description ?? 'N/A'; }}
                                                         </td>
                                                     </tr>
                                                 </table>
-                                                
                                             </div>
                                         </div>
                                         <div class="row">
@@ -120,10 +119,13 @@
                                             <button type="button" class="btn btn-light" data-bs-dismiss="modal" aria-label="Close"> Cancel</button>
                                         </div>
                                         <div class="col-sm-8">
-                                            <button type="submit" class="btn btn-primary btn-sm" > Proceed</button>
+                                            <button type="submit" class="btn btn-primary btn-sm" id="proceed" > Proceed</button>
                                         </div>
                                     </div>
                                 </div>
+                            </form>
+                            <form action="{{ route('razorpay.request') }}" id="form-pay">
+                                <input type="hidden" id="order_no" name="order_no">
                             </form>
                         </div>  
                     </div>
@@ -131,6 +133,9 @@
         </div>
     </div><!-- /.modal-content -->
 </div>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/css/toastr.css" rel="stylesheet"/>
+      
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/js/toastr.js"></script>
 <script>
     $("#buy-form").validate({
             submitHandler:function(form) {
@@ -139,25 +144,22 @@
                     type: form.method,
                     data: $(form).serialize(),
                     beforeSend: function() {
-                        $('#error').removeClass('alert alert-danger');
-                        $('#error').html('');
-                        $('#error').removeClass('alert alert-success');
-                        $('#save').html('Loading...');
+                       $('#proceed').attr('disabled', true);
                     },
                     success: function(response) {
                         var from = $('#from').val();
-                        $('#save').html('Save');
+                        $('#proceed').attr('disabled', false);
+
                         if(response.error.length > 0 && response.status == "1" ) {
                             toastr.error('Error', response.error );
                         } else {
-                            toastr.success('Success', response.error );
+                            toastr.success('Success', 'Redirect to Payment gateway page' );
                             setTimeout(function(){
                                 $('#Mymodal').modal('hide');
                             },100);
-                            if( from == 'dashboard' ) {
-                                window.location.href="{{ route('products') }}";
-                            } else {
-                                ReloadDataTableModal('products-datatable');
+                            if( response.order_no ) {
+                                $('#order_no').val(response.order_no);
+                                $('#form-pay').submit();
                             }
                         }
                     }            
