@@ -4,7 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use CommonHelper;
-use Auth;use Illuminate\Support\Facades\Mail;
+use Auth;
+use Illuminate\Support\Facades\Mail;
 use App\Mail\TestEmail;
 use DB;
 
@@ -12,17 +13,16 @@ class MailController extends Controller
 {
     public function sendMail()
     {
-        try
-        {
+        try {
             //Set mail configuration
             CommonHelper::setMailConfig();
 
             $data = ['name' => "Virat Gandhi"];
-
+            $subject = 'Testing Mail';
             $body = [
-                    'content' => 'test content of the crm by durariaj'
-                ];
-            $send_mail = new TestEmail($body);
+                'content' => 'test content of the crm by durariaj'
+            ];
+            $send_mail = new TestEmail($body, $subject);
             // return $send_mail->render();
             Mail::to('duraibytes@gmail.com')->send($send_mail);
 
@@ -35,10 +35,8 @@ class MailController extends Controller
             // });
             // echo 'Test email sent successfully';
             // return redirect()->back()->with('success', 'Test email sent successfully');
-        }
-        catch(\Exception $e)
-        {
-            dd( $e->getMessage() );
+        } catch (\Exception $e) {
+            dd($e->getMessage());
             // return redirect()->back()->withErrors($e->getMessage());
         }
     }
