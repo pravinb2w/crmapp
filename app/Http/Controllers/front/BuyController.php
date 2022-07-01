@@ -242,6 +242,7 @@ class BuyController extends Controller
             $invoice = Invoice::find($pay_info->invoice_id);
             $invoice->paid_at = date('Y-m-d H:i:s');
             $invoice->paid_amount = $pay_info->amount;
+            $invoice->approved_at = date('Y-m-d H:i:s');
             $invoice->status = 1;
             $invoice->update();
 
