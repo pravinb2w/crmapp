@@ -207,7 +207,7 @@
                     <section class="py-5">
                         <div class="row bg-white">
                             <div class="col-12 text-center p-2">
-                                <h1 class="text-primary w-100"> Purchase Products </h1>
+                                <h1 class="text-primary w-100 product-head"> Purchase Products </h1>
                             </div>
                             <div class="listing-section bg-white row">
                                 @foreach ($products as $item)
@@ -222,10 +222,10 @@
                                         @endif
                                     </div>
                                     <div class="text-box">
-                                        <h2 class="item">{{ $item->product_name }}</h2>
-                                        <h3 class="price">INR {{ $item->price }}</h3>
+                                        <h2 class="item product-head">{{ $item->product_name }}</h2>
+                                        <h3 class="price product-head">INR {{ $item->price }}</h3>
                                         <p class="description">{{ mb_strimwidth($item->description ?? '', 0, 100, "...") }}</p>
-                                        <button type="button" name="item-1-button" class="btn btn-primary" onclick="return get_buy_form('{{ $item->id }}')">Buy Now</button>
+                                        <button type="button" name="item-1-button" class="btn btn-primary product-head" onclick="return get_buy_form('{{ $item->id }}')">Buy Now</button>
                                     </div>
                                 </div>
                                 @endforeach

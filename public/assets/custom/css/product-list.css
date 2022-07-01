@@ -73,7 +73,7 @@
     position: relative;
   }
   
-  h2, h3 {
+  .product-head h2, .product-head h3 {
     float: left;
     font-family: 'Roboto', sans-serif;
     font-weight: 400;
@@ -92,7 +92,7 @@
     color: Grey;
   }
   
-  .description, label, button, input {
+  .description, .product-head button {
     float: left;
     clear: left;
     width: 100%;
@@ -107,9 +107,6 @@
     outline-color: #fdf;
   }
   
-  label {
-    width: 60%;
-  }
   
   .text-box input {
     width: 15%;
@@ -124,22 +121,22 @@
     width: 90%;
   }
   
-  button {
+  .product-head button {
     padding: 2%;
     background-color: #dfd;
     border: none;
     border-radius: 2%;
   }
   
-  button:hover {
+  .product-head button:hover {
     bottom: 0.1em;
   }
   
-  button:focus {
+  .product-head button:focus {
     outline: 0;
   }
   
-  button:active {
+  .product-head button:active {
     bottom: 0;
     background-color: #fdf;
   }
