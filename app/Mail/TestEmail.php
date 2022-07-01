@@ -33,7 +33,7 @@ class TestEmail extends Mailable
     public function build()
     {
         if (!empty($this->attachment)) {
-            $invoice_no = str_replace("/", "_", $this->body['invoice_no']);
+            $invoice_no = str_replace("/", "_", $this->attachment);
             $file = $invoice_no . '.pdf';
             return $this->markdown('emails.test', $this->body)->subject($this->subject)->attach(public_path('/invoice/' . $file));
         } else {

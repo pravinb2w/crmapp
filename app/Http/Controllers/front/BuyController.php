@@ -261,6 +261,7 @@ class BuyController extends Controller
                 'app_name' => env('APP_NAME'),
                 'unsbusribe_link' => 'Unsubscribe',
                 'company_address' => $company->address ?? '',
+                'date' => date('d M Y h:i A', strtotime($order_info->created_at))
             );
             $templateMessage = $data->content;
             $templateMessage = str_replace("{", "", addslashes($templateMessage));

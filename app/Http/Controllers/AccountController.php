@@ -26,7 +26,7 @@ class AccountController extends Controller
     {
         $type = $request->segment(2);
         $url = 'change';
-        if( empty($type) ){
+        if (empty($type)) {
             $url = 'profile';
         }
         $params['type'] = $url;
@@ -41,8 +41,8 @@ class AccountController extends Controller
         $prefix = PrefixSetting::where(['company_id' => $info->company_id, 'status' => 1])->get();
         $sms = SmsIntegration::where('company_id', $info->company_id)->get();
         $gateway = PaymentIntegration::all();
-        $params = ['type' => $type, 'info' => $info, 'prefix' => $prefix, 'sms' => $sms, 'gateway' => $gateway ];
-        $view = 'crm.account._account_'.$type;
+        $params = ['type' => $type, 'info' => $info, 'prefix' => $prefix, 'sms' => $sms, 'gateway' => $gateway];
+        $view = 'crm.account._account_' . $type;
         return view($view, $params);
     }
 
@@ -51,17 +51,17 @@ class AccountController extends Controller
         $id = $request->id;
         $type = $request->type;
 
-        if( $type == 'profile' ) {
+        if ($type == 'profile') {
             $validator   = [
-                'first_name'      => [ 'required', 'string', 'max:255' ],
-                'email'      => [ 'required', 'string', 'max:255' ],
-                'mobile_no'      => [ 'required', 'string', 'unique:users,mobile_no,'.Auth::id() ],
+                'first_name'      => ['required', 'string', 'max:255'],
+                'email'      => ['required', 'string', 'max:255'],
+                'mobile_no'      => ['required', 'string', 'unique:users,mobile_no,' . Auth::id()],
                 'profile_image' => ['image', 'mimes:jpeg,png,jpg,gif,svg']
             ];
         }
         //Validate the product
-        $validator                     = Validator::make( $request->all(), $validator );
-        
+        $validator                     = Validator::make($request->all(), $validator);
+
         if ($validator->passes()) {
             $id = Auth::id();
             $user = User::find($id);
@@ -71,52 +71,52 @@ class AccountController extends Controller
             $user->mobile_no = $request->mobile_no;
             $user->primary_color = $request->primary_color;
             $user->secondary_color = $request->secondary_color;
-            if( $request->hasFile( 'profile_image' ) ) {
-                $file                       = $request->file( 'profile_image' )->store( 'account', 'public' );
+            if ($request->hasFile('profile_image')) {
+                $file                       = $request->file('profile_image')->store('account', 'public');
                 $user->image                  = $file;
             }
             $user->save();
             $success = 'Account settings saved';
-            return response()->json(['error'=>[$success], 'status' => '0']);
+            return response()->json(['error' => [$success], 'status' => '0']);
         }
-        return response()->json(['error'=>$validator->errors()->all(), 'status' => '1']);
+        return response()->json(['error' => $validator->errors()->all(), 'status' => '1']);
     }
 
     public function company_save(Request $request)
     {
-        
+
         $type = $request->type;
-        if( isset($type ) && ( $type != 'api' && $type != 'link' && $type != 'prefix' && $type != 'common')) {
-            if( $type == 'company' ) {
+        if (isset($type) && ($type != 'api' && $type != 'link' && $type != 'prefix' && $type != 'common')) {
+            if ($type == 'company') {
                 $validator   = [
-                    'site_name' => [ 'required', 'string', 'max:255' ],
+                    'site_name' => ['required', 'string', 'max:255'],
                     'site_logo' => ['image', 'mimes:jpeg,png,jpg,gif,svg'],
                     'site_favicon' => ['image', 'mimes:jpeg,png,jpg,gif,svg'],
                 ];
-            } else if( $type == 'mail') {
+            } else if ($type == 'mail') {
                 $validator   = [
-                    'smtp_host' => [ 'required', 'string', 'max:255' ],
+                    'smtp_host' => ['required', 'string', 'max:255'],
                     'smtp_port' => ['required', 'max:5'],
                     'smtp_user' => ['required', 'string', 'max:55'],
                     'smtp_password' => ['required', 'string', 'max:55'],
                 ];
             } else {
                 $validator   = [
-                    'current_password' => [ 'required', 'string', 'max:255' ],
+                    'current_password' => ['required', 'string', 'max:255'],
                     'password' => ['required', 'confirmed', 'min:8'],
                     'password_confirmation' => ['required', 'min:8'],
                 ];
             }
-            
+
             //Validate the product
-            $validator                     = Validator::make( $request->all(), $validator );
-            
+            $validator                     = Validator::make($request->all(), $validator);
+
             if ($validator->passes()) {
                 $id = Auth::id();
-                
+
                 $user = User::find($id);
                 $sett = CompanySettings::find($user->company_id);
-                if( $type == 'company' ) {
+                if ($type == 'company') {
                     $sett->site_name = $request->site_name;
                     $sett->site_url = $request->site_url;
                     $sett->copyrights = $request->copyrights;
@@ -126,18 +126,18 @@ class AccountController extends Controller
                     $sett->address = $request->address;
                     $sett->gstin_no = $request->gstin_no;
 
-                    if( $request->hasFile( 'site_logo' ) ) {
-                        $file                       = $request->file( 'site_logo' )->store( 'account', 'public' );
+                    if ($request->hasFile('site_logo')) {
+                        $file                       = $request->file('site_logo')->store('account', 'public');
                         $sett->site_logo            = $file;
                     }
-                    if( $request->hasFile( 'site_favicon' ) ) {
-                        $file                       = $request->file( 'site_favicon' )->store( 'account', 'public' );
+                    if ($request->hasFile('site_favicon')) {
+                        $file                       = $request->file('site_favicon')->store('account', 'public');
                         $sett->site_favicon         = $file;
                     }
                     $sett->update();
                     $success = 'Account settings saved';
-                    return response()->json(['error'=>[$success], 'status' => '0']);
-                } else if($type == 'mail') {
+                    return response()->json(['error' => [$success], 'status' => '0']);
+                } else if ($type == 'mail') {
                     $sett->smtp_host = $request->smtp_host;
                     $sett->smtp_port = $request->smtp_port;
                     $sett->smtp_user = $request->smtp_user;
@@ -146,29 +146,27 @@ class AccountController extends Controller
                     $sett->mail_encryption = $request->mail_encryption;
                     $sett->update();
                     $success = 'Account settings saved';
-                    return response()->json(['error'=>[$success], 'status' => '0']);
+                    return response()->json(['error' => [$success], 'status' => '0']);
                 } else {
                     if (!(Hash::check($request->get('current_password'), Auth::user()->password))) {
                         // The passwords matches
                         $success = 'Current password does not match with this password';
-                        return response()->json(['error'=>[$success], 'status' => '1']);
+                        return response()->json(['error' => [$success], 'status' => '1']);
                     }
                     $user->password = Hash::make($request->password);
                     $user->save();
                     $success = 'Password changed successfully';
-                    return response()->json(['error'=>[$success], 'status' => '0']);
+                    return response()->json(['error' => [$success], 'status' => '0']);
                 }
-                
-                
             }
-            return response()->json(['error'=>$validator->errors()->all(), 'status' => '1']);
+            return response()->json(['error' => $validator->errors()->all(), 'status' => '1']);
         } else {
             $id = Auth::id();
             $user = User::find($id);
             $sett = CompanySettings::find($user->company_id);
 
-            if( $type == 'api') {
-               
+            if ($type == 'api') {
+
                 $sms = SmsIntegration::where('company_id', $user->company_id)->first();
                 $sms_type = $request->sms_type;
                 $user_name = $request->user_name;
@@ -179,60 +177,58 @@ class AccountController extends Controller
                 $variables = $request->variables;
                 $template = $request->template;
                 $tmp = [];
-                for ($i=0; $i < count($sms_type); $i++) { 
-                    $tmp[] = [ 
-                                'sms_type' => $sms_type[$i] ?? '', 
-                                'user_name' => $user_name[$i] ?? '', 
-                                'api_key' => $api_key[$i] ?? '',
-                                'sender_id' => $sender_id[$i] ?? '',
-                                'template_id' => $template_id[$i] ?? '',
-                                'type' => $template_type[$i] ?? '',
-                                'template' => $template[$i] ?? '',
-                                'variables' => $variables[$i] ?? '',
-                            ];
+                for ($i = 0; $i < count($sms_type); $i++) {
+                    $tmp[] = [
+                        'sms_type' => $sms_type[$i] ?? '',
+                        'user_name' => $user_name[$i] ?? '',
+                        'api_key' => $api_key[$i] ?? '',
+                        'sender_id' => $sender_id[$i] ?? '',
+                        'template_id' => $template_id[$i] ?? '',
+                        'type' => $template_type[$i] ?? '',
+                        'template' => $template[$i] ?? '',
+                        'variables' => $variables[$i] ?? '',
+                    ];
                 }
                 $all = SmsIntegration::truncate();
-                if( !empty($tmp)) {
+                if (!empty($tmp)) {
                     foreach ($tmp as $key => $value) {
-                       
-                        $ins[ 'sms_type'] = $value['sms_type'];
-                        $ins[ 'user_name'] = $value['user_name'];
-                        $ins[ 'api_key'] = $value['api_key'];
-                        $ins[ 'sender_id'] = $value['sender_id'];
-                        $ins[ 'template_id'] = $value['template_id'];
-                        $ins[ 'type'] = $value['type'];
-                        $ins[ 'template'] = $value['template'];
-                        $ins[ 'variables'] = $value['variables'];
+
+                        $ins['sms_type'] = $value['sms_type'];
+                        $ins['user_name'] = $value['user_name'];
+                        $ins['api_key'] = $value['api_key'];
+                        $ins['sender_id'] = $value['sender_id'];
+                        $ins['template_id'] = $value['template_id'];
+                        $ins['type'] = $value['type'];
+                        $ins['template'] = $value['template'];
+                        $ins['variables'] = $value['variables'];
                         $ins['company_id'] = $user->company_id;
                         SmsIntegration::create($ins);
-                       
                     }
                 }
-
-            } else if($type == 'link') {
+            } else if ($type == 'link') {
                 $sett->facebook_url = $request->facebook_url;
                 $sett->twitter_url = $request->twitter_url;
                 $sett->instagram_url = $request->instagram_url;
                 $sett->update();
-
-            } else if($type == 'common') {
+            } else if ($type == 'common') {
                 $sett->invoice_terms = $request->invoice_terms;
                 $sett->lead_access = $request->lead_access ?? null;
                 $sett->deal_access = $request->deal_access ?? null;
-                $sett->workflow_automation = ( $request->workflow_automation ? '1' : null );
+                $sett->workflow_automation = ($request->workflow_automation ? '1' : null);
+                $sett->show_products = ($request->show_products ? '1' : null);
                 // dd( $sett );
                 $sett->update();
-            } else if( $type == 'prefix' ) {
+            } else if ($type == 'prefix') {
 
                 $prefix_field = $request->prefix_field;
                 $prefix_value = $request->prefix_value;
                 $prefix_id = $request->prefix_id;
                 $tmp = [];
-                for ($i=0; $i < count($prefix_field); $i++) { 
-                    $tmp[] = [ 'id' => $prefix_id[$i] ?? '', 'prefix_field' => $prefix_field[$i], 'prefix_value' => $prefix_value[$i]];
+                for ($i = 0; $i < count($prefix_field); $i++) {
+                    $tmp[] = ['id' => $prefix_id[$i] ?? '', 'prefix_field' => $prefix_field[$i], 'prefix_value' => $prefix_value[$i]];
                 }
                 $all = PrefixSetting::truncate();
-                if( !empty($tmp)) {
+                if (!empty($tmp)) {
                     foreach ($tmp as $key => $value) {
                         // if( isset( $value['id'] ) && !empty($value['id']) ){
                         //     $pref = PrefixSetting::find($value['id']);
@@ -240,21 +236,22 @@ class AccountController extends Controller
                         //     $pref->prefix_value = $value['prefix_value'];
                         //     $pref->update();
                         // } else {
-                            $ins[ 'prefix_field'] = $value['prefix_field'];
-                            $ins[ 'prefix_value'] = $value['prefix_value'];
-                            $ins[ 'status'] = 1;
-                            $ins['company_id'] = $user->company_id;
-                            PrefixSetting::create($ins);
+                        $ins['prefix_field'] = $value['prefix_field'];
+                        $ins['prefix_value'] = $value['prefix_value'];
+                        $ins['status'] = 1;
+                        $ins['company_id'] = $user->company_id;
+                        PrefixSetting::create($ins);
                         // }
                     }
                 }
             }
             $success = 'Account settings saved';
-            return response()->json(['error'=>[$success], 'status' => '0']);
+            return response()->json(['error' => [$success], 'status' => '0']);
         }
     }
 
-    public function payment_save(Request $request) {
+    public function payment_save(Request $request)
+    {
 
         $payment_gateway        = $request->payment_gateway;
         $status                 = $request->status;
@@ -269,16 +266,18 @@ class AccountController extends Controller
         $user_id = Auth::id();
         $user = User::find($user_id);
 
-        for ($i=0; $i < count($payment_gateway); $i++) { 
-            $tmp[] = [ 'id' => $id[$i] ?? '', 'payment_gateway' => $payment_gateway[$i] ?? '', 'test_access_key' => $test_access_key[$i], 
-                        'test_secret_key' => $test_secret_key[$i], 'live_access_key' => $live_access_key[$i],
-                        'live_secret_key' => $live_secret_key[$i], 'enabled' => (isset($status[$i]) ? 'live':'test')];
+        for ($i = 0; $i < count($payment_gateway); $i++) {
+            $tmp[] = [
+                'id' => $id[$i] ?? '', 'payment_gateway' => $payment_gateway[$i] ?? '', 'test_access_key' => $test_access_key[$i],
+                'test_secret_key' => $test_secret_key[$i], 'live_access_key' => $live_access_key[$i],
+                'live_secret_key' => $live_secret_key[$i], 'enabled' => (isset($status[$i]) ? 'live' : 'test')
+            ];
         }
-        if( !empty($tmp)) {
+        if (!empty($tmp)) {
             foreach ($tmp as $key => $value) {
-                if( isset($value['payment_gateway']) && !empty($value['payment_gateway']) ) {
+                if (isset($value['payment_gateway']) && !empty($value['payment_gateway'])) {
 
-                    if( isset( $value['id'] ) && !empty($value['id']) ){
+                    if (isset($value['id']) && !empty($value['id'])) {
                         $pref = PaymentIntegration::find($value['id']);
                         $pref->gateway = $value['payment_gateway'];
                         $pref->test_access_key = $value['test_access_key'];
@@ -288,14 +287,14 @@ class AccountController extends Controller
                         $pref->enabled = $value['enabled'];
                         $pref->update();
                     } else {
-                        
-                        $ins[ 'gateway'] = $value['payment_gateway'];
-                        $ins[ 'test_access_key'] = $value['test_access_key'];
-                        $ins[ 'test_secret_key'] = $value['test_secret_key'];
-                        $ins[ 'live_access_key'] = $value['live_access_key'];
-                        $ins[ 'live_secret_key'] = $value['live_secret_key'];
-                        $ins[ 'enabled'] = $value['enabled'];
-                        $ins[ 'status'] = 1;
+
+                        $ins['gateway'] = $value['payment_gateway'];
+                        $ins['test_access_key'] = $value['test_access_key'];
+                        $ins['test_secret_key'] = $value['test_secret_key'];
+                        $ins['live_access_key'] = $value['live_access_key'];
+                        $ins['live_secret_key'] = $value['live_secret_key'];
+                        $ins['enabled'] = $value['enabled'];
+                        $ins['status'] = 1;
                         $ins['company_id'] = $user->company_id;
                         PaymentIntegration::create($ins);
                     }
@@ -303,6 +302,6 @@ class AccountController extends Controller
             }
         }
         $success = 'Account settings saved';
-        return response()->json(['error'=>[$success], 'status' => '0']);
+        return response()->json(['error' => [$success], 'status' => '0']);
     }
 }

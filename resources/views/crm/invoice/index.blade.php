@@ -73,6 +73,8 @@
                 {"data" : "status" },
                 {"data" : "action" },
             ],
+            "pageLength": 25,
+            order: [[0, 'desc']]
             
         } );
     });
