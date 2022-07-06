@@ -45,15 +45,15 @@
             @csrf
             <input type="hidden" name="key" value="{{$MERCHANT_KEY}}"/>
             <input type="hidden" name="hash" value="{{$hash}}"/>
-            <input type="hidden" name="txnid" value="{{$txnid}}"/>
+            <input type="hidden" name="txnid" value="{{ $order_info->order_id ?? '' }}"/>
             <div class="px-5 pt-4 pb-5 form-block">
                 <div class="row">
                     <div class="col-12">
                         <div class="form-group mb-3 position-relative">
-                            <input type="text" class="input-box form-control w-100" placeholder="Name *"
+                            <input type="text" class="input-box form-control w-100" readonly placeholder="Name *"
                                    aria-label="Recipient's username"
                                    aria-describedby="button-addon2" name="firstname"
-                                   value="{{!empty($posted['firstname']) ? $posted['firstname'] : ''}}">
+                                   value="{{ $order_info->customer->first_name ?? ''}}">
                             <div class="icon-group-append">
                                 <i class="fas fa-user"></i>
                             </div>
@@ -61,8 +61,8 @@
                     </div>
                     <div class="col-12">
                         <div class="form-group mb-3 position-relative">
-                            <input class="input-box form-control w-100" placeholder="Email *" type="email" name="email"
-                                   value="{{!empty($posted['email']) ? $posted['email'] : ''}}">
+                            <input class="input-box form-control w-100" readonly placeholder="Email *" type="email" name="email"
+                                   value="{{ $order_info->customer->email ?? ''}}">
                             <div class="icon-group-append">
                                 <i class="fas fa-envelope"></i>
                             </div>
@@ -70,8 +70,8 @@
                     </div>
                     <div class="col-12">
                         <div class="form-group mb-3 position-relative">
-                            <input class="input-box form-control w-100" placeholder="Phone *" type="number" name="phone"
-                                   value="{{!empty($posted['phone']) ? $posted['phone'] : ''}}">
+                            <input class="input-box form-control w-100" readonly placeholder="Phone *" type="number" name="phone"
+                                   value="{{ $order_info->customer->mobile_no ?? ''}}">
                             <div class="icon-group-append">
                                 <i class="fas fa-phone-alt"></i>
                             </div>
@@ -79,8 +79,8 @@
                     </div>
                     <div class="col-12">
                         <div class="form-group mb-3 position-relative">
-                            <input class="input-box form-control w-100" placeholder="Amount *" type="text" name="amount"
-                                   value="{{!empty($posted['amount']) ? $posted['amount'] : ''}}">
+                            <input class="input-box form-control w-100" readonly placeholder="Amount *" type="text" name="amount"
+                                   value="{{ $order_info->amount ?? ''}}">
                             <div class="icon-group-append">
                                 <i class="fas fa-tag"></i>
                             </div>
@@ -88,7 +88,8 @@
                     </div>
                     <div class="col-12">
                         <div class="form-group mb-3 position-relative">
-                            <textarea class="input-box form-control w-100" placeholder="Note *" name="productinfo">{{!empty($posted['productinfo']) ? $posted['productinfo'] : ''}}</textarea>
+                            <input type="hidden" name="payment_order_no" value="{{ $order_info->order_id ?? '' }}">
+                            <textarea class="input-box form-control w-100" placeholder="Note *" name="productinfo">{{ $order_info->product->product_name ?? '' }}</textarea>
                             <div class="icon-group-append">
                                 <i class="fas fa-pencil-alt"></i>
                             </div>

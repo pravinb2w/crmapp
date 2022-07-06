@@ -28,6 +28,7 @@ class LandingController extends Controller
         $response = $request->session()->pull('razorpay_response');
         $payment_error = $response['erorr'] ?? '';
         $payment_order_no = $response['order_no'] ?? '';
+        $payment_message = $response['message'] ?? '';
         $payment_invoice_no = $response['invoice_no'] ?? '';
         // session()->forget('razorpay_response');
         if ($permalink  != null) {
@@ -43,6 +44,7 @@ class LandingController extends Controller
         $params['payment_error'] = $payment_error;
         $params['payment_order_no'] = $payment_order_no;
         $params['payment_invoice_no'] = $payment_invoice_no;
+        $params['payment_message'] = $payment_message;
         // dd($params);
         return view('landing.landing', $params);
     }

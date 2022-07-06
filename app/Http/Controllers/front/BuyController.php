@@ -26,6 +26,9 @@ use Mail;
 
 class BuyController extends Controller
 {
+    const TEST_URL = 'https://sandboxsecure.payu.in';
+    const PRODUCTION_URL = 'https://secure.payu.in';
+
     public function get_buy_form(Request $request)
     {
         $product_id = $request->product_id;
@@ -51,8 +54,9 @@ class BuyController extends Controller
         $validator                     = Validator::make($request->all(), $role_validator);
 
         if ($validator->passes()) {
-
             $customer = Customer::where('email', $request->email)->first();
+            $product_info = Product::find($request->product_id);
+            $order_no = 'TXN' . date('mdyhis');
 
             if (isset($customer) && !empty($customer)) {
                 $customer_id = $customer->id;
@@ -76,10 +80,10 @@ class BuyController extends Controller
 
             if ($request->pay_gateway == 'razorpay') {
                 $payment_method = 'razor';
+            } else if ($request->pay_gateway == 'payumoney') {
+                $payment_method = $request->pay_gateway;
             }
 
-            $product_info = Product::find($request->product_id);
-            $order_no = 'TXN' . date('mdyhis');
             $ord_ins['order_id'] = $order_no;
             $ord_ins['amount'] = $product_info->price;
             $ord_ins['customer_id'] = $customer_id;
@@ -100,7 +104,7 @@ class BuyController extends Controller
             Payment::create($ins);
             $success = 'Payment Added';
 
-            return response()->json(['error' => [$success], 'status' => '0', 'order_no' => $order_no]);
+            return response()->json(['error' => [$success], 'status' => '0', 'order_no' => $order_no, 'payment_method' => $request->pay_gateway, 'route' => route('redirectToPayU', ['order_no' => $order_no])]);
         }
         return response()->json(['error' => $validator->errors()->all(), 'status' => '1']);
     }

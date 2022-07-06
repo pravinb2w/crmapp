@@ -36,23 +36,26 @@ class Payment extends Model implements Auditable
         'contact_no',
         'currency',
         'invoice_id',
+        'payment_response'
     ];
 
-    public function scopeLatests( Builder $query ) {
-        return $query->orderBy( static::CREATED_AT, 'desc' );
+    public function scopeLatests(Builder $query)
+    {
+        return $query->orderBy(static::CREATED_AT, 'desc');
     }
 
-    public function scopeSearch( Builder $query, $search ) {
+    public function scopeSearch(Builder $query, $search)
+    {
 
-        if( empty( $search ) ) {
+        if (empty($search)) {
             return $query;
         }
 
-        return  $query->where( function( $query ) use( $search ) {
-                    $query->where( 'payment_mode', 'like', "%{$search}%" )
-                        ->orWhere( 'amount', 'like', "%{$search}%" )
-                        ->orWhere( 'payment_method', 'like', "%{$search}%" );
-                }); 
+        return  $query->where(function ($query) use ($search) {
+            $query->where('payment_mode', 'like', "%{$search}%")
+                ->orWhere('amount', 'like', "%{$search}%")
+                ->orWhere('payment_method', 'like', "%{$search}%");
+        });
     }
 
     public function added()
@@ -63,10 +66,10 @@ class Payment extends Model implements Auditable
     public function customer()
     {
         return $this->hasOne(Customer::class, 'id', 'customer_id');
-    } 
+    }
 
     public function deal()
     {
         return $this->hasOne(Deal::class, 'id', 'deal_id');
-    } 
+    }
 }

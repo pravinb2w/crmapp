@@ -1,4 +1,4 @@
-<div class="modal-dialog modal-md">
+<div class="modal-dialog modal-lg">
     
     <div class="modal-content h-100">
         <div class="modal-header px-3" id="myLargeModalLabel">
@@ -62,6 +62,24 @@
                                         @endif
                                     </td>
                                 </tr>
+                                @if( isset( $info->payment_response) && !empty($info->payment_response))
+                             
+                                <tr>
+                                    <td colspan="2">
+                                       
+                                        <table>
+                                        @foreach (unserialize($info->payment_response) as $key => $value)
+
+                                            <tr>
+                                                <th>{{ $key  }}</th>
+                                                <td>{{ $value  }}</td>
+                                            </tr>
+                                        @endforeach
+
+                                        </table>
+                                    </td>
+                                </tr>
+                                @endif
                             </table>
                         </div>
                             

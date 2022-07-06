@@ -99,7 +99,7 @@
                         <div class="col-lg-12 col-md-12">
                             <div class=" text-center">
                                 <h2 class="text-white mb-2 w-100 aos-init"data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="1200">
-                                   Your order Payment has Failed
+                                   {{ $payment_message ??'Your order Payment has Failed' }}
                                 </h2>
                                 <p class="w-100 text-center text-white">
                                     Order No: {{ $payment_order_no ?? 'N/A' }}

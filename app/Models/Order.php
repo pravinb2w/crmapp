@@ -26,5 +26,10 @@ class Order extends Model implements Auditable
     public function customer()
     {
         return $this->hasOne(Customer::class, 'id', 'customer_id');
-    } 
+    }
+
+    public function product()
+    {
+        return $this->hasOne(Product::class, 'product_code', 'product_code');
+    }
 }

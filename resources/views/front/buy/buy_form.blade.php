@@ -102,6 +102,8 @@
                                                                 <img src="{{asset('assets/images/payments/razor.png')}}"  width="75" alt="" for="{{ $gvalue->gateway }}">
                                                                 @elseif($gvalue->gateway == 'ccavenue')
                                                                 <img src="{{asset('assets/images/payments/ccavenue.png')}}" width="75"  alt="" for="{{ $gvalue->gateway }}">
+                                                                @elseif($gvalue->gateway == 'payumoney')
+                                                                <img src="{{asset('assets/images/payments/payumoney.png')}}" width="75"  alt="" for="{{ $gvalue->gateway }}">
                                                                 @endif
                                                             </label>
                                                         </div>
@@ -116,10 +118,10 @@
                                 <div class="col-md-12 mt-3 mb-3 text-end">
                                     <div class="row">
                                         <div class="col-sm-4">
-                                            <button type="button" class="btn btn-light" data-bs-dismiss="modal" aria-label="Close"> Cancel</button>
+                                            <button type="button" class="btn btn-light w-100" data-bs-dismiss="modal" aria-label="Close"> Cancel</button>
                                         </div>
                                         <div class="col-sm-8">
-                                            <button type="submit" class="btn btn-primary btn-sm" id="proceed" > Proceed</button>
+                                            <button type="submit" class="btn btn-primary btn-sm w-100" id="proceed" > Proceed</button>
                                         </div>
                                     </div>
                                 </div>
@@ -127,6 +129,7 @@
                             <form action="{{ route('razorpay.request') }}" id="form-pay">
                                 <input type="hidden" id="order_no" name="order_no">
                             </form>
+                            
                         </div>  
                     </div>
                 </div>
@@ -157,9 +160,13 @@
                             setTimeout(function(){
                                 $('#Mymodal').modal('hide');
                             },100);
-                            if( response.order_no ) {
+                            if( response.payment_method == 'razorpay' ) {
                                 $('#order_no').val(response.order_no);
                                 $('#form-pay').submit();
+                            } else if( response.payment_method == 'payumoney' ) {
+                                if( response.route ){
+                                    window.location.href= response.route;
+                                }
                             }
                         }
                     }            

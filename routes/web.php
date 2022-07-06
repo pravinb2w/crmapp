@@ -35,16 +35,16 @@ Route::get('/razor/init/request', [App\Http\Controllers\front\BuyController::cla
 Route::post('/razor/complete', [App\Http\Controllers\front\BuyController::class, 'razor_payment_complete'])->name('razor.payments.complete');
 Route::post('/', [App\Http\Controllers\LandingController::class, 'payment_response_page'])->name('razor.payments.finish');
 
+// Route::any('payu-money-payment', [App\Http\Controllers\PayuMoneyController::class, 'redirectToPayU'])->name('redirectToPayU');
+Route::any('payu-money-payment/{order_no}', [App\Http\Controllers\PayuMoneyController::class, 'redirectToPayU'])->name('redirectToPayU');
+Route::any('payu-money-payment-cancel', [App\Http\Controllers\PayuMoneyController::class, 'paymentCancel'])->name('payumoney-cancel');
+Route::any('payu-money-payment-success', [App\Http\Controllers\PayuMoneyController::class, 'paymentSuccess'])->name('payumoney-success');
 
 Route::middleware([SetViewVariable::class, 'auth'])->group(function () {
 
     Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web']], function () {
         \UniSharp\LaravelFilemanager\Lfm::routes();
     });
-
-    Route::any('payu-money-payment', [App\Http\Controllers\PayuMoneyController::class, 'redirectToPayU'])->name('redirectToPayU');
-    Route::any('payu-money-payment-cancel', [App\Http\Controllers\PayuMoneyController::class, 'paymentCancel'])->name('payumoney-cancel');
-    Route::any('payu-money-payment-success', [App\Http\Controllers\PayuMoneyController::class, 'paymentSuccess'])->name('payumoney-success');
 
     Route::any('ccavenue', [App\Http\Controllers\PaymentController::class, 'ccavenue_form'])->name('ccavenue');
     Route::any('/ccavenue/response', [App\Http\Controllers\PaymentController::class, 'ccavenue_response'])->name('ccavenue-response');
