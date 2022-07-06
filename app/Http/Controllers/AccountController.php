@@ -273,11 +273,13 @@ class AccountController extends Controller
                 'live_secret_key' => $live_secret_key[$i], 'enabled' => (isset($status[$i]) ? 'live' : 'test')
             ];
         }
+        $in_id = [];
         if (!empty($tmp)) {
             foreach ($tmp as $key => $value) {
                 if (isset($value['payment_gateway']) && !empty($value['payment_gateway'])) {
 
                     if (isset($value['id']) && !empty($value['id'])) {
+                        $in_id[] = $value['id'];
                         $pref = PaymentIntegration::find($value['id']);
                         $pref->gateway = $value['payment_gateway'];
                         $pref->test_access_key = $value['test_access_key'];
@@ -300,6 +302,9 @@ class AccountController extends Controller
                     }
                 }
             }
+        }
+        if (!empty($in_id)) {
+            $not_in = PaymentIntegration::whereNotIn('id', $in_id)->delete();
         }
         $success = 'Account settings saved';
         return response()->json(['error' => [$success], 'status' => '0']);

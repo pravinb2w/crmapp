@@ -109,8 +109,21 @@
     </table>
 
 </form> 
+@php
+    $gateway = config('constant.payment_gateway');
+@endphp
+
 <script>
 var count = 0;
+var payment_gateway = @json($gateway);
+var keys = Object.keys(payment_gateway);
+var op_pay = '';
+if( payment_gateway ) {
+    for (var i = 0, len = keys.length; i < len; i++) {
+        op_pay += '<option value="'+keys[i]+'">'+payment_gateway[keys[i]]+'</option>';
+    }
+}
+// console.log( JSON.parse(payment_gateway));
 $("#addprefRow").click(function () {
     var html = '';
     html += '<div >';
@@ -128,7 +141,9 @@ $("#addprefRow").click(function () {
                     <div class="row ">
                         <div class="col-6">
                             <label for="">Payment Gateway</label>
-                            <input type="text" name="payment_gateway[]" id="payment_gateway" class="form-control">
+                            <select name="payment_gateway[]" id="payment_gateway" class="form-control">
+                                <option value="">select</option>`+op_pay+`
+                            </select>
                         </div>
                         <div class="col-6">
                             <label for="status_`+count+`" class="">Live Mode</label>
