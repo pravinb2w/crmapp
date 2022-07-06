@@ -1,8 +1,8 @@
-<?php 
+<?php
 
 
 return [
-	'role_menu' => [
+    'role_menu' => [
         'account',
         'dashboard',
         'notes',
@@ -45,8 +45,6 @@ return [
         'razorpay' => 'Razor Pay',
         'ccavenue' => 'CCAvenue',
         'payumoney' => 'PayUmoney',
-        'paybiz' => 'PayBiz',
-        'citrus' => 'Citrus'
     ],
     'workflow_type' => [
         'New Customer Addition',
