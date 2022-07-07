@@ -95,7 +95,7 @@ class PayuMoneyController extends \InfyOm\Payu\PayuMoneyController
         $order_info->update();
 
         $invoice = Invoice::where('order_no', $order_no)->first();
-        $invoice->status = 1; //cancelled;
+        $invoice->status = 1; //completed;
         $invoice->paid_at = date('Y-m-d H:i:s');
         $invoice->paid_amount = $amount;
         $invoice->added_by = Auth::id() ?? null;

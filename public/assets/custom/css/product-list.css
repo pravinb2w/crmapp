@@ -73,7 +73,7 @@
     position: relative;
   }
   
-  .product-head h2, .product-head h3 {
+  .text-box h2, .text-box h3 {
     float: left;
     font-family: 'Roboto', sans-serif;
     font-weight: 400;
@@ -81,6 +81,27 @@
     text-transform: uppercase;
     margin: 0.2em auto;
   }
+  .text-box h2 {
+    font-size: 22px;
+  }
+  h2.price {
+    font-size: 18px;
+  }
+
+  @media (min-width: 1200px) {
+    .text-box h2 {
+      font-size: 20px;
+    }
+    .text-box h3 {
+      float: left;
+      font-family: 'Roboto', sans-serif;
+      font-weight: 400;
+      font-size: 1em;
+      text-transform: uppercase;
+      margin: 0.2em auto;
+    }
+  }
+
   
   .item, .price {
     clear: left;

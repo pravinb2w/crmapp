@@ -80,8 +80,10 @@ class BuyController extends Controller
 
             if ($request->pay_gateway == 'razorpay') {
                 $payment_method = 'razor';
+                $route = route('razorpay.request', ['order_no' => $order_no]);
             } else if ($request->pay_gateway == 'payumoney') {
                 $payment_method = $request->pay_gateway;
+                $route = route('redirectToPayU', ['order_no' => $order_no]);
             }
 
             $ord_ins['order_id'] = $order_no;
@@ -104,97 +106,102 @@ class BuyController extends Controller
             Payment::create($ins);
             $success = 'Payment Added';
 
-            return response()->json(['error' => [$success], 'status' => '0', 'order_no' => $order_no, 'payment_method' => $request->pay_gateway, 'route' => route('redirectToPayU', ['order_no' => $order_no])]);
+            return response()->json(['error' => [$success], 'status' => '0', 'order_no' => $order_no, 'payment_method' => $request->pay_gateway, 'route' => $route]);
         }
         return response()->json(['error' => $validator->errors()->all(), 'status' => '1']);
     }
     public function razorpay_initiate_request(Request $request)
     {
         $order_no = $request->order_no;
-        $order_info = Order::where('order_id', $order_no)->first();
-        $pay_info = PaymentIntegration::where('gateway', 'Razorpay')->first();
-        // Create an object of razorpay
-        if ($pay_info->enabled == 'live') {
-            $razorpay_id = $pay_info->live_access_key;
-            $api = new Api($pay_info->live_access_key, $pay_info->live_secret_key);
-        } else {
-            $razorpay_id = $pay_info->test_access_key;
+        $order_info = Order::where(['order_id' => $order_no, 'status' => 'pending'])->first();
+        if (isset($order_info) && !empty($order_info)) {
 
-            $api = new Api($pay_info->test_access_key, $pay_info->test_secret_key);
-        }
-        // In razorpay you have to convert rupees into paise we multiply by 100
-        // Currency will be INR
-        // Creating order
-        $order = $api->order->create(
-            array(
-                'receipt' => now()->timestamp,
+            $pay_info = PaymentIntegration::where('gateway', 'Razorpay')->first();
+            // Create an object of razorpay
+            if ($pay_info->enabled == 'live') {
+                $razorpay_id = $pay_info->live_access_key;
+                $api = new Api($pay_info->live_access_key, $pay_info->live_secret_key);
+            } else {
+                $razorpay_id = $pay_info->test_access_key;
+
+                $api = new Api($pay_info->test_access_key, $pay_info->test_secret_key);
+            }
+            // In razorpay you have to convert rupees into paise we multiply by 100
+            // Currency will be INR
+            // Creating order
+            $order = $api->order->create(
+                array(
+                    'receipt' => now()->timestamp,
+                    'amount' => $order_info->amount * 100,
+                    'currency' => 'INR'
+                )
+            );
+
+
+            //insert in invoice and invoice item table
+            $invoice_no = CommonHelper::get_invoice_code();
+            $ins['invoice_no'] = $invoice_no;
+            $ins['order_no'] = $order_no;
+            $ins['issue_date'] = date('Y-m-d');
+            $ins['due_date'] = date('Y-m-d');
+            $ins['customer_id'] = $order_info->customer_id;
+            $ins['address'] = $order_info->customer->address;
+            $ins['email'] = $order_info->customer->email;
+
+            $ins['total'] = $order_info->amount;
+            $ins['status'] = 0;
+
+            $invoice_id = Invoice::create($ins)->id;
+            $product_info = Product::where('product_code', $order_info->product_code)->first();
+            $up_data = [];
+            $ups['invoice_id'] = $invoice_id;
+            $ups['product_id'] = $product_info->id ?? '';
+            $ups['description'] = '';
+            $ups['qty'] = 1;
+            $ups['unit_price'] = $order_info->amount;
+            $ups['discount'] = 0;
+            $ups['cgst'] = 0;
+            $ups['sgst'] = 0;
+            $ups['igst'] = 0;
+            $ups['amount'] = $order_info->amount;
+
+            InvoiceItem::create($ups);
+            $pdf_template = $request->pdf_template;
+            $this->generatePDF($invoice_id, $pdf_template);
+
+            // Return response on payment page
+            $response = [
+                'orderId' => $order['id'],
+                'razorpayId' => $razorpay_id,
                 'amount' => $order_info->amount * 100,
-                'currency' => 'INR'
-            )
-        );
+                'name' => $order_info->customer->first_name,
+                'currency' => 'INR',
+                'email' => $order_info->customer->email,
+                'contact_no' => $order_info->customer->mobile_no,
+                'address' => $order_info->customer->address,
+                'description' => 'description',
+                'customer_id' => $order_info->customer_id,
+                'invoice_id' => $invoice_id,
+                'txn_no' => '',
+                'order_no' => $order_no,
+            ];
 
+            $payment_info = Payment::where('order_id', $order_no)->first();
+            $payment_info->currency = 'INR';
+            $payment_info->invoice_id = $invoice_id;
+            $payment_info->name = $order_info->customer->first_name;
+            $payment_info->email = $order_info->customer->email;
+            $payment_info->contact_no = $order_info->customer->mobile_no;
+            $payment_info->description = 'Razor pay transaction';
+            $payment_info->session_id = session()->getId();
+            $payment_info->update();
 
-        //insert in invoice and invoice item table
-        $invoice_no = CommonHelper::get_invoice_code();
-        $ins['invoice_no'] = $invoice_no;
-        $ins['order_no'] = $order_no;
-        $ins['issue_date'] = date('Y-m-d');
-        $ins['due_date'] = date('Y-m-d');
-        $ins['customer_id'] = $order_info->customer_id;
-        $ins['address'] = $order_info->customer->address;
-        $ins['email'] = $order_info->customer->email;
-
-        $ins['total'] = $order_info->amount;
-        $ins['status'] = 0;
-
-        $invoice_id = Invoice::create($ins)->id;
-        $product_info = Product::where('product_code', $order_info->product_code)->first();
-        $up_data = [];
-        $ups['invoice_id'] = $invoice_id;
-        $ups['product_id'] = $product_info->id ?? '';
-        $ups['description'] = '';
-        $ups['qty'] = 1;
-        $ups['unit_price'] = $order_info->amount;
-        $ups['discount'] = 0;
-        $ups['cgst'] = 0;
-        $ups['sgst'] = 0;
-        $ups['igst'] = 0;
-        $ups['amount'] = $order_info->amount;
-
-        InvoiceItem::create($ups);
-        $pdf_template = $request->pdf_template;
-        $this->generatePDF($invoice_id, $pdf_template);
-
-        // Return response on payment page
-        $response = [
-            'orderId' => $order['id'],
-            'razorpayId' => $razorpay_id,
-            'amount' => $order_info->amount * 100,
-            'name' => $order_info->customer->first_name,
-            'currency' => 'INR',
-            'email' => $order_info->customer->email,
-            'contact_no' => $order_info->customer->mobile_no,
-            'address' => $order_info->customer->address,
-            'description' => 'description',
-            'customer_id' => $order_info->customer_id,
-            'invoice_id' => $invoice_id,
-            'txn_no' => '',
-            'order_no' => $order_no,
-        ];
-
-        $payment_info = Payment::where('order_id', $order_no)->first();
-        $payment_info->currency = 'INR';
-        $payment_info->invoice_id = $invoice_id;
-        $payment_info->name = $order_info->customer->first_name;
-        $payment_info->email = $order_info->customer->email;
-        $payment_info->contact_no = $order_info->customer->mobile_no;
-        $payment_info->description = 'Razor pay transaction';
-        $payment_info->session_id = session()->getId();
-        $payment_info->update();
-
-        Session::put('pay_post', $response);
-        // Let's checkout payment page is it working
-        return view('front.buy.razor_pay_page', compact('response'));
+            Session::put('pay_post', $response);
+            // Let's checkout payment page is it working
+            return view('front.buy.razor_pay_page', compact('response'));
+        } else {
+            abort(403);
+        }
     }
 
     // In this function we return boolean if signature is correct
@@ -231,6 +238,8 @@ class BuyController extends Controller
         // echo '<pre>';
         // print_r( $pay_post );
         $pay_info = Payment::where('session_id', session()->getId())->first();
+        $pay_info->payment_response = serialize($request->all());
+        $pay_info->update();
         // print_r( $pay_info );
 
         $pay_info->razorpay_id = $request->all()['rzp_orderid'];
