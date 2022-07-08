@@ -283,7 +283,7 @@
             </section>
             
             {!! $result->iframe_tags !!}
-
+ 
             <section class="py-5">
                 <div class="container">
                     <div class="row align-items-center m-0">

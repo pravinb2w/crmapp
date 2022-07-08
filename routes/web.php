@@ -13,9 +13,6 @@ use App\Http\Middleware\SetViewVariable;
 |
 */
 
-Route::get('/', function () {
-    return  redirect(route('landing.index'));
-});
 
 Route::get('/send-mail', [App\Http\Controllers\MailController::class, 'sendMail'])->name('send');
 
@@ -24,7 +21,7 @@ Route::post('/logout', [App\Http\Controllers\Auth\LoginController::class, 'logou
 Route::post('/login/submit', [App\Http\Controllers\Auth\LoginController::class, 'check_login'])->name('login.submit');
 
 Route::get('generate-pdf', [App\Http\Controllers\PDFController::class, 'generatePDF']);
-Route::get('/crm/{permalink?}', [App\Http\Controllers\LandingController::class, 'index'])->name('landing.index');
+Route::get('/{permalink?}', [App\Http\Controllers\LandingController::class, 'index'])->name('landing.index');
 Route::post('/enquiry', [App\Http\Controllers\LandingController::class, 'enquiry_save'])->name('enquiry.save');
 Route::get('/approve/invoice/{id}', [App\Http\Controllers\InvoiceController::class, 'approve_invoice'])->name('approve-invoice');
 Route::get('/reject/invoice/{id}', [App\Http\Controllers\InvoiceController::class, 'reject_invoice'])->name('reject-invoice');
@@ -40,7 +37,7 @@ Route::any('payu-money-payment/{order_no}', [App\Http\Controllers\PayuMoneyContr
 Route::any('payu-money-payment-cancel', [App\Http\Controllers\PayuMoneyController::class, 'paymentCancel'])->name('payumoney-cancel');
 Route::any('payu-money-payment-success', [App\Http\Controllers\PayuMoneyController::class, 'paymentSuccess'])->name('payumoney-success');
 
-Route::middleware([SetViewVariable::class, 'auth'])->group(function () {
+Route::middleware([SetViewVariable::class, 'auth'])->prefix('dev')->group(function () {
 
     Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web']], function () {
         \UniSharp\LaravelFilemanager\Lfm::routes();

@@ -91,6 +91,8 @@
                             </div>
                         @endif
                         <div class="w-100">
+                            <div class="text-mute"><small>Img Dimension : 570px x 340px (Minimum)</small></div>
+
                             @if ($result ?? '')
                                 <input type="hidden" name="about_image_data_url"  class="form-control mb-2 d-one"  value="{{ $result->file_about}}">
                                 <input type="file" name="about_image"  class="form-control mb-3" >
@@ -98,10 +100,11 @@
                                 <input type="file" name="about_image" id="" class="form-control mb-3" required  placeholder="Type here...">
                             @endif 
                             <label for="" class="custom-label bg-white">About Image</label>
+
                         </div>
                     </div> 
-                    <div class="custom-form-group col px-0 ps-1">
-                        <input type="text" name="about_title"  value="{{ $result->about_title ?? '' }}" class="form-control mb-3" required  placeholder="Type here...">
+                    <div class="custom-form-group col px-0 ps-1 mt-2 ">
+                        <input type="text" name="about_title"  value="{{ $result->about_title ?? '' }}" class="form-control mb-3 mt-1" required  placeholder="Type here...">
                         <label for="" class="custom-label bg-white">About Heading</label>
                     </div> 
                 </div>
@@ -118,13 +121,16 @@
             </div>
             <div class="card-body p-1">
                 <div class="row m-0" id="features_list">
-                    @if ($result->LandingPageFeatures ?? '')
+                    @if ( isset($result->LandingPageFeatures) && !empty($result->LandingPageFeatures))
                         @foreach ($result->LandingPageFeatures as $row)
                             <div class="col-4 p-1" id="featurCol">
                                 <div class="shadow border rounded p-2 pt-3 position-relative">
                                     <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-white p-0">
                                         <span onclick="featureDelete(this)" class="badge badge-danger-lighten rounded-pill btn btn-sm shadow"><i class="bi fa-2x bi-x"></i></span>
                                     </span>
+                                    <div class="custom-form-group text-center">
+                                        <img src="{{ $row->icon }}" alt="" width="45px;">
+                                    </div>
                                     <div class="custom-form-group">
                                         <input name="feature_icon[]" type="file" id="" class="form-control mb-3"  >
                                         <input name="feature_icon_data_url[]" type="hidden" value="{{ $row->icon }}"  class="form-control mb-3" >
@@ -427,7 +433,18 @@
                 <div class="my-1"><i class="me-2 bi bi-key-fill"></i> Status: <b>Public</b> <b>Imediately</b></div>
                 <div class="my-1"><i class="me-2 bi bi-eye-fill"></i> Visibility: <b>Public</b> <b>Imediately</b></div>
                 <div class="my-1"><i class="me-2 bi bi-calendar-check-fill"></i> Publish: <b>Imediately</b></div>
-                {{-- <div class="my-1"><i class="me-2 bi bi-circle-square"></i> SEO: <b>N / A</b></div> --}}
+                @if( isset( $result->permalink ) && !empty($result->permalink))
+                    <div class="my-1"><i class="me-2 bi bi-calendar-check-fill"></i> 
+                        Permalink: <b>{{ route('landing.index', [$result->permalink]) }}</b> 
+                        <span role="button" onclick="return copy_link('{{ route('landing.index', [$row->permalink]) }}')"> <i class="fa fa-copy"></i></span>
+                    </div>
+                @endif
+                <div class="my-1 mt-2">
+                    <input type="checkbox" name="is_default_landing_page" id="is_default_landing_page" value="1" @if(isset($result->is_default_landing_page) && $result->is_default_landing_page == 1 ) checked @endif>
+                    <label for="is_default_landing_page" class="mx-2"> Make Default Landing Page</label>
+                </div>
+                
+
             </div>
             <div class="card-footer">
                 <div class="d-flex justify-content-between">

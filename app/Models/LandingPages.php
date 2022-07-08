@@ -18,16 +18,19 @@ class LandingPages extends Model
         "contact_us",
         "iframe_tags",
         "other_tags",
-        'about_title' ,
+        'about_title',
         'file_about',
-        'about_content' ,
-        'primary_color' ,
+        'about_content',
+        'primary_color',
         'secondary_color',
+        'is_default_landing_page'
     ];
-    public function LandingPageSocialMedias() {
+    public function LandingPageSocialMedias()
+    {
         return $this->hasMany(LandingPageSocialMedias::class, 'page_id', 'id');
-    } 
-    public function LandingPageBannerSliders() {
+    }
+    public function LandingPageBannerSliders()
+    {
         return $this->hasMany(LandingPageBannerSliders::class, 'page_id', 'id');
     }
     public function LandingPageFormInputs()
@@ -38,4 +41,4 @@ class LandingPages extends Model
     {
         return $this->hasMany(LandingPageFeatures::class, 'page_id', 'id');
     }
-} 
+}

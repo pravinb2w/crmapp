@@ -58,7 +58,9 @@
                     } else {
                         $('#error').addClass('alert alert-success');
                         $('#error').text(response.success);
-                        console.log(response);
+                        setTimeout(() => {
+                            window.location.href="{{ route('pages') }}";                            
+                        }, 300);
                     }
                     $('.loader').hide();
                 },

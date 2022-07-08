@@ -77,7 +77,7 @@
                     <div class="input-group">
                         <span class="input-group-btn">
                             <a id="lfm2" data-input="thumbnail2" data-preview="holder2" class="btn btn-primary text-white">
-                                <i class="fa fa-picture-o"></i> Choose
+                                <i class="fa fa-picture-o"></i> Choose Image ( 570px x 340px )
                             </a>
                         </span>
                         <input id="thumbnail2" class="form-control" type="text" name="product_image">

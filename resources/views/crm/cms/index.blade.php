@@ -30,7 +30,9 @@
                                     <th>S.No</th>
                                     <th class="all">Page Name</th>
                                     <th>Page Logo</th>
+                                    <th>Link</th>
                                     <th>Created at</th>
+                                    <th>Default Landing Page</th>
                                     <th>Status</th>
                                     <th style="width: 120px;">Action</th>
                                 </tr>
@@ -44,7 +46,16 @@
                                             </th>
                                             <td>{{ $row->page_title }}</td>
                                             <td><img src="{{  $row->page_logo }} "  height="40px" alt=""></td>
+                                            <td>
+                                                <div>
+                                                    <label for="" id="">{{ route('landing.index', [$row->permalink]) }}</label>
+                                                    <span role="button" onclick="return copy_link('{{ route('landing.index', [$row->permalink]) }}')"> <i class="fa fa-copy"></i></span>
+                                                </div>
+                                            </td>
                                             <td>{{ $row->created_at }}</td>
+                                            <td>
+                                                <span class="badge @if( $row->is_default_landing_page ) bg-success @else bg-danger @endif">@if( $row->is_default_landing_page ) Yes @else No @endif</span>
+                                            </td>
                                             <td>
                                                 @if ($row->status == 1)
                                                     <span class="badge bg-success"> Active </span>
@@ -70,6 +81,7 @@
         </div>
     </div> 
 </div> 
+
 @endsection
 
  

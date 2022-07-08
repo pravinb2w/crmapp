@@ -34,9 +34,12 @@ class LandingController extends Controller
         if ($permalink  != null) {
             $result     = LandingPages::where('permalink', '=', $permalink)->first();
             if (empty($result)) {
-                $result = LandingPages::latest()->first();
+                abort(404);
             }
         } else {
+            $result = LandingPages::where('is_default_landing_page', 1)->first();
+        }
+        if (!$result) {
             $result   = LandingPages::latest()->first();
         }
         $params['result'] = $result;

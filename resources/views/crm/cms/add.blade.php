@@ -34,7 +34,8 @@
 
 @section('add_on_script')
     @include('crm.cms.assets')
-    <script> 
+    <script>
+    $('#account_form').validate(); 
         $('#account_form').submit(function(e) {
             e.preventDefault();
         
@@ -58,7 +59,9 @@
                     } else {
                         $('#error').addClass('alert alert-success');
                         $('#error').text(response.success);
-                        console.log(response);
+                        setTimeout(() => {
+                            window.location.href="{{ route('pages') }}";                            
+                        }, 300);
                     }
                     $('.loader').hide();
                 },

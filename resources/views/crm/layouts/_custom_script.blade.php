@@ -151,4 +151,14 @@ function make_stage_completed(stage_id, deal_id ){
             }            
         });
     }
+
+    function copy_link( link ) {
+        var inp =document.createElement('input');
+        document.body.appendChild(inp)
+        inp.value =link
+        inp.select();
+        document.execCommand('copy',false);
+        inp.remove();
+        toastr.success('success', 'Link copied successfully');
+    }
 </script>
