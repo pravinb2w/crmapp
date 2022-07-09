@@ -13,7 +13,6 @@ use App\Http\Middleware\SetViewVariable;
 |
 */
 
-
 Route::get('/send-mail', [App\Http\Controllers\MailController::class, 'sendMail'])->name('send');
 
 Route::get('/devlogin', [App\Http\Controllers\Auth\LoginController::class, 'login_page'])->name('login');

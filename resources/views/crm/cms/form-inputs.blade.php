@@ -21,13 +21,19 @@
             </div>
             <div class="card-body p-1">
                 <div class="row m-0" id="banner_sliders">
-                    @if ($result->LandingPageBannerSliders ?? '')
+                    @php
+                        // dd( $result->LandingPageBannerSliders );
+                    @endphp
+                    @if ( isset($result->LandingPageBannerSliders) && !empty($result->LandingPageBannerSliders))
                         @foreach ($result->LandingPageBannerSliders as $row)
                             <div class="col-4 p-1" id="bannerCol">
                                 <div class="shadow border rounded p-2 pt-3 position-relative">
                                     <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-white p-0">
                                         <span onclick="bannerDelete(this)" class="badge badge-danger-lighten rounded-pill btn btn-sm shadow"><i class="bi fa-2x bi-x"></i></span>
                                     </span>
+                                    <div class="custom-form-group text-center">
+                                        <img src="{{ $row->image }}" alt="" width="105px;">
+                                    </div>
                                     <div class="custom-form-group">
                                         <input name="banner_image[]" type="file" value="" class="form-control mb-3"placeholder="Type here...">
                                         <input name="banner_image_data_url[]" type="hidden" value="{{ $row->image }}" class="form-control mb-3" placeholder="Type here...">
@@ -42,7 +48,7 @@
                                         <label for="" class="custom-label bg-white">Title</label>
                                     </div>
                                     <div class="custom-form-group">
-                                        <textarea name="banner_content[]" value="" cols="30" rows="6" class="rounded-0 form-control-sm form-control" placeholder="Type here...">{{ $row->content }}</textarea>
+                                        <textarea name="banner_content[]" value="" cols="30" rows="3" class="rounded-0 form-control-sm form-control" placeholder="Type here...">{{ $row->content }}</textarea>
                                         <label for="" class="custom-label bg-white">Content</label>
                                     </div>  
                                 </div>
@@ -55,9 +61,10 @@
                                         <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-white p-0">
                                             <span onclick="bannerDelete(this)" class="badge badge-danger-lighten rounded-pill btn btn-sm shadow"><i class="bi fa-2x bi-x"></i></span>
                                         </span>
+                                       
                                         <div class="custom-form-group">
                                             <input name="banner_image[]" type="file" id="" class="form-control mb-3" required  placeholder="Type here...">
-                                            <label for="" class="custom-label bg-white">Cover Iamge</label>
+                                            <label for="" class="custom-label bg-white">Cover Image</label>
                                         </div> 
                                         <div class="custom-form-group">
                                             <input type="text" name="sub_banner_title[]" id="" class="form-control mb-3" required  placeholder="Type here...">
@@ -132,9 +139,9 @@
                                         <img src="{{ $row->icon }}" alt="" width="45px;">
                                     </div>
                                     <div class="custom-form-group">
-                                        <input name="feature_icon[]" type="file" id="" class="form-control mb-3"  >
+                                        <input name="feature_icon[]" type="file" id="" class="form-control mb-3" placeholder=""  >
                                         <input name="feature_icon_data_url[]" type="hidden" value="{{ $row->icon }}"  class="form-control mb-3" >
-                                        <label for="" class="custom-label bg-white">Icon Image</label>
+                                        <label for="" class="custom-label bg-white">Icon Image (45px*45px)</label>
                                     </div> 
                                     <div class="custom-form-group">
                                         <input type="text" name="feature_title[]" value="{{ $row->title }}" class="form-control mb-3" required  placeholder="Type here...">

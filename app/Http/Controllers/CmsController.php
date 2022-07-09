@@ -184,6 +184,20 @@ class CmsController extends Controller
             $update->LandingPageFeatures()->delete();
         }
 
+        $update->LandingPageFormInputs()->delete();
+        if ($request->form_input_type) {
+            foreach ($request->form_input_type as $i => $form) {
+                if (isset($request->form_input_type[$i]) && !empty($request->form_input_type[$i])) {
+                    $input_arr = [
+                        'input_type'        =>  $request->form_input_type[$i],
+                        'input_required'    =>  $request->form_input_required[$i],
+                    ];
+                    $update->LandingPageFormInputs()->create($input_arr);
+                }
+            }
+        } else {
+            $update->LandingPageFormInputs()->delete();
+        }
 
         return response()->json(['success' => "Landing page to be created successfully !"]);
     }
