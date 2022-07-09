@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use CommonHelper;
 use Auth;
 use Illuminate\Support\Facades\Mail;
-use App\Mail\TestEmail;
+use App\Jobs\SendMailJob;
 use DB;
 
 class MailController extends Controller
@@ -17,14 +17,21 @@ class MailController extends Controller
             //Set mail configuration
             CommonHelper::setMailConfig();
 
-            $data = ['name' => "Virat Gandhi"];
-            $subject = 'Testing Mail';
-            $body = [
-                'content' => 'test content of the crm by durariaj'
+            $details = [
+                'to' => 'duraibytes@gmail.com',
+                'subject' => 'Yesyinh maila',
+                'attachment' => '',
+                'body' => [
+                    'name' => 'Durairja ',
+                    'content' => 'ewl ocem otht e board',
+                ]
+
             ];
-            $send_mail = new TestEmail($body, $subject);
-            // return $send_mail->render();
-            Mail::to('duraibytes@gmail.com')->send($send_mail);
+            SendMailJob::dispatch($details)->delay(now()->addMinutes(5));
+
+            // $send_mail = new TestEmail($body, $subject);
+            // // return $send_mail->render();
+            // Mail::to('duraibytes@gmail.com')->send($send_mail);
 
 
             // Mail::send(['text' => 'mail'], $data, function ($message)
