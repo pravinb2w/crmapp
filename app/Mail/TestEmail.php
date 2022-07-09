@@ -17,7 +17,7 @@ class TestEmail extends Mailable
      */
     public $details;
 
-    public function __construct($details,)
+    public function __construct($details)
     {
         $this->details = $details;
     }
