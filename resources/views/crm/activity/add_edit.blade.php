@@ -10,27 +10,34 @@
                 </div>
             </div> 
             <style>
+                @media (min-width: 992px) {
+                    .modal-right .modal-body {
+                        margin: 0rem auto;
+                        max-height: 110vh !important;
+                    }
+                }
+
                 /* width */
-                    .modal-right .modal-body::-webkit-scrollbar {
+                .modal-right .modal-body::-webkit-scrollbar {
                     width: 4px;
-                    }
+                }
 
-                    /* Track */
-                    .modal-right .modal-body::-webkit-scrollbar-track {
-                    background: #f1f1f1; 
-                    }
-                    
-                    /* Handle */
-                    .modal-right .modal-body::-webkit-scrollbar-thumb {
-                    background: #00bfff3b; 
-                    }
+                /* Track */
+                .modal-right .modal-body::-webkit-scrollbar-track {
+                background: #f1f1f1; 
+                }
+                
+                /* Handle */
+                .modal-right .modal-body::-webkit-scrollbar-thumb {
+                background: #00bfff3b; 
+                }
 
-                    /* Handle on hover */
-                    .modal-right .modal-body::-webkit-scrollbar-thumb:hover {
-                    background: rgb(0, 149, 255); 
-                    }
+                /* Handle on hover */
+                .modal-right .modal-body::-webkit-scrollbar-thumb:hover {
+                background: rgb(0, 149, 255); 
+                }
             </style>
-            <div class="modal-body d-flex justify-content-center align-items-center h-100 p-3" style="max-height: 100vh">
+            <div class="p-3" >
                 <div class="w-100" id="activitiy-icon">
                     <label for="">Title</label>
                     <div class="form-group">

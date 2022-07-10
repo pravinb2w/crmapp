@@ -76,7 +76,7 @@ class PayuMoneyController extends \InfyOm\Payu\PayuMoneyController
 
         $ins_mail = array(
             'type' => 'order',
-            'type_id' => $order_no,
+            'type_id' => $order_info->id,
             'email_type' => 'cancel_payment',
             'params' => serialize($extract),
             'to' => $order_info->customer->email,
