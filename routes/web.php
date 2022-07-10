@@ -14,6 +14,7 @@ use App\Http\Middleware\SetViewVariable;
 */
 
 Route::get('/send-mail', [App\Http\Controllers\MailController::class, 'sendMail'])->name('send');
+Route::get('/cron-send-mail', [App\Http\Controllers\CronController::class, 'sendMail'])->name('cron.send.mail');
 
 Route::get('/devlogin', [App\Http\Controllers\Auth\LoginController::class, 'login_page'])->name('login');
 Route::post('/logout', [App\Http\Controllers\Auth\LoginController::class, 'logout'])->name('logout');

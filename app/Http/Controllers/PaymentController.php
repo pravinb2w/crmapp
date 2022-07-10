@@ -10,8 +10,10 @@ use App\Models\CompanySettings;
 use App\Models\Customer;
 use App\Models\Deal;
 use App\Models\Invoice;
+use App\Models\Order;
 use App\Models\Payment;
 use App\Models\PaymentIntegration;
+use App\Models\SendMail;
 use Illuminate\Support\Str;
 use Razorpay\Api\Api;
 use Kishanio\CCAvenue\Payment as CCAvenueClient;
@@ -134,7 +136,7 @@ class PaymentController extends Controller
         } else {
             $role_validator   = [
                 'payment_mode'      => ['required', 'string', 'max:255'],
-                'payment_method'      => ['required', 'string', 'max:255'],
+                'pay_gateway'      => ['required', 'string', 'max:255'],
                 'amount'      => ['required', 'string', 'max:255'],
                 'payment_status'      => ['required', 'string', 'max:255'],
             ];
@@ -144,30 +146,82 @@ class PaymentController extends Controller
         $validator                     = Validator::make($request->all(), $role_validator);
 
         if ($validator->passes()) {
+            $invoice_id = $request->invoice_id;
+            $invoice_info = Invoice::find($invoice_id);
+            $order_no = 'TXN' . date('mdyhis');
+            $temp_no = base64_encode('TEMP' . date('mdyhis'));
+
+            if ($request->pay_gateway == 'razorpay') {
+                $payment_method = 'razor';
+                $route = route('razorpay.request', ['order_no' => $order_no]);
+            } else if ($request->pay_gateway == 'payumoney') {
+                $payment_method = $request->pay_gateway;
+                $route = route('redirectToPayU', ['order_no' => $order_no]);
+            }
+
+            $ord_ins['order_id'] = $order_no;
+            $ord_ins['amount'] = $invoice_info->total;
+            $ord_ins['customer_id'] = $request->customer_id;
+            $ord_ins['payment_gateway'] = $request->pay_gateway;
+            $ord_ins['description'] = '';
+            $ord_ins['status'] = 'pending';
+
+            $order_id = Order::create($ord_ins)->id;
+
+
+            $ins['payment_mode'] = $request->payment_mode;
+            $ins['customer_id'] = $request->customer_id;
+            $ins['deal_id'] = $request->deal_id ?? null;
+            $ins['invoice_id'] = $request->invoice_id ?? null;
+            $ins['amount'] = $invoice_info->total;
+            $ins['payment_method'] = $payment_method;
+            $ins['cheque_no'] = $request->cheque_no ?? null;
+            if ($request->cheque_date) {
+                $ins['cheque_date'] = date('Y-m-d', strtotime($request->cheque_date));
+            }
+            $ins['reference_no'] = $request->reference_no ?? null;
+            $ins['order_id'] = $order_no;
+            $ins['added_by'] = Auth::id();
+
+            $invoice_info->order_no = $order_no;
+            $invoice_info->update();
+
             if ($request->payment_mode == 'online') {
-                $success = 'Redirect to Payment page';
+                $customer_info = Customer::find($request->customer_id);
+                $ins['generated_links'] = $route;
+                $ins['payment_status'] = 'pending';
+                $ins['temp_no'] = $temp_no;
+                $payment_id = Payment::create($ins)->id;
+
+                $company = CompanySettings::find(1);
+
+                $extract = array(
+                    'name' => $customer_info->first_name,
+                    'order_no' => $order_no,
+                    'app_name' => env('APP_NAME'),
+                    'company_address' => $company->address ?? '',
+                    'pay_url' => $route,
+                    'amount' => $invoice_info->total
+                );
+
+                $ins_mail = array(
+                    'type' => 'payment',
+                    'type_id' => $payment_id,
+                    'email_type' => 'payment_url',
+                    'params' => serialize($extract),
+                    'to' => $customer_info->email ?? 'duraibytes@gmail.com'
+                );
+                SendMail::create($ins_mail);
+
+                $success = 'Payment url generated and sent to customer email.';
                 $request->session()->put('pay_post', $_POST);
 
-                return response()->json(['error' => [$success], 'status' => '0', 'pay_gateway' => $request->pay_gateway]);
+                return response()->json(['error' => [$success], 'status' => '0']);
             } else {
-                $ins['payment_mode'] = $request->payment_mode;
-                $ins['customer_id'] = $request->customer_id;
-                $ins['deal_id'] = $request->deal_id ?? null;
-                $ins['invoice_id'] = $request->invoice_id ?? null;
-                $ins['amount'] = $request->amount;
-                $ins['payment_method'] = $request->payment_method;
-                $ins['cheque_no'] = $request->cheque_no ?? null;
-                if ($request->cheque_date) {
-                    $ins['cheque_date'] = date('Y-m-d', strtotime($request->cheque_date));
-                }
-                $ins['reference_no'] = $request->reference_no ?? null;
-                $ins['order_id'] = 'TXN' . date('mdyhis');
                 $ins['payment_status'] = $request->payment_status;
-                $ins['added_by'] = Auth::id();
 
-                Payment::create($ins);
                 $success = 'Payment Added';
-
+                Payment::create($ins);
                 return response()->json(['error' => [$success], 'status' => '0']);
             }
         }

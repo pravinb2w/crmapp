@@ -89,7 +89,7 @@
                     <div class="col-12">
                         <div class="form-group mb-3 position-relative">
                             <input type="hidden" name="payment_order_no" value="{{ $order_info->order_id ?? '' }}">
-                            <textarea class="input-box form-control w-100" placeholder="Note *" name="productinfo">{{ $order_info->product->product_name ?? '' }}</textarea>
+                            <textarea class="input-box form-control w-100" placeholder="Note *" name="productinfo">{{ $order_info->product->product_name ?? 'Manually generated link to the product' }}</textarea>
                             <div class="icon-group-append">
                                 <i class="fas fa-pencil-alt"></i>
                             </div>

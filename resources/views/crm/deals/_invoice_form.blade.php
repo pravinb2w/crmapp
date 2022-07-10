@@ -52,6 +52,10 @@
                     @endif
                 </select>
             </div>
+            <div class="form-group d-flex mt-1">
+                <label for="" class="col-3"> Remarks </label>
+                <textarea name="remarks" id="remarks" cols="30" rows="3" class="form-control"></textarea>
+            </div>
         </div>
     </div>
     <div class="row mt-2 mb-1">

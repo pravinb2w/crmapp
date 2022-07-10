@@ -15,6 +15,7 @@ use App\Models\EmailTemplates;
 use App\Models\Invoice;
 use App\Models\InvoiceItem;
 use App\Models\PaymentIntegration;
+use App\Models\SendMail;
 use PDF;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -57,6 +58,7 @@ class BuyController extends Controller
             $customer = Customer::where('email', $request->email)->first();
             $product_info = Product::find($request->product_id);
             $order_no = 'TXN' . date('mdyhis');
+            $temp_no = base64_encode('TEMP' . date('mdyhis'));
 
             if (isset($customer) && !empty($customer)) {
                 $customer_id = $customer->id;
@@ -102,7 +104,7 @@ class BuyController extends Controller
             $ins['payment_method'] = $payment_method;
             $ins['order_id'] = $order_no;
             $ins['payment_status'] = 'pending';
-
+            $ins['temp_no'] = $temp_no;
             Payment::create($ins);
             $success = 'Payment Added';
 
@@ -115,6 +117,7 @@ class BuyController extends Controller
         $order_no = $request->order_no;
         $order_info = Order::where(['order_id' => $order_no, 'status' => 'pending'])->first();
         if (isset($order_info) && !empty($order_info)) {
+            $payment_info = Payment::where('order_id', $order_no)->first();
 
             $pay_info = PaymentIntegration::where('gateway', 'Razorpay')->first();
             // Create an object of razorpay
@@ -137,37 +140,41 @@ class BuyController extends Controller
                 )
             );
 
+            if (isset($payment_info->invoice_id) && !empty($payment_info->invoice_id)) {
+                $invoice_id = $payment_info->invoice_id;
+            } else {
+                //insert in invoice and invoice item table
+                $invoice_no = CommonHelper::get_invoice_code();
+                $ins['invoice_no'] = $invoice_no;
+                $ins['order_no'] = $order_no;
+                $ins['issue_date'] = date('Y-m-d');
+                $ins['due_date'] = date('Y-m-d');
+                $ins['customer_id'] = $order_info->customer_id;
+                $ins['address'] = $order_info->customer->address;
+                $ins['email'] = $order_info->customer->email;
 
-            //insert in invoice and invoice item table
-            $invoice_no = CommonHelper::get_invoice_code();
-            $ins['invoice_no'] = $invoice_no;
-            $ins['order_no'] = $order_no;
-            $ins['issue_date'] = date('Y-m-d');
-            $ins['due_date'] = date('Y-m-d');
-            $ins['customer_id'] = $order_info->customer_id;
-            $ins['address'] = $order_info->customer->address;
-            $ins['email'] = $order_info->customer->email;
+                $ins['total'] = $order_info->amount;
+                $ins['status'] = 0;
 
-            $ins['total'] = $order_info->amount;
-            $ins['status'] = 0;
+                $invoice_id = Invoice::create($ins)->id;
+                $product_info = Product::where('product_code', $order_info->product_code)->first();
+                $up_data = [];
+                $ups['invoice_id'] = $invoice_id;
+                $ups['product_id'] = $product_info->id ?? '';
+                $ups['description'] = '';
+                $ups['qty'] = 1;
+                $ups['unit_price'] = $order_info->amount;
+                $ups['discount'] = 0;
+                $ups['cgst'] = 0;
+                $ups['sgst'] = 0;
+                $ups['igst'] = 0;
+                $ups['amount'] = $order_info->amount;
 
-            $invoice_id = Invoice::create($ins)->id;
-            $product_info = Product::where('product_code', $order_info->product_code)->first();
-            $up_data = [];
-            $ups['invoice_id'] = $invoice_id;
-            $ups['product_id'] = $product_info->id ?? '';
-            $ups['description'] = '';
-            $ups['qty'] = 1;
-            $ups['unit_price'] = $order_info->amount;
-            $ups['discount'] = 0;
-            $ups['cgst'] = 0;
-            $ups['sgst'] = 0;
-            $ups['igst'] = 0;
-            $ups['amount'] = $order_info->amount;
+                InvoiceItem::create($ups);
+                $pdf_template = $request->pdf_template;
+                $this->generatePDF($invoice_id, $pdf_template);
+            }
 
-            InvoiceItem::create($ups);
-            $pdf_template = $request->pdf_template;
-            $this->generatePDF($invoice_id, $pdf_template);
 
             // Return response on payment page
             $response = [
@@ -186,7 +193,6 @@ class BuyController extends Controller
                 'order_no' => $order_no,
             ];
 
-            $payment_info = Payment::where('order_id', $order_no)->first();
             $payment_info->currency = 'INR';
             $payment_info->invoice_id = $invoice_id;
             $payment_info->name = $order_info->customer->first_name;
@@ -237,8 +243,10 @@ class BuyController extends Controller
         $pay_post = $request->session()->pull('pay_post');
         // echo '<pre>';
         // print_r( $pay_post );
+        $temp_no = base64_encode('TEMP' . date('mdyhis'));
         $pay_info = Payment::where('session_id', session()->getId())->first();
         $pay_info->payment_response = serialize($request->all());
+        $pay_info->temp_no = $temp_no;
         $pay_info->update();
         // print_r( $pay_info );
 
@@ -266,8 +274,6 @@ class BuyController extends Controller
             Session::put('razorpay_response', $res_msg);
 
             //send email 
-            $data   = EmailTemplates::where('email_type', 'success_payment')->first();
-            CommonHelper::setMailConfig();
             $company = CompanySettings::find(1);
             $extract = array(
                 'name' => $order_info->customer->first_name,
@@ -275,21 +281,18 @@ class BuyController extends Controller
                 'app_name' => env('APP_NAME'),
                 'unsbusribe_link' => 'Unsubscribe',
                 'company_address' => $company->address ?? '',
-                'date' => date('d M Y h:i A', strtotime($order_info->created_at))
+                'date' => date('d M Y h:i A', strtotime($order_info->created_at)),
+                'invoice_no' => $invoice->invoice_no ?? ''
             );
-            $templateMessage = $data->content;
-            $templateMessage = str_replace("{", "", addslashes($templateMessage));
-            $templateMessage = str_replace("}", "", $templateMessage);
-            extract($extract);
-            eval("\$templateMessage = \"$templateMessage\";");
 
-            $body = [
-                'content' => $templateMessage
-            ];
-
-            $send_mail = new TestEmail($body, $data->title ?? '', $invoice->invoice_no ?? '');
-            // return $send_mail->render();
-            Mail::to($request->email ?? 'duraibytes@gmail.com')->send($send_mail);
+            $ins_mail = array(
+                'type' => 'order',
+                'type_id' => $pay_info->order_id,
+                'email_type' => 'success_payment',
+                'params' => serialize($extract),
+                'to' => $request->email ?? 'duraibytes@gmail.com'
+            );
+            SendMail::create($ins_mail);
 
             return redirect()->route('landing.index')->with('status', 'Profile updated!');
 

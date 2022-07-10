@@ -3,7 +3,7 @@
         .pay_image {
             height: 100px;
             border: 1px solid;
-            padding: 27px;
+            padding: 2px 66px;
             border-radius: 5px;
             margin:5px;
         }
@@ -17,21 +17,23 @@
             </label>
             <div style="display: flex;">
                 @if( isset($gateways ) && !empty($gateways) )
-                    @foreach( $gateways as $gkey => $gvalue)
-                    <div class="pay_image">
-                        <input type="radio" name="pay_gateway" id="{{ $gvalue->gateway }}" value="{{ $gvalue->gateway }}">
-                        <label for="{{ $gvalue->gateway }}">
-                            @if( $gvalue->gateway == 'paypal')
-                            <img src="{{asset('assets/images/payments/paypal1.png')}}" width="75" alt="" for="{{ $gvalue->gateway }}">
-                            @elseif($gvalue->gateway == 'razorpay' )
-                            <img src="{{asset('assets/images/payments/razor.png')}}"  width="75" alt="" for="{{ $gvalue->gateway }}">
-                            @elseif($gvalue->gateway == 'ccavenue')
-                            <img src="{{asset('assets/images/payments/ccavenue.png')}}" width="75"  alt="" for="{{ $gvalue->gateway }}">
-                            @endif
-                        </label>
-                    </div>
-                    @endforeach
-                @endif
+                @foreach( $gateways as $gkey => $gvalue)
+                <div class="pay_image col-sm-4">
+                    <input type="radio" name="pay_gateway" id="{{ $gvalue->gateway }}" value="{{ $gvalue->gateway }}">
+                    <label for="{{ $gvalue->gateway }}">
+                        @if( $gvalue->gateway == 'paypal')
+                        <img src="{{asset('assets/images/payments/paypal1.png')}}" width="125" alt="" for="{{ $gvalue->gateway }}">
+                        @elseif($gvalue->gateway == 'razorpay' )
+                        <img src="{{asset('assets/images/payments/razor.png')}}"  width="125" alt="" for="{{ $gvalue->gateway }}">
+                        @elseif($gvalue->gateway == 'ccavenue')
+                        <img src="{{asset('assets/images/payments/ccavenue.png')}}" width="125"  alt="" for="{{ $gvalue->gateway }}">
+                        @elseif($gvalue->gateway == 'payumoney')
+                        <img src="{{asset('assets/images/payments/payumoney.png')}}" width="125"  alt="" for="{{ $gvalue->gateway }}">
+                        @endif
+                    </label>
+                </div>
+                @endforeach
+            @endif
             </div>
         </div>
         

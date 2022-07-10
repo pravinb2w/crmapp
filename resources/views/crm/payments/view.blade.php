@@ -35,6 +35,10 @@
                                     <td>{{ $info->amount }}</td>
                                 </tr>
                                 <tr>
+                                    <th>Payment Link</th>
+                                    <td>{{ $info->generated_links ?? 'N/A' }}</td>
+                                </tr>
+                                <tr>
                                     <th>Customer</th>
                                     <td>{{ $info->customer->first_name }}</td>
                                 </tr>

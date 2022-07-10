@@ -84,10 +84,9 @@
         tinymce.init({
             selector: 'textarea#mceeditor',
             height: 500,
-            plugins: "textcolor",
+            plugins: "textcolor, code",
             toolbar: "forecolor backcolor",
-            
-            });
+        });
         
     </script>
 @endsection

@@ -67,8 +67,9 @@ return [
         'stage_completed',
         'success_deal',
         'loss_deal',
-        'invoice_approval',
         'success_payment',
+        'cancel_payment',
+        'payment_url',
         'payment_remainder'
     ],
 ];

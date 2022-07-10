@@ -11,6 +11,7 @@ use CommonHelper;
 use App\Models\EmailTemplates;
 use App\Mail\TestEmail;
 use App\Models\Product;
+use App\Models\SendMail;
 use Illuminate\Contracts\Session\Session;
 use Mail;
 use Illuminate\Support\Str;
@@ -101,9 +102,8 @@ class LandingController extends Controller
             //send email to new customer
             if (isset($customer) && !empty($customer)) {
             } else {
-                $data   = EmailTemplates::where('email_type', 'new_registration')->first();
-                CommonHelper::setMailConfig();
                 $company = CompanySettings::find(1);
+
                 $extract = array(
                     'name' => $request->fullname,
                     'app_name' => env('APP_NAME'),
@@ -111,20 +111,14 @@ class LandingController extends Controller
                     'company_address' => $company->address ?? '',
                     'password' => $randomString,
                 );
-                $templateMessage = $data->content;
-                $templateMessage = str_replace("{", "", addslashes($templateMessage));
-                $templateMessage = str_replace("}", "", $templateMessage);
-                extract($extract);
-                eval("\$templateMessage = \"$templateMessage\";");
-
-                $body = [
-                    'content' => $templateMessage
-                ];
-
-                $send_mail = new TestEmail($body, $data->title ?? '');
-                // return $send_mail->render();
-                Mail::to($request->email ?? 'duraibytes@gmail.com')->send($send_mail);
-                // end send mail conversion
+                $ins_mail = array(
+                    'type' => 'lead',
+                    'type_id' => $lead_id,
+                    'email_type' => 'new_registration',
+                    'params' => serialize($extract),
+                    'to' => $request->email ?? 'duraibytes@gmail.com'
+                );
+                SendMail::create($ins_mail);
             }
 
             $success = 'Enquiry has been sent';

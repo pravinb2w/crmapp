@@ -237,11 +237,9 @@
                                 </td>
                             </tr><tr>
                                 <td style="padding: 15px;">
-                                    
                                 </td>
                             </tr><tr>
                                 <td style="padding: 5px;">
-                                    
                                 </td>
                             </tr><tr>
                                 <td style="padding: 0px 5px;">

@@ -10,6 +10,7 @@ use App\Models\InvoiceItem;
 use App\Models\Order;
 use App\Models\Payment;
 use App\Models\PaymentIntegration;
+use App\Models\SendMail;
 use PDF;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -61,6 +62,27 @@ class PayuMoneyController extends \InfyOm\Payu\PayuMoneyController
 
         $payment_info->update();
 
+        //send email 
+        $company = CompanySettings::find(1);
+        $extract = array(
+            'name' => $order_info->customer->first_name,
+            'order_no' => $order_no,
+            'app_name' => env('APP_NAME'),
+            'unsbusribe_link' => 'Unsubscribe',
+            'company_address' => $company->address ?? '',
+            'date' => date('d M Y h:i A', strtotime($order_info->created_at)),
+            'invoice_no' => $invoice->invoice_no ?? ''
+        );
+
+        $ins_mail = array(
+            'type' => 'order',
+            'type_id' => $order_no,
+            'email_type' => 'cancel_payment',
+            'params' => serialize($extract),
+            'to' => $order_info->customer->email,
+        );
+
+        SendMail::create($ins_mail);
 
         $res_msg = ['erorr' => 'error', 'message' => $error_Message, 'order_no' => $order_no];
         Session::put('razorpay_response', $res_msg);
@@ -115,6 +137,27 @@ class PayuMoneyController extends \InfyOm\Payu\PayuMoneyController
 
         $payment_info->update();
 
+        //send email 
+        $company = CompanySettings::find(1);
+        $extract = array(
+            'name' => $order_info->customer->first_name,
+            'order_no' => $order_no,
+            'app_name' => env('APP_NAME'),
+            'unsbusribe_link' => 'Unsubscribe',
+            'company_address' => $company->address ?? '',
+            'date' => date('d M Y h:i A', strtotime($order_info->created_at)),
+            'invoice_no' => $invoice->invoice_no ?? ''
+        );
+
+        $ins_mail = array(
+            'type' => 'order',
+            'type_id' => $order_no,
+            'email_type' => 'success_payment',
+            'params' => serialize($extract),
+            'to' => $email
+        );
+        SendMail::create($ins_mail);
+
         $res_msg = ['erorr' => 'success', 'message' => $error_Message, 'order_no' => $order_no, 'invoice_no' => $invoice->invoice_no];
         Session::put('razorpay_response', $res_msg);
 
@@ -158,40 +201,46 @@ class PayuMoneyController extends \InfyOm\Payu\PayuMoneyController
         $order_no = $request->order_no;
         $order_info = Order::where(['order_id' => $order_no, 'status' => 'pending'])->first();
         if (isset($order_info) && !empty($order_info)) {
+            $payment_info = Payment::where('order_id', $order_no)->first();
 
             $pay_info = PaymentIntegration::where('gateway', 'payumoney')->first();
 
             //insert in invoice and invoice item table
-            $invoice_no = CommonHelper::get_invoice_code();
-            $ins['invoice_no'] = $invoice_no;
-            $ins['order_no'] = $order_no;
-            $ins['issue_date'] = date('Y-m-d');
-            $ins['due_date'] = date('Y-m-d');
-            $ins['customer_id'] = $order_info->customer_id;
-            $ins['address'] = $order_info->customer->address;
-            $ins['email'] = $order_info->customer->email;
-            $ins['total'] = $order_info->product->price;
-            $ins['status'] = 0;
+            if (isset($payment_info->invoice_id) && !empty($payment_info->invoice_id)) {
+                $invoice_id = $payment_info->invoice_id;
+            } else {
+                $invoice_no = CommonHelper::get_invoice_code();
+                $ins['invoice_no'] = $invoice_no;
+                $ins['order_no'] = $order_no;
+                $ins['issue_date'] = date('Y-m-d');
+                $ins['due_date'] = date('Y-m-d');
+                $ins['customer_id'] = $order_info->customer_id;
+                $ins['address'] = $order_info->customer->address;
+                $ins['email'] = $order_info->customer->email;
+                $ins['total'] = $order_info->product->price;
+                $ins['status'] = 0;
 
-            $invoice_id = Invoice::create($ins)->id;
-            $up_data = [];
-            $ups['invoice_id'] = $invoice_id;
-            $ups['product_id'] = $order_info->product->id ?? '';
-            $ups['description'] = '';
-            $ups['qty'] = 1;
-            $ups['unit_price'] = $order_info->product->price;
-            $ups['discount'] = 0;
-            $ups['cgst'] = 0;
-            $ups['sgst'] = 0;
-            $ups['igst'] = 0;
-            $ups['amount'] = $order_info->product->price;
-            InvoiceItem::create($ups);
+                $invoice_id = Invoice::create($ins)->id;
+                $up_data = [];
+                $ups['invoice_id'] = $invoice_id;
+                $ups['product_id'] = $order_info->product->id ?? '';
+                $ups['description'] = '';
+                $ups['qty'] = 1;
+                $ups['unit_price'] = $order_info->product->price;
+                $ups['discount'] = 0;
+                $ups['cgst'] = 0;
+                $ups['sgst'] = 0;
+                $ups['igst'] = 0;
+                $ups['amount'] = $order_info->product->price;
+                InvoiceItem::create($ups);
 
-            $pdf_template = $request->pdf_template;
-            $this->generatePDF($invoice_id, $pdf_template);
+                $pdf_template = $request->pdf_template;
+                $this->generatePDF($invoice_id, $pdf_template);
+            }
 
 
             $data = $request->all();
+
             // $MERCHANT_KEY = 'pkTb5Q';
             // $SALT = 'rnLkR8gkbg0x6QKpzSFBJm21kCZ2IqQ2';
             if ($pay_info->enabled == 'live') {
@@ -220,6 +269,7 @@ class PayuMoneyController extends \InfyOm\Payu\PayuMoneyController
             } else {
                 $txnid = $posted['txnid'];
             }
+
             $hash = '';
             // Hash Sequence
             $hashSequence = "key|txnid|amount|productinfo|firstname|email|udf1|udf2|udf3|udf4|udf5|udf6|udf7|udf8|udf9|udf10";
@@ -256,7 +306,6 @@ class PayuMoneyController extends \InfyOm\Payu\PayuMoneyController
                 $hash = $posted['hash'];
                 $action = $PAYU_BASE_URL . '/_payment';
             }
-
             return view(
                 'payumoney.pay',
                 compact('hash', 'action', 'MERCHANT_KEY', 'formError', 'txnid', 'posted', 'SALT', 'order_info')

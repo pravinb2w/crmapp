@@ -48,3 +48,20 @@ class MailController extends Controller
         }
     }
 }
+
+// $data   = EmailTemplates::where('email_type', 'new_registration')->first();
+// CommonHelper::setMailConfig();
+
+// $templateMessage = $data->content;
+// $templateMessage = str_replace("{", "", addslashes($templateMessage));
+// $templateMessage = str_replace("}", "", $templateMessage);
+// extract($extract);
+// eval("\$templateMessage = \"$templateMessage\";");
+
+// $body = [
+//     'content' => $templateMessage
+// ];
+
+// $send_mail = new TestEmail($body, $data->title ?? '');
+// // return $send_mail->render();
+// Mail::to($request->email ?? 'duraibytes@gmail.com')->send($send_mail);
