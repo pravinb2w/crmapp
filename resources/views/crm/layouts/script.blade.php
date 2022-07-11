@@ -689,6 +689,8 @@ function mark_as_done(id, lead_id='' , type = '') {
             }            
         });
     }
+
+    
     
 </script>
 @include('crm.layouts._custom_script')

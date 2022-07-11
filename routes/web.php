@@ -209,6 +209,7 @@ Route::middleware([SetViewVariable::class, 'auth'])->prefix('dev')->group(functi
         Route::get('/initiate-request/{payment_gateway}', [App\Http\Controllers\PaymentController::class, 'initiate_request'])->name('payments.initiate');
         Route::post('/initiate-request/payment', [App\Http\Controllers\PaymentController::class, 'payment_initiate_request'])->name('payments.initiate.request');
         Route::post('/payment/complete', [App\Http\Controllers\PaymentController::class, 'payment_complete'])->name('payments.complete');
+        Route::post('/payment/resend/url', [App\Http\Controllers\PaymentController::class, 'resend_paylink'])->name('payment.resend.url');
     });
 
     //tasks route

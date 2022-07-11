@@ -161,4 +161,43 @@ function make_stage_completed(stage_id, deal_id ){
         inp.remove();
         toastr.success('success', 'Link copied successfully');
     }
+
+    function resend_pay_link(payment_id) {
+        var ttt = 'You are trying to Resent payment link to customer mail';
+
+     
+        Swal.fire({
+            title: 'Are you sure?',
+            text: ttt,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, do it!'
+            }).then((result) => {
+                /* Read more about isConfirmed, isDenied below */
+                if (result.isConfirmed) {
+                    var ajax_url = "{{ route('payment.resend.url') }}";
+                    $.ajaxSetup({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        }
+                    });
+                    $.ajax({
+                        url: ajax_url,
+                        method:'POST',
+                        data: {payment_id:payment_id},
+                        success:function(response){
+                            if( response.status == "1" ) {
+                                Swal.fire( response.error, '', 'error')
+                            } else {
+                                Swal.fire('Link Sent Successfully!', '', 'success')
+                            }
+                        }      
+                    });
+                   
+                } 
+            })
+            return false;
+    }
 </script>

@@ -22,7 +22,7 @@ use Session;
 
 class PaymentController extends Controller
 {
-    public function index(Type $var = null)
+    public function index(Request $request)
     {
         $params = array('btn_name' => 'Payments', 'btn_fn_param' => '', 'btn_href' => route('payments.add'));
         return view('crm.payments.index', $params);
@@ -66,6 +66,15 @@ class PaymentController extends Controller
         if ($list) {
             $i = 1;
             foreach ($list as $payment) {
+                $status = '';
+                if ($payment->payment_status == 'pending') {
+                    $status = '<div><label class="badge bg-warning">' . ucwords($payment->payment_status) . '</label>
+                                <span class="mx-3" role="button"><i class="fa fa-refresh text-primary" onclick="resend_pay_link(' . $payment->id . ')"></i> </span></div>';
+                } else if ($payment->payment_status == 'completed') {
+                    $status = '<label class="badge bg-success">' . ucwords($payment->payment_status) . '</label>';
+                } else {
+                    $status = '<label class="badge bg-danger">' . ucwords($payment->payment_status) . '</label>';
+                }
 
                 $nested_data['date']              = date('d/M/Y h:i A', strtotime($payment->created_at));
                 $nested_data['order_id']          = $payment->order_id;
@@ -73,7 +82,7 @@ class PaymentController extends Controller
                 $nested_data['payment_mode']      = ucwords($payment->payment_mode);
                 $nested_data['amount']            = $payment->amount;
                 $nested_data['payment_method']    = ucwords($payment->payment_method);
-                $nested_data['status']            = ucwords($payment->payment_status);
+                $nested_data['status']            = $status;
 
                 $action = '
                 <a href="javascript:void(0);" class="action-icon" onclick="return view_modal(\'payments\', ' . $payment->id . ')"> <i class="mdi mdi-eye"></i></a>
@@ -446,5 +455,41 @@ class PaymentController extends Controller
         // merchant id to be passed along the param
         // $merchant = $ccavenue->getMerchantId();
         return view('crm.payments.ccavenue.form', compact('data', 'merchant'));
+    }
+
+    public function resend_paylink(Request $request)
+    {
+        $payment_id = $request->payment_id;
+        $payment_info = Payment::find($payment_id);
+        $company = CompanySettings::find(1);
+
+        $route = $payment_info->generated_links;
+
+        if (empty($route)) {
+            if ($payment_info->payment_method == 'razor') {
+                $route = route('razorpay.request', ['order_no' => $payment_info->order_id]);
+            } else if ($payment_info->payment_method == 'payumoney') {
+                $route = route('redirectToPayU', ['order_no' => $payment_info->order_id]);
+            }
+        }
+        $extract = array(
+            'name' => $payment_info->customer->first_name,
+            'order_no' => $payment_info->order_id,
+            'app_name' => env('APP_NAME'),
+            'company_address' => $company->address ?? '',
+            'pay_url' => $route,
+            'amount' => $payment_info->amount
+        );
+
+        $ins_mail = array(
+            'type' => 'payment',
+            'type_id' => $payment_id,
+            'email_type' => 'payment_url',
+            'params' => serialize($extract),
+            'to' =>  $payment_info->customer->email ?? 'duraibytes@gmail.com'
+        );
+        SendMail::create($ins_mail);
+        $params = array('status' => 0, 'message' => 'Link send Success');
+        return response()->json($params);
     }
 }
