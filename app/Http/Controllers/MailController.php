@@ -7,6 +7,7 @@ use CommonHelper;
 use Auth;
 use Illuminate\Support\Facades\Mail;
 use App\Jobs\SendMailJob;
+use App\Mail\TestEmail;
 use DB;
 
 class MailController extends Controller
