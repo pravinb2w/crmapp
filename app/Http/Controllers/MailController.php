@@ -27,11 +27,11 @@ class MailController extends Controller
                 ]
 
             ];
-            SendMailJob::dispatch($details)->delay(now()->addMinutes(5));
+            // SendMailJob::dispatch($details)->delay(now()->addMinutes(5));
 
-            // $send_mail = new TestEmail($body, $subject);
-            // // return $send_mail->render();
-            // Mail::to('duraibytes@gmail.com')->send($send_mail);
+            $send_mail = new TestEmail($body, $subject);
+            // return $send_mail->render();
+            Mail::to('duraibytes@gmail.com')->send($send_mail);
 
 
             // Mail::send(['text' => 'mail'], $data, function ($message)
