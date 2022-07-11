@@ -18,7 +18,7 @@ class MailController extends Controller
             //Set mail configuration
             CommonHelper::setMailConfig();
 
-            $details = [
+            $data = [
                 'to' => 'duraibytes@gmail.com',
                 'subject' => 'Yesyinh maila',
                 'attachment' => '',
@@ -28,21 +28,21 @@ class MailController extends Controller
                 ]
 
             ];
-            $subject = 'testing';
-            // SendMailJob::dispatch($details)->delay(now()->addMinutes(5));
+            // $subject = 'testing';
+            // // SendMailJob::dispatch($details)->delay(now()->addMinutes(5));
 
-            $send_mail = new TestEmail($details, $subject);
-            // return $send_mail->render();
-            Mail::to('duraibytes@gmail.com')->send($send_mail);
+            // $send_mail = new TestEmail($details, $subject);
+            // // return $send_mail->render();
+            // Mail::to('duraibytes@gmail.com')->send($send_mail);
 
 
-            // Mail::send(['text' => 'mail'], $data, function ($message)
-            // {
-            //     $message->to('duraibytes@gmail.com', 'Lorem Ipsum')
-            //         ->subject('Laravel Basic Testing Mail');
-            //     $message->from('durairajnet@gmail.com', $data['name']);
-            // });
-            // echo 'Test email sent successfully';
+            $data = array('name' => "Durai Bytes");
+
+            Mail::send([], $data, function ($message) {
+                $message->to('duraibytes@gmail.com', 'Tutorials Point')->subject('Laravel Basic Testing Mail');
+                $message->from('durairajnet@gmail.com', 'Durai bytes');
+            });
+            echo 'Test email sent successfully';
             // return redirect()->back()->with('success', 'Test email sent successfully');
         } catch (\Exception $e) {
             dd($e->getMessage());
