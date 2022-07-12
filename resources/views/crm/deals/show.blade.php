@@ -256,6 +256,12 @@ form#activites-form>div>label>i {
                 if( response.igst ){
                     $('input[name="igst_'+limit+'"]').val(response.igst);
                 }
+                if( response.description ){
+                    $('input[name="description_'+limit+'"]').val(response.description);
+                } else {
+                    $('input[name="description_'+limit+'"]').val('');
+
+                }
             }      
         });
     }

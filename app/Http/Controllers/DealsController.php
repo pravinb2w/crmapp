@@ -791,7 +791,7 @@ class DealsController extends Controller
         $limit = $request->limit;
 
         $product_info = Product::find($product_id);
-        $response = ['cgst' => $product_info->cgst ?? '', 'sgst' => $product_info->sgst ?? '', 'igst' => $product_info->igst];
+        $response = ['cgst' => $product_info->cgst ?? '', 'sgst' => $product_info->sgst ?? '', 'igst' => $product_info->igst, 'description' => $product_info->description];
         return response()->json($response);
     }
 

@@ -14,6 +14,7 @@
                 .img-product {
                     width:200px;border-radius: 5px;
                 }
+                
             </style>
             <div class="w-100" >
                 @csrf

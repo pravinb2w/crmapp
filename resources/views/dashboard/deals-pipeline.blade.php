@@ -66,7 +66,7 @@
                                 </div>
 
                                 <p class="mb-0">
-                                    <img src="assets/images/users/avatar-3.jpg" alt="user-img" class="avatar-xs rounded-circle me-1" />
+                                    <img src="{{ asset('assets/images/users/avatar-10.jpg') }}" alt="user-img" class="avatar-xs rounded-circle me-1" />
                                     <span class="align-middle">{{ $deal->customer->first_name.' '.$deal->customer->last_name ?? '' }}</span>
                                 </p>
                             </div> <!-- end card-body -->
