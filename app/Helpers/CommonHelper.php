@@ -119,7 +119,7 @@ class CommonHelper
 
         //Set the data in an array variable from settings table
         $mailConfig = [
-            'transport' => 'smtp',
+            'transport' => $settings->mailer,
             'host' => $settings->smtp_host,
             'port' => $settings->smtp_port,
             'encryption' => $settings->mail_encryption,
