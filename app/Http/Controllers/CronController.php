@@ -15,21 +15,23 @@ class CronController extends Controller
 {
     public function sendMail(Request $request)
     {
-        $data = SendMail::all();
         CommonHelper::setMailConfig();
+        $data = SendMail::all();
+
         if (isset($data) && !empty($data)) {
             foreach ($data as $item) {
-                $econtent   = EmailTemplates::where('email_type', $item->email_type)->first();
 
+                $econtent   = EmailTemplates::where('email_type', $item->email_type)->first();
                 if ($item->email_type == 'invoice_approval') {
                     $extract = json_decode($item->params);
 
                     $send_mail = new SubmitApproval($extract);
                     // return $send_mail->render();
                     Mail::to($item->to ?? 'duraibytes@gmail.com')->send($send_mail);
-                    SendMail::find($item->id)->delete();
+                    // SendMail::find($item->id)->delete();
                 } else {
                     if (isset($econtent) && !empty($econtent)) {
+
                         $extract = unserialize($item->params);
 
                         $templateMessage = $econtent->content;
@@ -41,12 +43,15 @@ class CronController extends Controller
                         $body = [
                             'content' => $templateMessage
                         ];
+                        $to = $item->to;
+                        $title = $econtent->title;
 
-                        $send_mail = new TestEmail($body, $econtent->title ?? '');
-                        // return $send_mail->render();
-                        Mail::to($item->to ?? 'duraibytes@gmail.com')->send($send_mail);
+                        Mail::send('emails.test', $body, function ($message) use ($to, $title) {
+                            $message->to($to, 'Phoenix CRM')->subject($title ?? '');
+                            $message->from('durairajnet@gmail.com', 'Durai bytes');
+                        });
 
-                        SendMail::find($item->id)->delete();
+                        // SendMail::find($item->id)->delete();
                     }
                 }
             }

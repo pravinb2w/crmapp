@@ -44,21 +44,24 @@ class SendMail extends Command
      */
     public function handle()
     {
-        $data = ModelsSendMail::all();
+        //Set mail configuration
         CommonHelper::setMailConfig();
+        $data = ModelsSendMail::all();
+
         if (isset($data) && !empty($data)) {
             foreach ($data as $item) {
-                $econtent   = EmailTemplates::where('email_type', $item->email_type)->first();
 
+                $econtent   = EmailTemplates::where('email_type', $item->email_type)->first();
                 if ($item->email_type == 'invoice_approval') {
                     $extract = json_decode($item->params);
 
                     $send_mail = new SubmitApproval($extract);
                     // return $send_mail->render();
                     Mail::to($item->to ?? 'duraibytes@gmail.com')->send($send_mail);
-                    SendMail::find($item->id)->delete();
+                    // ModelsSendMail::find($item->id)->delete();
                 } else {
                     if (isset($econtent) && !empty($econtent)) {
+
                         $extract = unserialize($item->params);
 
                         $templateMessage = $econtent->content;
@@ -70,16 +73,21 @@ class SendMail extends Command
                         $body = [
                             'content' => $templateMessage
                         ];
+                        $to = $item->to;
+                        $title = $econtent->title;
 
-                        $send_mail = new TestEmail($body, $econtent->title ?? '');
-                        // return $send_mail->render();
-                        Mail::to($item->to ?? 'duraibytes@gmail.com')->send($send_mail);
+                        Mail::send('emails.test', $body, function ($message) use ($to, $title) {
+                            $message->to($to ?? 'duraibytes@gmail.com', 'Phoenix CRM')->subject($title ?? '');
+                            $message->from('durairajnet@gmail.com', 'Phoenix CRM');
+                        });
 
                         ModelsSendMail::find($item->id)->delete();
                     }
                 }
             }
         }
+
+
         info('mail task running');
     }
 }

@@ -8,6 +8,7 @@ use Auth;
 use Illuminate\Support\Facades\Mail;
 use App\Jobs\SendMailJob;
 use App\Mail\TestEmail;
+use App\Models\EmailTemplates;
 use DB;
 
 class MailController extends Controller
@@ -18,27 +19,23 @@ class MailController extends Controller
             //Set mail configuration
             CommonHelper::setMailConfig();
 
-            $data = [
-                'to' => 'duraibytes@gmail.com',
-                'subject' => 'Yesyinh maila',
-                'attachment' => '',
-                'body' => [
-                    'name' => 'Durairja ',
-                    'content' => 'ewl ocem otht e board',
-                ]
+            $data   = EmailTemplates::where('email_type', 'new_registration')->first();
+            $extract = array(
+                'name' => 'Duriaraj',
+                'password' => 20301020,
+            );
 
+            $templateMessage = $data->content;
+            $templateMessage = str_replace("{", "", addslashes($templateMessage));
+            $templateMessage = str_replace("}", "", $templateMessage);
+            extract($extract);
+            eval("\$templateMessage = \"$templateMessage\";");
+
+            $body = [
+                'content' => $templateMessage
             ];
-            // $subject = 'testing';
-            // // SendMailJob::dispatch($details)->delay(now()->addMinutes(5));
 
-            // $send_mail = new TestEmail($details, $subject);
-            // // return $send_mail->render();
-            // Mail::to('duraibytes@gmail.com')->send($send_mail);
-
-
-            $data = array('name' => "Durai Bytes");
-
-            Mail::send([], $data, function ($message) {
+            Mail::send('emails.test', $body, function ($message) {
                 $message->to('duraibytes@gmail.com', 'Tutorials Point')->subject('Laravel Basic Testing Mail');
                 $message->from('durairajnet@gmail.com', 'Durai bytes');
             });
