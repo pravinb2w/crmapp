@@ -37,7 +37,7 @@
                                     <div class="custom-form-group">
                                         <input name="banner_image[]" type="file" value="" class="form-control mb-3"placeholder="Type here...">
                                         <input name="banner_image_data_url[]" type="hidden" value="{{ $row->image }}" class="form-control mb-3" placeholder="Type here...">
-                                        <label for="" class="custom-label bg-white">Cover Iamge </label>
+                                        <label for="" class="custom-label bg-white">Cover Image </label>
                                     </div> 
                                     <div class="custom-form-group">
                                         <input type="text" name="sub_banner_title[]" value="{{ $row->sub_title }}" class="form-control mb-3" required  placeholder="Type here...">
