@@ -126,7 +126,7 @@
                     </div>
                     <div class="col-4 p-2">
                         <div class="d-flex justify-content-between align-items-center p-1 px-2 rounded border">
-                            <label for="role" class="col-form-label">Sms Integration </label>
+                            <label for="role" class="col-form-label">SMS Integration </label>
                             <input type="checkbox" name="sms_integration" id="sms_integration" @if( isset($info->sms_integration) && ($info->sms_integration) ) checked @endif  data-switch="warning"/>
                             <label for="sms_integration" data-on-label="Yes" data-off-label="No"></label>
                         </div>
@@ -140,7 +140,7 @@
                     </div>
                     <div class="col-4 p-2">
                         <div class="d-flex justify-content-between align-items-center p-1 px-2 rounded border">
-                            <label for="role" class="col-form-label"> Business Whatsapp </label>
+                            <label for="role" class="col-form-label">Web Whatsapp </label>
                             <input type="checkbox" name="business_whatsapp" id="business_whatsapp" @if( isset($info->business_whatsapp) && !empty($info->business_whatsapp) ) checked @endif  data-switch="warning"/>
                             <label for="business_whatsapp" data-on-label="Yes" data-off-label="No"></label>
                         </div>

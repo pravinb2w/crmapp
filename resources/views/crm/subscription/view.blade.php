@@ -120,7 +120,7 @@
                                             <td>{{ $info->telegram_bot ?? 'off' }}</td>
                                         </tr> 
                                         <tr>
-                                            <td>Sms Integration</td>
+                                            <td>SMS Integration</td>
                                             <td>{{ $info->sms_integration ?? 'off' }}</td>
                                         </tr> 
                                         <tr>
@@ -128,7 +128,7 @@
                                             <td> {{ $info->payment_gateway ?? 'off' }}</td>
                                         </tr>
                                         <tr>
-                                            <td> Business Whatsapp </td>
+                                            <td> Web Whatsapp </td>
                                             <td> {{ $info->business_whatsapp ?? 'off'  }}</td>
                                         </tr>
                                     </tbody>
