@@ -116,7 +116,7 @@
                 <div class="card-body p-2 d-flex flex-x"> 
                     <div>
                         <h3 class="mt-0">{{ $planned_count ?? 0 }}</h3> 
-                        <h5 class="m-0 text-dark" title="Total Tasks">Planed Tasks</h5>
+                        <h5 class="m-0 text-dark" title="Total Tasks">Planned Tasks</h5>
                     </div>
                     <div>
                         <i class="mdi-clipboard-check-multiple mdi text-white fa-2x float-end"></i>

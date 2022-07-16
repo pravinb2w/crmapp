@@ -67,7 +67,7 @@
                         </span>
                         <div class="custom-form-group">
                             <input name="banner_image[]" type="file" id="" class="form-control mb-3" required  placeholder="Type here...">
-                            <label for="" class="custom-label bg-white">Cover Iamge</label>
+                            <label for="" class="custom-label bg-white">Cover Image</label>
                         </div> 
                         <div class="custom-form-group">
                             <input type="text" name="sub_banner_title[]" id="" class="form-control mb-3" required  placeholder="Type here...">
