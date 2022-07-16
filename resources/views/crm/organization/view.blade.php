@@ -13,35 +13,38 @@
                             <div class="col-12" id="error"></div>
                         </div>
                         <div class="row">
-                            <div class="col-3">
-                                <label for="">Company Name</label>
-                                <div>
-                                    {{ $info->first_name ?? '' }}
-                                </div>
-                            </div>
-                           
-                            <div class="col-3">
-                                <label for="">Phone Number</label>
-                                <div>
-                                    {{ $info->mobile_no ?? '' }}
-                                </div>
-                            </div>
-                            <div class="col-3">
-                                <label for="">Email</label>
-                                <div>
-                                    {{ $info->email ?? '' }}
-                                </div>
-                            </div>
+                            <table class="table">
+                                <tr>
+                                    <th>
+                                        Company Name
+                                    </th>
+                                    <td>
+                                        {{ $info->name ?? '' }}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>
+                                        Phone Number
+                                    </th>
+                                    <td>
+                                        {{ $info->mobile_no ?? '' }}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Email</th>
+                                    <td>
+                                        {{ $info->email ?? '' }}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Address</th>
+                                    <td>
+                                        {{ $info->address ?? '' }}
+                                    </td>
+                                </tr>
+                            </table>
+                            
                         </div>
-                        <div class="row">
-                            <div class="col-6">
-                                <label for="">Address</label>
-                                <div>
-                                    {{ $info->address ?? 'N/A' }}
-                                </div>
-                            </div>
-                        </div>
-                        
                             
                             <div class="col-md-12 mb-3 text-end">
                                 <button type="button" class="btn btn-light me-2" data-bs-dismiss="modal" aria-label="Close"> Close</button>

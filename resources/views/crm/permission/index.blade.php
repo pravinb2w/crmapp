@@ -87,6 +87,7 @@
                 {"data" : "addedBy" },
                 {"data" : "action" },
             ],
+            "pageLength":25,
             
         } );
     });

@@ -67,6 +67,7 @@
                 {"data" : "module"},
                 {'data' : "action"}
             ],
+            "pageLength":25,
             
         } );
     });

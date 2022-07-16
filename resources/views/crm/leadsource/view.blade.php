@@ -13,18 +13,17 @@
                             <div class="col-12" id="error"></div>
                         </div>
                         <div class="row">
-                            <div class="col-6">
-                                <label for="">Source</label>
-                                <div>
-                                    {{ $info->source ?? '' }}
-                                </div>
-                            </div>
-                            <div class="col-6">
-                                <label for="">Description</label>
-                                <div>
-                                    {{ $info->description ?? '' }}
-                                </div>
-                            </div>
+                            <table class="table">
+                                <tr>
+                                    <th>Source</th>
+                                    <td> {{ $info->source ?? '' }} </td>
+                                </tr>
+                                <tr>
+                                    <th>Description</th>
+                                    <td> {{ $info->description ?? '' }} </td>
+                                </tr>
+                            </table>
+                           
                         </div>
                             
                         <div class="col-md-12 mt-2 text-end">

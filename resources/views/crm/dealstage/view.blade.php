@@ -13,24 +13,21 @@
                             <div class="col-12" id="error"></div>
                         </div>
                         <div class="row">
-                            <div class="col-6">
-                                <label for="">Stage</label>
-                                <div>
-                                    {{ $info->stages ?? '' }}
-                                </div>
-                            </div>
-                            <div class="col-6">
-                                <label for="">Order</label>
-                                <div>
-                                    {{ $info->order_by ?? '' }}
-                                </div>
-                            </div>
-                            <div class="col-6 mt-3">
-                                <label for="">Description</label>
-                                <div>
-                                    {{ $info->description ?? '' }}
-                                </div>
-                            </div>
+                            <table class="table">
+                                <tr>
+                                    <th> Stage </th>
+                                    <td>  {{ $info->stages ?? '' }} </td>
+                                </tr>
+                                <tr>
+                                    <th> Order </th>
+                                    <td> {{ $info->order_by ?? '' }} </td>
+                                </tr>
+                                <tr>
+                                    <th> Description</th>
+                                    <td> {{ $info->description ?? '' }} </td>
+                                </tr>
+                            </table>
+                           
                         </div>
                             
                         <div class="col-md-12 mt-2 text-end">

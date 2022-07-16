@@ -13,52 +13,40 @@
                             <div class="col-12" id="error"></div>
                         </div>
                         <div class="row">
-                            <div class="col-6">
-                                <label for="">Notes</label>
-                                <div>
-                                    {{ $info->notes ?? '' }}
-                                </div>
-                            </div>
-                           
+                            <table class="table mb-0">
+                                <thead>
+                                    <tr>
+                                        <th  class="table-light">Notes</th>
+                                        <td>{{ $info->notes ?? '' }}</td>
+                                    </tr>
+                                    @if(isset( $info->customer->first_name ) && !empty($info->customer->first_name))
+                                    <tr>
+                                        <th class="table-light"> Customer </th>
+                                        <td>  {{ $info->customer->first_name ?? 'N/A' }} </td>
+                                    </tr>
+                                    @endif
+                                    @if(isset( $info->user->name ) && !empty($info->user->name))
+                                    <tr>
+                                        <th class="table-light"> User </th>
+                                        <td>  {{ $info->user->name ?? 'N/A' }} </td>
+                                    </tr>
+                                    @endif
+                                    @if(isset( $info->lead->lead_subject ) && !empty($info->lead->lead_subject))
+                                    <tr>
+                                        <th class="table-light"> Lead </th>
+                                        <td>  {{ $info->lead->lead_subject ?? 'N/A' }} </td>
+                                    </tr>
+                                    @endif
+                                    @if(isset( $info->deal->deal_title ) && !empty($info->deal->deal_title))
+                                    <tr>
+                                        <th class="table-light"> Deal </th>
+                                        <td>  {{ $info->deal->deal_title ?? 'N/A' }} </td>
+                                    </tr>
+                                    @endif
+                                </thead>
+                            </table>
                         </div>
 
-                        <div class="row">
-                            
-                            @if(isset( $info->customer->first_name ) && !empty($info->customer->first_name))
-                            <div class="col-6 mt-2">
-                                <label for="">Customer</label>
-                                <div>
-                                    {{ $info->customer->first_name ?? 'N/A' }}
-                                </div>
-                            </div>
-                            @endif
-                            @if(isset( $info->user->name ) && !empty($info->user->name))
-                            <div class="col-6 mt-2">
-                                <label for="">User</label>
-                                <div>
-                                    {{ $info->user->name ?? 'N/A' }}
-                                </div>
-                            </div>
-                            @endif
-                            @if(isset( $info->lead->lead_subject ) && !empty($info->lead->lead_subject))
-                            <div class="col-6 mt-2">
-                                <label for="">Lead</label>
-                                <div>
-                                    {{ $info->lead->lead_subject ?? 'N/A' }}
-                                </div>
-                            </div>
-                            @endif
-                            @if(isset( $info->deal->deal_title ) && !empty($info->deal->deal_title))
-                            <div class="col-6 mt-2">
-                                <label for="">Deal</label>
-                                <div>
-                                    {{ $info->deal->deal_title ?? 'N/A' }}
-                                </div>
-                            </div>
-                            @endif
-                        </div>
-                        
-                            
                             <div class="col-md-12 mt-2 text-end">
                                 <button type="button" class="btn btn-light me-2" data-bs-dismiss="modal" aria-label="Close"> Close</button>
                             </div>
