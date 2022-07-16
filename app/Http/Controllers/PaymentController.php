@@ -208,7 +208,7 @@ class PaymentController extends Controller
                     'name' => $customer_info->first_name,
                     'order_no' => $order_no,
                     'app_name' => env('APP_NAME'),
-                    'company_address' => $company->address ?? '',
+                    'company_name' => $company->site_name ?? '',
                     'pay_url' => $route,
                     'amount' => $invoice_info->total
                 );
@@ -476,7 +476,7 @@ class PaymentController extends Controller
             'name' => $payment_info->customer->first_name,
             'order_no' => $payment_info->order_id,
             'app_name' => env('APP_NAME'),
-            'company_address' => $company->address ?? '',
+            'company_name' => $company->site_name ?? '',
             'pay_url' => $route,
             'amount' => $payment_info->amount
         );

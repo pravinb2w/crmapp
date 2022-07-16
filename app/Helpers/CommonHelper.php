@@ -264,10 +264,13 @@ class CommonHelper
             $user_info = User::find($user_id);
             if (!empty($update)) {
                 $message = 'Lead Enquiry ' . $lead_info->lead_subject . ' has made some changes please view to see changes. Changes made by <span class="text-success">' . Auth::user()->name . ' ' . (Auth::user()->last_name ?? '') . '</span> at ' . $date_div;
+                $subject = 'Lead Enquiry ' . $lead_info->lead_subject . ' has made some changes please view to see changes.';
             } else {
                 if (Auth::id()) {
                     $message = 'Lead Enquiry ' . $lead_info->lead_subject . ' has assigned to <span class="text-success">' . $user_info->name . ' ' . ($user_info->last_name ?? '') . '</span> and assigned by ' . Auth::user()->name . ' ' . (Auth::user()->last_name ?? '') . ' at ' . $date_div;
+                    $subject = 'You have received one Fresh Lead';
                 } else {
+                    $subject = 'You have received one Fresh Lead';
                     $message = 'Lead Enquiry ' . $lead_info->lead_subject . ' has come to <span class="text-succes">' . $user_info->name . ' ' . ($user_info->last_name ?? '') . '</span> and it is autoassigned at ' . $date_div;
                 }
             }
@@ -283,6 +286,25 @@ class CommonHelper
                 'assigned_by' => Auth::id() ?? null,
                 'created_at' => date('Y-m-d H:i:s')
             );
+
+            $extract = array(
+                'rm_name' => $user_info->name,
+                'name' => $lead_info->customer->first_name,
+                'mobile_no' => $lead_info->customer->mobile_no,
+                'email' => $lead_info->customer->email,
+                'city' => $lead_info->customer->address ?? 'N/A',
+                'source' => 'N/A',
+                'subject' => $subject,
+                'message' => $message,
+            );
+
+            $ins_mail = array(
+                'type' => 'lead',
+                'type_id' => $lead_id,
+                'email_type' => 'fresh_lead_internal',
+                'params' => serialize($extract),
+                'to' => $user_info->email ?? 'duraibytes@gmail.com'
+            );
         } else {
             if (isset($lead_order_info) && !empty($lead_order_info)) {
                 foreach ($lead_order_info as $item) {
@@ -290,11 +312,14 @@ class CommonHelper
                     $lead_info = Lead::find($lead_id);
                     $user_info = User::find($item->user_id);
                     if (!empty($update)) {
+                        $subject = 'Lead Enquiry ' . $lead_info->lead_subject . ' has made some changes please view to see changes.';
                         $message = 'Lead Enquiry ' . $lead_info->lead_subject . ' has made some changes please view to see changes. Changes made by <span class="text-success">' . Auth::user()->name . ' ' . (Auth::user()->last_name ?? '') . '</span> at ' . $date_div;
                     } else {
                         if (Auth::id()) {
+                            $subject = 'You have received one Fresh Lead';
                             $message = 'Lead Enquiry ' . $lead_info->lead_subject . ' has assigned to <span class="text-success">' . $user_info->name . ' ' . ($user_info->last_name ?? '') . '</span> and assigned by ' . Auth::user()->name . ' ' . (Auth::user()->last_name ?? '') . ' at ' . $date_div;
                         } else {
+                            $subject = 'You have received one Fresh Lead';
                             $message = 'Lead Enquiry ' . $lead_info->lead_subject . ' has come to <span class="text-succes">' . $user_info->name . ' ' . ($user_info->last_name ?? '') . '</span> and it is autoassigned at ' . $date_div;
                         }
                     }
@@ -309,11 +334,33 @@ class CommonHelper
                         'user_id' => $item->user_id,
                         'created_at' => date('Y-m-d H:i:s')
                     );
+
+                    $extract = array(
+                        'rm_name' => $user_info->name,
+                        'name' => $lead_info->customer->first_name,
+                        'mobile_no' => $lead_info->customer->mobile_no,
+                        'email' => $lead_info->customer->email,
+                        'city' => $lead_info->customer->address ?? 'N/A',
+                        'source' => 'N/A',
+                        'subject' => $subject,
+                        'message' => $message,
+                    );
+
+                    $ins_mail[] = array(
+                        'type' => 'lead',
+                        'type_id' => $lead_id,
+                        'email_type' => 'fresh_lead_internal',
+                        'params' => serialize($extract),
+                        'to' => $user_info->email ?? 'duraibytes@gmail.com'
+                    );
                 }
             }
         }
         if (!empty($ins)) {
             DB::table('notifications')->insert($ins);
+        }
+        if (!empty($ins_mail)) {
+            DB::table('send_mail')->insert($ins_mail);
         }
         return true;
     }
@@ -321,6 +368,8 @@ class CommonHelper
     public static function send_lead_activity_notification($activity_id, $assigned_to = '', $update = '')
     {
         $lead_order_info = DB::table('lead_orders')->get();
+        $company = CompanySettings::find(1);
+
         $title = 'New Lead Activity Added';
         if (!empty($update)) {
             $title = 'Changes Made on Lead Activity';
@@ -335,6 +384,7 @@ class CommonHelper
             } else {
                 $message = 'Activity ' . $act_info->subject . ' has assigned to <span class="text-success">' . $act_info->user->name . '</span> created by <span class="text-info">' . Auth::user()->name . '</span> at ' . $date_div;
             }
+            $user_info = User::find($act_info->lead->assigned_to ?? $assigned_to);
 
             $ins = array(
                 'title' => $title,
@@ -345,6 +395,23 @@ class CommonHelper
                 'user_id' => $act_info->lead->assigned_to ?? $assigned_to,
                 'assigned_by' => null,
                 'created_at' => date('Y-m-d H:i:s')
+            );
+
+            $extract = array(
+                'rm_name' => $user_info->name,
+                'message' => $message,
+                'additional_information' => '',
+                'company_name' => $company->site_name,
+                'subject' => $title,
+
+            );
+
+            $ins_mail = array(
+                'type' => 'Activity',
+                'type_id' => $activity_id,
+                'email_type' => 'general_task',
+                'params' => serialize($extract),
+                'to' => $user_info->email ?? 'duraibytes@gmail.com'
             );
 
             if (isset($act_info->lead->assigned_by) && !empty($act_info->lead->assigned_by)) {
@@ -359,6 +426,23 @@ class CommonHelper
                     'user_id' => $act_info->lead->assigned_by,
                     'assigned_by' => null,
                     'created_at' => date('Y-m-d H:i:s')
+                );
+
+                $extract = array(
+                    'rm_name' => $user_info->name,
+                    'message' => $message,
+                    'additional_information' => '',
+                    'company_name' => $company->site_name,
+                    'subject' => $title,
+
+                );
+
+                $ins_mail[] = array(
+                    'type' => 'Activity',
+                    'type_id' => $activity_id,
+                    'email_type' => 'general_task',
+                    'params' => serialize($extract),
+                    'to' => $user_info->email ?? 'duraibytes@gmail.com'
                 );
             }
         } else {
@@ -383,11 +467,31 @@ class CommonHelper
                         'user_id' => $item->user_id,
                         'created_at' => date('Y-m-d H:i:s')
                     );
+
+                    $extract = array(
+                        'rm_name' => $user_info->name,
+                        'message' => $message,
+                        'additional_information' => '',
+                        'company_name' => $company->site_name,
+                        'subject' => $title,
+
+                    );
+
+                    $ins_mail[] = array(
+                        'type' => 'Activity',
+                        'type_id' => $activity_id,
+                        'email_type' => 'general_task',
+                        'params' => serialize($extract),
+                        'to' => $user_info->email ?? 'duraibytes@gmail.com'
+                    );
                 }
             }
         }
         if (!empty($ins)) {
             DB::table('notifications')->insert($ins);
+        }
+        if (!empty($ins_mail)) {
+            DB::table('send_mail')->insert($ins_mail);
         }
         return true;
     }
@@ -395,6 +499,8 @@ class CommonHelper
     public static function send_lead_activity_done_notification($activity_id, $lead_id)
     {
         $lead_order_info = DB::table('lead_orders')->get();
+        $company = CompanySettings::find(1);
+
         $title = 'Lead Activity has been Done';
 
         $act_info = Activity::find($activity_id);
@@ -402,7 +508,7 @@ class CommonHelper
 
         $date_div = '<strong class="text-primary">' . date('d M Y h:i A') . '</strong>';
         if (isset($lead_info->assigned_to) && !empty($lead_info->assigned_to)) {
-
+            $user_info = User::find($lead_info->assigned_to);
             $message = 'Activity ' . $act_info->subject . ' has been completed by <span class="text-info">' . Auth::user()->name . '</span> at ' . $date_div;
 
             $ins = array(
@@ -414,6 +520,23 @@ class CommonHelper
                 'user_id' => $act_info->lead->assigned_to,
                 'assigned_by' => null,
                 'created_at' => date('Y-m-d H:i:s')
+            );
+
+            $extract = array(
+                'rm_name' => $user_info->name,
+                'message' => $message,
+                'additional_information' => '',
+                'company_name' => $company->site_name,
+                'subject' => $title,
+
+            );
+
+            $ins_mail = array(
+                'type' => 'Activity',
+                'type_id' => $activity_id,
+                'email_type' => 'general_task',
+                'params' => serialize($extract),
+                'to' => $user_info->email ?? 'duraibytes@gmail.com'
             );
 
             if (isset($act_info->lead->assigned_by) && !empty($act_info->lead->assigned_by)) {
@@ -428,6 +551,23 @@ class CommonHelper
                     'user_id' => $act_info->lead->assigned_by,
                     'assigned_by' => null,
                     'created_at' => date('Y-m-d H:i:s')
+                );
+
+                $extract = array(
+                    'rm_name' => $user_info->name,
+                    'message' => $message,
+                    'additional_information' => '',
+                    'company_name' => $company->site_name,
+                    'subject' => $title,
+
+                );
+
+                $ins_mail[] = array(
+                    'type' => 'Activity',
+                    'type_id' => $activity_id,
+                    'email_type' => 'general_task',
+                    'params' => serialize($extract),
+                    'to' => $user_info->email ?? 'duraibytes@gmail.com'
                 );
             }
         } else {
@@ -448,11 +588,31 @@ class CommonHelper
                         'user_id' => $item->user_id,
                         'created_at' => date('Y-m-d H:i:s')
                     );
+
+                    $extract = array(
+                        'rm_name' => $user_info->name,
+                        'message' => $message,
+                        'additional_information' => '',
+                        'company_name' => $company->site_name,
+                        'subject' => $title,
+
+                    );
+
+                    $ins_mail[] = array(
+                        'type' => 'Activity',
+                        'type_id' => $activity_id,
+                        'email_type' => 'general_task',
+                        'params' => serialize($extract),
+                        'to' => $user_info->email ?? 'duraibytes@gmail.com'
+                    );
                 }
             }
         }
         if (!empty($ins)) {
             DB::table('notifications')->insert($ins);
+        }
+        if (!empty($ins_mail)) {
+            DB::table('send_mail')->insert($ins_mail);
         }
         return true;
     }
@@ -460,6 +620,7 @@ class CommonHelper
 
     public static function send_lead_activity_delete_notification($activity_id, $lead_id)
     {
+        $company = CompanySettings::find(1);
 
         $lead_order_info = DB::table('lead_orders')->get();
         $act_info = Activity::find($activity_id);
@@ -470,7 +631,7 @@ class CommonHelper
         $message = 'Activity ' . $act_info->subject . ' has been deleted by <span class="text-info">' . Auth::user()->name . '</span> at ' . $date_div;
 
         if (isset($lead_info->assigned_to) && !empty($lead_info->assigned_to)) {
-
+            $user_info = User::find($lead_info->assigned_to);
             $ins = array(
                 'title' => $title,
                 'message' => $message,
@@ -480,6 +641,23 @@ class CommonHelper
                 'user_id' => $act_info->lead->assigned_to,
                 'assigned_by' => null,
                 'created_at' => date('Y-m-d H:i:s')
+            );
+
+            $extract = array(
+                'rm_name' => $user_info->name,
+                'message' => $message,
+                'additional_information' => '',
+                'company_name' => $company->site_name,
+                'subject' => $title,
+
+            );
+
+            $ins_mail = array(
+                'type' => 'Activity',
+                'type_id' => $activity_id,
+                'email_type' => 'general_task',
+                'params' => serialize($extract),
+                'to' => $user_info->email ?? 'duraibytes@gmail.com'
             );
 
             if (isset($act_info->lead->assigned_by) && !empty($act_info->lead->assigned_by)) {
@@ -494,6 +672,23 @@ class CommonHelper
                     'user_id' => $act_info->lead->assigned_by,
                     'assigned_by' => null,
                     'created_at' => date('Y-m-d H:i:s')
+                );
+
+                $extract = array(
+                    'rm_name' => $user_info->name,
+                    'message' => $message,
+                    'additional_information' => '',
+                    'company_name' => $company->site_name,
+                    'subject' => $title,
+
+                );
+
+                $ins_mail[] = array(
+                    'type' => 'Activity',
+                    'type_id' => $activity_id,
+                    'email_type' => 'general_task',
+                    'params' => serialize($extract),
+                    'to' => $user_info->email ?? 'duraibytes@gmail.com'
                 );
             }
         } else {
@@ -513,17 +708,38 @@ class CommonHelper
                         'user_id' => $item->user_id,
                         'created_at' => date('Y-m-d H:i:s')
                     );
+
+                    $extract = array(
+                        'rm_name' => $user_info->name,
+                        'message' => $message,
+                        'additional_information' => '',
+                        'company_name' => $company->site_name,
+                        'subject' => $title,
+
+                    );
+
+                    $ins_mail[] = array(
+                        'type' => 'Activity',
+                        'type_id' => $activity_id,
+                        'email_type' => 'general_task',
+                        'params' => serialize($extract),
+                        'to' => $user_info->email ?? 'duraibytes@gmail.com'
+                    );
                 }
             }
         }
         if (!empty($ins)) {
             DB::table('notifications')->insert($ins);
         }
+        if (!empty($ins_mail)) {
+            DB::table('send_mail')->insert($ins_mail);
+        }
         return true;
     }
 
     public static function send_lead_delete_notification($lead_id)
     {
+        $company = CompanySettings::find(1);
 
         $lead_order_info = DB::table('lead_orders')->get();
         $lead_info = Lead::find($lead_id);
@@ -534,6 +750,7 @@ class CommonHelper
         $message = 'Lead ' . $lead_info->lead_subject . ' has been deleted by <span class="text-success">' . Auth::user()->name . ' ' . (Auth::user()->last_name ?? '') . '</span> at ' . $date_div;
 
         if (isset($lead_info->assigned_to) && !empty($lead_info->assigned_to)) {
+            $user_info = User::find($lead_info->assigned_to);
 
             $ins = array(
                 'title' => $title,
@@ -545,6 +762,24 @@ class CommonHelper
                 'assigned_by' => null,
                 'created_at' => date('Y-m-d H:i:s')
             );
+
+            $extract = array(
+                'rm_name' => $user_info->name,
+                'message' => $message,
+                'additional_information' => '',
+                'company_name' => $company->site_name,
+                'subject' => $title,
+
+            );
+
+            $ins_mail = array(
+                'type' => 'Lead',
+                'type_id' => $lead_id,
+                'email_type' => 'general_task',
+                'params' => serialize($extract),
+                'to' => $user_info->email ?? 'duraibytes@gmail.com'
+            );
+
 
             if (isset($lead_info->assigned_by) && !empty($lead_info->assigned_by)) {
                 $user_info = User::find($lead_info->assigned_by);
@@ -558,6 +793,23 @@ class CommonHelper
                     'user_id' => $lead_info->assigned_by,
                     'assigned_by' => null,
                     'created_at' => date('Y-m-d H:i:s')
+                );
+
+                $extract = array(
+                    'rm_name' => $user_info->name,
+                    'message' => $message,
+                    'additional_information' => '',
+                    'company_name' => $company->site_name,
+                    'subject' => $title,
+
+                );
+
+                $ins_mail[] = array(
+                    'type' => 'Lead',
+                    'type_id' => $lead_id,
+                    'email_type' => 'general_task',
+                    'params' => serialize($extract),
+                    'to' => $user_info->email ?? 'duraibytes@gmail.com'
                 );
             }
         } else {
@@ -577,18 +829,37 @@ class CommonHelper
                         'user_id' => $item->user_id,
                         'created_at' => date('Y-m-d H:i:s')
                     );
+
+                    $extract = array(
+                        'rm_name' => $user_info->name,
+                        'message' => $message,
+                        'additional_information' => '',
+                        'company_name' => $company->site_name,
+                        'subject' => $title,
+
+                    );
+
+                    $ins_mail[] = array(
+                        'type' => 'Lead',
+                        'type_id' => $lead_id,
+                        'email_type' => 'general_task',
+                        'params' => serialize($extract),
+                        'to' => $user_info->email ?? 'duraibytes@gmail.com'
+                    );
                 }
             }
         }
         if (!empty($ins)) {
             DB::table('notifications')->insert($ins);
         }
+        if (!empty($ins_mail)) {
+            DB::table('send_mail')->insert($ins_mail);
+        }
         return true;
     }
 
     public static function send_deal_conversion_notification($lead_id)
     {
-
         $lead_order_info = DB::table('lead_orders')->get();
         $lead_info = Lead::find($lead_id);
         $date_div = '<strong class="text-primary">' . date('d M Y h:i A') . '</strong>';
@@ -609,8 +880,27 @@ class CommonHelper
                 'created_at' => date('Y-m-d H:i:s')
             );
 
+            $assigned_user = User::find($lead_info->assigned_to);
+            $extract = array(
+                'rm_name' => $assigned_user->name,
+                'name' => $lead_info->customer->first_name,
+                'mobile_no' => $lead_info->customer->mobile_no,
+                'email' => $lead_info->customer->email,
+                'city' => $lead_info->customer->address ?? 'N/A',
+                'source' => 'N/A',
+                'client_id' => 'N/A',
+                'message' => $message,
+            );
+
+            $ins_mail = array(
+                'type' => 'lead',
+                'type_id' => $lead_id,
+                'email_type' => 'deal_conversion_internal',
+                'params' => serialize($extract),
+                'to' => $assigned_user->email ?? 'duraibytes@gmail.com'
+            );
+
             if (isset($lead_info->assigned_by) && !empty($lead_info->assigned_by)) {
-                $user_info = User::find($lead_info->assigned_by);
 
                 $ins[] = array(
                     'title' => $title,
@@ -621,6 +911,25 @@ class CommonHelper
                     'user_id' => $lead_info->assigned_by,
                     'assigned_by' => null,
                     'created_at' => date('Y-m-d H:i:s')
+                );
+                $assigned_user = User::find($lead_info->assigned_by);
+                $extract = array(
+                    'rm_name' => $assigned_user->name,
+                    'name' => $lead_info->customer->first_name,
+                    'mobile_no' => $lead_info->customer->mobile_no,
+                    'email' => $lead_info->customer->email,
+                    'city' => $lead_info->customer->address ?? 'N/A',
+                    'source' => 'N/A',
+                    'client_id' => 'N/A',
+                    'message' => $message,
+                );
+
+                $ins_mail[] = array(
+                    'type' => 'lead',
+                    'type_id' => $lead_id,
+                    'email_type' => 'deal_conversion_internal',
+                    'params' => serialize($extract),
+                    'to' => $assigned_user->email ?? 'duraibytes@gmail.com'
                 );
             }
         } else {
@@ -640,11 +949,33 @@ class CommonHelper
                         'user_id' => $item->user_id,
                         'created_at' => date('Y-m-d H:i:s')
                     );
+
+                    $extract = array(
+                        'rm_name' => $user_info->name,
+                        'name' => $lead_info->customer->first_name,
+                        'mobile_no' => $lead_info->customer->mobile_no,
+                        'email' => $lead_info->customer->email,
+                        'city' => $lead_info->customer->address ?? 'N/A',
+                        'source' => 'N/A',
+                        'client_id' => 'N/A',
+                        'message' => $message,
+                    );
+
+                    $ins_mail[] = array(
+                        'type' => 'lead',
+                        'type_id' => $lead_id,
+                        'email_type' => 'deal_conversion_internal',
+                        'params' => serialize($extract),
+                        'to' => $user_info->email ?? 'duraibytes@gmail.com'
+                    );
                 }
             }
         }
         if (!empty($ins)) {
             DB::table('notifications')->insert($ins);
+        }
+        if (!empty($ins_mail)) {
+            DB::table('send_mail')->insert($ins_mail);
         }
         return true;
     }
@@ -652,6 +983,7 @@ class CommonHelper
     //deal notification started
     public static function send_deal_notification($deal_id, $user_id = '', $update = '')
     {
+        $company = CompanySettings::find(1);
 
         $deal_order_info = DB::table('deal_orders')->get();
         $title = 'New Deal Added';
@@ -683,6 +1015,23 @@ class CommonHelper
                 'assigned_by' => Auth::id() ?? null,
                 'created_at' => date('Y-m-d H:i:s')
             );
+
+            $extract = array(
+                'rm_name' => $user_info->name,
+                'message' => $message,
+                'additional_information' => '',
+                'company_name' => $company->site_name,
+                'subject' => $title,
+
+            );
+
+            $ins_mail = array(
+                'type' => 'Deal',
+                'type_id' => $deal_id,
+                'email_type' => 'general_task',
+                'params' => serialize($extract),
+                'to' => $user_info->email ?? 'duraibytes@gmail.com'
+            );
         } else {
             if (isset($deal_order_info) && !empty($deal_order_info)) {
                 foreach ($deal_order_info as $item) {
@@ -709,17 +1058,38 @@ class CommonHelper
                         'user_id' => $item->user_id,
                         'created_at' => date('Y-m-d H:i:s')
                     );
+
+                    $extract = array(
+                        'rm_name' => $user_info->name,
+                        'message' => $message,
+                        'additional_information' => '',
+                        'company_name' => $company->site_name,
+                        'subject' => $title,
+
+                    );
+
+                    $ins_mail = array(
+                        'type' => 'Deal',
+                        'type_id' => $deal_id,
+                        'email_type' => 'general_task',
+                        'params' => serialize($extract),
+                        'to' => $user_info->email ?? 'duraibytes@gmail.com'
+                    );
                 }
             }
         }
         if (!empty($ins)) {
             DB::table('notifications')->insert($ins);
         }
+        if (!empty($ins_mail)) {
+            DB::table('send_mail')->insert($ins_mail);
+        }
         return true;
     }
 
     public static function send_deal_activity_notification($activity_id, $assigned_to = '', $update = '')
     {
+        $company = CompanySettings::find(1);
         $lead_order_info = DB::table('deal_orders')->get();
         $title = 'New Deal Activity Added';
         if (!empty($update)) {
@@ -736,6 +1106,8 @@ class CommonHelper
                 $message = 'Activity ' . $act_info->subject . ' has assigned to <span class="text-success">' . $act_info->user->name . '</span> created by <span class="text-info">' . Auth::user()->name . '</span> at ' . $date_div;
             }
 
+            $user_info = User::find($act_info->deal->assigned_to ?? $assigned_to);
+
             $ins = array(
                 'title' => $title,
                 'message' => $message,
@@ -745,6 +1117,23 @@ class CommonHelper
                 'user_id' => $act_info->deal->assigned_to ?? $assigned_to,
                 'assigned_by' => null,
                 'created_at' => date('Y-m-d H:i:s')
+            );
+
+            $extract = array(
+                'rm_name' => $user_info->name,
+                'message' => $message,
+                'additional_information' => '',
+                'company_name' => $company->site_name,
+                'subject' => $title,
+
+            );
+
+            $ins_mail = array(
+                'type' => 'Activity',
+                'type_id' => $activity_id,
+                'email_type' => 'general_task',
+                'params' => serialize($extract),
+                'to' => $user_info->email ?? 'duraibytes@gmail.com'
             );
 
             if (isset($act_info->deal->assigned_by) && !empty($act_info->deal->assigned_by)) {
@@ -759,6 +1148,23 @@ class CommonHelper
                     'user_id' => $act_info->deal->assigned_by,
                     'assigned_by' => null,
                     'created_at' => date('Y-m-d H:i:s')
+                );
+
+                $extract = array(
+                    'rm_name' => $user_info->name,
+                    'message' => $message,
+                    'additional_information' => '',
+                    'company_name' => $company->site_name,
+                    'subject' => $title,
+
+                );
+
+                $ins_mail[] = array(
+                    'type' => 'Activity',
+                    'type_id' => $activity_id,
+                    'email_type' => 'general_task',
+                    'params' => serialize($extract),
+                    'to' => $user_info->email ?? 'duraibytes@gmail.com'
                 );
             }
         } else {
@@ -782,18 +1188,38 @@ class CommonHelper
                         'user_id' => $item->user_id,
                         'created_at' => date('Y-m-d H:i:s')
                     );
+
+                    $extract = array(
+                        'rm_name' => $user_info->name,
+                        'message' => $message,
+                        'additional_information' => '',
+                        'company_name' => $company->site_name,
+                        'subject' => $title,
+
+                    );
+
+                    $ins_mail[] = array(
+                        'type' => 'Activity',
+                        'type_id' => $activity_id,
+                        'email_type' => 'general_task',
+                        'params' => serialize($extract),
+                        'to' => $user_info->email ?? 'duraibytes@gmail.com'
+                    );
                 }
             }
         }
         if (!empty($ins)) {
             DB::table('notifications')->insert($ins);
         }
+        if (!empty($ins_mail)) {
+            DB::table('send_mail')->insert($ins_mail);
+        }
         return true;
     }
 
     public static function send_deal_activity_delete_notification($activity_id, $deal_id)
     {
-
+        $company = CompanySettings::find(1);
         $deal_order_info = DB::table('deal_orders')->get();
         $act_info = Activity::find($activity_id);
         $deal_info = Deal::find($deal_id);
@@ -803,7 +1229,7 @@ class CommonHelper
         $message = 'Activity ' . $act_info->subject . ' has been deleted by <span class="text-info">' . Auth::user()->name . '</span> at ' . $date_div;
 
         if (isset($deal_info->assigned_to) && !empty($deal_info->assigned_to)) {
-
+            $user_info = User::find($deal_info->assigned_to);
             $ins = array(
                 'title' => $title,
                 'message' => $message,
@@ -813,6 +1239,23 @@ class CommonHelper
                 'user_id' => $act_info->deal->assigned_to,
                 'assigned_by' => null,
                 'created_at' => date('Y-m-d H:i:s')
+            );
+
+            $extract = array(
+                'rm_name' => $user_info->name,
+                'message' => $message,
+                'additional_information' => '',
+                'company_name' => $company->site_name,
+                'subject' => $title,
+
+            );
+
+            $ins_mail = array(
+                'type' => 'Activity',
+                'type_id' => $activity_id,
+                'email_type' => 'general_task',
+                'params' => serialize($extract),
+                'to' => $user_info->email ?? 'duraibytes@gmail.com'
             );
 
             if (isset($act_info->deal->assigned_by) && !empty($act_info->deal->assigned_by)) {
@@ -828,11 +1271,28 @@ class CommonHelper
                     'assigned_by' => null,
                     'created_at' => date('Y-m-d H:i:s')
                 );
+
+                $extract = array(
+                    'rm_name' => $user_info->name,
+                    'message' => $message,
+                    'additional_information' => '',
+                    'company_name' => $company->site_name,
+                    'subject' => $title,
+
+                );
+
+                $ins_mail[] = array(
+                    'type' => 'Activity',
+                    'type_id' => $activity_id,
+                    'email_type' => 'general_task',
+                    'params' => serialize($extract),
+                    'to' => $user_info->email ?? 'duraibytes@gmail.com'
+                );
             }
         } else {
             if (isset($deal_order_info) && !empty($deal_order_info)) {
                 foreach ($deal_order_info as $item) {
-
+                    $user_info = User::find($item->user_id);
                     $ins[] = array(
                         'title' => $title,
                         'message' => $message,
@@ -843,17 +1303,38 @@ class CommonHelper
                         'user_id' => $item->user_id,
                         'created_at' => date('Y-m-d H:i:s')
                     );
+
+                    $extract = array(
+                        'rm_name' => $user_info->name,
+                        'message' => $message,
+                        'additional_information' => '',
+                        'company_name' => $company->site_name,
+                        'subject' => $title,
+
+                    );
+
+                    $ins_mail = array(
+                        'type' => 'Activity',
+                        'type_id' => $activity_id,
+                        'email_type' => 'general_task',
+                        'params' => serialize($extract),
+                        'to' => $user_info->email ?? 'duraibytes@gmail.com'
+                    );
                 }
             }
         }
         if (!empty($ins)) {
             DB::table('notifications')->insert($ins);
         }
+        if (!empty($ins_mail)) {
+            DB::table('send_mail')->insert($ins_mail);
+        }
         return true;
     }
 
     public static function send_deal_activity_done_notification($activity_id, $deal_id)
     {
+        $company = CompanySettings::find(1);
         $deal_order_info = DB::table('deal_orders')->get();
         $title = 'Deal Activity has been Done';
 
@@ -864,7 +1345,7 @@ class CommonHelper
         if (isset($deal_info->assigned_to) && !empty($deal_info->assigned_to)) {
 
             $message = 'Activity ' . $act_info->subject . ' has been completed by <span class="text-info">' . Auth::user()->name . '</span> at ' . $date_div;
-
+            $user_info = User::find($deal_info->assigned_to);
             $ins = array(
                 'title' => $title,
                 'message' => $message,
@@ -874,6 +1355,23 @@ class CommonHelper
                 'user_id' => $act_info->deal->assigned_to,
                 'assigned_by' => null,
                 'created_at' => date('Y-m-d H:i:s')
+            );
+
+            $extract = array(
+                'rm_name' => $user_info->name,
+                'message' => $message,
+                'additional_information' => '',
+                'company_name' => $company->site_name,
+                'subject' => $title,
+
+            );
+
+            $ins_mail = array(
+                'type' => 'Activity',
+                'type_id' => $activity_id,
+                'email_type' => 'general_task',
+                'params' => serialize($extract),
+                'to' => $user_info->email ?? 'duraibytes@gmail.com'
             );
 
             if (isset($act_info->deal->assigned_by) && !empty($act_info->deal->assigned_by)) {
@@ -889,11 +1387,28 @@ class CommonHelper
                     'assigned_by' => null,
                     'created_at' => date('Y-m-d H:i:s')
                 );
+
+                $extract = array(
+                    'rm_name' => $user_info->name,
+                    'message' => $message,
+                    'additional_information' => '',
+                    'company_name' => $company->site_name,
+                    'subject' => $title,
+
+                );
+
+                $ins_mail[] = array(
+                    'type' => 'Activity',
+                    'type_id' => $activity_id,
+                    'email_type' => 'general_task',
+                    'params' => serialize($extract),
+                    'to' => $user_info->email ?? 'duraibytes@gmail.com'
+                );
             }
         } else {
             if (isset($deal_order_info) && !empty($deal_order_info)) {
                 foreach ($deal_order_info as $item) {
-
+                    $user_info = User::find($item->user_id);
                     $message = 'Activity ' . $act_info->subject . ' has been completed by <span class="text-info">' . Auth::user()->name . '</span> at ' . $date_div;
 
                     $ins[] = array(
@@ -906,11 +1421,31 @@ class CommonHelper
                         'user_id' => $item->user_id,
                         'created_at' => date('Y-m-d H:i:s')
                     );
+
+                    $extract = array(
+                        'rm_name' => $user_info->name,
+                        'message' => $message,
+                        'additional_information' => '',
+                        'company_name' => $company->site_name,
+                        'subject' => $title,
+
+                    );
+
+                    $ins_mail[] = array(
+                        'type' => 'Activity',
+                        'type_id' => $activity_id,
+                        'email_type' => 'general_task',
+                        'params' => serialize($extract),
+                        'to' => $user_info->email ?? 'duraibytes@gmail.com'
+                    );
                 }
             }
         }
         if (!empty($ins)) {
             DB::table('notifications')->insert($ins);
+        }
+        if (!empty($ins_mail)) {
+            DB::table('send_mail')->insert($ins_mail);
         }
         return true;
     }
@@ -940,6 +1475,27 @@ class CommonHelper
                 'created_at' => date('Y-m-d H:i:s')
             );
 
+            $user_info = User::find($deal_info->assigned_to);
+
+            $extract = array(
+                'rm_name' => $user_info->name,
+                'message' => $message,
+                'name' => $deal_info->customer->first_name,
+                'mobile_no' => $deal_info->customer->mobile_no,
+                'email' => $deal_info->customer->email,
+                'city' => $deal_info->customer->address ?? 'N/A',
+                'source' => 'N/A',
+
+            );
+
+            $ins_mail = array(
+                'type' => 'deal',
+                'type_id' => $deal_id,
+                'email_type' => 'stage_completed',
+                'params' => serialize($extract),
+                'to' => $user_info->email ?? 'duraibytes@gmail.com'
+            );
+
             if (isset($deal_info->assigned_by) && !empty($deal_info->assigned_by)) {
                 $user_info = User::find($deal_info->assigned_by);
 
@@ -953,11 +1509,30 @@ class CommonHelper
                     'assigned_by' => null,
                     'created_at' => date('Y-m-d H:i:s')
                 );
+
+                $extract = array(
+                    'rm_name' => $user_info->name,
+                    'message' => $message,
+                    'name' => $deal_info->customer->first_name,
+                    'mobile_no' => $deal_info->customer->mobile_no,
+                    'email' => $deal_info->customer->email,
+                    'city' => $deal_info->customer->address ?? 'N/A',
+                    'source' => 'N/A',
+
+                );
+
+                $ins_mail[] = array(
+                    'type' => 'deal',
+                    'type_id' => $deal_id,
+                    'email_type' => 'stage_completed',
+                    'params' => serialize($extract),
+                    'to' => $user_info->email ?? 'duraibytes@gmail.com'
+                );
             }
         } else {
             if (isset($deal_order_info) && !empty($deal_order_info)) {
                 foreach ($deal_order_info as $item) {
-
+                    $user_info = User::find($item->user_id);
 
                     $ins[] = array(
                         'title' => $title,
@@ -969,11 +1544,33 @@ class CommonHelper
                         'user_id' => $item->user_id,
                         'created_at' => date('Y-m-d H:i:s')
                     );
+
+                    $extract = array(
+                        'rm_name' => $user_info->name,
+                        'message' => $message,
+                        'name' => $deal_info->customer->first_name,
+                        'mobile_no' => $deal_info->customer->mobile_no,
+                        'email' => $deal_info->customer->email,
+                        'city' => $deal_info->customer->address ?? 'N/A',
+                        'source' => 'N/A',
+
+                    );
+
+                    $ins_mail[] = array(
+                        'type' => 'deal',
+                        'type_id' => $deal_id,
+                        'email_type' => 'stage_completed',
+                        'params' => serialize($extract),
+                        'to' => $user_info->email ?? 'duraibytes@gmail.com'
+                    );
                 }
             }
         }
         if (!empty($ins)) {
             DB::table('notifications')->insert($ins);
+        }
+        if (!empty($ins_mail)) {
+            DB::table('send_mail')->insert($ins_mail);
         }
         return true;
     }
@@ -986,12 +1583,17 @@ class CommonHelper
         $date_div = '<strong class="text-primary">' . date('d M Y h:i A') . '</strong>';
         if ($status == 2) {
             $title = 'Deal has won';
+            $accepted_or_rejected = 'Accepted';
             $message = 'Deal has won by <span class="text-info">' . Auth::user()->name . '</span> at ' . $date_div;
         } else if ($status == 3) {
             $title = 'Deal has lost';
+            $accepted_or_rejected = 'Rejected';
+
             $message = 'Deal has lost by <span class="text-info">' . Auth::user()->name . '</span> at ' . $date_div;
         } else if ($status == 1) {
             $title = 'Deal has Reopened';
+            $accepted_or_rejected = 'Reopened';
+
             $message = 'Deal has reopened by <span class="text-info">' . Auth::user()->name . '</span> at ' . $date_div;
         }
 
@@ -1007,6 +1609,29 @@ class CommonHelper
                 'assigned_by' => null,
                 'created_at' => date('Y-m-d H:i:s')
             );
+            $user_info = User::find($deal_info->assigned_to);
+
+            $extract = array(
+                'rm_name' => $user_info->name,
+                'message' => $message,
+                'name' => $deal_info->customer->first_name,
+                'mobile_no' => $deal_info->customer->mobile_no,
+                'email' => $deal_info->customer->email,
+                'city' => $deal_info->customer->address ?? 'N/A',
+                'source' => 'N/A',
+                'accepted_or_rejected' => $accepted_or_rejected,
+                'reaction' => $accepted_or_rejected,
+                'deal' => $deal_info->deal_title,
+
+            );
+
+            $ins_mail = array(
+                'type' => 'deal',
+                'type_id' => $deal_id,
+                'email_type' => 'deal_won/loss',
+                'params' => serialize($extract),
+                'to' => $user_info->email ?? 'duraibytes@gmail.com'
+            );
 
             if (isset($deal_info->assigned_by) && !empty($deal_info->assigned_by)) {
                 $user_info = User::find($deal_info->assigned_by);
@@ -1021,12 +1646,34 @@ class CommonHelper
                     'assigned_by' => null,
                     'created_at' => date('Y-m-d H:i:s')
                 );
+
+                $extract = array(
+                    'rm_name' => $user_info->name,
+                    'message' => $message,
+                    'name' => $deal_info->customer->first_name,
+                    'mobile_no' => $deal_info->customer->mobile_no,
+                    'email' => $deal_info->customer->email,
+                    'city' => $deal_info->customer->address ?? 'N/A',
+                    'source' => 'N/A',
+                    'accepted_or_rejected' => $accepted_or_rejected,
+                    'deal' => $deal_info->deal_title,
+                    'reaction' => $accepted_or_rejected,
+
+                );
+
+                $ins_mail[] = array(
+                    'type' => 'deal',
+                    'type_id' => $deal_id,
+                    'email_type' => 'deal_won/loss',
+                    'params' => serialize($extract),
+                    'to' => $user_info->email ?? 'duraibytes@gmail.com'
+                );
             }
         } else {
             if (isset($deal_order_info) && !empty($deal_order_info)) {
                 foreach ($deal_order_info as $item) {
 
-
+                    $user_info = User::find($item->user_id);
                     $ins[] = array(
                         'title' => $title,
                         'message' => $message,
@@ -1037,11 +1684,37 @@ class CommonHelper
                         'user_id' => $item->user_id,
                         'created_at' => date('Y-m-d H:i:s')
                     );
+
+                    $extract = array(
+                        'rm_name' => $user_info->name,
+                        'message' => $message,
+                        'name' => $deal_info->customer->first_name,
+                        'mobile_no' => $deal_info->customer->mobile_no,
+                        'email' => $deal_info->customer->email,
+                        'city' => $deal_info->customer->address ?? 'N/A',
+                        'source' => 'N/A',
+                        'accepted_or_rejected' => $accepted_or_rejected,
+                        'deal' => $deal_info->deal_title,
+                        'reaction' => $accepted_or_rejected,
+
+
+                    );
+
+                    $ins_mail[] = array(
+                        'type' => 'deal',
+                        'type_id' => $deal_id,
+                        'email_type' => 'deal_won/loss',
+                        'params' => serialize($extract),
+                        'to' => $user_info->email ?? 'duraibytes@gmail.com'
+                    );
                 }
             }
         }
         if (!empty($ins)) {
             DB::table('notifications')->insert($ins);
+        }
+        if (!empty($ins_mail)) {
+            DB::table('send_mail')->insert($ins_mail);
         }
         return true;
     }
@@ -1050,6 +1723,7 @@ class CommonHelper
     {
 
         $deal_order_info = DB::table('deal_orders')->get();
+        $company = CompanySettings::find(1);
         $deal_info = Deal::find($deal_id);
 
         $title = 'Deal Deleted';
@@ -1058,7 +1732,7 @@ class CommonHelper
         $message = 'Deal ' . $deal_info->deal_title . ' has been deleted by <span class="text-success">' . Auth::user()->name . ' ' . (Auth::user()->last_name ?? '') . '</span> at ' . $date_div;
 
         if (isset($deal_info->assigned_to) && !empty($deal_info->assigned_to)) {
-
+            $user_info = User::find($deal_info->assigned_to);
             $ins = array(
                 'title' => $title,
                 'message' => $message,
@@ -1068,6 +1742,23 @@ class CommonHelper
                 'user_id' => $deal_info->assigned_to,
                 'assigned_by' => null,
                 'created_at' => date('Y-m-d H:i:s')
+            );
+
+            $extract = array(
+                'rm_name' => $user_info->name,
+                'message' => $message,
+                'additional_information' => '',
+                'company_name' => $company->site_name,
+                'subject' => $title,
+
+            );
+
+            $ins_mail = array(
+                'type' => 'Deal',
+                'type_id' => $deal_id,
+                'email_type' => 'general_task',
+                'params' => serialize($extract),
+                'to' => $user_info->email ?? 'duraibytes@gmail.com'
             );
 
             if (isset($deal_info->assigned_by) && !empty($deal_info->assigned_by)) {
@@ -1083,11 +1774,28 @@ class CommonHelper
                     'assigned_by' => null,
                     'created_at' => date('Y-m-d H:i:s')
                 );
+
+                $extract = array(
+                    'rm_name' => $user_info->name,
+                    'message' => $message,
+                    'additional_information' => '',
+                    'company_name' => $company->site_name,
+                    'subject' => $title,
+
+                );
+
+                $ins_mail[] = array(
+                    'type' => 'Deal',
+                    'type_id' => $deal_id,
+                    'email_type' => 'general_task',
+                    'params' => serialize($extract),
+                    'to' => $user_info->email ?? 'duraibytes@gmail.com'
+                );
             }
         } else {
             if (isset($deal_order_info) && !empty($deal_order_info)) {
                 foreach ($deal_order_info as $item) {
-
+                    $user_info = User::find($item->user_id);
                     $ins[] = array(
                         'title' => $title,
                         'message' => $message,
@@ -1098,17 +1806,37 @@ class CommonHelper
                         'user_id' => $item->user_id,
                         'created_at' => date('Y-m-d H:i:s')
                     );
+
+                    $extract = array(
+                        'rm_name' => $user_info->name,
+                        'message' => $message,
+                        'additional_information' => '',
+                        'company_name' => $company->site_name,
+                        'subject' => $title,
+                    );
+
+                    $ins_mail[] = array(
+                        'type' => 'Deal',
+                        'type_id' => $deal_id,
+                        'email_type' => 'general_task',
+                        'params' => serialize($extract),
+                        'to' => $user_info->email ?? 'duraibytes@gmail.com'
+                    );
                 }
             }
         }
         if (!empty($ins)) {
             DB::table('notifications')->insert($ins);
         }
+        if (!empty($ins_mail)) {
+            DB::table('send_mail')->insert($ins_mail);
+        }
         return true;
     }
 
     public static function send_activity_status_change_notification($activity_id)
     {
+        $company = CompanySettings::find(1);
 
         $lead_order_info = DB::table('lead_orders')->get();
         $act_info = Activity::find($activity_id);
@@ -1117,8 +1845,9 @@ class CommonHelper
         $title = 'Activity status has been Changed';
         $message = 'Activity ' . $act_info->subject . ' status has been changed to ' . $act_info->statusAll->status_name . ' by <span class="text-info">' . Auth::user()->name . '</span> at ' . $date_div;
         $ins = [];
+        $ins_mail = [];
         if ($act_info->added_by == $act_info->user_id) {
-
+            $user_info = User::find($act_info->added_by);
             $ins = array(
                 'title' => $title,
                 'message' => $message,
@@ -1129,8 +1858,25 @@ class CommonHelper
                 'assigned_by' => null,
                 'created_at' => date('Y-m-d H:i:s')
             );
-        } else if ($act_info->added_by != $act_info->user_id) {
 
+            $extract = array(
+                'rm_name' => $user_info->name,
+                'message' => $message,
+                'additional_information' => '',
+                'company_name' => $company->site_name,
+                'subject' => $title,
+
+            );
+
+            $ins_mail = array(
+                'type' => 'Activity',
+                'type_id' => $activity_id,
+                'email_type' => 'general_task',
+                'params' => serialize($extract),
+                'to' => $user_info->email ?? 'duraibytes@gmail.com'
+            );
+        } else if ($act_info->added_by != $act_info->user_id) {
+            $add_info = User::find($act_info->added_by);
             $ins[] = array(
                 'title' => $title,
                 'message' => $message,
@@ -1141,6 +1887,25 @@ class CommonHelper
                 'assigned_by' => null,
                 'created_at' => date('Y-m-d H:i:s')
             );
+
+            $extract = array(
+                'rm_name' => $add_info->name,
+                'message' => $message,
+                'additional_information' => '',
+                'company_name' => $company->site_name,
+                'subject' => $title,
+
+            );
+
+            $ins_mail[] = array(
+                'type' => 'Activity',
+                'type_id' => $activity_id,
+                'email_type' => 'general_task',
+                'params' => serialize($extract),
+                'to' => $add_info->email ?? 'duraibytes@gmail.com'
+            );
+            $user_info = User::find($act_info->user_id);
+
             $ins[] = array(
                 'title' => $title,
                 'message' => $message,
@@ -1151,10 +1916,30 @@ class CommonHelper
                 'assigned_by' => null,
                 'created_at' => date('Y-m-d H:i:s')
             );
+
+            $extract = array(
+                'rm_name' => $user_info->name,
+                'message' => $message,
+                'additional_information' => '',
+                'company_name' => $company->site_name,
+                'subject' => $title,
+
+            );
+
+            $ins_mail[] = array(
+                'type' => 'Activity',
+                'type_id' => $activity_id,
+                'email_type' => 'general_task',
+                'params' => serialize($extract),
+                'to' => $user_info->email ?? 'duraibytes@gmail.com'
+            );
         }
 
         if (!empty($ins)) {
             DB::table('notifications')->insert($ins);
+        }
+        if (!empty($ins_mail)) {
+            DB::table('send_mail')->insert($ins_mail);
         }
         return true;
     }

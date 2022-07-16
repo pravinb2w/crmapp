@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\MailEntryHelper;
 use Illuminate\Http\Request;
 use App\Models\CompanySettings;
 use App\Models\Customer;
@@ -102,23 +103,8 @@ class LandingController extends Controller
             //send email to new customer
             if (isset($customer) && !empty($customer)) {
             } else {
-                $company = CompanySettings::find(1);
-
-                $extract = array(
-                    'name' => $request->fullname,
-                    'app_name' => env('APP_NAME'),
-                    'unsbusribe_link' => 'Unsubscribe',
-                    'company_address' => $company->address ?? '',
-                    'password' => $randomString,
-                );
-                $ins_mail = array(
-                    'type' => 'lead',
-                    'type_id' => $lead_id,
-                    'email_type' => 'new_registration',
-                    'params' => serialize($extract),
-                    'to' => $request->email ?? 'duraibytes@gmail.com'
-                );
-                SendMail::create($ins_mail);
+                MailEntryHelper::welcomeMessage($lead_id, $request->email);
+                MailEntryHelper::leadAddition($lead_id, $request->email);
             }
 
             $success = 'Enquiry has been sent';

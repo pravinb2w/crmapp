@@ -78,6 +78,36 @@
             <input type="text" name="gstin_no" class="form-control" value="{{ $info->company->gstin_no ?? '' }}" id="gstin_no" placeholder="GstinNo">
         </div>
     </div>
+    <div class="row mb-3">
+        <label for="mentorship_link" class="col-3 col-form-label">Mentorship Url</label>
+        <div class="col-9">
+            <input type="text" name="mentorship_link" class="form-control" value="{{ $info->company->mentorship_link ?? '' }}" id="mentorship_link" placeholder="Mentorship url">
+        </div>
+    </div>
+    <div class="row mb-3">
+        <label for="telegram_bot" class="col-3 col-form-label">Telegram Bot Url</label>
+        <div class="col-9">
+            <input type="text" name="telegram_bot" class="form-control" value="{{ $info->company->telegram_bot ?? '' }}" id="telegram_bot" placeholder="Telegram Bot url">
+        </div>
+    </div>
+    <div class="row mb-3">
+        <label for="testimonial_link" class="col-3 col-form-label">Testimonial Url</label>
+        <div class="col-9">
+            <input type="text" name="testimonial_link" class="form-control" value="{{ $info->company->testimonial_link ?? '' }}" id="testimonial_link" placeholder="Testimonial url">
+        </div>
+    </div>
+    <div class="row mb-3">
+        <label for="youtube_learning_link" class="col-3 col-form-label">Youtube Learning Url</label>
+        <div class="col-9">
+            <input type="text" name="youtube_learning_link" class="form-control" value="{{ $info->company->youtube_learning_link ?? '' }}" id="youtube_learning_link" placeholder="Youtube Learning url">
+        </div>
+    </div>
+    <div class="row mb-3">
+        <label for="telegram_link" class="col-3 col-form-label">Telegram Url</label>
+        <div class="col-9">
+            <input type="text" name="telegram_link" class="form-control" value="{{ $info->company->telegram_link ?? '' }}" id="telegram_link" placeholder="Telegram url">
+        </div>
+    </div>
     <div class="justify-content-end row">
         <div class="col-9">
             <button type="submit" class="btn btn-info">Update</button>

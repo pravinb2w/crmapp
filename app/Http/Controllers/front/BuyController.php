@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\front;
 
 use App\Helpers\CommonHelper;
+use App\Helpers\MailEntryHelper;
 use App\Http\Controllers\Controller;
 use App\Mail\TestEmail;
 use App\Models\CompanySettings;
@@ -78,6 +79,7 @@ class BuyController extends Controller
                 //send password in sms 
                 $params = array('password' => $randomString);
                 sendSMS($request->mobile_no, 'new_registration', $params);
+                MailEntryHelper::welcomeMessage($customer_id ?? null, $request->email);
             }
 
             if ($request->pay_gateway == 'razorpay') {
@@ -276,21 +278,18 @@ class BuyController extends Controller
             //send email 
             $company = CompanySettings::find(1);
             $extract = array(
-                'name' => $order_info->customer->first_name,
-                'order_no' => $order_info->order_id,
-                'app_name' => env('APP_NAME'),
-                'unsbusribe_link' => 'Unsubscribe',
-                'company_address' => $company->address ?? '',
-                'date' => date('d M Y h:i A', strtotime($order_info->created_at)),
-                'invoice_no' => $invoice->invoice_no ?? ''
+                'company_name' => $company->site_name,
+                'product' => $order_info->order_id . ' ' . $order_info->product->product_name ?? '',
+                'amount' => $order_info->amount,
+                'confirmed_date' => date('d M Y'),
             );
 
             $ins_mail = array(
                 'type' => 'order',
-                'type_id' => $pay_info->order_id,
+                'type_id' => $order_info->id,
                 'email_type' => 'success_payment',
                 'params' => serialize($extract),
-                'to' => $request->email ?? 'duraibytes@gmail.com'
+                'to' => $order_info->customer->email ?? 'duraibytes@gmail.com'
             );
             SendMail::create($ins_mail);
 

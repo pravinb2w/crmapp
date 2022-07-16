@@ -62,14 +62,20 @@ return [
     ],
     'email_type' => [
         'new_registration',
+        'new_lead',
+        'fresh_lead_internal',
         'forgot_password',
         'deal_conversion',
+        'deal_conversion_internal',
         'stage_completed',
-        'success_deal',
-        'loss_deal',
+        'invoice_creation',
+        'invoice_creation_internal',
+        'deal_won/loss',
         'success_payment',
         'cancel_payment',
         'payment_url',
-        'payment_remainder'
+        'payment_remainder',
+        'general_task',
+
     ],
 ];

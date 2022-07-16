@@ -39,7 +39,12 @@ class CompanySettings extends Model implements Auditable
         'deal_access',
         'workflow_automation',
         'last_lead_order',
-        'last_deal_order'
+        'last_deal_order',
+        'mentorship_link',
+        'telegram_bot',
+        'testimonial_link',
+        'youtube_learning_link',
+        'telegram_link'
     ];
 
     public function subscription()
@@ -53,20 +58,22 @@ class CompanySettings extends Model implements Auditable
     }
 
 
-    public function scopeLatests( Builder $query ) {
-        return $query->orderBy( static::CREATED_AT, 'desc' );
+    public function scopeLatests(Builder $query)
+    {
+        return $query->orderBy(static::CREATED_AT, 'desc');
     }
 
-    public function scopeSearch( Builder $query, $search ) {
+    public function scopeSearch(Builder $query, $search)
+    {
 
-        if( empty( $search ) ) {
+        if (empty($search)) {
             return $query;
         }
 
-        return  $query->where( function( $query ) use( $search ) {
-                    $query->where( 'role', 'like', "%{$search}%" )
-                        ->orWhere( 'description', 'like', "%{$search}%" );
-                }); 
+        return  $query->where(function ($query) use ($search) {
+            $query->where('role', 'like', "%{$search}%")
+                ->orWhere('description', 'like', "%{$search}%");
+        });
     }
 
     public function prefix()

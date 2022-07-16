@@ -15,7 +15,7 @@ class EmailTemplateController extends Controller
 {
     public function index()
     {
-        $data   = EmailTemplates::paginate(5);
+        $data   = EmailTemplates::paginate(10);
         $email_count = EmailTemplates::count();
         return view('crm.utilities.email_template.index', compact('data', 'email_count'));
     }
@@ -29,14 +29,14 @@ class EmailTemplateController extends Controller
     public function store(Request $request)
     {
         $valid   = [
-            'title'      => [ 'required', 'string', 'max:255'],
-            'email_type' => [ 'required', 'string', 'max:255', 'unique:email_templates,email_type'],
+            'title'      => ['required', 'string', 'max:255'],
+            'email_type' => ['required', 'string', 'max:255', 'unique:email_templates,email_type'],
             'content' => ['required']
         ];
-    
+
         //Validate the product
-        $validator                     = Validator::make( $request->all(), $valid );
-        
+        $validator                     = Validator::make($request->all(), $valid);
+
         if ($validator->passes()) {
             EmailTemplates::create([
                 'title' => $request->title,
@@ -45,11 +45,10 @@ class EmailTemplateController extends Controller
                 'content' => $request->content,
                 'created_by' => Auth()->user()->name,
             ]);
-            return redirect()->route('email.index')->with('success','Mail Created successfully!');
+            return redirect()->route('email.index')->with('success', 'Mail Created successfully!');
         } else {
             return back()->withErrors($validator);
         }
-
     }
 
     public function edit($id)
@@ -65,7 +64,7 @@ class EmailTemplateController extends Controller
         // $templateMessage = str_replace("}","",$templateMessage);
         // extract($extract);
         // eval("\$templateMessage = \"$templateMessage\";");
-        
+
         // $body = [
         //     'content' => $templateMessage
         // ];
@@ -82,13 +81,13 @@ class EmailTemplateController extends Controller
     public function update(Request $request, $id)
     {
         $valid   = [
-            'title'      => [ 'required', 'string', 'max:255'],
-            'email_type' => [ 'required', 'string', 'max:255', 'unique:email_templates,email_type,'.$id],
+            'title'      => ['required', 'string', 'max:255'],
+            'email_type' => ['required', 'string', 'max:255', 'unique:email_templates,email_type,' . $id],
             'content' => ['required']
         ];
-    
+
         //Validate the product
-        $validator                     = Validator::make( $request->all(), $valid );
+        $validator                     = Validator::make($request->all(), $valid);
         if ($validator->passes()) {
             EmailTemplates::find($id)->update([
                 'title' => $request->title,
@@ -97,8 +96,7 @@ class EmailTemplateController extends Controller
                 'content' => $request->content,
                 'created_by' => Auth()->user()->name,
             ]);
-            return redirect()->route('email.index')->with('success','Mail Updated successfully!');
-
+            return redirect()->route('email.index')->with('success', 'Mail Updated successfully!');
         } else {
             return back()->withErrors($validator);
         }
@@ -107,6 +105,6 @@ class EmailTemplateController extends Controller
     public function delete($id)
     {
         EmailTemplates::find($id)->delete();
-        return redirect()->route('email.index')->with('success','Mail Deleted successfully!');
+        return redirect()->route('email.index')->with('success', 'Mail Deleted successfully!');
     }
 }

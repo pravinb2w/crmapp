@@ -68,8 +68,7 @@ class PayuMoneyController extends \InfyOm\Payu\PayuMoneyController
             'name' => $order_info->customer->first_name,
             'order_no' => $order_no,
             'app_name' => env('APP_NAME'),
-            'unsbusribe_link' => 'Unsubscribe',
-            'company_address' => $company->address ?? '',
+            'company_name' => $company->site_name ?? '',
             'date' => date('d M Y h:i A', strtotime($order_info->created_at)),
             'invoice_no' => $invoice->invoice_no ?? ''
         );
@@ -140,21 +139,18 @@ class PayuMoneyController extends \InfyOm\Payu\PayuMoneyController
         //send email 
         $company = CompanySettings::find(1);
         $extract = array(
-            'name' => $order_info->customer->first_name,
-            'order_no' => $order_no,
-            'app_name' => env('APP_NAME'),
-            'unsbusribe_link' => 'Unsubscribe',
-            'company_address' => $company->address ?? '',
-            'date' => date('d M Y h:i A', strtotime($order_info->created_at)),
-            'invoice_no' => $invoice->invoice_no ?? ''
+            'company_name' => $company->site_name,
+            'product' => $order_info->order_id . ' ' . $order_info->product->product_name ?? '',
+            'amount' => $order_info->amount,
+            'confirmed_date' => date('d M Y'),
         );
 
         $ins_mail = array(
             'type' => 'order',
-            'type_id' => $order_no,
+            'type_id' => $order_info->id,
             'email_type' => 'success_payment',
             'params' => serialize($extract),
-            'to' => $email
+            'to' => $order_info->customer->email ?? 'duraibytes@gmail.com'
         );
         SendMail::create($ins_mail);
 

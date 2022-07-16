@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\MailEntryHelper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
@@ -237,25 +238,7 @@ class DealsController extends Controller
                 $deal_info = Deal::find($id);
 
                 //send conversion email to customer
-                $company = CompanySettings::find(1);
-                $extract = array(
-                    'name' => $lead->customer->first_name,
-                    'app_name' => env('APP_NAME'),
-                    'unsbusribe_link' => 'Unsubscribe',
-                    'company_address' => $company->address ?? '',
-                    'lead' => $lead->lead_subject ?? '',
-                    'deal' => $deal_info->deal_title ?? '',
-                    'date' => date('d-M-Y h:i A')
-                );
-
-                $ins_mail = array(
-                    'type' => 'lead',
-                    'type_id' => $request->lead_id,
-                    'email_type' => 'deal_conversion',
-                    'params' => serialize($extract),
-                    'to' => $deal_info->customer->email
-                );
-                SendMail::create($ins_mail);
+                MailEntryHelper::dealConversion($request->lead_id, $deal_info->customer->email);
                 // end send mail conversion
             }
 

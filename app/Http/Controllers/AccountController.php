@@ -124,6 +124,11 @@ class AccountController extends Controller
                     $sett->site_phone = $request->site_phone;
                     $sett->office_time = $request->office_time;
                     $sett->address = $request->address;
+                    $sett->mentorship_link = $request->mentorship_link;
+                    $sett->telegram_bot = $request->telegram_bot;
+                    $sett->testimonial_link = $request->testimonial_link;
+                    $sett->youtube_learning_link = $request->youtube_learning_link;
+                    $sett->telegram_link = $request->telegram_link;
                     $sett->gstin_no = $request->gstin_no;
 
                     if ($request->hasFile('site_logo')) {
