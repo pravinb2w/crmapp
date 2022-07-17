@@ -151,6 +151,8 @@ class AnnouncementController extends Controller
             "show_staff" => $request->show_staff,
             "show_customer" => $request->show_clients,
             "show_my_name" => $request->show_my_name,
+            "page_id" => $request->page_id,
+
         ]);
         return redirect()->back()->with('success', 'Announcement Updated!');
     }
