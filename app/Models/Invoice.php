@@ -37,7 +37,8 @@ class Invoice extends Model implements Auditable
         'reject_reason',
         'paid_at',
         'paid_amount',
-        'remarks'
+        'remarks',
+        'currency'
     ];
 
     public function scopeLatests(Builder $query)

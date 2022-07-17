@@ -83,7 +83,7 @@
             <th style="text-align: center"><strong>Unit Price</strong></th>
             <th style="text-align: center"><strong>Discount</strong></th>
             <th style="text-align: center"><strong>Tax</strong></th>
-            <th style="text-align: center"><strong>Amount USD</strong></th>
+            <th style="text-align: center"><strong>Amount {{ strtoupper($info->currency) ?? '' }} </strong></th>
         </tr>
     
         @if( isset( $info->items ) && count($info->items) > 0 ) 
@@ -103,15 +103,15 @@
     <table style="width: 100%;background:rgb(248, 248, 248);">
         <tr>
             <td style="width: 75%;text-align:right;padding:5px 0px;"><strong>Sub Total:</strong></td>
-            <td style="width: 25%;text-align:right;padding:5px 0px;">${{ $info->subtotal ?? $info->total ?? '0.00' }}</td>
+            <td style="width: 25%;text-align:right;padding:5px 0px;">{{ $info->currency ?? '' }} {{ $info->subtotal ?? $info->total ?? '0.00' }}</td>
         </tr>
         <tr>
             <td style="width: 75%;text-align:right; padding:5px 0px;"><strong>Tax:</strong></td>
-            <td style="width: 25%;text-align:right; padding:5px 0px">${{ $info->tax ?? '0.00' }}</td>
+            <td style="width: 25%;text-align:right; padding:5px 0px">{{ $info->currency ?? '' }} {{ $info->tax ?? '0.00' }}</td>
         </tr>
         <tr>
             <td style="width: 75%;text-align:right; padding:5px 0px;"><strong>Total:</strong></td>
-            <td style="width: 25%;text-align:right; padding:5px 0px;">${{ $info->total }}</td>
+            <td style="width: 25%;text-align:right; padding:5px 0px;">{{ $info->currency ?? '' }} {{ $info->total }}</td>
         </tr>
     </table>
         

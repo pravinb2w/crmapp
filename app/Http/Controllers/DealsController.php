@@ -615,7 +615,7 @@ class DealsController extends Controller
         $ins['address'] = $address;
         $ins['email'] = $email;
         $ins['remarks'] = $remarks ?? null;
-
+        $ins['currency'] = $currency ?? null;
         // $ins['subtotal'] = 
         // $ins['tax'] = 
         // $ins['discount'] = 

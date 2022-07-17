@@ -69,8 +69,6 @@
             </nav>
             <!-- NAVBAR END -->
             <!--  Razorpay succes and fail messages are shows here   -->
-            @php
-            @endphp
                
             @if( isset($payment_error) && !empty($payment_error))
             {{-- @include('front.razor_pay_response') --}}
