@@ -37,12 +37,6 @@
                         <table class="table table-centered w-100 dt-responsive nowrap" id="activities-datatable">
                             <thead class="table-light">
                                 <tr>
-                                    <th class="all" style="width: 20px;">
-                                        <div class="form-check">
-                                            <input type="checkbox" class="form-check-input" id="customCheck1">
-                                            <label class="form-check-label" for="customCheck1">&nbsp;</label>
-                                        </div>
-                                    </th>
                                     {{-- <th> Subject </th> --}}
                                     <th> Type </th>
                                     <th >Lead / Deal</th>
@@ -90,7 +84,6 @@
                 "data"      : { "_token" : "<?=csrf_token();?>" }
             },
             "columns"       : [
-                {"data" : "id"},
                 // {"data" : "subject"},
                 {"data" : "type"},
                 {"data" : "lead"},

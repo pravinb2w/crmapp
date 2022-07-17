@@ -37,12 +37,6 @@
                         <table class="table table-centered w-100 dt-responsive nowrap" id="tasks-datatable">
                             <thead class="table-light">
                                 <tr>
-                                    <th class="all" style="width: 20px;">
-                                        <div class="form-check">
-                                            <input type="checkbox" class="form-check-input" id="customCheck1">
-                                            <label class="form-check-label" for="customCheck1">&nbsp;</label>
-                                        </div>
-                                    </th>
                                     <th class="">Task</th>
                                     <th>Assigned To</th>
                                     <th>Assigned By</th>
@@ -84,7 +78,6 @@
                 "data"      : { "_token" : "<?=csrf_token();?>" }
             },
             "columns"       : [
-                {"data" : "id"},
                 {"data" : "task_name"},
                 {"data" : "assigned_to"},
                 {"data" : "assigned_by"},
@@ -95,6 +88,12 @@
                 {"data" : "action" },
             ],
             "pageLength":25,
+            aoColumnDefs: [
+                {
+                    bSortable: false,
+                    aTargets: [ -1 ]
+                }
+                ]
             
         } );
     });
