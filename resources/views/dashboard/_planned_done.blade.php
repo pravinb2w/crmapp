@@ -44,7 +44,7 @@
         xaxis:{categories:cdone.month,axisBorder:{show:!1}},
         yaxis:{labels:{formatter:function(e){return e.toFixed(0)+"k"},offsetX:-15}},
         fill:{opacity:1},
-        tooltip:{y:{formatter:function(e){return"$"+e+"k"}}}
+        tooltip:{y:{formatter:function(e){return e+"k"}}}
     };
     new ApexCharts(document.querySelector("#high-performing-product"),r).render();
     

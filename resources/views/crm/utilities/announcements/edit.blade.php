@@ -30,17 +30,34 @@
                         <label for="subject" class="mb-2">Subject *</label>
                         <input type="text" name="subject" value="{{ $data->subject }}" class="form-control" required>
                     </div>
+                    <div class="form-group mb-3">
+                        <label for="subject" class="mb-2">Page</label>
+                        <select name="page_id" id="page_id" class="form-control">
+                            <option value="">--select--</option>
+                            @if( isset($pages) && !empty($pages) ) 
+                            @foreach ( $pages as $page )
+                                <option value="{{ $page->id }}" @if(isset( $data->page_id) && $data->page_id == $page->id ) selected @endif> {{ $page->page_title ?? '' }}</option>
+                            @endforeach
+                            @endif
+                        </select>
+                    </div>
                     <div class="mb-3">
                         <label for="subject" class="mb-2">Message</label>
                         <textarea name="message">{!! $data->message !!}</textarea>
                     </div>
-                    <div class="x-y d-between">
+                    {{-- <div class="x-y d-between">
                         <ul class="list-group list-group-horizontal">
                             <li class="list-group-item border-0"><input {{ $data->show_staff   == '1' ? "checked" : "" }} type="checkbox" value="1" name="show_staff" id="" class="me-2 form-check-input"> Show to staff</li>
                             <li class="list-group-item border-0"><input {{ $data->show_customer == '1' ? "checked" : "" }} type="checkbox" value="1" name="show_clients" id="" class="me-2 form-check-input"> Show to clients </li>
                             <li class="list-group-item border-0"><input {{ $data->show_my_name == '1' ? "checked" : "" }} type="checkbox" value="1" name="show_my_name" id="" class="me-2 form-check-input"> Show my name</li>
                         </ul>
-                        <input type="submit" value="Submit" class="btn btn-primary">
+                    </div> --}}
+                    <div class="row">
+                        <div class="col-sm-4 mt-4">
+                            <input type="submit" value="Submit" class="btn btn-primary">
+                            <a href="{{ route('announcement.index') }}" class="btn btn-light text-start"> Cancel </a>
+                        </div>
+                        
                     </div>
                 </form>
             </div>

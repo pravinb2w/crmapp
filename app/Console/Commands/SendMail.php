@@ -6,6 +6,7 @@ use App\Helpers\CommonHelper;
 use App\Jobs\SendMailJob;
 use App\Mail\SubmitApproval;
 use App\Mail\TestEmail;
+use App\Models\CompanySettings;
 use App\Models\EmailTemplates;
 use App\Models\SendMail as ModelsSendMail;
 use Illuminate\Console\Command;
@@ -46,6 +47,8 @@ class SendMail extends Command
     {
         //Set mail configuration
         CommonHelper::setMailConfig();
+        $company = CompanySettings::find(1);
+
         $data = ModelsSendMail::all();
 
         if (isset($data) && !empty($data)) {
@@ -67,7 +70,7 @@ class SendMail extends Command
                     $file = $invoice_no . '.pdf';
                     Mail::send('emails.SubmitApproval', $extract, function ($message) use ($to, $title, $file) {
                         $message->to($to ?? 'duraibytes@gmail.com', 'Phoenix CRM')->subject($title ?? '');
-                        $message->from('durairajnet@gmail.com', 'Phoenix CRM');
+                        $message->from($company->smtp_user ?? 'durairajnet@gmail.com', 'Phoenix CRM');
                         $message->attach(public_path('/invoice/' . $file));
                     });
                     // ModelsSendMail::find($item->id)->delete();
@@ -96,7 +99,7 @@ class SendMail extends Command
 
                         Mail::send('emails.test', $body, function ($message) use ($to, $title) {
                             $message->to($to ?? 'duraibytes@gmail.com', 'Phoenix CRM')->subject($title ?? '');
-                            $message->from('durairajnet@gmail.com', 'Phoenix CRM');
+                            $message->from($company->smtp_user, 'Phoenix CRM');
                         });
 
                         ModelsSendMail::find($item->id)->delete();

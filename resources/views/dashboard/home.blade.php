@@ -267,6 +267,7 @@
     </script>
     <script>
         cconversion = JSON.parse(conversion);
+        console.log( cconversion );
         //   Deals Started
         var xValues = cconversion.month;
         var yValues = cconversion.started;

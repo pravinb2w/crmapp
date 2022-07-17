@@ -23,30 +23,96 @@
             <a href="{{ route("create.announcement") }}" class="btn btn-primary">New Announcement</a>
         </div>
         <div class="card-body">
-            <div class="list-group">
-                @foreach ($data as $row)
-                    <li href="#" class="list-group-item list-group-item-action">
-                        <div class="x-y d-between">
-                            <h5 class="mb-1 text-capitalize">{{ $row->subject }}</h5>
-                            <div>Created at : {{ $row->created_at }} </div>
-                        </div>
-                        <p class="mb-1 mt-1">
-                            <div class="d-flex">
-                                <a href="{{ route('edit.announcement', $row->id) }}" class="me-2"><i class="fa fa-pencil"></i> <u>Edit</u></a>
-                            
-                                <form method="post" action="{{ route('destroy.announcement', $row->id) }}">
-                                    @csrf
-                                    <a type="submit"  class="show_confirm text-danger"><i class="fa fa-trash"></i> <u>Delete</u></a>
-                                </form>
-                            </div>
-                        </p>
-                    </li>
-                @endforeach  
+            <div class="table-responsive">
+                <table class="table table-centered w-100 dt-responsive nowrap" id="announcement-datatable">
+                    <thead class="table-light">
+                        <tr>
+                            <th class="all">Subject</th>
+                            <th>Page</th>
+                            <th> Message </th>
+                            <th style="width: 80px;">Action</th>
+                        </tr>
+                    </thead>
+                    
+                </table>
             </div>
         </div>
-        <div class="card-footer bg-light">
-            {{ $data->links() }}
-        </div>
+        
     </div>
 </div>
+<script src="{{ asset('assets/js/vendor/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('assets/js/vendor/dataTables.bootstrap5.js') }}"></script>
+    <script src="{{ asset('assets/js/vendor/dataTables.responsive.min.js') }}"></script>
+    <script src="{{ asset('assets/js/vendor/responsive.bootstrap5.min.js') }}"></script>
+    <script src="{{ asset('assets/js/vendor/dataTables.checkboxes.min.js') }}"></script>
+    <script>
+        $(document).ready(function(){"use strict";
+        
+        const roletable = $('#announcement-datatable').DataTable( {
+            
+            "processing"    : true,
+            "serverSide"    : true,
+            "ajax"          : {
+                "url"       : "<?= route( 'announcement.list' ); ?>",
+                "dataType"  : "json",
+                "type"      : "POST",
+                "data"      : { "_token" : "<?=csrf_token();?>" }
+            },
+            "columns"       : [
+                {"data" : "subject"},
+                {"data" : "page"},
+                {"data" : "message" },
+                {"data" : "action" },
+            ],
+            "pageLength":25,
+            
+        } );
+    });
+
+    function ReloadDataTableModal(id) {
+        var roletable = $('#'+id).DataTable();
+        roletable.ajax.reload();
+    }
+
+    function announce_delete(id) {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                /* Read more about isConfirmed, isDenied below */
+                if (result.isConfirmed) {
+                   
+                    var ajax_url = "{{ route('destroy.announcement') }}";
+                    $.ajaxSetup({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        }
+                    });
+                    $.ajax({
+                        url: ajax_url,
+                        method:'POST',
+                        data: {id:id},
+                        success:function(response){
+                            if( response.status == "1" ) {
+                                Swal.fire( response.error, '', 'error')
+                            } else {
+                                $('#error').addClass('alert alert-success');
+                                response.error.forEach(display_errors);
+                                    window.location.href = "{{ route('announcement.index') }}";
+                                Swal.fire('Deleted!', '', 'success')
+                            }
+                        }      
+                    });
+                    
+                } 
+            })
+            return false;
+    }
+
+    </script>
 @endsection

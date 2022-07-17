@@ -24,7 +24,7 @@ class AccountController extends Controller
 
     public function index(Request $request)
     {
-        $type = $request->segment(2);
+        $type = $request->segment(3);
         $url = 'change';
         if (empty($type)) {
             $url = 'profile';

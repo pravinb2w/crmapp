@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Announcement;
+use App\Models\LandingPages;
 
 class AnnouncementController extends Controller
 {
@@ -14,8 +15,67 @@ class AnnouncementController extends Controller
      */
     public function index()
     {
-        $data   = Announcement::latest()->paginate(10);
-        return view('crm.utilities.announcements.index',compact('data'));
+        $data   = Announcement::latest()->paginate(25);
+        return view('crm.utilities.announcements.index', compact('data'));
+    }
+
+    public function ajax_list(Request $request)
+    {
+
+        if (!$request->ajax()) {
+            return response('Forbidden.', 403);
+        }
+
+        $columns            = ['subject', 'page_title', 'status', 'id'];
+
+        $limit              = $request->input('length');
+        $start              = $request->input('start');
+        $order              = $columns[intval($request->input('order')[0]['column'])];
+        $dir                = $request->input('order')[0]['dir'];
+        $search             = $request->input('search.value');
+
+        $total_list         = Announcement::count();
+        // DB::enableQueryLog();
+        if ($order != 'id') {
+            $list               = Announcement::skip($start)->take($limit)->orderBy($order, $dir)
+                ->search($search)
+                ->get();
+        } else {
+            $list               = Announcement::skip($start)->take($limit)->Latests()
+                ->search($search)
+                ->get();
+        }
+        // $query = DB::getQueryLog();
+        if (empty($request->input('search.value'))) {
+            $total_filtered = Announcement::count();
+        } else {
+            $total_filtered = Announcement::search($search)
+                ->count();
+        }
+
+        $data           = array();
+        if ($list) {
+            $i = 1;
+            foreach ($list as $announcement) {
+
+                $action = '
+                <a href="' . route('edit.announcement', [$announcement->id]) . '" class="action-icon" ><i class="mdi mdi-square-edit-outline"></i></a>
+                <a href="javascript:void(0);" class="action-icon" onclick="return announce_delete(' . $announcement->id . ')"> <i class="mdi mdi-delete"></i></a>';
+
+                $nested_data['subject']             = $announcement->subject;
+                $nested_data['page']                = $announcement->page->page_title ?? null;
+                $nested_data['message']             = $announcement->message;
+                $nested_data['action']              = $action;
+                $data[]                             = $nested_data;
+            }
+        }
+
+        return response()->json([
+            'draw'              => intval($request->input('draw')),
+            'recordsTotal'      => intval($total_list),
+            'data'              => $data,
+            'recordsFiltered'   => intval($total_filtered)
+        ]);
     }
 
     /**
@@ -24,8 +84,9 @@ class AnnouncementController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function create()
-    { 
-        return view('crm.utilities.announcements.create');
+    {
+        $pages = LandingPages::where('status', 1)->get();
+        return view('crm.utilities.announcements.create', compact('pages'));
     }
 
     /**
@@ -34,18 +95,19 @@ class AnnouncementController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    
+
     public function store(Request $request)
     {
 
         $store  =   Announcement::create([
             "subject" => $request->subject,
             "message" => $request->message,
+            "page_id" => $request->page_id,
             "show_staff" => $request->show_staff ?? 0,
             "show_customer" => $request->show_clients ?? 0,
             "show_my_name" => $request->show_my_name ?? 0,
         ]);
-        return redirect()->back()->with('success','Announcement Created!');
+        return redirect()->back()->with('success', 'Announcement Created!');
     }
 
     /**
@@ -56,7 +118,6 @@ class AnnouncementController extends Controller
      */
     public function show($id)
     {
-        
     }
 
     /**
@@ -68,7 +129,9 @@ class AnnouncementController extends Controller
     public function edit($id)
     {
         $data = Announcement::findOrFail($id);
-        return view('crm.utilities.announcements.edit',compact("data"));
+        $pages = LandingPages::where('status', 1)->get();
+
+        return view('crm.utilities.announcements.edit', compact("data", "pages"));
     }
 
     /**
@@ -89,7 +152,7 @@ class AnnouncementController extends Controller
             "show_customer" => $request->show_clients,
             "show_my_name" => $request->show_my_name,
         ]);
-        return redirect()->back()->with('success','Announcement Updated!');
+        return redirect()->back()->with('success', 'Announcement Updated!');
     }
 
     /**
@@ -98,10 +161,11 @@ class AnnouncementController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function delete(Request $request)
     {
+        $id = $request->id;
         $data = Announcement::findOrFail($id);
         $data->delete();
-        return redirect()->back()->with('success','Announcement Deleted!');
+        return response()->json(['error' => '', 'status' => '0']);
     }
 }

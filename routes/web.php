@@ -410,11 +410,13 @@ Route::middleware([SetViewVariable::class, 'auth'])->prefix('dev')->group(functi
 
     Route::prefix('announcement')->group(function () {
         Route::get('/', [App\Http\Controllers\AnnouncementController::class, 'index'])->name('announcement.index');
+        Route::post('/list', [App\Http\Controllers\AnnouncementController::class, 'ajax_list'])->name('announcement.list');
+
         Route::get('/create', [App\Http\Controllers\AnnouncementController::class, 'create'])->name('create.announcement');
         Route::post('/create', [App\Http\Controllers\AnnouncementController::class, 'store'])->name('store.announcement');
         Route::get('/edit/{id?}', [App\Http\Controllers\AnnouncementController::class, 'edit'])->name('edit.announcement');
         Route::post('/edit/{id?}', [App\Http\Controllers\AnnouncementController::class, 'update'])->name('update.announcement');
-        Route::post('/delete/{id?}', [App\Http\Controllers\AnnouncementController::class, 'destroy'])->name('destroy.announcement');
+        Route::post('/delete', [App\Http\Controllers\AnnouncementController::class, 'delete'])->name('destroy.announcement');
     });
 
     Route::prefix('activity_log')->group(function () {
