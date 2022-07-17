@@ -2217,7 +2217,7 @@ progress {
     width: 100%;
     margin-bottom: 1.5rem;
     color: #6c757d;
-    vertical-align: top;
+    vertical-align: middle;
     border-color: #eef2f7;
 }
 .table > :not(caption) > * > * {
