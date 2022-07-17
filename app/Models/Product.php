@@ -23,22 +23,25 @@ class Product extends Model implements Auditable
         'hsn_no',
         'cgst',
         'sgst',
-        'igst'
+        'igst',
+        'subscription_id'
     ];
-    public function scopeLatests( Builder $query ) {
-        return $query->orderBy( static::CREATED_AT, 'desc' );
+    public function scopeLatests(Builder $query)
+    {
+        return $query->orderBy(static::CREATED_AT, 'desc');
     }
 
-    public function scopeSearch( Builder $query, $search ) {
+    public function scopeSearch(Builder $query, $search)
+    {
 
-        if( empty( $search ) ) {
+        if (empty($search)) {
             return $query;
         }
 
-        return  $query->where( function( $query ) use( $search ) {
-                    $query->where( 'product_name', 'like', "%{$search}%" )
-                        ->orWhere( 'product_code', 'like', "%{$search}%" );
-                }); 
+        return  $query->where(function ($query) use ($search) {
+            $query->where('product_name', 'like', "%{$search}%")
+                ->orWhere('product_code', 'like', "%{$search}%");
+        });
     }
 
     public function added()

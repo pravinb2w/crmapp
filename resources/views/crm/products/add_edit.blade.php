@@ -4,7 +4,12 @@
             <h4 class="modal-title" id="myLargeModalLabel">{{ $modal_title }}</h4>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-        <link href="{{ asset('vendor/file-manager/css/file-manager.css') }}" rel="stylesheet">
+        {{-- <link href="{{ asset('vendor/file-manager/css/file-manager.css') }}" rel="stylesheet">
+         --}}
+         <link rel="stylesheet" href="{{ asset('vendor/laravel-filemanager/css/cropper.min.css') }}">
+         <link rel="stylesheet" href="{{ asset('vendor/laravel-filemanager/css/dropzone.min.css') }}">
+         <link rel="stylesheet" href="{{ asset('vendor/laravel-filemanager/css/mime-icons.min.css') }}">
+         <style>{!! \File::get(base_path('vendor/unisharp/laravel-filemanager/public/css/lfm.css')) !!}</style>
         <div class="modal-body p-3" style="width: 600px">
             <div class="row">
                 <div class="col-12" id="error">
@@ -30,6 +35,19 @@
                     <label for="product_code" class="col-form-label">Product Code <span class="text-danger">*</span></label>
                     <div>
                         <input type="text" name="product_code" id="product_code" class="form-control" value="{{ $info->product_code ?? ($product_code ?? '') }}" required>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="product_code" class="col-form-label">Packages <span class="text-danger">*</span></label>
+                    <div>
+                        <select name="subscription_id" id="subscription_id" class="form-control" required>
+                            <option value="">--select--</option>
+                            @if( isset($packages) && !empty($packages))
+                                @foreach ($packages as $item)
+                                    <option value="{{ $item->id }}" @if(isset($info->subscription_id) && $info->subscription_id == $item->id) selected @endif> {{ $item->subscription_name }}</option>
+                                @endforeach
+                            @endif
+                        </select>
                     </div>
                 </div>
                 <div class="mb-3">
@@ -113,7 +131,7 @@
 </div>
 <script src="/vendor/laravel-filemanager/js/stand-alone-button.js"></script>
 <script>
-    var route_prefix = "{{ url('laravel-filemanager') }}";
+    var route_prefix = "{{ url('dev/laravel-filemanager') }}";
 </script>
     <script>$('#lfm').filemanager('file', {prefix: route_prefix});</script>
     <script>
