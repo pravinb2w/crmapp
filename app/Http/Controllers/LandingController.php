@@ -8,6 +8,7 @@ use App\Models\CompanySettings;
 use App\Models\Customer;
 use App\Models\Lead;
 use App\Models\LandingPages;
+use App\Models\Announcement;
 use CommonHelper;
 use App\Models\EmailTemplates;
 use App\Mail\TestEmail;
@@ -50,6 +51,7 @@ class LandingController extends Controller
         $params['payment_order_no'] = $payment_order_no;
         $params['payment_invoice_no'] = $payment_invoice_no;
         $params['payment_message'] = $payment_message;
+        $params['announcements'] = Announcement::all();
         // dd($params);
         return view('landing.landing', $params);
     }

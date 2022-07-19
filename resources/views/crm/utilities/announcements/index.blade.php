@@ -101,10 +101,12 @@
                             if( response.status == "1" ) {
                                 Swal.fire( response.error, '', 'error')
                             } else {
-                                $('#error').addClass('alert alert-success');
-                                response.error.forEach(display_errors);
+                                
+                                Swal.fire('Deleted!', '', 'success');
+                                setTimeout(() => {
                                     window.location.href = "{{ route('announcement.index') }}";
-                                Swal.fire('Deleted!', '', 'success')
+                                }, 300);
+
                             }
                         }      
                     });

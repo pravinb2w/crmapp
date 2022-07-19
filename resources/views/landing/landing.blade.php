@@ -25,7 +25,35 @@
         @endif
         @if (!empty($result)) <style> #top-navbar-animated .nav-link.active {color: {{$result->primary_color }}!important }.bg-dark-50 {border-bottom: 2px solid {{$result->primary_color }}!important }iframe {min-height: 50vh !important;width: 100% !important }.text-primary {color: {{$result->primary_color }}!important;}.btn-outline-primary {color: {{$result->primary_color }}!important;border-color: {{$result->primary_color }}!important;}.btn-outline-primary:hover {background-image: linear-gradient(to right, {{$result->primary_color }} 0%, {{$result->secondary_color }} 51%, {{$result->primary_color }} 100%);background-size: 200% auto;color: white !important;border-color: {{$result->primary_color }}!important;}.btn-primary {background-image: linear-gradient(to right, {{$result->primary_color }} 0%, {{$result->secondary_color }} 51%, {{$result->primary_color }} 100%);background-size: 200% auto;color: white !important;box-shadow: 2px 4px 10px 0px rgb(0 0 0 / 20%);transition: all .5s !important;font-weight: 500 !important;padding: 11px 25px !important;font-size: 1rem !important;}.btn-primary:hover {background-position: right center;transition: 0.5s;}.btn-dark {background-image: linear-gradient(to right, #517fa4 0%, #243949 51%, #517fa4 100%);background-size: 200% auto;color: white !important;box-shadow: 2px 4px 10px 0px rgb(0 0 0 / 20%);transition: all .5s !important;font-weight: 500 !important;padding: 11px 25px !important;font-size: 1rem !important;}.btn-dark:hover {background-position: right center;transition: 0.5s;}@media screen and (max-width: 980px) {.contact-card {position: unset !important;transform: translate(0,0) !important;width: 100% !important;}.padding-left-250 {padding-left: 35px !important }}.contact-card {transform: translate(-240px,80px);z-index: 1;color: white;width: 450px;top:0%;left: 0% }.padding-left-250 {padding:35px 35px 35px 250px ;}.bg-trans {background: transparent !important;}.fa-lg {font-size: 28px;padding: 5px;border: 2px solid;margin-right: 15px;border-radius: 10px }.border-bottom-input {border-top: none !important;border-right: none !important;border-left: none !important;border-radius: 0 !important;border-bottom: 1px solid #ffffff17 !important }label.error {font-size: 10px;color: red;position: absolute;right: 0%;bottom: -21px }.rounded-5 {border-radius: 30px !important }.carousel-caption {left: 50% !important;top: 50% !important;transform: translate(-50%,-50%) !important;width: 100%;text-align: center !important }</style> @endif
     </head>
+    <style>
+        .announcement-pane {
+            position: absolute;
+            top: 0;
+            background: linear-gradient(358deg, #5cd261, #70db74);
+            width: 98%;
+            left: 15px;
+            padding: 10px;
+            box-shadow: 2px 2px 3px 1px #ddd;
+            color:white;
+            animation: shake 5s;
+            animation-iteration-count: infinite;
+            border-radius: 5px;
 
+        }
+        @keyframes shake {
+            0%   {transform: translate(0px, 1px) rotate(0deg);}
+            25%  {transform: translate(5px, 3px) rotate(0deg);}
+            50%  {transform: translate(10px, 3px) rotate(0deg);}
+            100% {transform: translate(0px, 1px) rotate(0deg);}
+        }
+        .marquee-text {
+            font-size: 18px;
+            font-weight: 700;
+        }
+        .m-div {
+            display: inline-flex;margin-top:15px;padding-right:30px;
+        }
+    </style>
     @if (!empty($result))
         <body class="loading" data-layout-config='{"darkMode":false}'>
             
@@ -143,7 +171,21 @@
             <!-- END HERO -->
             <!-- START FEATURES 2 -->
         
-            <section class="py-5" id="about-us">
+            <section class="py-5" id="about-us" style="position: relative">
+                @if( isset( $announcements ) && !empty($announcements))
+                <div class="announcement-pane">
+                    <marquee class="marquee-text">
+
+                    @foreach ($announcements as $ment)
+                    <div class="m-div">
+                            {!! $ment->message !!} 
+                            <span class="px-3"> | </span>
+                    </div>
+                    @endforeach
+                </marquee>
+
+                </div>
+                @endif
                 <div class="container"> 
                     <div class="row pb-3 pt-5 align-items-center">
                         <div class="col-lg-6 col-md-5">
