@@ -23,6 +23,13 @@ class MailController extends Controller
             $extract = array(
                 'name' => 'Duriaraj',
                 'password' => 20301020,
+                'mentorship_link' => 'link',
+                'telegram_bot' => 'telegram_bot',
+                'testimonial_link' => 'testimonial_link',
+                'youtube_learning_link' => 'youtube_learning_link',
+                'company_name' => 'Duraibytes',
+                'company_phone_no' => '9888900000',
+                'company_url' => 'company_url',
             );
 
             $templateMessage = $data->content;

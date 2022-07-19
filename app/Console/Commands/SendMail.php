@@ -47,8 +47,8 @@ class SendMail extends Command
     {
         //Set mail configuration
         CommonHelper::setMailConfig();
-        $company = CompanySettings::find(1);
-
+        $company_info = CompanySettings::find(1);
+        $from = $company_info->smtp_user;
         $data = ModelsSendMail::all();
 
         if (isset($data) && !empty($data)) {
@@ -68,9 +68,9 @@ class SendMail extends Command
                     $title = $templateSubject;
                     $invoice_no = str_replace("/", "_", $extract['invoice_no']);
                     $file = $invoice_no . '.pdf';
-                    Mail::send('emails.SubmitApproval', $extract, function ($message) use ($to, $title, $file) {
+                    Mail::send('emails.SubmitApproval', $extract, function ($message) use ($to, $title, $file, $from) {
                         $message->to($to ?? 'duraibytes@gmail.com', 'Phoenix CRM')->subject($title ?? '');
-                        $message->from($company->smtp_user ?? 'durairajnet@gmail.com', 'Phoenix CRM');
+                        $message->from($from ?? 'durairajnet@gmail.com', 'Phoenix CRM');
                         $message->attach(public_path('/invoice/' . $file));
                     });
                     // ModelsSendMail::find($item->id)->delete();
