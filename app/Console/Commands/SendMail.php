@@ -97,9 +97,9 @@ class SendMail extends Command
                         $to = $item->to;
                         $title = $templateSubject;
 
-                        Mail::send('emails.test', $body, function ($message) use ($to, $title) {
+                        Mail::send('emails.test', $body, function ($message) use ($to, $title, $from) {
                             $message->to($to ?? 'duraibytes@gmail.com', 'Phoenix CRM')->subject($title ?? '');
-                            $message->from($company->smtp_user, 'Phoenix CRM');
+                            $message->from($from, 'Phoenix CRM');
                         });
 
                         ModelsSendMail::find($item->id)->delete();
