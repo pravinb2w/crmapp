@@ -54,6 +54,7 @@ Route::middleware([SetViewVariable::class, 'auth'])->prefix('dev')->group(functi
     Route::post('/dashboard-save-position', [App\Http\Controllers\HomeController::class, 'save_dashboard_position'])->name('save.dashboard_position');
 
     Route::post('/get/closeweek/data', [App\Http\Controllers\HomeController::class, 'close_week'])->name('get-closeweek-data');
+    Route::post('/get/deal_progress/data', [App\Http\Controllers\HomeController::class, 'deal_progress'])->name('get-dealProgress-data');
     Route::post('/get/planned/data', [App\Http\Controllers\HomeController::class, 'ajax_get_done_planed'])->name('get-planned-data');
     Route::get('/deals-dashboard', [App\Http\Controllers\HomeController::class, 'dealsIndex'])->name('deals-dashboard');
     Route::get('/deals-pipelines', [App\Http\Controllers\HomeController::class, 'dealsPipeline'])->name('deals-pipeline');
