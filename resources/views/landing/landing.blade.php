@@ -27,17 +27,17 @@
     </head>
     <style>
         .announcement-pane {
-            position: absolute;
-            top: 0;
-            background: linear-gradient(358deg, #5cd261, #70db74);
-            width: 98%;
-            left: 15px;
-            padding: 10px;
-            box-shadow: 2px 2px 3px 1px #ddd;
-            color:white;
-            animation: shake 5s;
-            animation-iteration-count: infinite;
-            border-radius: 5px;
+           position: absolute;
+			top: 0;
+			background: linear-gradient(358deg, color: {{$result->primary_color }}!important;, color: {{$result->primary_color }}!important;);
+			width: 100%;
+			height: 12%;
+			text-align: center;
+			vertical-align: middle;
+			color: white;
+			/* animation: shake 5s; */
+			/* animation-iteration-count: infinite; */
+			/* border-radius: 5px;
 
         }
         @keyframes shake {
@@ -47,8 +47,8 @@
             100% {transform: translate(0px, 1px) rotate(0deg);}
         }
         .marquee-text {
-            font-size: 18px;
-            font-weight: 700;
+            /*font-size: 18px;
+            font-weight: 700;*/
         }
         .m-div {
             display: inline-flex;margin-top:15px;padding-right:30px;
