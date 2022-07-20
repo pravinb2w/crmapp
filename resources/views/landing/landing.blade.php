@@ -29,7 +29,7 @@
         .announcement-pane {
            position: absolute;
 			top: 0;
-			background: linear-gradient(358deg, color: {{$result->primary_color }}!important;, color: {{$result->primary_color }}!important;);
+			background: linear-gradient(358deg, {{$result->primary_color }}, {{$result->primary_color }});
 			width: 100%;
 			height: 12%;
 			text-align: center;
