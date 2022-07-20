@@ -48,4 +48,9 @@ class Product extends Model implements Auditable
     {
         return $this->hasOne(User::class, 'id', 'added_by');
     }
+
+    public function package()
+    {
+        return $this->hasOne(Subscription::class, 'id', 'subscription_id');
+    }
 }

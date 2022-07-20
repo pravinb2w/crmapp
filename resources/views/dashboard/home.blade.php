@@ -178,7 +178,7 @@
                 borderColor:"#f1f3fa",padding:{bottom:5}
             },
             tooltip:{
-                y:{formatter:function(o){return"$ "+o+" thousands"}}
+                y:{formatter:function(o){return o }}
             }
         },
         chart=new ApexCharts(document.querySelector("#basic-column"),options);
