@@ -31,7 +31,7 @@
         </div>
     </div>
     <div class="row mb-3">
-        <label for="inputname3" class="col-3 col-form-label">Theam Colors</label>
+        <label for="inputname3" class="col-3 col-form-label">Theme Colors</label>
         <div class="col-9">
             <small>Primary Color</small>
             <input type="color" name="primary_color" class="mx-2" id="inputname3" value="{{ $info->primary_color ?? '' }}" placeholder="Name">
