@@ -51,7 +51,7 @@
     <div class="row mb-3">
         <label for="site_phone" class="col-3 col-form-label">Site Phone Number</label>
         <div class="col-9">
-            <input type="text" name="site_phone" class="form-control" value="{{ $info->company->site_phone ?? '' }}" id="site_phone" placeholder="Copyrights">
+            <input type="text" name="site_phone" class="form-control" value="{{ $info->company->site_phone ?? '' }}" id="site_phone" placeholder="Site Phone Number">
         </div>
     </div>
     <div class="row mb-3">
