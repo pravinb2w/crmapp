@@ -26,7 +26,7 @@ class ProductController extends Controller
             return response('Forbidden.', 403);
         }
 
-        $columns            = ['id', 'product_name',  'product_code', 'hsn_no', 'added', 'status', 'id'];
+        $columns            = ['product_name',  'product_code', 'hsn_no', 'added', 'status', 'id'];
 
         $limit              = $request->input('length');
         $start              = $request->input('start');
@@ -72,10 +72,6 @@ class ProductController extends Controller
                     $action .= '<a href="javascript:void(0);" class="action-icon" onclick="return common_soft_delete(\'products\', ' . $products->id . ')"> <i class="mdi mdi-delete"></i></a>';
                 }
 
-                $nested_data['id']                = '<div class="form-check">
-                    <input type="checkbox" class="form-check-input" id="customCheck2" value="' . $products->id . '">
-                    <label class="form-check-label" for="customCheck2">&nbsp;</label>
-                </div>';
                 $nested_data['product_name']      = $products->product_name;
                 $nested_data['product_code']      = $products->product_code;
                 $nested_data['hsn_no']            = $products->hsn_no ?? '';

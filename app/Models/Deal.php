@@ -34,23 +34,26 @@ class Deal extends Model implements Auditable
         'loss_at',
     ];
 
-    public function scopeLatests( Builder $query ) {
-        return $query->orderBy( static::CREATED_AT, 'desc' );
+    public function scopeLatests(Builder $query)
+    {
+        return $query->orderBy(static::CREATED_AT, 'desc');
     }
 
-    public function scopeSearch( Builder $query, $search ) {
+    public function scopeSearch(Builder $query, $search)
+    {
 
-        if( empty( $search ) ) {
+        if (empty($search)) {
             return $query;
         }
 
-        return  $query->where( function( $query ) use( $search ) {
-                    $query->where( 'deal_title', 'like', "%{$search}%" )
-                        ->orWhere( 'deal_description', 'like', "%{$search}%" )
-                        ->orWhere( 'deal_value', 'like', "%{$search}%" )
-                        ->orWhere( 'expected_completed_date', 'like', "%{$search}%" )
-                        ->orWhere( 'stage_status', 'like', "%{$search}%" );
-                }); 
+        return  $query->where(function ($query) use ($search) {
+            $query->where('deal_title', 'like', "%{$search}%")
+                ->orWhere('deal_description', 'like', "%{$search}%")
+                ->orWhere('deal_value', 'like', "%{$search}%")
+                ->orWhere('expected_completed_date', 'like', "%{$search}%")
+                ->orWhere('stage_status', 'like', "%{$search}%");
+            // ->orWhere('customer.first_name', 'like', "%{$search}%");
+        });
     }
 
     public function assignedTo()
@@ -71,13 +74,13 @@ class Deal extends Model implements Auditable
     public function updatedBy()
     {
         return $this->hasOne(User::class, 'id', 'updated_by');
-    } 
-    
+    }
+
     public function customer()
     {
         return $this->hasOne(Customer::class, 'id', 'customer_id');
     }
-    
+
     public function current_stage()
     {
         return $this->hasOne(DealStage::class, 'id', 'current_stage_id');
@@ -97,7 +100,7 @@ class Deal extends Model implements Auditable
     {
         return $this->hasMany(Invoice::class, 'deal_id')->orderBy('invoices.created_at', 'asc');
     }
-    
+
     public function pipeline()
     {
         return $this->hasMany(DealPipline::class, 'deal_id');
@@ -127,6 +130,4 @@ class Deal extends Model implements Auditable
     {
         return $this->hasMany(Invoice::class, 'deal_id')->where('status', 1)->whereNull('paid_at');
     }
-
-
 }

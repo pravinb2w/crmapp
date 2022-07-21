@@ -45,7 +45,7 @@ class DealsController extends Controller
             return response('Forbidden.', 403);
         }
 
-        $columns            = ['id', 'deal_title', 'customer_id', 'expected_completed_date', 'status', 'id'];
+        $columns            = ['deal_title', 'customer_id', 'expected_completed_date', 'status', 'id'];
         $limit              = $request->input('length');
         $start              = $request->input('start');
         $order              = $columns[intval($request->input('order')[0]['column'])];
@@ -89,10 +89,6 @@ class DealsController extends Controller
                     $action .= '<a href="javascript:void(0);" class="action-icon" onclick="return common_soft_delete(\'deals\', ' . $deals->id . ')"> <i class="mdi mdi-delete"></i></a>';
                 }
 
-                $nested_data['id']                = '<div class="form-check">
-                    <input type="checkbox" class="form-check-input" id="customCheck2" value="' . $deals->id . '">
-                    <label class="form-check-label" for="customCheck2">&nbsp;</label>
-                </div>';
                 $nested_data['title']             = $deals->deal_title ?? '';
                 $nested_data['customer']          = $deals->customer->first_name ?? 'N/A';
                 $nested_data['expected_delivery'] = date('d M, Y', strtotime($deals->expected_completed_date));

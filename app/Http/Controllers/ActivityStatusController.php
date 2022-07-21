@@ -31,7 +31,7 @@ class ActivityStatusController extends Controller
         $urls = explode("-", $urls_name);
         $status_type = current($urls);
 
-        $columns            = ['id', 'status_name', 'is_active', 'id'];
+        $columns            = ['status_name', 'is_active', 'id'];
         $limit              = $request->input('length');
         $start              = $request->input('start');
         $order              = $columns[intval($request->input('order')[0]['column'])];
@@ -72,10 +72,7 @@ class ActivityStatusController extends Controller
                 <a href="javascript:void(0);" class="action-icon" onclick="return get_add_modal(\'' . $roles->type . '-status\', ' . $roles->id . ')"> <i class="mdi mdi-square-edit-outline"></i></a>
                 <a href="javascript:void(0);" class="action-icon" onclick="return common_soft_delete(\'' . $roles->type . '-status\', ' . $roles->id . ')"> <i class="mdi mdi-delete"></i></a>';
 
-                $nested_data['id']                = '<div class="form-check">
-                    <input type="checkbox" class="form-check-input" id="customCheck2" value="' . $roles->id . '">
-                    <label class="form-check-label" for="customCheck2">&nbsp;</label>
-                </div>';
+
                 $nested_data['status_name']       = $roles->status_name;
                 $nested_data['order']             = $roles->order;
                 $nested_data['color']             = '<div style="background:' . $roles->color . ';padding: 10px;width: 22px;border-radius: 3px;"></div>';

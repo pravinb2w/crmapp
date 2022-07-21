@@ -34,7 +34,7 @@ class LeadController extends Controller
             return response('Forbidden.', 403);
         }
 
-        $columns            = ['id', 'lead_title', 'lead_type_id', 'lead_source_id', 'status', 'id'];
+        $columns            = ['lead_subject', 'lead_type_id', 'lead_source_id', 'created_at', 'id', 'status', 'id'];
 
         $limit              = $request->input('length');
         $start              = $request->input('start');
@@ -84,10 +84,6 @@ class LeadController extends Controller
                     }
                 }
 
-                $nested_data['id']                = '<div class="form-check">
-                    <input type="checkbox" class="form-check-input" id="customCheck2" value="' . $leads->id . '">
-                    <label class="form-check-label" for="customCheck2">&nbsp;</label>
-                </div>';
                 $nested_data['title']             = $leads->lead_title ?? $leads->lead_subject;
                 $nested_data['type']              = $leads->leadType->type ?? 'N/A';
                 $nested_data['source']            = $leads->leadSource->source ?? 'N/A';

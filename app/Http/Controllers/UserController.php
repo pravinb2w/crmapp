@@ -21,94 +21,91 @@ class UserController extends Controller
         return view('crm.user.index', $params);
     }
 
-    public function ajax_list( Request $request ) {
-        
-        if (! $request->ajax()) {
+    public function ajax_list(Request $request)
+    {
+
+        if (!$request->ajax()) {
             return response('Forbidden.', 403);
         }
 
-        $columns            = [ 'id', 'name', 'email', 'mobile_no', 'status', 'id' ];
+        $columns            = ['name', 'email', 'mobile_no', 'status', 'id'];
 
-        $limit              = $request->input( 'length' );
-        $start              = $request->input( 'start' );
-        $order              = $columns[ intval( $request->input( 'order' )[0][ 'column' ] ) ];        
-        $dir                = $request->input( 'order' )[0][ 'dir' ];
-        $search             = $request->input( 'search.value' );
-        $approve_status     = $request->input( 'approve_status' );
-       
+        $limit              = $request->input('length');
+        $start              = $request->input('start');
+        $order              = $columns[intval($request->input('order')[0]['column'])];
+        $dir                = $request->input('order')[0]['dir'];
+        $search             = $request->input('search.value');
+        $approve_status     = $request->input('approve_status');
+
         $total_list         = User::whereNotNull('role_id')->count();
         // DB::enableQueryLog();
-        if( $order != 'id') {
+        if ($order != 'id') {
             $list               = User::skip($start)->take($limit)->whereNotNull('role_id')->orderBy($order, $dir)
-                                ->search( $search )
-                                ->get();
+                ->search($search)
+                ->get();
         } else {
             $list               = User::skip($start)->take($limit)->whereNotNull('role_id')->Latests()
-                                ->search( $search )
-                                ->get();
+                ->search($search)
+                ->get();
         }
         // $query = DB::getQueryLog();
-        if( empty( $request->input( 'search.value' ) ) ) {
+        if (empty($request->input('search.value'))) {
             $total_filtered = User::whereNotNull('role_id')->count();
         } else {
-            $total_filtered = User::whereNotNull('role_id')->search( $search )
-                                ->count();
+            $total_filtered = User::whereNotNull('role_id')->search($search)
+                ->count();
         }
-        
+
         $data           = array();
-        if( $list ) {
-            $i=1;
-            foreach( $list as $users ) {
-                $users_status                         = '<div class="badge bg-danger" role="button" onclick="change_status(\'users\','.$users->id.', 1)"> Inactive </div>';
-                if( $users->status == 1 ) {
-                    $users_status                     = '<div class="badge bg-success" role="button" onclick="change_status(\'users\','.$users->id.', 0)"> Active </div>';
+        if ($list) {
+            $i = 1;
+            foreach ($list as $users) {
+                $users_status                         = '<div class="badge bg-danger" role="button" onclick="change_status(\'users\',' . $users->id . ', 1)"> Inactive </div>';
+                if ($users->status == 1) {
+                    $users_status                     = '<div class="badge bg-success" role="button" onclick="change_status(\'users\',' . $users->id . ', 0)"> Active </div>';
                 }
                 $action = '
-                <a href="javascript:void(0);" class="action-icon" onclick="return view_modal(\'users\', '.$users->id.')"> <i class="mdi mdi-eye"></i></a>
-                <a href="javascript:void(0);" class="action-icon" onclick="return get_add_modal(\'users\', '.$users->id.')"> <i class="mdi mdi-square-edit-outline"></i></a>
-                <a href="javascript:void(0);" class="action-icon" onclick="return common_soft_delete(\'users\', '.$users->id.')"> <i class="mdi mdi-delete"></i></a>';
+                <a href="javascript:void(0);" class="action-icon" onclick="return view_modal(\'users\', ' . $users->id . ')"> <i class="mdi mdi-eye"></i></a>
+                <a href="javascript:void(0);" class="action-icon" onclick="return get_add_modal(\'users\', ' . $users->id . ')"> <i class="mdi mdi-square-edit-outline"></i></a>
+                <a href="javascript:void(0);" class="action-icon" onclick="return common_soft_delete(\'users\', ' . $users->id . ')"> <i class="mdi mdi-delete"></i></a>';
 
-                $nested_data[ 'id' ]                = '<div class="form-check">
-                    <input type="checkbox" class="form-check-input" id="customCheck2" value="'.$users->id.'">
-                    <label class="form-check-label" for="customCheck2">&nbsp;</label>
-                </div>';
-                $nested_data[ 'name' ]              = $users->name;
-                $nested_data[ 'role' ]              = $users->role->role ?? '';
-                $nested_data[ 'email' ]             = $users->email;
-                $nested_data[ 'mobile_no' ]         = $users->mobile_no;
-                $nested_data[ 'status' ]            = $users_status;
-                $nested_data[ 'action' ]            = $action;
+                $nested_data['name']              = $users->name;
+                $nested_data['role']              = $users->role->role ?? '';
+                $nested_data['email']             = $users->email;
+                $nested_data['mobile_no']         = $users->mobile_no;
+                $nested_data['status']            = $users_status;
+                $nested_data['action']            = $action;
                 $data[]                             = $nested_data;
             }
         }
 
-        return response()->json( [ 
-            'draw'              => intval( $request->input( 'draw' ) ),
-            'recordsTotal'      => intval( $total_list ),
+        return response()->json([
+            'draw'              => intval($request->input('draw')),
+            'recordsTotal'      => intval($total_list),
             'data'              => $data,
-            'recordsFiltered'   => intval( $total_filtered )
-        ] );
-
+            'recordsFiltered'   => intval($total_filtered)
+        ]);
     }
 
-    public function add_edit(Request $request) {
-        if (! $request->ajax()) {
+    public function add_edit(Request $request)
+    {
+        if (!$request->ajax()) {
             return response('Forbidden.', 403);
         }
         $id = $request->id;
         $modal_title = 'Add User';
-        $roles = Role::where('status',1)->get();
-        if( isset( $id ) && !empty($id) ) {
+        $roles = Role::where('status', 1)->get();
+        if (isset($id) && !empty($id)) {
             $info = User::find($id);
             $modal_title = 'Update User';
         }
         $params = ['modal_title' => $modal_title, 'id' => $id ?? '', 'info' => $info ?? '', 'roles' => $roles];
         return view('crm.user.add_edit', $params);
-       
     }
 
-    public function view(Request $request) {
-        if (! $request->ajax()) {
+    public function view(Request $request)
+    {
+        if (!$request->ajax()) {
             return response('Forbidden.', 403);
         }
         $id = $request->id;
@@ -121,29 +118,29 @@ class UserController extends Controller
     public function save(Request $request)
     {
         $id = $request->id;
-        if( isset( $id ) && !empty($id) ) {
+        if (isset($id) && !empty($id)) {
             $role_validator   = [
-                'email'      => [ 'required', 'email', 'string', 'max:255', 'unique:users,email,'.$id ],
-                'mobile_no'      => [ 'required', 'digits:10', 'max:255', 'unique:users,mobile_no,'.$id ],
+                'email'      => ['required', 'email', 'string', 'max:255', 'unique:users,email,' . $id],
+                'mobile_no'      => ['required', 'digits:10', 'max:255', 'unique:users,mobile_no,' . $id],
                 // 'password' => ['required', 'string', 'min:6'],
 
             ];
         } else {
             $role_validator   = [
                 'name' => ['required', 'string', 'max:255'],
-                'email'      => [ 'required', 'email','string', 'max:255', 'unique:roles,role' ],
+                'email'      => ['required', 'email', 'string', 'max:255', 'unique:roles,role'],
                 'mobile_no' => ['required', 'digits:10', 'max:255'],
                 'password' => ['required', 'string', 'min:6'],
 
             ];
         }
         //Validate the product
-        $validator                     = Validator::make( $request->all(), $role_validator );
-        
+        $validator                     = Validator::make($request->all(), $role_validator);
+
         if ($validator->passes()) {
 
-            if( $request->hasFile( 'profile_image' ) ) {
-                $file                       = $request->file( 'profile_image' )->store( 'account', 'public' );
+            if ($request->hasFile('profile_image')) {
+                $file                       = $request->file('profile_image')->store('account', 'public');
                 $ins['image'] = $file;
             }
             $ins['status'] = isset($request->status) ? 1 : 0;
@@ -155,11 +152,11 @@ class UserController extends Controller
             $ins['lead_limit'] = $request->lead_limit;
             $ins['deal_limit'] = $request->deal_limit;
 
-            if( isset( $request->password ) ) {
+            if (isset($request->password)) {
                 $ins['password'] = Hash::make($request->password);
             }
             // dd($ins); 
-            if( isset($id) && !empty($id) ) {
+            if (isset($id) && !empty($id)) {
                 $user = User::find($id);
                 $user->status = isset($request->status) ? 1 : 0;
                 $user->name = $request->name;
@@ -170,11 +167,11 @@ class UserController extends Controller
                 $user->lead_limit = $request->lead_limit;
                 $user->deal_limit = $request->deal_limit;
 
-                if( isset( $request->password ) ) {
+                if (isset($request->password)) {
                     $user->password = Hash::make($request->password);
                 }
-                if( $request->hasFile( 'profile_image' ) ) {
-                    $file        = $request->file( 'profile_image' )->store( 'account', 'public' );
+                if ($request->hasFile('profile_image')) {
+                    $file        = $request->file('profile_image')->store('account', 'public');
                     $user->image = $file;
                 }
                 $user->save();
@@ -184,14 +181,14 @@ class UserController extends Controller
                 $id = User::create($ins)->id;
                 $success = 'Added new user';
             }
-            if(isset($request->status)) {
+            if (isset($request->status)) {
                 CommonHelper::set_lead_order($id, $request->role_id, 'add');
                 CommonHelper::set_deal_order($id, $request->role_id, 'add');
             }
-            
-            return response()->json(['error'=>[$success], 'status' => '0']);
+
+            return response()->json(['error' => [$success], 'status' => '0']);
         }
-        return response()->json(['error'=>$validator->errors()->all(), 'status' => '1']);
+        return response()->json(['error' => $validator->errors()->all(), 'status' => '1']);
     }
 
     public function delete(Request $request)
@@ -203,7 +200,7 @@ class UserController extends Controller
         CommonHelper::set_deal_order($id, $info->role_id, 'delete');
 
         $delete_msg = 'Deleted successfully';
-        return response()->json(['error'=>[$delete_msg], 'status' => '0']);
+        return response()->json(['error' => [$delete_msg], 'status' => '0']);
     }
 
     public function change_status(Request $request)
@@ -213,16 +210,15 @@ class UserController extends Controller
         $info = User::find($id);
         $info->status = $status;
         $info->update();
-        if( $status == 1 ) {
+        if ($status == 1) {
             CommonHelper::set_lead_order($id, $info->role_id, 'add');
             CommonHelper::set_deal_order($id, $info->role_id, 'add');
-
         } else {
             CommonHelper::set_lead_order($id, $info->role_id, 'delete');
             CommonHelper::set_deal_order($id, $info->role_id, 'delete');
         }
 
         $update_msg = 'Updated successfully';
-        return response()->json(['error'=>[$update_msg], 'status' => '0']);
+        return response()->json(['error' => [$update_msg], 'status' => '0']);
     }
 }
