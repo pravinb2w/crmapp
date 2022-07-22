@@ -403,7 +403,7 @@
                 <section class="py-5">
                     <div class="row bg-white">
                         <div class="col-12 text-center p-2">
-                            <h1 class="text-primary w-100 product-head"> Purchase Products </h1>
+                            <h1 class="text-primary w-100 product-head"> Explore our Products </h1>
                         </div>
                         <div class="listing-section bg-white row">
                             @foreach ($products as $item)
