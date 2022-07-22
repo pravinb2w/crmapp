@@ -12,7 +12,7 @@ class LeadSourceController extends Controller
 {
     public function index(Request $request)
     {
-        $params = array('btn_name' => 'Lead Soure', 'btn_fn_param' => 'leadsource');
+        $params = array('btn_name' => 'Lead Source', 'btn_fn_param' => 'leadsource');
 
         if ($request->ajax()) {
             return view('crm.leadsource.index', $params);

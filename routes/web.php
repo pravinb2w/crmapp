@@ -370,6 +370,30 @@ Route::middleware([SetViewVariable::class, 'auth'])->prefix('dev')->group(functi
     Route::get('mail-message', function () {
         return view('mail-message');
     });
+    //export routes
+    Route::any('/export/excel', [App\Http\Controllers\ExportController::class, 'exportCustomer'])->name('export.customers');
+    Route::any('/export/organization', [App\Http\Controllers\ExportController::class, 'exportCompany'])->name('export.organization');
+    Route::any('/export/pages', [App\Http\Controllers\ExportController::class, 'exportPage'])->name('export.cms_pages');
+    Route::any('/export/lead', [App\Http\Controllers\ExportController::class, 'exportLead'])->name('export.lead');
+    Route::any('/export/lead/source', [App\Http\Controllers\ExportController::class, 'exportLeadSource'])->name('export.lead_source');
+    Route::any('/export/lead/stage', [App\Http\Controllers\ExportController::class, 'exportLeadStage'])->name('export.lead_stage');
+    Route::any('/export/deals', [App\Http\Controllers\ExportController::class, 'exportDeal'])->name('export.deals');
+    Route::any('/export/deals/stage', [App\Http\Controllers\ExportController::class, 'exportDealStage'])->name('export.deal_stage');
+    Route::any('/export/payments', [App\Http\Controllers\ExportController::class, 'exportPayment'])->name('export.payments');
+    Route::any('/export/products', [App\Http\Controllers\ExportController::class, 'exportProduct'])->name('export.product');
+    Route::any('/export/activity', [App\Http\Controllers\ExportController::class, 'exportActivity'])->name('export.activity');
+    Route::any('/export/task', [App\Http\Controllers\ExportController::class, 'exportTask'])->name('export.tasks');
+    Route::any('/export/notes', [App\Http\Controllers\ExportController::class, 'exportNote'])->name('export.notes');
+    Route::any('/export/user', [App\Http\Controllers\ExportController::class, 'exportUser'])->name('export.users');
+    Route::any('/export/role', [App\Http\Controllers\ExportController::class, 'exportRole'])->name('export.roles');
+    Route::any('/export/permission', [App\Http\Controllers\ExportController::class, 'exportPermission'])->name('export.permission');
+    Route::any('/export/activityStatus', [App\Http\Controllers\ExportController::class, 'exportActivityStatus'])->name('export.activity_status');
+    Route::any('/export/taskStatus', [App\Http\Controllers\ExportController::class, 'exportTaskStatus'])->name('export.task_status');
+    Route::any('/export/team', [App\Http\Controllers\ExportController::class, 'exportTeam'])->name('export.team');
+    Route::any('/export/country', [App\Http\Controllers\ExportController::class, 'exportCountry'])->name('export.country');
+    Route::any('/export/subscriptions', [App\Http\Controllers\ExportController::class, 'exportSubscriptions'])->name('export.subscriptions');
+    Route::any('/export/company/subscriptions', [App\Http\Controllers\ExportController::class, 'exportCompanySubscriptions'])->name('export.company_subscriptions');
+
 
     // Email Template Routes
     Route::prefix('email-template')->group(function () {

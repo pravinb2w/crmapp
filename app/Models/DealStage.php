@@ -22,20 +22,22 @@ class DealStage extends Model implements Auditable
         'company_id'
     ];
 
-    public function scopeLatests( Builder $query ) {
-        return $query->orderBy( static::CREATED_AT, 'desc' );
+    public function scopeLatests(Builder $query)
+    {
+        return $query->orderBy(static::CREATED_AT, 'desc');
     }
 
-    public function scopeSearch( Builder $query, $search ) {
+    public function scopeSearch(Builder $query, $search)
+    {
 
-        if( empty( $search ) ) {
+        if (empty($search)) {
             return $query;
         }
 
-        return  $query->where( function( $query ) use( $search ) {
-                    $query->where( 'deal_stages', 'like', "%{$search}%" )
-                        ->orWhere( 'description', 'like', "%{$search}%" );
-                }); 
+        return  $query->where(function ($query) use ($search) {
+            $query->where('deal_stages', 'like', "%{$search}%")
+                ->orWhere('description', 'like', "%{$search}%");
+        });
     }
 
     public function company()
@@ -43,8 +45,13 @@ class DealStage extends Model implements Auditable
         return $this->hasOne(CompanySettings::class, 'id', 'company_id');
     }
 
-    public function deals() {
+    public function deals()
+    {
         return $this->hasMany(Deal::class, 'current_stage_id')->orderBy('deals.created_at', 'desc');
+    }
 
+    public function added()
+    {
+        return $this->hasOne(User::class, 'id', 'added_by');
     }
 }

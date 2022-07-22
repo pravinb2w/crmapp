@@ -81,6 +81,11 @@ class Deal extends Model implements Auditable
         return $this->hasOne(Customer::class, 'id', 'customer_id');
     }
 
+    public function lead()
+    {
+        return $this->hasOne(Lead::class, 'id', 'lead_id');
+    }
+
     public function current_stage()
     {
         return $this->hasOne(DealStage::class, 'id', 'current_stage_id');

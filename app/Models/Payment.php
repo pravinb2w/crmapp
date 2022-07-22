@@ -74,4 +74,9 @@ class Payment extends Model implements Auditable
     {
         return $this->hasOne(Deal::class, 'id', 'deal_id');
     }
+
+    public function invoice()
+    {
+        return $this->hasOne(Invoice::class, 'id', 'invoice_id');
+    }
 }

@@ -36,20 +36,27 @@ class Subscription extends Model implements Auditable
 
     ];
 
-    public function scopeLatests( Builder $query ) {
-        return $query->orderBy( static::CREATED_AT, 'desc' );
+    public function scopeLatests(Builder $query)
+    {
+        return $query->orderBy(static::CREATED_AT, 'desc');
     }
 
-    public function scopeSearch( Builder $query, $search ) {
+    public function scopeSearch(Builder $query, $search)
+    {
 
-        if( empty( $search ) ) {
+        if (empty($search)) {
             return $query;
         }
 
-        return  $query->where( function( $query ) use( $search ) {
-                    $query->where( 'subscription_name', 'like', "%{$search}%" )
-                        ->orWhere( 'subscription_period', 'like', "%{$search}%" )
-                        ->orWhere( 'amount', 'like', "%{$search}%" );
-                }); 
+        return  $query->where(function ($query) use ($search) {
+            $query->where('subscription_name', 'like', "%{$search}%")
+                ->orWhere('subscription_period', 'like', "%{$search}%")
+                ->orWhere('amount', 'like', "%{$search}%");
+        });
+    }
+
+    public function added()
+    {
+        return $this->hasOne(User::class, 'id', 'added_by');
     }
 }

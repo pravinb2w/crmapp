@@ -35,22 +35,29 @@ class Customer extends Model implements Auditable
         return $this->hasOne(Organization::class, 'id', 'organization_id');
     }
 
-    public function scopeLatests( Builder $query ) {
-        return $query->orderBy( static::CREATED_AT, 'desc' );
+    public function added()
+    {
+        return $this->hasOne(User::class, 'id', 'added_by');
     }
 
-    public function scopeSearch( Builder $query, $search ) {
+    public function scopeLatests(Builder $query)
+    {
+        return $query->orderBy(static::CREATED_AT, 'desc');
+    }
 
-        if( empty( $search ) ) {
+    public function scopeSearch(Builder $query, $search)
+    {
+
+        if (empty($search)) {
             return $query;
         }
 
-        return  $query->where( function( $query ) use( $search ) {
-                    $query->where( 'first_name', 'like', "%{$search}%" )
-                        ->orWhere( 'last_name', 'like', "%{$search}%" )
-                        ->orWhere( 'email', 'like', "%{$search}%" )
-                        ->orWhere( 'mobile_no', 'like', "%{$search}%" );
-                }); 
+        return  $query->where(function ($query) use ($search) {
+            $query->where('first_name', 'like', "%{$search}%")
+                ->orWhere('last_name', 'like', "%{$search}%")
+                ->orWhere('email', 'like', "%{$search}%")
+                ->orWhere('mobile_no', 'like', "%{$search}%");
+        });
     }
 
     public function secondary_email()

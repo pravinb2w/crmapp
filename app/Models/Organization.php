@@ -26,21 +26,28 @@ class Organization extends Model implements Auditable
         'status'
     ];
 
-    public function scopeLatests( Builder $query ) {
-        return $query->orderBy( static::CREATED_AT, 'desc' );
+    public function scopeLatests(Builder $query)
+    {
+        return $query->orderBy(static::CREATED_AT, 'desc');
     }
 
-    public function scopeSearch( Builder $query, $search ) {
+    public function scopeSearch(Builder $query, $search)
+    {
 
-        if( empty( $search ) ) {
+        if (empty($search)) {
             return $query;
         }
 
-        return  $query->where( function( $query ) use( $search ) {
-                    $query->where( 'name', 'like', "%{$search}%" )
-                        ->orWhere( 'mobile_no', 'like', "%{$search}%" )
-                        ->orWhere( 'email', 'like', "%{$search}%" )
-                        ->orWhere( 'address', 'like', "%{$search}%" );
-                }); 
+        return  $query->where(function ($query) use ($search) {
+            $query->where('name', 'like', "%{$search}%")
+                ->orWhere('mobile_no', 'like', "%{$search}%")
+                ->orWhere('email', 'like', "%{$search}%")
+                ->orWhere('address', 'like', "%{$search}%");
+        });
+    }
+
+    public function added()
+    {
+        return $this->hasOne(User::class, 'id', 'added_by');
     }
 }
