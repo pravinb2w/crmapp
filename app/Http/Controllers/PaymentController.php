@@ -145,7 +145,6 @@ class PaymentController extends Controller
         } else {
             $role_validator   = [
                 'payment_mode'      => ['required', 'string', 'max:255'],
-                'pay_gateway'      => ['required', 'string', 'max:255'],
                 'amount'      => ['required', 'string', 'max:255'],
                 'payment_status'      => ['required', 'string', 'max:255'],
             ];
@@ -166,12 +165,14 @@ class PaymentController extends Controller
             } else if ($request->pay_gateway == 'payumoney') {
                 $payment_method = $request->pay_gateway;
                 $route = route('redirectToPayU', ['order_no' => $order_no]);
+            } else {
+                $payment_method = $request->payment_method;
             }
 
             $ord_ins['order_id'] = $order_no;
             $ord_ins['amount'] = $invoice_info->total;
             $ord_ins['customer_id'] = $request->customer_id;
-            $ord_ins['payment_gateway'] = $request->pay_gateway;
+            $ord_ins['payment_gateway'] = $request->pay_gateway ?? 'manual';
             $ord_ins['description'] = '';
             $ord_ins['status'] = 'pending';
 

@@ -325,6 +325,7 @@
                             <input type="hidden" name="product_id" id="product_id" value="{{ $product_id ?? '' }}">
 
                             <div class="col-12">
+
                                 @csrf
                                 <main class="container"
                                     style="margin: 0 auto;position: relative;
@@ -333,7 +334,8 @@
 
                                     <!-- Left Column / Headphones Image -->
                                     <div class="left-column">
-                                        <img src="http://127.0.0.1:8000/storage/files/1/webdesign.png" alt="">
+                                        <img src="{{ $product_info->image ?? 'http://127.0.0.1:8000/storage/files/1/webdesign.png' }}"
+                                            alt="">
 
                                     </div>
                                     <!-- Right Column -->
