@@ -170,7 +170,8 @@ class PaymentController extends Controller
             }
 
             $ord_ins['order_id'] = $order_no;
-            $ord_ins['amount'] = $invoice_info->total;
+            // $ord_ins['amount'] = $invoice_info->total;
+            $ord_ins['amount'] = $request->amount ?? $invoice_info->total;
             $ord_ins['customer_id'] = $request->customer_id;
             $ord_ins['payment_gateway'] = $request->pay_gateway ?? 'manual';
             $ord_ins['description'] = '';
@@ -183,7 +184,7 @@ class PaymentController extends Controller
             $ins['customer_id'] = $request->customer_id;
             $ins['deal_id'] = $request->deal_id ?? null;
             $ins['invoice_id'] = $request->invoice_id ?? null;
-            $ins['amount'] = $invoice_info->total;
+            $ins['amount'] = $request->amount ?? $invoice_info->total;
             $ins['payment_method'] = $payment_method;
             $ins['cheque_no'] = $request->cheque_no ?? null;
             if ($request->cheque_date) {
