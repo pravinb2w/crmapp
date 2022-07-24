@@ -435,6 +435,9 @@ class PaymentController extends Controller
 
     public function ccavenue_form(Request $request)
     {
+        //access_code = 'AVOQ87JF30BA32QOAB';
+        //merchant_id = '976366';
+        //Working key = '81E0204433275CCA7E007B7781545845';
         $ccavenue = new CCAvenueClient('976366', '81E0204433275CCA7E007B7781545845', route('ccavenue-response'));
 
         // set details 
@@ -451,11 +454,11 @@ class PaymentController extends Controller
         $ccavenue->setBillingNotes('for testing');
 
         // copy all the billing details to chipping details
-        // $ccavenue->billingSameAsShipping();
+        $ccavenue->billingSameAsShipping();
         // get encrpyted data to be passed
-        // $data = $ccavenue->getEncryptedData();
+        $data = $ccavenue->getEncryptedData();
         // merchant id to be passed along the param
-        // $merchant = $ccavenue->getMerchantId();
+        $merchant = $ccavenue->getMerchantId();
         return view('crm.payments.ccavenue.form', compact('data', 'merchant'));
     }
 

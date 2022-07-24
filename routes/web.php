@@ -45,6 +45,9 @@ Route::middleware([SetViewVariable::class, 'auth'])->prefix('dev')->group(functi
 
     Route::any('ccavenue', [App\Http\Controllers\PaymentController::class, 'ccavenue_form'])->name('ccavenue');
     Route::any('/ccavenue/response', [App\Http\Controllers\PaymentController::class, 'ccavenue_response'])->name('ccavenue-response');
+    Route::any('/ccavenue/success', [App\Http\Controllers\CcavenueController::class, 'success_payment'])->name('ccavenue-success');
+    Route::any('/ccavenue/cancel', [App\Http\Controllers\CcavenueController::class, 'cancel_payment'])->name('ccavenue-cancel');
+    Route::any('/ccavenue/handler', [App\Http\Controllers\CcavenueController::class, 'response_handler'])->name('ccavenue-handler');
 
     Route::post('/notification/check', [App\Http\Controllers\HomeController::class, 'show_notification_toast'])->name('notification.check');
     Route::post('/notification/list', [App\Http\Controllers\HomeController::class, 'notification_list'])->name('common.notification.list');
