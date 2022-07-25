@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\CommonHelper;
+use App\Helpers\MailEntryHelper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
@@ -198,6 +200,9 @@ class CustomerController extends Controller
                 $ins['added_by'] = Auth::id();
                 $customer_id = Customer::create($ins)->id;
                 $success = 'Added new Customer';
+                //send notiifcation to internal teams and mails
+                CommonHelper::send_new_customer_notification($customer_id);
+                MailEntryHelper::welcomeMessage($customer_id, $request->email);
             }
             //insert in customer mobile and emails
             CustomerMobile::where('customer_id', $customer_id)->forceDelete();

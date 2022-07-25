@@ -116,10 +116,8 @@ class AutomationController extends Controller
         $id = $request->id;
         $role_validator   = [
             'activity_type'      => ['required', 'string', 'max:255', 'unique:automations,activity_type,' . $id],
-            'customer_template_id'      => ['required_with:is_mail_to_customer', 'max:255'],
-            'team_template_id'      => ['required_with:is_mail_to_team', 'max:255'],
-            'notification_title'      => ['required_with:is_notification_to_team', 'max:255'],
-            'notification_message'      => ['required_with:is_notification_to_team', 'max:255'],
+            // 'customer_template_id'      => ['required_with:is_mail_to_customer', 'max:255'],
+            // 'team_template_id'      => ['required_with:is_mail_to_team', 'max:255'],
         ];
 
         //Validate the task
@@ -128,25 +126,25 @@ class AutomationController extends Controller
         if ($validator->passes()) {
             $ins['status'] = isset($request->status) ? 1 : 0;
             $ins['activity_type'] = $request->activity_type;
-            $ins['template_id'] = $request->customer_template_id ?? null;
+            // $ins['template_id'] = $request->customer_template_id ?? null;
             $ins['is_mail_to_customer'] = isset($request->is_mail_to_customer) ? 1 : 0;
             $ins['is_mail_to_team'] = isset($request->is_mail_to_team) ? 1 : 0;
             $ins['is_notification_to_team']  = isset($request->is_notification_to_team) ? 1 : 0;
-            $ins['notification_title'] = $request->notification_title;
-            $ins['notification_message'] = $request->notification_message;
-            $ins['team_template_id'] = $request->team_template_id ?? null;
+            // $ins['notification_title'] = $request->notification_title;
+            // $ins['notification_message'] = $request->notification_message;
+            // $ins['team_template_id'] = $request->team_template_id ?? null;
 
             if (isset($id) && !empty($id)) {
                 $flow = Automation::find($id);
                 $flow->status = isset($request->status) ? 1 : 0;
                 $flow->activity_type = $request->activity_type;
-                $flow->template_id = $request->customer_template_id ?? null;
+                // $flow->template_id = $request->customer_template_id ?? null;
                 $flow->is_mail_to_customer = isset($request->is_mail_to_customer) ? 1 : 0;
                 $flow->is_mail_to_team = isset($request->is_mail_to_team) ? 1 : 0;
                 $flow->is_notification_to_team  = isset($request->is_notification_to_team) ? 1 : 0;
-                $flow->notification_title = $request->notification_title;
-                $flow->notification_message = $request->notification_message;
-                $flow->team_template_id = $request->team_template_id ?? null;
+                // $flow->notification_title = $request->notification_title;
+                // $flow->notification_message = $request->notification_message;
+                // $flow->team_template_id = $request->team_template_id ?? null;
                 $flow->update();
                 $success = 'Updated Workflow Automation';
             } else {

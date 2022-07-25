@@ -10,6 +10,7 @@ use App\Models\CompanySettings;
 use App\Models\EmailTemplates;
 use App\Models\SendMail as ModelsSendMail;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 
 class SendMail extends Command
@@ -56,24 +57,17 @@ class SendMail extends Command
 
                 $econtent   = EmailTemplates::where('email_type', $item->email_type)->first();
                 if ($item->email_type == 'invoice_approval') {
-                    $extract = unserialize($item->params);
-
+                    $extract = (array)json_decode($item->params);
+                    // Log::info($extract);
                     $to = $item->to;
-                    $templateSubject = $econtent->subject;
-                    $templateSubject = str_replace("{", "", addslashes($templateSubject));
-                    $templateSubject = str_replace("}", "", $templateSubject);
-                    extract($extract);
-                    eval("\$templateSubject = \"$templateSubject\";");
-
-                    $title = $templateSubject;
+                    $title = 'Approval waiting for Invoice';
                     $invoice_no = str_replace("/", "_", $extract['invoice_no']);
                     $file = $invoice_no . '.pdf';
-                    Mail::send('emails.SubmitApproval', $extract, function ($message) use ($to, $title, $file, $from) {
-                        $message->to($to ?? 'duraibytes@gmail.com', 'Phoenix CRM')->subject($title ?? '');
-                        $message->from($from ?? 'durairajnet@gmail.com', 'Phoenix CRM');
-                        $message->attach(public_path('/invoice/' . $file));
-                    });
-                    // ModelsSendMail::find($item->id)->delete();
+
+                    $send_mail = new SubmitApproval($extract);
+                    // return $send_mail->render();
+                    Mail::to($to ?? 'durai@yopmail.com')->send($send_mail);
+                    ModelsSendMail::find($item->id)->delete();
                 } else {
                     if (isset($econtent) && !empty($econtent)) {
 

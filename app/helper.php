@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Http;
 use App\Models\SmsIntegration;
 use App\Models\CompanySettings;
-
+use App\Models\Automation;
 
 function superadmin()
 {
@@ -18,14 +18,25 @@ function csettings($module)
 {
     $company_info = CompanySettings::select($module)->first();
     if (isset($company_info) && !empty($company_info)) {
-        return $company_info->$module;
+        return $company_info->$module ?? null;
     } else {
         return false;
     }
 }
 
-function automation()
+function automation($activity_type, $field)
 {
+    if (csettings('workflow_automation')) {
+        //check activity type is exist yes or no
+        $info = Automation::where('activity_type', $activity_type)->first();
+        if (isset($info) && !empty($info)) {
+            return $info->$field ?? 0;
+        } else {
+            return false;
+        }
+    } else {
+        return false;
+    }
 }
 
 function sendSMS($mobile_no, $type, $params)

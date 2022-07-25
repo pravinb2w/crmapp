@@ -13,6 +13,8 @@ use App\Models\User;
 use App\Models\DealStage;
 use App\Models\PrefixSetting;
 use App\Models\CompanySettings;
+use App\Models\Customer;
+use App\Models\Organization;
 use Auth;
 
 class CommonHelper
@@ -252,6 +254,8 @@ class CommonHelper
 
     public static function send_lead_notification($lead_id, $user_id = '', $is_manual = '', $update = '')
     {
+        //check with automation function
+
         $lead_order_info = DB::table('lead_orders')->get();
         $title = 'New Enquiry';
         if (!empty($update)) {
@@ -357,10 +361,14 @@ class CommonHelper
             }
         }
         if (!empty($ins)) {
-            DB::table('notifications')->insert($ins);
+            if (automation('New Lead Addition', 'is_notification_to_team')) {
+                DB::table('notifications')->insert($ins);
+            }
         }
         if (!empty($ins_mail)) {
-            DB::table('send_mail')->insert($ins_mail);
+            if (automation('New Lead Addition', 'is_mail_to_team')) {
+                DB::table('send_mail')->insert($ins_mail);
+            }
         }
         return true;
     }
@@ -488,10 +496,14 @@ class CommonHelper
             }
         }
         if (!empty($ins)) {
-            DB::table('notifications')->insert($ins);
+            if (automation('Activity on all Leads', 'is_notification_to_team')) {
+                DB::table('notifications')->insert($ins);
+            }
         }
         if (!empty($ins_mail)) {
-            DB::table('send_mail')->insert($ins_mail);
+            if (automation('Activity on all Leads', 'is_mail_to_team')) {
+                DB::table('send_mail')->insert($ins_mail);
+            }
         }
         return true;
     }
@@ -609,10 +621,14 @@ class CommonHelper
             }
         }
         if (!empty($ins)) {
-            DB::table('notifications')->insert($ins);
+            if (automation('Activity on all Leads', 'is_notification_to_team')) {
+                DB::table('notifications')->insert($ins);
+            }
         }
         if (!empty($ins_mail)) {
-            DB::table('send_mail')->insert($ins_mail);
+            if (automation('Activity on all Leads', 'is_mail_to_team')) {
+                DB::table('send_mail')->insert($ins_mail);
+            }
         }
         return true;
     }
@@ -729,10 +745,14 @@ class CommonHelper
             }
         }
         if (!empty($ins)) {
-            DB::table('notifications')->insert($ins);
+            if (automation('Activity on all Leads', 'is_notification_to_team')) {
+                DB::table('notifications')->insert($ins);
+            }
         }
         if (!empty($ins_mail)) {
-            DB::table('send_mail')->insert($ins_mail);
+            if (automation('Activity on all Leads', 'is_mail_to_team')) {
+                DB::table('send_mail')->insert($ins_mail);
+            }
         }
         return true;
     }
@@ -850,10 +870,14 @@ class CommonHelper
             }
         }
         if (!empty($ins)) {
-            DB::table('notifications')->insert($ins);
+            if (automation('Activity on all Leads', 'is_notification_to_team')) {
+                DB::table('notifications')->insert($ins);
+            }
         }
         if (!empty($ins_mail)) {
-            DB::table('send_mail')->insert($ins_mail);
+            if (automation('Activity on all Leads', 'is_mail_to_team')) {
+                DB::table('send_mail')->insert($ins_mail);
+            }
         }
         return true;
     }
@@ -972,10 +996,14 @@ class CommonHelper
             }
         }
         if (!empty($ins)) {
-            DB::table('notifications')->insert($ins);
+            if (automation('Conversion from Lead to Deal', 'is_notification_to_team')) {
+                DB::table('notifications')->insert($ins);
+            }
         }
         if (!empty($ins_mail)) {
-            DB::table('send_mail')->insert($ins_mail);
+            if (automation('Conversion from Lead to Deal', 'is_mail_to_team')) {
+                DB::table('send_mail')->insert($ins_mail);
+            }
         }
         return true;
     }
@@ -1079,10 +1107,14 @@ class CommonHelper
             }
         }
         if (!empty($ins)) {
-            DB::table('notifications')->insert($ins);
+            if (automation('New Deal Addition', 'is_notification_to_team')) {
+                DB::table('notifications')->insert($ins);
+            }
         }
         if (!empty($ins_mail)) {
-            DB::table('send_mail')->insert($ins_mail);
+            if (automation('New Deal Addition', 'is_mail_to_team')) {
+                DB::table('send_mail')->insert($ins_mail);
+            }
         }
         return true;
     }
@@ -1209,10 +1241,14 @@ class CommonHelper
             }
         }
         if (!empty($ins)) {
-            DB::table('notifications')->insert($ins);
+            if (automation('Activity on all Deals', 'is_notification_to_team')) {
+                DB::table('notifications')->insert($ins);
+            }
         }
         if (!empty($ins_mail)) {
-            DB::table('send_mail')->insert($ins_mail);
+            if (automation('Activity on all Deals', 'is_mail_to_team')) {
+                DB::table('send_mail')->insert($ins_mail);
+            }
         }
         return true;
     }
@@ -1323,12 +1359,19 @@ class CommonHelper
                 }
             }
         }
+
         if (!empty($ins)) {
-            DB::table('notifications')->insert($ins);
+            if (automation('Activity on all Deals', 'is_notification_to_team')) {
+                DB::table('notifications')->insert($ins);
+            }
         }
         if (!empty($ins_mail)) {
-            DB::table('send_mail')->insert($ins_mail);
+            if (automation('Activity on all Deals', 'is_mail_to_team')) {
+                DB::table('send_mail')->insert($ins_mail);
+            }
         }
+
+
         return true;
     }
 
@@ -1442,10 +1485,14 @@ class CommonHelper
             }
         }
         if (!empty($ins)) {
-            DB::table('notifications')->insert($ins);
+            if (automation('Activity on all Deals', 'is_notification_to_team')) {
+                DB::table('notifications')->insert($ins);
+            }
         }
         if (!empty($ins_mail)) {
-            DB::table('send_mail')->insert($ins_mail);
+            if (automation('Activity on all Deals', 'is_mail_to_team')) {
+                DB::table('send_mail')->insert($ins_mail);
+            }
         }
         return true;
     }
@@ -1567,10 +1614,14 @@ class CommonHelper
             }
         }
         if (!empty($ins)) {
-            DB::table('notifications')->insert($ins);
+            if (automation('Deal stage changed', 'is_notification_to_team')) {
+                DB::table('notifications')->insert($ins);
+            }
         }
         if (!empty($ins_mail)) {
-            DB::table('send_mail')->insert($ins_mail);
+            if (automation('Deal stage changed', 'is_mail_to_team')) {
+                DB::table('send_mail')->insert($ins_mail);
+            }
         }
         return true;
     }
@@ -1711,10 +1762,14 @@ class CommonHelper
             }
         }
         if (!empty($ins)) {
-            DB::table('notifications')->insert($ins);
+            if (automation('Deal won/lose', 'is_notification_to_team')) {
+                DB::table('notifications')->insert($ins);
+            }
         }
         if (!empty($ins_mail)) {
-            DB::table('send_mail')->insert($ins_mail);
+            if (automation('Deal won/lose', 'is_mail_to_team')) {
+                DB::table('send_mail')->insert($ins_mail);
+            }
         }
         return true;
     }
@@ -1826,10 +1881,14 @@ class CommonHelper
             }
         }
         if (!empty($ins)) {
-            DB::table('notifications')->insert($ins);
+            if (automation('Activity on all Deals', 'is_notification_to_team')) {
+                DB::table('notifications')->insert($ins);
+            }
         }
         if (!empty($ins_mail)) {
-            DB::table('send_mail')->insert($ins_mail);
+            if (automation('Activity on all Deals', 'is_mail_to_team')) {
+                DB::table('send_mail')->insert($ins_mail);
+            }
         }
         return true;
     }
@@ -1936,10 +1995,317 @@ class CommonHelper
         }
 
         if (!empty($ins)) {
-            DB::table('notifications')->insert($ins);
+            if (automation('Activity on all Deals', 'is_notification_to_team')) {
+                DB::table('notifications')->insert($ins);
+            }
         }
         if (!empty($ins_mail)) {
-            DB::table('send_mail')->insert($ins_mail);
+            if (automation('Activity on all Deals', 'is_mail_to_team')) {
+                DB::table('send_mail')->insert($ins_mail);
+            }
+        }
+        return true;
+    }
+
+    public static function send_deal_invoice_notification($invoice_id, $assigned_to = '', $update = '')
+    {
+        $company = CompanySettings::find(1);
+        $lead_order_info = DB::table('deal_orders')->get();
+        $title = 'Deal Invoice Added to Approval';
+
+        $act_info = Invoice::find($invoice_id);
+
+        $date_div = '<strong class="text-primary">' . date('d M Y h:i A') . '</strong>';
+        if ($assigned_to) {
+
+            $message = 'Invoice ' . $act_info->invoice_no . ' has sent for approval to <span class="text-success">' . $act_info->customer->first_name . '</span> sent by <span class="text-info">' . Auth::user()->name . '</span> at ' . $date_div;
+
+            $user_info = User::find($act_info->deal->assigned_to ?? $assigned_to);
+
+            $ins = array(
+                'title' => $title,
+                'message' => $message,
+                'type' => 'deal-invoice',
+                'url' => route('invoices'),
+                'type_id' => $invoice_id,
+                'user_id' => $act_info->deal->assigned_to ?? $assigned_to,
+                'assigned_by' => null,
+                'created_at' => date('Y-m-d H:i:s')
+            );
+
+            if (isset($act_info->deal->assigned_by) && !empty($act_info->deal->assigned_by)) {
+                $user_info = User::find($act_info->deal->assigned_by);
+
+                $ins[] = array(
+                    'title' => $title,
+                    'message' => $message,
+                    'type' => 'deal-invoice',
+                    'url' => route('invoices'),
+                    'type_id' => $invoice_id,
+                    'user_id' => $act_info->deal->assigned_by,
+                    'assigned_by' => null,
+                    'created_at' => date('Y-m-d H:i:s')
+                );
+            }
+        } else {
+            if (isset($lead_order_info) && !empty($lead_order_info)) {
+                foreach ($lead_order_info as $item) {
+
+                    $user_info = User::find($item->user_id);
+                    $message = 'Invoice ' . $act_info->invoice_no . ' has sent for approval to <span class="text-success">' . $act_info->customer->first_name . '</span> sent by <span class="text-info">' . Auth::user()->name . '</span> at ' . $date_div;
+
+
+                    $ins[] = array(
+                        'title' => $title,
+                        'message' => $message,
+                        'type' => 'deal-invoice',
+                        'url' => route('invoices'),
+                        'type_id' => $invoice_id,
+                        'assigned_by' => Auth::id() ?? null,
+                        'user_id' => $item->user_id,
+                        'created_at' => date('Y-m-d H:i:s')
+                    );
+                }
+            }
+        }
+        if (!empty($ins)) {
+            if (automation('Invoice Creation', 'is_notification_to_team')) {
+                DB::table('notifications')->insert($ins);
+            }
+        }
+
+        return true;
+    }
+
+    public static function send_payment_received_notification($deal_id)
+    {
+
+        $deal_order_info = DB::table('deal_orders')->get();
+        $company = CompanySettings::find(1);
+        $deal_info = Deal::find($deal_id);
+
+        $title = 'Payment Received';
+        $date_div = '<strong class="text-primary">' . date('d M Y h:i A') . '</strong>';
+
+        $message = 'Deal ' . $deal_info->deal_title . ' has been received payment successfully  at ' . $date_div;
+
+        if (isset($deal_info->assigned_to) && !empty($deal_info->assigned_to)) {
+            $user_info = User::find($deal_info->assigned_to);
+            $ins = array(
+                'title' => $title,
+                'message' => $message,
+                'type' => 'deal-delete',
+                'url' => 'javascript:void(0)',
+                'type_id' => $deal_id,
+                'user_id' => $deal_info->assigned_to,
+                'assigned_by' => null,
+                'created_at' => date('Y-m-d H:i:s')
+            );
+
+            $extract = array(
+                'rm_name' => $user_info->name,
+                'message' => $message,
+                'additional_information' => '',
+                'company_name' => $company->site_name,
+                'subject' => $title,
+
+            );
+
+            $ins_mail = array(
+                'type' => 'Deal',
+                'type_id' => $deal_id,
+                'email_type' => 'general_task',
+                'params' => serialize($extract),
+                'to' => $user_info->email ?? 'duraibytes@gmail.com'
+            );
+
+            if (isset($deal_info->assigned_by) && !empty($deal_info->assigned_by)) {
+                $user_info = User::find($deal_info->assigned_by);
+
+                $ins[] = array(
+                    'title' => $title,
+                    'message' => $message,
+                    'type' => 'deal-delete',
+                    'url' => 'javascript:void(0);',
+                    'type_id' => $deal_id,
+                    'user_id' => $deal_info->assigned_by,
+                    'assigned_by' => null,
+                    'created_at' => date('Y-m-d H:i:s')
+                );
+
+                $extract = array(
+                    'rm_name' => $user_info->name,
+                    'message' => $message,
+                    'additional_information' => '',
+                    'company_name' => $company->site_name,
+                    'subject' => $title,
+
+                );
+
+                $ins_mail[] = array(
+                    'type' => 'Deal',
+                    'type_id' => $deal_id,
+                    'email_type' => 'general_task',
+                    'params' => serialize($extract),
+                    'to' => $user_info->email ?? 'duraibytes@gmail.com'
+                );
+            }
+        } else {
+            if (isset($deal_order_info) && !empty($deal_order_info)) {
+                foreach ($deal_order_info as $item) {
+                    $user_info = User::find($item->user_id);
+                    $ins[] = array(
+                        'title' => $title,
+                        'message' => $message,
+                        'type' => 'deal-delete',
+                        'url' => 'javascript:void(0);',
+                        'type_id' => $deal_id,
+                        'assigned_by' => null,
+                        'user_id' => $item->user_id,
+                        'created_at' => date('Y-m-d H:i:s')
+                    );
+
+                    $extract = array(
+                        'rm_name' => $user_info->name,
+                        'message' => $message,
+                        'additional_information' => '',
+                        'company_name' => $company->site_name,
+                        'subject' => $title,
+                    );
+
+                    $ins_mail[] = array(
+                        'type' => 'Deal',
+                        'type_id' => $deal_id,
+                        'email_type' => 'general_task',
+                        'params' => serialize($extract),
+                        'to' => $user_info->email ?? 'duraibytes@gmail.com'
+                    );
+                }
+            }
+        }
+        if (!empty($ins)) {
+            if (automation('Thanks mail for the payment received', 'is_notification_to_team')) {
+                DB::table('notifications')->insert($ins);
+            }
+        }
+        if (!empty($ins_mail)) {
+            if (automation('Thanks mail for the payment received', 'is_mail_to_team')) {
+                DB::table('send_mail')->insert($ins_mail);
+            }
+        }
+        return true;
+    }
+
+    public static function send_new_customer_notification($customer_id)
+    {
+
+        $users = User::all();
+        $company = CompanySettings::find(1);
+        $customer_info = Customer::find($customer_id);
+
+        $title = 'New Customer Added';
+        $date_div = '<strong class="text-primary">' . date('d M Y h:i A') . '</strong>';
+
+        $message = 'Customer ' . $customer_info->first_name . ' has been added successfully by  <span class="text-info">' . Auth::user()->name . '</span> ' . $date_div;
+
+
+        if (isset($users) && !empty($users)) {
+            foreach ($users as $item) {
+                $ins[] = array(
+                    'title' => $title,
+                    'message' => $message,
+                    'type' => 'new-customer',
+                    'url' => 'javascript:void(0);',
+                    'type_id' => $customer_id,
+                    'assigned_by' => null,
+                    'user_id' => $item->id,
+                    'created_at' => date('Y-m-d H:i:s')
+                );
+
+                $extract = array(
+                    'rm_name' => $item->name,
+                    'message' => $message,
+                    'additional_information' => '',
+                    'company_name' => $company->site_name,
+                    'subject' => $title,
+                );
+
+                $ins_mail[] = array(
+                    'type' => 'new-customer',
+                    'type_id' => $customer_id,
+                    'email_type' => 'general_task',
+                    'params' => serialize($extract),
+                    'to' => $item->email ?? 'duraibytes@gmail.com'
+                );
+            }
+        }
+
+        if (!empty($ins)) {
+            if (automation('New Customer Addition', 'is_notification_to_team')) {
+                DB::table('notifications')->insert($ins);
+            }
+        }
+        if (!empty($ins_mail)) {
+            if (automation('New Customer Addition', 'is_mail_to_team')) {
+                DB::table('send_mail')->insert($ins_mail);
+            }
+        }
+        return true;
+    }
+
+    public static function send_new_organization_notification($company_id)
+    {
+
+        $users = User::all();
+        $company = CompanySettings::find(1);
+        $customer_info = Organization::find($company_id);
+
+        $title = 'New Organization Added';
+        $date_div = '<strong class="text-primary">' . date('d M Y h:i A') . '</strong>';
+
+        $message = 'Organization ' . $customer_info->first_name . ' has been added successfully by  <span class="text-info">' . Auth::user()->name . '</span> ' . $date_div;
+
+
+        if (isset($users) && !empty($users)) {
+            foreach ($users as $item) {
+                $ins[] = array(
+                    'title' => $title,
+                    'message' => $message,
+                    'type' => 'new-organization',
+                    'url' => 'javascript:void(0);',
+                    'type_id' => $company_id,
+                    'assigned_by' => null,
+                    'user_id' => $item->id,
+                    'created_at' => date('Y-m-d H:i:s')
+                );
+
+                $extract = array(
+                    'rm_name' => $item->name,
+                    'message' => $message,
+                    'additional_information' => '',
+                    'company_name' => $company->site_name,
+                    'subject' => $title,
+                );
+
+                $ins_mail[] = array(
+                    'type' => 'new-organization',
+                    'type_id' => $company_id,
+                    'email_type' => 'general_task',
+                    'params' => serialize($extract),
+                    'to' => $item->email ?? 'duraibytes@gmail.com'
+                );
+            }
+        }
+
+        if (!empty($ins)) {
+            if (automation('New Organization Addition', 'is_notification_to_team')) {
+                DB::table('notifications')->insert($ins);
+            }
+        }
+        if (!empty($ins_mail)) {
+            if (automation('New Organization Addition', 'is_mail_to_team')) {
+                DB::table('send_mail')->insert($ins_mail);
+            }
         }
         return true;
     }

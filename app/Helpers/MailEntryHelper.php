@@ -30,7 +30,9 @@ class MailEntryHelper
             'params' => serialize($extract),
             'to' => $to_email ?? 'duraibytes@gmail.com'
         );
-        SendMail::create($ins_mail);
+        if (automation('New Lead Addition', 'is_mail_to_customer')) {
+            SendMail::create($ins_mail);
+        }
     }
 
     public static function leadAddition($lead_id, $to_email)
@@ -53,7 +55,9 @@ class MailEntryHelper
             'params' => serialize($extract),
             'to' => $to_email ?? 'duraibytes@gmail.com'
         );
-        SendMail::create($ins_mail);
+        if (automation('New Lead Addition', 'is_mail_to_customer')) {
+            SendMail::create($ins_mail);
+        }
     }
 
     public static function dealConversion($lead_id, $to_email)
@@ -73,6 +77,8 @@ class MailEntryHelper
             'params' => serialize($extract),
             'to' => $to_email ?? 'duraibytes@gmail.com'
         );
-        SendMail::create($ins_mail);
+        if (automation('Conversion from Lead to Deal', 'is_mail_to_customer')) {
+            SendMail::create($ins_mail);
+        }
     }
 }

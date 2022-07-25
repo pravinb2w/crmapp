@@ -7,6 +7,8 @@ use App\Models\InvoiceItem;
 use App\Models\Invoice;
 use App\Models\Deal;
 use App\Models\CompanySettings;
+use App\Models\Order;
+use App\Models\Payment;
 use PDF;
 use CommonHelper;
 
@@ -108,6 +110,36 @@ class InvoiceController extends Controller
             $params['message'] = 'Congratulation Your have approved proposal Succsussfully';
             $info->approved_at = date('Y-m-d H:i:s');
             $info->update();
+
+            $order_no = 'TXN' . date('mdyhis');
+            $temp_no = base64_encode('TEMP' . date('mdyhis'));
+
+            $ord_ins['order_id'] = $order_no;
+            $ord_ins['amount'] = $info->total;
+            $ord_ins['customer_id'] = $info->customer_id;
+            $ord_ins['product_code'] = null;
+            $ord_ins['payment_gateway'] = 'razorpay';
+            $ord_ins['description'] = 'Invoice approval via order confirmation';
+            $ord_ins['status'] = 'pending';
+
+            Order::create($ord_ins);
+
+            $ins['payment_mode'] = 'online';
+            $ins['customer_id'] = $info->customer_id;
+            $ins['amount'] = $info->total;
+            $ins['invoice_id'] = $id;
+            $ins['deal_id'] = $info->deal_id ?? null;
+            $ins['payment_method'] = 'razor';
+            $ins['order_id'] = $order_no;
+            $ins['payment_status'] = 'pending';
+            $ins['temp_no'] = $temp_no;
+            Payment::create($ins);
+            $success = 'Payment Added';
+
+            $route = route('razorpay.request', ['order_no' => $order_no]);
+            $params['route'] = $route;
+            //here need to do payment process
+
         }
         return view('mail-message', $params);
     }

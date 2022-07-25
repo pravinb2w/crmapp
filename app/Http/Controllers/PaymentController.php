@@ -470,7 +470,7 @@ class PaymentController extends Controller
 
         $route = $payment_info->generated_links;
 
-        if (empty($route)) {
+        if (empty($route)) { 
             if ($payment_info->payment_method == 'razor') {
                 $route = route('razorpay.request', ['order_no' => $payment_info->order_id]);
             } else if ($payment_info->payment_method == 'payumoney') {

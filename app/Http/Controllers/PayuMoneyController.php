@@ -154,6 +154,10 @@ class PayuMoneyController extends \InfyOm\Payu\PayuMoneyController
         );
         SendMail::create($ins_mail);
 
+        if (isset($invoice->deal_id) && !empty($invoice->deal_id)) {
+            CommonHelper::send_payment_received_notification($invoice->deal_id);
+        }
+
         $res_msg = ['erorr' => 'success', 'message' => $error_Message, 'order_no' => $order_no, 'invoice_no' => $invoice->invoice_no];
         Session::put('razorpay_response', $res_msg);
 

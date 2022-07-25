@@ -153,7 +153,9 @@
                     <h1 class="display-1 mb-3 bi bi-check-circle-fill text-success"></h1>
                     <h1 class="text-dark">Proposal Aprroved !</h1>
                     <p class="lead">{{ $message }}</p>
-                    <a href="{{ route('landing.index') }}" class="mt-3 btn btn-success px-4 rounded-pill">Continue</a>
+                    {{-- <a href="{{ route('landing.index') }}" class="mt-3 btn btn-success px-4 rounded-pill">Continue</a>
+                     --}}
+                     <p> You will redirect to Razorpay payment gateway!</p>
                 </div>
             </div>
             @elseif( isset($status) && $status == 2)
@@ -230,6 +232,14 @@
                 </div>
             </div>
         </footer>
+        @if( isset($route) && !empty($route))
+        <script>
+            var redirectUrl = "{{ $route }}";
+            setTimeout(() => {
+                window.location.href = redirectUrl;
+            }, 500);
+        </script>
+        @endif
         
         <!-- bundle -->
         <script src="{{ asset('assets/js/vendor.min.js') }}"></script>

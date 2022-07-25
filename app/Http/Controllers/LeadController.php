@@ -18,7 +18,6 @@ use App\Models\InvoiceItem;
 use App\Models\Invoice;
 use CommonHelper;
 
-
 class LeadController extends Controller
 {
     public function index(Request $request)

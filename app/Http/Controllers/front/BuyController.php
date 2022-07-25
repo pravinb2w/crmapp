@@ -277,9 +277,14 @@ class BuyController extends Controller
 
             //send email 
             $company = CompanySettings::find(1);
+            $product_name = '';
+            if( isset($order_info->product->product_name) && !empty($order_info->product->product_name) ) {
+                $product_name = $order_info->product->product_name;
+            }
+            
             $extract = array(
                 'company_name' => $company->site_name,
-                'product' => $order_info->order_id . ' ' . $order_info->product->product_name ?? '',
+                'product' => $order_info->order_id . ' ' . $product_name,
                 'amount' => $order_info->amount,
                 'confirmed_date' => date('d M Y'),
             );
@@ -292,6 +297,9 @@ class BuyController extends Controller
                 'to' => $order_info->customer->email ?? 'duraibytes@gmail.com'
             );
             SendMail::create($ins_mail);
+            if (isset($invoice->deal_id) && !empty($invoice->deal_id)) {
+                CommonHelper::send_payment_received_notification($invoice->deal_id);
+            }
 
             return redirect()->route('landing.index')->with('status', 'Profile updated!');
 
