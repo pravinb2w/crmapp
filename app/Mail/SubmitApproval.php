@@ -31,7 +31,7 @@ class SubmitApproval extends Mailable
     {
         $invoice_no = str_replace("/", "_", $this->body['invoice_no']);
         $file = $invoice_no . '.pdf';
-        return $this->markdown('emails.SubmitApproval')->subject('Approval for Invoice')
+        return $this->markdown('emails.submit_approval')->subject('Approval for Invoice')
             ->attach(public_path('/invoice/' . $file));
     }
 }
