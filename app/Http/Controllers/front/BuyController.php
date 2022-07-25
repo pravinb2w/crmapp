@@ -281,7 +281,7 @@ class BuyController extends Controller
             if( isset($order_info->product->product_name) && !empty($order_info->product->product_name) ) {
                 $product_name = $order_info->product->product_name;
             }
-            
+
             $extract = array(
                 'company_name' => $company->site_name,
                 'product' => $order_info->order_id . ' ' . $product_name,
@@ -310,7 +310,7 @@ class BuyController extends Controller
             $res_msg = ['erorr' => 'error', 'message' => 'Payment Failed', 'order_no' => $pay_info->order_id];
             Session::put('razorpay_response', $res_msg);
             $_SESSION['razor_response'] = $res_msg;
-
+            
             return redirect()->route('landing.index')->with('status', 'Profile updated!');
 
             // You can create this page

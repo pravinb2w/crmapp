@@ -5,7 +5,7 @@
             @if (isset($info) && !empty($info))
 
                 @php
-                    if (isset($info->notes) && !empty($info->notes) && $list_type == 'note') {
+                    if (isset($info->notes) && !empty($info->notes) && ( $list_type == 'note' || $list_type == 'notes' ) ) {
                         foreach ($info->notes as $ionotes) {
                             $tmp['activity_type'] = 'note';
                             $tmp['subject'] = $ionotes->notes;
@@ -22,7 +22,7 @@
                         }
                     }
                     
-                    if (isset($info->files) && !empty($info->files) && $list_type == 'file') {
+                    if (isset($info->files) && !empty($info->files) && ($list_type == 'file' || $list_type == 'files' ) ) {
                         foreach ($info->files as $iofiles) {
                             $tmp['activity_type'] = 'files';
                             $tmp['subject'] = 'Document Created';
