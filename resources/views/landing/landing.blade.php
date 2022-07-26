@@ -604,7 +604,7 @@
                         <div class="mt-5">
                             <p class="text-light mt-4 text-center mb-0">
                                 {{ $copyrights ??
-                                    '© 2022 - 2023 PHOENIX.' }}
+                                    '© 2022 - 2023 PHOENIX TECHNOLOGIES.' }}
                             </p>
                         </div>
                     </div>
