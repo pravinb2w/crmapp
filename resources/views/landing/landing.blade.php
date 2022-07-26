@@ -603,9 +603,8 @@
                     <div class="col-lg-12">
                         <div class="mt-5">
                             <p class="text-light mt-4 text-center mb-0">
-                                {{ ' © 2022 - 2023 ' $copyrights ??
-                                    '© 2022 - 2023 PHOENIX. Design and coded by
-                                                                                                                                                                                                                                                                                                                                    DuraiBytes' }}
+                                {{ $copyrights ??
+                                    '© 2022 - 2023 PHOENIX.' }}
                             </p>
                         </div>
                     </div>
