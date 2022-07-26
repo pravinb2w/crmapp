@@ -8,11 +8,11 @@
     <div class="col-sm-6 card">
         <div class="card-body">
             <div>
-                <label for="">Subscription</label>
+                <label class="col-3 col-form-label">Subscription</label>
                 {{ $info->company->subscription->subscription->subscription_name ?? 'N/A' }}
             </div>
             <div>
-                <label for="">
+                <label class="col-3 col-form-label">
                     Total Amount
                 </label>
                 {{ $info->company->subscription->total_amount ?? '0' }}
@@ -22,13 +22,13 @@
     <div class="col-sm-6 card">
         <div class="card-body">
             <div>
-                <label for="">
+                <label class="col-3 col-form-label">
                     Start Date
                 </label>
                 {{ $info->company->subscription->startAt ?? 'N/A' }}
             </div>
             <div>
-                <label for="">
+                <label class="col-3 col-form-label">
                     End Date
                 </label>
                 {{ $info->company->subscription->endAt ?? 'N/A' }}
