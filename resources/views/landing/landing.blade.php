@@ -332,7 +332,7 @@
                     <marquee class="marquee-text">
 
                         @foreach ($announcements as $ment)
-						@if($ment>1)					
+						@if($announcements>1)					
                             <div class="m-div">
                                 {!! $ment->message !!}
                                 <span class="px-3"> | </span>
