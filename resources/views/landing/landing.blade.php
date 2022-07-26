@@ -217,6 +217,9 @@
                         <li class="nav-item mx-lg-1">
                             <a class="nav-link text-white" href="#about-us">About</a>
                         </li>
+						 <li class="nav-item mx-lg-1">
+                            <a class="nav-link text-white" href="#crm-features">Services</a>
+                        </li>
                         <li class="nav-item mx-lg-1">
                             <a class="nav-link text-white" href="#contact-us">contact</a>
                         </li>
@@ -355,7 +358,7 @@
         </section>
         <!-- END FEATURES 2 -->
 
-        <section class="py-5 bg-light">
+        <section class="py-5 bg-light"  id="crm-features">
             <div class="container">
                 <div class="row">
                     <div class="col-sm-12">
