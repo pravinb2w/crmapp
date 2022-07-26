@@ -4,7 +4,7 @@
             <div class="col-6 ps-md-0">
                 <div class="custom-form-group">
                    <input type="text" name="page_type"   value="{{ $result->page_type ?? ''}}" class="form-control" required  placeholder="Enter the page name">
-                    <label for="" class="custom-label">Page Type</label>
+                    <label for="" class="custom-label">Page Name</label>
                 </div> 
             </div>
             <div class="col-6">
@@ -87,7 +87,7 @@
         </div>  
         <div class="card border">
             <div class="card-header d-flex justify-content-between align-items-center">
-               <label>About Us Section </label>  
+               <label>About Us </label>  
             </div>
             <div class="card-body ">    
                 <div class="row m-0 align-items-center">
@@ -186,11 +186,11 @@
             <div class="card-body p-0">
                 <div class="row m-0">
                     <div class="col-4 p-3 border-end">
-                        <label class="mb-1"><i class="bi bi-telephone-fill me-1"></i> Call US</label>
+                        <label class="mb-1"><i class="bi bi-telephone-fill me-1"></i> Call us</label>
                         <input value="{{ $result->call_us ?? ''}}" name="call_us" type="number" class="rounded-0 form-control-sm form-control mb-3" required>
-                        <label class="mb-1"><i class="bi bi-envelope-fill me-1"></i>Mall US</label>
+                        <label class="mb-1"><i class="bi bi-envelope-fill me-1"></i>Mall us</label>
                         <input value="{{ $result->mail_us ?? ''}}" name="mail_us" type="text" class="rounded-0 form-control-sm form-control mb-3" required> 
-                        <label class="mb-1"><i class="bi bi-geo-alt-fill me-1"></i>Contact US</label>
+                        <label class="mb-1"><i class="bi bi-geo-alt-fill me-1"></i>Contact us</label>
                         <input value="{{ $result->contact_us ?? ''}}" name="contact_us" type="text" class="rounded-0 form-control-sm form-control" required>
                     </div>
                     <div class="col-8  p-2">
@@ -448,7 +448,7 @@
                 @endif
                 <div class="my-1 mt-2">
                     <input type="checkbox" name="is_default_landing_page" id="is_default_landing_page" value="1" @if(isset($result->is_default_landing_page) && $result->is_default_landing_page == 1 ) checked @endif>
-                    <label for="is_default_landing_page" class="mx-2"> Make Default Landing Page</label>
+                    <label for="is_default_landing_page" class="mx-2"> Make as Default Landing Page</label>
                 </div>
                 
 
