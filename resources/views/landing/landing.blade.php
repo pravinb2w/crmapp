@@ -296,7 +296,7 @@
                                     {{ $banner->title }}
                                 </h2>
                                 <p class="mb-4  w-75 mx-auto font-16 text-light">{{ $banner->content }}</p>
-                                <a href="#contact-us" class="btn btn-primary rounded-pill">Get Started</a>
+                                <!--<a href="#contact-us" class="btn btn-primary rounded-pill">Get Started</a>-->
                             </div>
                         </div>
                     @endforeach
