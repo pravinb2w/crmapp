@@ -220,6 +220,15 @@
 						 <li class="nav-item mx-lg-1">
                             <a class="nav-link text-white" href="#crm-features">Services</a>
                         </li>
+						 @if (csettings('show_products'))
+							@if (isset($products) && !empty($products))
+				 <li class="nav-item mx-lg-1">
+                            <a class="nav-link text-white" href="#products">Products</a>
+                        </li>
+							@endif
+						@endif
+
+						
                         <li class="nav-item mx-lg-1">
                             <a class="nav-link text-white" href="#contact-us">contact</a>
                         </li>
@@ -403,7 +412,7 @@
         @if (csettings('show_products'))
             @if (isset($products) && !empty($products))
                 <link rel="stylesheet" href="{{ asset('assets/custom/css/product-list.css') }}">
-                <section class="py-5">
+                <section class="py-5" id="products">
                     <div class="row bg-white">
                         <div class="col-12 text-center p-2">
                             <h1 class="text-primary w-100 product-head"> Explore our Products </h1>
