@@ -43,7 +43,7 @@
                                     <th > Customer </th>
                                     <th > StartAt</th>
                                     <th >Due</th>
-                                    <th> Done </th>
+                                    <th> Progress Status</th>
                                     <th> Assigned To </th>
                                     <th> Assigned By </th>
                                     <th>Status</th>
