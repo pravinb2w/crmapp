@@ -332,16 +332,10 @@
                     <marquee class="marquee-text">
 
                         @foreach ($announcements as $ment)
-						@if(count($announcements) > 1)					
                             <div class="m-div">
                                 {!! $ment->message !!}
                                 <span class="px-3"> | </span>
                             </div>
-							else
-								 <div class="m-div">
-                                {!! $ment->message !!}
-                               </div>
-					    @endif		
                         @endforeach
                     </marquee>
 
