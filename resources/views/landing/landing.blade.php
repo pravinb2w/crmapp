@@ -161,7 +161,7 @@
         top: 0;
         background: linear-gradient(358deg, {{ $result->primary_color }}, {{ $result->primary_color }});
         width: 100%;
-        height: 9%;
+        height: 10%;
         text-align: center;
         vertical-align: middle;
         color: white;
