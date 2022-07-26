@@ -41,7 +41,7 @@
                                     <th> Type </th>
                                     <th >Lead / Deal</th>
                                     <th > Customer </th>
-                                    <th > StartAt</th>
+                                    <th > Start Date</th>
                                     <th >Due</th>
                                     <th> Progress Status</th>
                                     <th> Assigned To </th>
