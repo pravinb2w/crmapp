@@ -437,9 +437,9 @@
             </div>
             <div class="card-body">
              
-                <div class="my-1"><i class="me-2 bi bi-key-fill"></i> Status: <b>Public</b> <b>Imediately</b></div>
-                <div class="my-1"><i class="me-2 bi bi-eye-fill"></i> Visibility: <b>Public</b> <b>Imediately</b></div>
-                <div class="my-1"><i class="me-2 bi bi-calendar-check-fill"></i> Publish: <b>Imediately</b></div>
+                <div class="my-1"><i class="me-2 bi bi-key-fill"></i> Status: <b>Public</b> <b>Immediately</b></div>
+                <div class="my-1"><i class="me-2 bi bi-eye-fill"></i> Visibility: <b>Public</b> <b>Immediately</b></div>
+                <div class="my-1"><i class="me-2 bi bi-calendar-check-fill"></i> Publish: <b>Immediately</b></div>
                 @if( isset( $result->permalink ) && !empty($result->permalink))
                     <div class="my-1"><i class="me-2 bi bi-calendar-check-fill"></i> 
                         Permalink: <b>{{ route('landing.index', [$result->permalink]) }}</b> 
