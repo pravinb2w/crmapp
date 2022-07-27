@@ -204,7 +204,7 @@
                         {{-- <img src="assets/images/logo.png" alt="" class="logo-dark" height="18" /> --}}
                         
                         <div class="aos-init"  data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="1400">
-                            <strong class="text-white"> PHOENIX</strong>
+                            <strong class="text-white"> PHOENIX TECHNOLOGIES</strong>
                         </div>
                         <p class="text-white mt-4 aos-init" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="1500">PHOENIX TECH makes it easier to build better websites with
                             <br> great speed. Save hundreds of hours of design
@@ -225,8 +225,8 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="mt-5">
-                            <p class="text-light mt-4 text-center mb-0">© 2022 - 2023 PHOENIX. Design and coded by
-                                DuraiBytes</p>
+                            <p class="text-light mt-4 text-center mb-0"> {{ $copyrights ??
+                                    '© 2022 - 2023 PHOENIX TECHNOLOGIES.' }}</p>
                         </div>
                     </div>
                 </div>

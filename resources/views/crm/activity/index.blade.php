@@ -30,7 +30,7 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-body">
-                    {{-- <h4 class="header-title">Personal Preference</h4> --}}
+                    {{-- <h4 class="header-title">Personal Preferences</h4> --}}
                     @include('crm.common.common_add_btn')
 
                     <div class="table-responsive">
@@ -41,9 +41,9 @@
                                     <th> Type </th>
                                     <th >Lead / Deal</th>
                                     <th > Customer </th>
-                                    <th > StartAt</th>
+                                    <th > Start Date</th>
                                     <th >Due</th>
-                                    <th> Done </th>
+                                    <th> Progress Status</th>
                                     <th> Assigned To </th>
                                     <th> Assigned By </th>
                                     <th>Status</th>

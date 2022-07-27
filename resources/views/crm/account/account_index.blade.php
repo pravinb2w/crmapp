@@ -38,7 +38,7 @@
                         <li class="breadcrumb-item active">Account</li>
                     </ol>
                 </div>
-                <h4 class="page-title">Personal Preference</h4>
+                <h4 class="page-title">Personal Preferences</h4>
             </div>
         </div>
     </div>     
@@ -47,7 +47,7 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-body">
-                    {{-- <h4 class="header-title">Personal Preference</h4> --}}
+                    {{-- <h4 class="header-title">Personal Preferences</h4> --}}
 
                     <ul class="nav nav-tabs nav-bordered mb-3">
                         <li class="nav-item">

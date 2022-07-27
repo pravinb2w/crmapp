@@ -161,7 +161,7 @@
         top: 0;
         background: linear-gradient(358deg, {{ $result->primary_color }}, {{ $result->primary_color }});
         width: 100%;
-        height: 9%;
+        height: 10%;
         text-align: center;
         vertical-align: middle;
         color: white;
@@ -217,6 +217,18 @@
                         <li class="nav-item mx-lg-1">
                             <a class="nav-link text-white" href="#about-us">About</a>
                         </li>
+						 <li class="nav-item mx-lg-1">
+                            <a class="nav-link text-white" href="#crm-features">Services</a>
+                        </li>
+						 @if (csettings('show_products'))
+							@if (isset($products) && !empty($products))
+				 <li class="nav-item mx-lg-1">
+                            <a class="nav-link text-white" href="#products">Products</a>
+                        </li>
+							@endif
+						@endif
+
+						
                         <li class="nav-item mx-lg-1">
                             <a class="nav-link text-white" href="#contact-us">contact</a>
                         </li>
@@ -236,7 +248,7 @@
 
         @if (isset($payment_error) && !empty($payment_error))
             {{-- @include('front.razor_pay_response') --}}
-            <section class="py-5" id="about-us">
+            <section class="py-3" id="about-us">
                 <div class="container">
                     @php
                         
@@ -296,7 +308,7 @@
                                     {{ $banner->title }}
                                 </h2>
                                 <p class="mb-4  w-75 mx-auto font-16 text-light">{{ $banner->content }}</p>
-                                <a href="#contact-us" class="btn btn-primary rounded-pill">Get Started</a>
+                                <!--<a href="#contact-us" class="btn btn-primary rounded-pill">Get Started</a>-->
                             </div>
                         </div>
                     @endforeach
@@ -314,7 +326,7 @@
         <!-- END HERO -->
         <!-- START FEATURES 2 -->
 
-        <section class="py-5" id="about-us" style="position: relative">
+        <section class="py-3" id="about-us" style="position: relative">
             @if (isset($announcements) && !empty($announcements) && count($announcements) > 0)
                 <div class="announcement-pane">
                     <marquee class="marquee-text">
@@ -362,7 +374,7 @@
         </section>
         <!-- END FEATURES 2 -->
 
-        <section class="py-5 bg-light">
+        <section class="py-3 bg-light"  id="crm-features">
             <div class="container">
                 <div class="row">
                     <div class="col-sm-12">
@@ -388,7 +400,7 @@
             </div>
         </section>
 
-        <section class="py-5 text-center "
+        <section class="py-3 text-center "
             style="background: linear-gradient(30deg, {{ $result->primary_color }} ,{{ $result->secondary_color }}">
             <div class="media-body">
                 <h3 data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="1000"
@@ -407,7 +419,7 @@
         @if (csettings('show_products'))
             @if (isset($products) && !empty($products))
                 <link rel="stylesheet" href="{{ asset('assets/custom/css/product-list.css') }}">
-                <section class="py-5">
+                <section class="py-3" id="products">
                     <div class="row bg-white">
                         <div class="col-12 text-center p-2">
                             <h1 class="text-primary w-100 product-head"> Explore our Products </h1>
@@ -442,7 +454,7 @@
             @endif
         @endif
 
-        <section class=" py-5 bg-light" id="contact-us">
+        <section class=" py-3 bg-light" id="contact-us">
             <div class="container">
                 <div class="row align-items-center">
                     <div class="col-lg-9 h-100 ms-auto position-relative p-0">
@@ -493,7 +505,7 @@
 
         {!! $result->iframe_tags !!}
 
-        <section class="py-5">
+        <section class="py-3">
             <div class="container">
                 <div class="row align-items-center m-0">
                     <div class="col-md">
@@ -518,7 +530,7 @@
                 </div>
             </div>
         </section>
-        <footer class="py-5 text-center "
+        <footer class="py-3 text-center "
             style="background: linear-gradient(#020202e0 50%, #00d9ff34) , url('https://images.unsplash.com/photo-1587560699334-cc4ff634909a?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80');background-size:cover;backdrop-filter:blur(5px)">
             <div class="container">
                 <div class="row justify-content-center align-items-center">
@@ -599,8 +611,7 @@
                         <div class="mt-5">
                             <p class="text-light mt-4 text-center mb-0">
                                 {{ $copyrights ??
-                                    '© 2022 - 2023 PHOENIX. Design and coded by
-                                                                                                                                                                                                                                                                                                                                    DuraiBytes' }}
+                                    '© 2022 - 2023 PHOENIX TECHNOLOGIES.' }}
                             </p>
                         </div>
                     </div>

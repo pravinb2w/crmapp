@@ -34,7 +34,7 @@
                                         <th>Product</th>
                                         <th>Product Code</th>
                                         <th>HSN No</th>
-                                        <th>PRICE</th>
+                                        <th>Price</th>
                                         <th>Added By</th>
                                         <th>Status</th>
                                         <th style="width: 80px;">Action</th>
