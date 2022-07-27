@@ -334,10 +334,11 @@
                         @endphp
                         @foreach ($announcements as $ment)
                             <div class="m-div">
-                                {!! $ment->message !!}
+                               
                                 @if( $count != 0 )
                                 <span class="px-3"> | </span>
                                 @endif
+								 {!! $ment->message !!}
                             </div>
                             @php
                                 $count++;
