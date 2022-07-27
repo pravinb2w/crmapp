@@ -67,6 +67,8 @@ class CmsController extends Controller
                 'about_content' => $request->about_content,
                 'primary_color' => $request->primary_color,
                 'secondary_color' => $request->secondary_color,
+                'meta_title' => $request->meta_title ?? null,
+                'meta_description' => $request->meta_description ?? null,
                 'is_default_landing_page' => $request->is_default_landing_page ?? 0
             ]);
 
@@ -119,6 +121,7 @@ class CmsController extends Controller
     }
     public function update(Request $request, $id)
     {
+        
         if ($request->is_default_landing_page) {
             LandingPages::query()->update(['is_default_landing_page' => 0]);
         }
@@ -148,7 +151,9 @@ class CmsController extends Controller
             'about_content'     => $request->about_content,
             'primary_color'     => $request->primary_color,
             'secondary_color'   => $request->secondary_color,
-            'is_default_landing_page' => $request->is_default_landing_page ?? 0
+            'is_default_landing_page' => $request->is_default_landing_page ?? 0,
+            'meta_title'        => $request->meta_title ?? null,
+            'meta_description'  => $request->meta_description ?? null,
         ]);
 
         //=========== Banner Sliders ========== 

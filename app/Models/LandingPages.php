@@ -23,7 +23,9 @@ class LandingPages extends Model
         'about_content',
         'primary_color',
         'secondary_color',
-        'is_default_landing_page'
+        'is_default_landing_page',
+        'meta_title',
+        'meta_description'
     ];
     public function LandingPageSocialMedias()
     {

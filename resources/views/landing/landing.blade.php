@@ -7,9 +7,10 @@
         <title>{{ $result->page_title }}</title>
         <link rel="shortcut icon" href="{{ asset('storage/' . $result->page_logo) }}">
     @endif
+   
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta content="A fully featured admin theme which can be used to build CRM, CMS, etc." name="description" />
-    <meta content="Coderthemes" name="author" />
+    <meta content="{{ $result->meta_description ?? '' }}" name="{{ $result->meta_title ?? '' }}" />
+   
     <meta name="csrf-token" content="{{ csrf_token() }}" />
     <!-- App favicon -->
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
