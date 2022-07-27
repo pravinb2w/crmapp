@@ -209,10 +209,10 @@
                 <!-- menus -->
                 <div class="collapse navbar-collapse" id="navbarNavDropdown">
 
-                    <ul class="navbar-nav ms-auto py-2 align-items-center">
+                    <ul class="navbar-nav ms-auto py-2 align-items-center" id="nav-landing">
 
                         <li class="nav-item mx-lg-1">
-                            <a class="nav-link text-white active" href="#contact-us">Home</a>
+                            <a class="nav-link text-white" href="#LandingBannnerSliders">Home</a>
                         </li>
                         <li class="nav-item mx-lg-1">
                             <a class="nav-link text-white" href="#about-us">About</a>
@@ -222,15 +222,14 @@
                         </li>
 						 @if (csettings('show_products'))
 							@if (isset($products) && !empty($products))
-				 <li class="nav-item mx-lg-1">
-                            <a class="nav-link text-white" href="#products">Products</a>
-                        </li>
+				                <li class="nav-item mx-lg-1">
+                                    <a class="nav-link text-white" href="#products">Products</a>
+                                </li>
 							@endif
 						@endif
-
 						
                         <li class="nav-item mx-lg-1">
-                            <a class="nav-link text-white" href="#contact-us">contact</a>
+                            <a class="nav-link text-white" href="#contact-us">Contact</a>
                         </li>
                         {{-- <li class="nav-item me-0 ms-3">
                                 <a href="https://themes.getbootstrap.com/product/hyper-responsive-admin-dashboard-template/" target="_blank" class="nav-link d-lg-none">Purchase now</a>
@@ -248,7 +247,7 @@
 
         @if (isset($payment_error) && !empty($payment_error))
             {{-- @include('front.razor_pay_response') --}}
-            <section class="py-3" id="about-us">
+            <section class="py-3" id="about-us1">
                 <div class="container">
                     @php
                         
@@ -291,7 +290,7 @@
             </section>
         @endif
         <!-- START HERO -->
-        <div id="LandingBannnerSliders" class="carousel slide" data-bs-ride="carousel">
+        <div id="LandingBannnerSliders" class="carousel slide target" data-bs-ride="carousel">
             <div class="carousel-inner" role="listbox">
                 @if ($result->LandingPageBannerSliders)
                     @foreach ($result->LandingPageBannerSliders as $key => $banner)
@@ -326,7 +325,7 @@
         <!-- END HERO -->
         <!-- START FEATURES 2 -->
 
-        <section class="py-3" id="about-us" style="position: relative">
+        <section class="py-3 target" id="about-us" style="position: relative">
             @if (isset($announcements) && !empty($announcements) && count($announcements) > 0)
                 <div class="announcement-pane">
                     <marquee class="marquee-text">
@@ -374,7 +373,7 @@
         </section>
         <!-- END FEATURES 2 -->
 
-        <section class="py-3 bg-light"  id="crm-features">
+        <section class="py-3 bg-light target"  id="crm-features">
             <div class="container">
                 <div class="row">
                     <div class="col-sm-12">
@@ -419,7 +418,7 @@
         @if (csettings('show_products'))
             @if (isset($products) && !empty($products))
                 <link rel="stylesheet" href="{{ asset('assets/custom/css/product-list.css') }}">
-                <section class="py-3" id="products">
+                <section class="py-3 target" id="products">
                     <div class="row bg-white">
                         <div class="col-12 text-center p-2">
                             <h1 class="text-primary w-100 product-head"> Explore our Products </h1>
@@ -454,7 +453,7 @@
             @endif
         @endif
 
-        <section class=" py-3 bg-light" id="contact-us">
+        <section class=" py-3 bg-light target" id="contact-us">
             <div class="container">
                 <div class="row align-items-center">
                     <div class="col-lg-9 h-100 ms-auto position-relative p-0">
@@ -708,3 +707,19 @@
 @endif
 
 </html>
+<script>
+    $('#nav-landing .nav-item a').on('click', function(event) {
+        $(this).parent().find('a').removeClass('active');
+        $(this).addClass('active');
+    });
+
+$(window).on('scroll', function() {
+    $('.target').each(function() {
+        if($(window).scrollTop() >= $(this).position().top) {
+            var id = $(this).attr('id');
+            $('#nav-landing .nav-item a').removeClass('active');
+            $('#nav-landing .nav-item a[href="#'+ id +'"]').addClass('active');
+        }
+    });
+});
+</script>
