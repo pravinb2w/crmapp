@@ -87,7 +87,6 @@ Route::middleware([SetViewVariable::class, 'auth'])->prefix('dev')->group(functi
     Route::post('/autocomplete_lead_deal_set', [App\Http\Controllers\LeadController::class, 'autocomplete_lead_deal_set'])->name('autocomplete_lead_deal_set');
 
     Route::get('pdf/{id}', [App\Http\Controllers\DealsController::class, 'generatePDF'])->name('pdf');
-
     //Activities
     Route::prefix('activities')->group(function () {
         Route::get('/', [App\Http\Controllers\ActivityController::class, 'index'])->name('activities')->middleware('checkAccess:is_view');

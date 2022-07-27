@@ -318,12 +318,19 @@
             @if (isset($announcements) && !empty($announcements) && count($announcements) > 0)
                 <div class="announcement-pane">
                     <marquee class="marquee-text">
-
+                        @php
+                            $count = 0;
+                        @endphp
                         @foreach ($announcements as $ment)
                             <div class="m-div">
                                 {!! $ment->message !!}
+                                @if( $count != 0 )
                                 <span class="px-3"> | </span>
+                                @endif
                             </div>
+                            @php
+                                $count++;
+                            @endphp
                         @endforeach
                     </marquee>
 
