@@ -303,7 +303,7 @@
                                 <div>
                                     <span class="ms-1"> 
 									<span
-                                            class="badge bg-danger rounded-pill"> {{ $banner->sub-title }}</span></span>
+                                            class="badge bg-danger rounded-pill"> {{ $banner->sub_title }}</span></span>
                                 </div>
                                 <h2 class="fw-normal text-white mb-4 mt-3 hero-title">
                                     {{ $banner->title }}
