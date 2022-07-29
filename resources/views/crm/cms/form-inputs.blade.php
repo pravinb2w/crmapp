@@ -432,15 +432,7 @@
                  <textarea name="iframe_tags" id="" class="form-control" cols="30" rows="6" placeholder="Paste here...">{{ $result->iframe_tags ?? "" }}</textarea>
             </div> 
         </div>
-        <div class="border mt-3 card">
-            <div class="card-header">
-                <label for="">Meta Data</label>
-            </div>
-            <div class="card-body">
-                <input type="text" name="meta_title" id="meta_title" class="form-control" placeholder="Meta Title" value="{{ $result->meta_title ?? '' }}">
-                <textarea name="meta_description" id="" class="form-control mt-3" cols="30" rows="6" placeholder="Description here...">{{ $result->meta_description ?? "" }}</textarea>
-            </div> 
-        </div>
+       
         <div class="border mt-3 card">
             <div class="card-header">
                 <label for="">Publish</label>
