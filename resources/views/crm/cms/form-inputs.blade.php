@@ -376,6 +376,7 @@
                 </div>
             </div>
         </div>
+        @include('crm.cms._meta_add_form')
     </div>
     <div class="col-md-4 stick-top h-100">
         <div class="border card">

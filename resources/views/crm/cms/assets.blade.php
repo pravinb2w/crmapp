@@ -58,6 +58,19 @@
                 </tr> 
             `);
         });
+        $("#add_meta_data").click(function(){
+            $("#meta_pane").append(`
+                <tr>
+                    <td class="p-0">
+                        <input type="text" name="meta_name[]" class="border-0 border-bottom form-control form-control-sm">
+                    </td>
+                    <td class="p-0">
+                        <input type="text" name="meta_description[]" id="" value="" placeholder="" class="border-0 border-bottom form-control form-control-sm">
+                    </td> 
+                    <td class="text-center p-0"><i onclick='metaDelete(this);' class="bi bi-x btn p-1 py-0 border btn-sm btn-light"></i></td>
+                </tr> 
+            `);
+        });
         $("#add_banner_sliders").click(function(){
             $("#banner_sliders").append(`
                 <div class="col-4 p-1" id="bannerCol">
@@ -138,6 +151,9 @@
         $(ctl).parents("tr").remove();
     }
     function socialDelete(ctl) {
+        $(ctl).parents("tr").remove();
+    }
+    function metaDelete(ctl) {
         $(ctl).parents("tr").remove();
     }
     function bannerDelete(ctl) {

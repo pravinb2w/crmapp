@@ -115,6 +115,16 @@ class CmsController extends Controller
                     ]);
                 }
             }
+
+            foreach ($request->meta_name as $i => $media) {
+                if (isset($request->meta_name[$i]) && !empty($request->meta_name[$i])) {
+                    $meta_arr = [
+                        'name'      => $request->meta_name[$i],
+                        'description'      => $request->meta_description[$i],
+                    ];
+                    $result->LandingPageMetaDetail()->create($meta_arr);
+                }
+            }
             return response()->json(['success' => "Landing page to be created successfully !"]);
         }
         return response()->json(['error' => $validator->errors()->all(), 'status' => '1']);
@@ -202,6 +212,33 @@ class CmsController extends Controller
             }
         } else {
             $update->LandingPageFormInputs()->delete();
+        }
+
+        $update->LandingPageSocialMedias()->delete();
+        if ($request->media_type) {
+            foreach ($request->media_type as $i => $media) {
+                if (isset($request->media_type[$i]) && !empty($request->media_type[$i])) {
+                    $media_arr = [
+                        'name'      => $request->media_type[$i],
+                        'link'      => $request->link[$i],
+                        'icon'      =>  "-",
+                    ];
+                    $update->LandingPageSocialMedias()->create($media_arr);
+                }
+            }
+        }
+
+        $update->LandingPageMetaDetail()->delete();
+        if ($request->meta_name) {
+            foreach ($request->meta_name as $i => $media) {
+                if (isset($request->meta_name[$i]) && !empty($request->meta_name[$i])) {
+                    $meta_arr = [
+                        'name'      => $request->meta_name[$i],
+                        'description'      => $request->meta_description[$i],
+                    ];
+                    $update->LandingPageMetaDetail()->create($meta_arr);
+                }
+            }
         }
 
         return response()->json(['success' => "Landing page to be created successfully !"]);

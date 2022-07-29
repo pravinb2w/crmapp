@@ -1,9 +1,11 @@
 @php
     $user = \DB::table('users')->find(Auth()->user()->id);
+    // dd( $_SERVER );
 @endphp
 <head>
     <meta charset="utf-8" />
     <title>CRM {{ ucwords(Request::segment(1) ) ?? '' }}</title>
+    <link rel="canonical" href="{{ $_SERVER['HTTP_REFERER'] ?? '' }}" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta content="A fully featured admin theme which can be used to build CRM, CMS, etc." name="description" />
     <meta content="Coderthemes" name="author" />

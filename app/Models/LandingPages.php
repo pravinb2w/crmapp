@@ -43,4 +43,8 @@ class LandingPages extends Model
     {
         return $this->hasMany(LandingPageFeatures::class, 'page_id', 'id');
     }
+    public function LandingPageMetaDetail()
+    {
+        return $this->hasMany(LandingPageMetaDetail::class, 'page_id', 'id');
+    }
 }
