@@ -301,7 +301,7 @@
                             </div>
                             <div class="carousel-caption">
                                 <div>
-                                    <span class="ms-1"> {{ $banner->sub-title }}</span>
+                                    <span class="ms-1"> {{ $banner->sub_title }}</span>
                                 </div>
                                 <h2 class="fw-normal text-white mb-4 mt-3 hero-title">
                                     {{ $banner->title }}
