@@ -301,13 +301,14 @@
                             </div>
                             <div class="carousel-caption">
                                 <div>
-                                    <span class="ms-1"> 
-									<span
-                                            class="badge bg-danger rounded-pill"> {{ $banner->sub_title }}</span></span>
-                                </div>
+                                  
+                              
                                 <h2 class="fw-normal text-white mb-4 mt-3 hero-title">
                                     {{ $banner->title }}
                                 </h2>
+								  <span class="ms-1"><span
+                                            class="badge bg-danger rounded-pill"> {{ $banner->sub-title }}</span></span>
+								  </div>			
                                 <p class="mb-4  w-75 mx-auto font-16 text-light">{{ $banner->content }}</p>
                                 <!--<a href="#contact-us" class="btn btn-primary rounded-pill">Get Started</a>-->
                             </div>
