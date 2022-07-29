@@ -301,8 +301,8 @@
                             </div>
                             <div class="carousel-caption">
                                 <div>
-                                    <span class="ms-1">Welcome to Brand <span
-                                            class="badge bg-danger rounded-pill">New</span></span>
+                                    <span class="ms-1">{{ $banner->sub_title }} <span
+                                            class="badge bg-danger rounded-pill">{{ $banner->sub_title }}</span></span>
                                 </div>
                                 <h2 class="fw-normal text-white mb-4 mt-3 hero-title">
                                     {{ $banner->title }}
