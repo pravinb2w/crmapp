@@ -300,10 +300,10 @@
                                 style="min-height: 70vh;background: linear-gradient( #020202c9 50%, #00d9ff34) , url('{{ $banner->image }}');background-size:cover">
                             </div>
                             <div class="carousel-caption">
-                                <div>
+                               <!-- <div>
                                     <span class="ms-1">Welcome to Brand <span
                                             class="badge bg-danger rounded-pill">New</span></span>
-                                </div>
+                                </div>-->
                                 <h2 class="fw-normal text-white mb-4 mt-3 hero-title">
                                     {{ $banner->title }}
                                 </h2>
