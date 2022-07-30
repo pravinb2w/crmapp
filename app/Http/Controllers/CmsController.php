@@ -100,6 +100,7 @@ class CmsController extends Controller
                         'sub_title' =>  $request->sub_banner_title[$i],
                         'image'     =>  Image::make($request->file('banner_image')[$i])->encode('data-url'),
                         'content'   =>  $request->banner_content[$i],
+                        'tags'   =>  $request->tags[$i],
                     ];
                     $result->LandingPageBannerSliders()->create($slider_arr);
                 }
@@ -179,6 +180,7 @@ class CmsController extends Controller
                 'sub_title' =>  $request->sub_banner_title[$i],
                 'image'     =>  $banner_image ?? $request->banner_image_data_url[$i],
                 'content'   =>  $request->banner_content[$i],
+                'tags'   =>  $request->tags[$i],
             ]);
         }
 

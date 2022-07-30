@@ -13,5 +13,6 @@ class LandingPageBannerSliders extends Model
         "sub_title",
         "image",
         "content",
+        "tags"
     ];
 }

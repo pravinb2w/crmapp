@@ -142,8 +142,10 @@ form#activites-form>div>label>i {
                                 </ul>
                                 <div class="tab-content p-3">
                                     <div class="tab-pane active" id="leadstab" >
-                                        @if( ( Auth::user()->hasAccess('leads', 'is_edit') && ( Auth::id() == $info->assigned_to || $info->assigned_to == null )) || superadmin() )
-                                        @include('crm.lead._note_form')
+                                        @if( isset( $info->status ) && $info->status != 2 )
+                                            @if(  ( Auth::user()->hasAccess('leads', 'is_edit') && ( Auth::id() == $info->assigned_to || $info->assigned_to == null )) || superadmin() )
+                                            @include('crm.lead._note_form')
+                                            @endif
                                         @else
                                         @include('crm.lead._history_form')
                                         @endif

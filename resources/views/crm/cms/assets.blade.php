@@ -82,13 +82,18 @@
                             <input name="banner_image[]" type="file" id="" class="form-control mb-3" required  placeholder="Type here...">
                             <label for="" class="custom-label bg-white">Cover Image</label>
                         </div> 
+                        
+                        <div class="custom-form-group">
+                            <input type="text" name="banner_title[]" id="" class="form-control mb-3" required  placeholder="Type here...">
+                            <label for="" class="custom-label bg-white">Title</label>
+                        </div> 
                         <div class="custom-form-group">
                             <input type="text" name="sub_banner_title[]" id="" class="form-control mb-3" required  placeholder="Type here...">
                             <label for="" class="custom-label bg-white">Sub Title</label>
                         </div> 
                         <div class="custom-form-group">
-                            <input type="text" name="banner_title[]" id="" class="form-control mb-3" required  placeholder="Type here...">
-                            <label for="" class="custom-label bg-white">Title</label>
+                            <input type="text" name="tags[]" id="" class="form-control mb-3"  placeholder="Type here...">
+                            <label for="" class="custom-label bg-white">Tags</label>
                         </div> 
                         <div class="custom-form-group">
                             <textarea name="banner_content[]" id="" cols="30" rows="3" class="rounded-0 form-control-sm form-control" placeholder="Type here..."></textarea>

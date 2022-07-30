@@ -1,14 +1,17 @@
 @php
     $user = \DB::table('users')->find(Auth()->user()->id);
-    // dd( $_SERVER );
+    // dd( $meta_data );
 @endphp
 <head>
     <meta charset="utf-8" />
     <title>CRM {{ ucwords(Request::segment(1) ) ?? '' }}</title>
     <link rel="canonical" href="{{ $_SERVER['HTTP_REFERER'] ?? '' }}" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta content="A fully featured admin theme which can be used to build CRM, CMS, etc." name="description" />
-    <meta content="Coderthemes" name="author" />
+@if( isset($meta_data) && !empty($meta_data))
+@foreach ($meta_data as $item)
+    <meta content="{{ $item->description }}" name="{{ $item->name }}" />
+@endforeach
+@endif
     <meta name="csrf-token" content="{{ csrf_token() }}" />
     
     {{-- {{ dd($cm_favicon) }} --}}

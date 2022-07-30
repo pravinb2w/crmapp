@@ -39,14 +39,19 @@
                                         <input name="banner_image_data_url[]" type="hidden" value="{{ $row->image }}" class="form-control mb-3" placeholder="Type here...">
                                         <label for="" class="custom-label bg-white">Cover Image </label>
                                     </div> 
+                                    
+                                    <div class="custom-form-group">
+                                        <input type="text" name="banner_title[]" value="{{ $row->title }}" class="form-control mb-3" required  placeholder="Type here...">
+                                        <label for="" class="custom-label bg-white">Title</label>
+                                    </div>
                                     <div class="custom-form-group">
                                         <input type="text" name="sub_banner_title[]" value="{{ $row->sub_title }}" class="form-control mb-3" required  placeholder="Type here...">
                                         <label for="" class="custom-label bg-white">Sub Title</label>
                                     </div> 
                                     <div class="custom-form-group">
-                                        <input type="text" name="banner_title[]" value="{{ $row->title }}" class="form-control mb-3" required  placeholder="Type here...">
-                                        <label for="" class="custom-label bg-white">Title</label>
-                                    </div>
+                                        <input type="text" name="tags[]" value="{{ $row->tags ?? '' }}" class="form-control mb-3"  placeholder="Type here...">
+                                        <label for="" class="custom-label bg-white">Tags</label>
+                                    </div> 
                                     <div class="custom-form-group">
                                         <textarea name="banner_content[]" value="" cols="30" rows="3" class="rounded-0 form-control-sm form-control" placeholder="Type here...">{{ $row->content }}</textarea>
                                         <label for="" class="custom-label bg-white">Content</label>

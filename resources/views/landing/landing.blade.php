@@ -9,10 +9,15 @@
     @endif
    
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta content="{{ $result->meta_description ?? '' }}" name="{{ $result->meta_title ?? '' }}" />
+@if( isset($meta_data) && !empty($meta_data))
+@foreach ($meta_data as $item)
+    <meta content="{{ $item->description }}" name="{{ $item->name }}" />
+@endforeach
+@endif
    
     <meta name="csrf-token" content="{{ csrf_token() }}" />
     <!-- App favicon -->
+    <link rel="canonical" href="{{ $_SERVER['HTTP_REFERER'] ?? '' }}" />
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <!-- App css -->
     <link href="{{ asset('assets/css/icons.min.css') }}" rel="stylesheet" type="text/css" />
@@ -302,7 +307,7 @@
                             <div class="carousel-caption">
                                 <div>
                                     <span class="ms-1">{{ $banner->sub_title }} <span
-                                            class="badge bg-danger rounded-pill">{{ $banner->sub_title }}</span></span>
+                                            class="badge bg-danger rounded-pill">{{ $banner->tags }}</span></span>
                                 </div>
                                 <h2 class="fw-normal text-white mb-4 mt-3 hero-title">
                                     {{ $banner->title }}
