@@ -12,9 +12,11 @@ use App\Models\Announcement;
 use CommonHelper;
 use App\Models\EmailTemplates;
 use App\Mail\TestEmail;
+use App\Models\Newsletter;
 use App\Models\Product;
 use App\Models\SendMail;
 use Illuminate\Contracts\Session\Session;
+use Illuminate\Support\Facades\DB;
 use Mail;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
@@ -113,5 +115,48 @@ class LandingController extends Controller
             return response()->json(['error' => [$success], 'status' => '0']);
         }
         return response()->json(['error' => $validator->errors()->all(), 'status' => '1']);
+    }
+
+    public function subscribeNewsletter(Request $request)
+    {
+
+        $role_validator = [
+            'subscribe_email'     => ['required', 'string', 'email', 'unique:newsletters,email', 'max:255'],
+        ];
+        //Validate the product
+        $validator      =   Validator::make($request->all(), $role_validator,['subscribe_email.unique' => 'Email id has been already subscribed for newsletter']);
+
+        if ($validator->passes()) {
+            $ins['email'] = $request->subscribe_email;
+            $news_id = Newsletter::create($ins)->id;
+
+            $company = CompanySettings::find(1);
+            $title = 'Newsletter Subscription Activation';
+            $message = 'Thanks for subscribing Newsletter.';
+            $extract = array(
+                'rm_name' => $request->subscribe_email,
+                'message' => $message,
+                'additional_information' => '',
+                'company_name' => $company->site_name,
+                'subject' => $title,
+
+            );
+
+            $ins_mail = array(
+                'type' => 'Newsletter',
+                'type_id' => $news_id,
+                'email_type' => 'general_task',
+                'params' => serialize($extract),
+                'to' => $request->subscribe_email ?? 'duraibytes@gmail.com'
+            );
+            DB::table('send_mail')->insert($ins_mail);
+
+            $success = 'Newsletter subscribed successfully';
+            return response()->json(['error' => [$success], 'status' => '0']);
+
+        } else {
+            return response()->json(['error' => $validator->errors()->all(), 'status' => '1']);
+
+        }
     }
 }

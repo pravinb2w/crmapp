@@ -511,7 +511,61 @@
 
         {!! $result->iframe_tags !!}
 
-        <section class="py-3">
+        <style>
+    
+            .loader {
+              width: 60px;
+              position: absolute;
+                z-index: 9;
+                top: 20%;
+                left: 50%;
+            }
+            
+            .loader-wheel {
+              animation: spin 1s infinite linear;
+              border: 2px solid rgba(30, 30, 30, 0.5);
+              border-left: 4px solid #fff;
+              border-radius: 50%;
+              height: 50px;
+              margin-bottom: 10px;
+              width: 50px;
+            }
+            
+            .loader-text {
+              color: #fff;
+              font-family: arial, sans-serif;
+            }
+            
+            .loader-text:after {
+              content: 'Loading';
+              animation: load 2s linear infinite;
+            }
+            
+            @keyframes spin {
+              0% {
+                transform: rotate(0deg);
+              }
+              100% {
+                transform: rotate(360deg);
+              }
+            }
+            
+            @keyframes load {
+              0% {
+                content: 'Loading';
+              }
+              33% {
+                content: 'Loading.';
+              }
+              67% {
+                content: 'Loading..';
+              }
+              100% {
+                content: 'Loading...';
+              }
+            }
+            </style>
+        <section class="py-3" style="position: relative;">
             <div class="container">
                 <div class="row align-items-center m-0">
                     <div class="col-md">
@@ -521,17 +575,25 @@
                         </h3>
                     </div>
                     <div class="col-md-6">
-                        <div class="btn-group border shadow-sm rounded w-100 aos-init" data-aos="fade-up"
+                        <form id="subscription_form">
+                            @csrf
+                            <div class="loader" style="display: none;">
+                                <div class="loader-wheel"></div>
+                                <div class="loader-text"></div>
+                            </div>
+                            <div class="btn-group border shadow-sm rounded w-100 aos-init" data-aos="fade-up"
                             data-aos-anchor-placement="top-bottom" data-aos-duration="1200">
-                            <div class="w-100 bg-white">
-                                <input class="form-control  border-0 rounded-0  w-100 p-3" type="text"
-                                    id="subject" placeholder="Enter your email...">
+                            <div class="w-100 bg-white" id="subscripe-input">
+                                <input class="form-control  border-0 rounded-0  w-100 p-3" type="email"
+                                    id="subscribe_email" name="subscribe_email" placeholder="Enter your email..." autocomplete="off">
                             </div>
                             <div class="">
-                                <button type="submit"
-                                    class=" border-0 rounded-0 btn h-100 btn-primary p-3">Subscribe</button>
+                                <button type="button"
+                                    class=" border-0 rounded-0 btn h-100 btn-primary p-3" id="subscribe-btn">Subscribe</button>
                             </div>
                         </div>
+                        </form>
+                       
                     </div>
                 </div>
             </div>
@@ -728,5 +790,55 @@ $(window).on('scroll', function() {
             $('#nav-landing .nav-item a[href="#'+ id +'"]').addClass('active');
         }
     });
+});
+
+$('#subscribe-btn').click(function(){
+    $('#subscripe-input').removeClass('border border-danger');
+
+    var subscribe_email = $('#subscribe_email').val();
+    if( subscribe_email == '' || subscribe_email == undefined || subscribe_email == null ) {
+        $('#subscripe-input').addClass('border border-danger');
+        $('#subscribe_email').focus();
+        return false;
+    }
+    var form = $('#subscription_form').serialize();
+    $.ajax({
+        url:"{{ route('subscribe.newsletter') }}",
+        type: "POST",
+        data: form,
+        beforeSend: function(){
+            $('.loader').show();
+            $('#subscribe-btn').prop('disabled', true);
+        },
+        success: function(response) {
+            $('.loader').hide();
+            $('#error').show();
+            $('#error').html('');
+
+            $('#subscribe-btn').prop('disabled', false);
+            if( response.status == 1 ) {
+                $('#error').removeClass('alert alert-success');
+                $('#error').addClass('alert alert-danger');
+                response.error.forEach(display_errors);
+            } else {
+                $('#error').removeClass('alert alert-danger');
+                $('#error').addClass('alert alert-success');
+                response.error.forEach(display_errors);
+                $('#subscription_form')[0].reset();
+
+            }
+            $('#error').fadeOut(5000);
+            
+        }
+
+    });
+});
+$('#subscribe_email').keyup(function(){
+    if( this.value.length > 0 ){
+        $('#subscripe-input').removeClass('border border-danger');
+
+    } else {
+        $('#subscripe-input').addClass('border border-danger');
+    }
 });
 </script>

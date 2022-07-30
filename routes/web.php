@@ -31,6 +31,8 @@ Route::post('/submit/buy/form', [App\Http\Controllers\front\BuyController::class
 Route::get('/razor/init/request/{order_no}', [App\Http\Controllers\front\BuyController::class, 'razorpay_initiate_request'])->name('razorpay.request');
 Route::post('/razor/complete', [App\Http\Controllers\front\BuyController::class, 'razor_payment_complete'])->name('razor.payments.complete');
 Route::post('/', [App\Http\Controllers\LandingController::class, 'payment_response_page'])->name('razor.payments.finish');
+//newsletter
+Route::post('/subscribe/newsletter', [App\Http\Controllers\LandingController::class, 'subscribeNewsletter'])->name('subscribe.newsletter');
 
 // Route::any('payu-money-payment', [App\Http\Controllers\PayuMoneyController::class, 'redirectToPayU'])->name('redirectToPayU');
 Route::any('payu-money-payment/{order_no}', [App\Http\Controllers\PayuMoneyController::class, 'redirectToPayU'])->name('redirectToPayU');
