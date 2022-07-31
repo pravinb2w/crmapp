@@ -19,7 +19,32 @@
                     <!-- Topbar Start -->
                     @include('crm.layouts.topbar')
                     <!-- end Topbar -->
-
+                    <style>
+                        .main-alert {
+                            position: relative !important;
+                            z-index: 8 !important;
+                        }                        
+                    </style>
+                    <div class="row">
+                        @php
+                            $now = time(); // or your date as well
+                            $ex_date = strtotime($expiry_date);
+                            $datediff = $ex_date - $now;
+                            $diff_days = round($datediff / (60 * 60 * 24));
+                        @endphp
+                        @if( isset( $expiry_date ) && $diff_days <= 30 )
+                            <div class="main-alert alert alert-danger fade show" role="alert">
+                                <strong>Info - </strong> 
+                                Your subscription will end on {{ date('d M Y', strtotime($expiry_date)) }}, Please Recharge to continue our services.
+                            </div>
+                        @else 
+                        <div class="main-alert alert alert-info alert-dismissible fade show" role="alert">
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            <strong>Info - </strong> 
+                            Your subscription will end on {{ date('d M Y', strtotime($expiry_date)) }}
+                        </div>
+                        @endif
+                    </div>
                     <!-- Start Content-->
                     @yield('content')
                     <!-- container -->

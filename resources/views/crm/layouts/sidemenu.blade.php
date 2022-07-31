@@ -206,6 +206,14 @@
                 </a>
             </li>
             @endif
+            @if( superadmin() )
+            <li class="side-nav-item">
+                <a href="{{ route('newsletter.index') }}" class="side-nav-link">
+                    <i class="mdi mdi-note-text"></i>
+                    <span> News Letter </span>
+                </a>
+            </li>
+            @endif
             @if(!Auth::user()->role_id)
 
             <li class="side-nav-item">

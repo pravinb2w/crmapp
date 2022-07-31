@@ -454,6 +454,12 @@ Route::middleware([SetViewVariable::class, 'auth'])->prefix('dev')->group(functi
         Route::post('/view', [App\Http\Controllers\ActivityLogController::class, 'view'])->name('activity_log.view');
     });
 
+    Route::prefix('newsletter')->group(function () {
+        Route::get('/', [App\Http\Controllers\NewsletterController::class, 'index'])->name('newsletter.index');
+        Route::post('/list', [App\Http\Controllers\NewsletterController::class, 'ajax_list'])->name('newsletter.list');
+        Route::post('/delete', [App\Http\Controllers\NewsletterController::class, 'delete'])->name('newsletter.delete');
+    });
+
     Route::get('backup', [App\Http\Controllers\DataBaseBackupController::class, 'index'])->name('db-backup.index');
     Route::post('create-backup', [App\Http\Controllers\DataBaseBackupController::class, 'backup'])->name('create.backup');
     Route::delete('backup/{id}', [App\Http\Controllers\DataBaseBackupController::class, 'delete'])->name('delete.database-backup');

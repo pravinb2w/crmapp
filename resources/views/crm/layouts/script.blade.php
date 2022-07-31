@@ -306,6 +306,8 @@
             return ajax_url = '{{ route("activity-status.delete") }}';
         } else if(page_type=='task-status') {
             return ajax_url = '{{ route("task-status.delete") }}';
+        } else if(page_type=='newsletter') {
+            return ajax_url = '{{ route("newsletter.delete") }}';
         }
     }
 

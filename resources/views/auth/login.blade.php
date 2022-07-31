@@ -15,9 +15,13 @@
                     @endif
                 </a>
             </div>
-
+            
             <div class="card-body p-4 py-3">
-                
+                    @if($errors->any())
+                    <div class="alert alert-danger">
+                        <h4>{{$errors->first()}}</h4>
+                    </div>
+                    @endif
                 <div class="text-center w-75 m-auto">
                     <h4 class="text-dark-50 text-center pb-0 fw-bold">Sign In</h4>
                     <p class="text-muted mb-4">Enter your email address and password to access admin panel.</p>

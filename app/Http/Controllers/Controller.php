@@ -18,6 +18,7 @@ class Controller extends BaseController
     {
         //its just a dummy data object.
         $company_info = DB::table('company_settings')->where('id', 1)->first();
+        $company_subscriptions = DB::table('company_subscriptions')->where('company_id', 1)->first();
         $meta_data = DB::table('landing_pages')
                         ->select('landing_page_meta_details.*')
                         ->join('landing_page_meta_details', 'landing_page_meta_details.page_id', '=', 'landing_pages.id')
@@ -27,6 +28,7 @@ class Controller extends BaseController
         View::share('copyrights', $company_info->copyrights ?? '');
         View::share('site_name', $company_info->site_name ?? '');
         View::share('meta_data', $meta_data ?? '');
+        View::share('expiry_date', $company_subscriptions->endAt ?? '');
         
     }
 }

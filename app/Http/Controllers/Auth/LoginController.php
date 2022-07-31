@@ -50,11 +50,25 @@ class LoginController extends Controller
         $credentials = $request->only('email', 'password');
         if (Auth::attempt($credentials)) {
             //here check notification count and set in session
-            $noti_count = \DB::table('notifications')->where('user_id', Auth::id())->count();
-            $request->session()->put('notification_count', $noti_count);
-            return redirect()->route('dashboard');
+            //check subsciption has time period
+            $company_subscriptions = \DB::table('company_subscriptions')->where('company_id', 1)->first();
+            $end_date = date('Y-m-d', strtotime($company_subscriptions->endAt));
+            $today = date('Y-m-d');
+            
+            if( isset($company_subscriptions) && $today > $end_date  ){
+                Auth::logout();
+                $request->session()->invalidate();
+                $request->session()->regenerateToken();
+                return redirect()->route('login')->withErrors(['message' => 'Subscription has expired, Please contact Adminitrator']);
+                
+            } else {
+                $noti_count = \DB::table('notifications')->where('user_id', Auth::id())->count();
+                $request->session()->put('notification_count', $noti_count);
+                return redirect()->route('dashboard');
+            }
+            
         } else {
-            return redirect('/devlogin')->with('error', 'Invalid Email address or Password');
+            return redirect('/devlogin')->withErrors(['message' => 'Invalid Email address or Password']);
         }
     }
 
