@@ -14,15 +14,29 @@
                     </tr>
                 </thead>
                 <tbody id="meta_pane" >
+                    @if ( isset($result->LandingPageMetaDetail) && !empty($result->LandingPageMetaDetail))
+                    @foreach ($result->LandingPageMetaDetail as $row)
+                        <tr>
+                            <td class="p-0">
+                            <input type="text" name="meta_name[]" value="{{ $row->name }}" class="border-0 border-bottom form-control form-control-sm">
+                            </td>
+                            <td class="p-0">
+                                <input type="text" name="meta_description[]" id="" value="{{ $row->description }}" placeholder="" class="border-0 border-bottom form-control form-control-sm">
+                            </td> 
+                            <td class="text-center p-0"><i onclick='metaDelete(this);' class="bi bi-x btn p-1 py-0 border btn-sm btn-light"></i></td>
+                        </tr> 
+                        @endforeach
+                    @else
                     <tr>
                         <td class="p-0">
-                           <input type="text" name="meta_name[]" class="border-0 border-bottom form-control form-control-sm">
+                        <input type="text" name="meta_name[]" class="border-0 border-bottom form-control form-control-sm">
                         </td>
                         <td class="p-0">
                             <input type="text" name="meta_description[]" id="" value="" placeholder="" class="border-0 border-bottom form-control form-control-sm">
                         </td> 
                         <td class="text-center p-0"><i onclick='metaDelete(this);' class="bi bi-x btn p-1 py-0 border btn-sm btn-light"></i></td>
                     </tr> 
+                    @endif
                 </tbody>
             </table>
         </div>

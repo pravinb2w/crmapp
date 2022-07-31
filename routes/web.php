@@ -11,7 +11,7 @@ use App\Http\Middleware\SetViewVariable;
 | routes are loaded by the RouteServiceProvider within a group which
 | contains the "web" middleware group. Now create something great!
 | 
-*/
+*/ 
 
 Route::get('/send-mail', [App\Http\Controllers\MailController::class, 'sendMail'])->name('send');
 Route::get('/cron-send-mail', [App\Http\Controllers\CronController::class, 'sendMail'])->name('cron.send.mail');

@@ -381,6 +381,9 @@
                 </div>
             </div>
         </div>
+        @php
+            // dd( $result->LandingPageMetaDetail );
+        @endphp
         @include('crm.cms._meta_add_form')
     </div>
     <div class="col-md-4 stick-top h-100">
