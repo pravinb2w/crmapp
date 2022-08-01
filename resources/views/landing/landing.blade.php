@@ -778,13 +778,22 @@
 </html>
 <script>
     $('#nav-landing .nav-item a').on('click', function(event) {
-        $(this).parent().find('a').removeClass('active');
-        $(this).addClass('active');
+        $('#nav-landing .nav-item a').removeClass('active');
+
+        setTimeout(function(){
+            // $(this).addClass('active');
+        }, 500);
+        
     });
 
 $(window).on('scroll', function() {
     $('.target').each(function() {
-        if($(window).scrollTop() >= $(this).position().top) {
+        console.log( 'window top ', $(window).scrollTop() );
+        console.log( 'position top', $(this).position().top );
+        console.log( ' id', $(this).attr('id') );
+        var window_top = parseInt($(window).scrollTop());
+        var position_top = parseInt($(this).position().top);
+        if( window_top >= position_top ) {
             var id = $(this).attr('id');
             $('#nav-landing .nav-item a').removeClass('active');
             $('#nav-landing .nav-item a[href="#'+ id +'"]').addClass('active');
