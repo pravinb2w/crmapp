@@ -1,167 +1,131 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="utf-8" />
-    @if ($result)
-        <title>{{ $result->page_title }}</title>
-        <link rel="shortcut icon" href="{{ asset('storage/' . $result->page_logo) }}">
-    @endif
-   
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-@if( isset($meta_data) && !empty($meta_data))
-@foreach ($meta_data as $item)
-    <meta content="{{ $item->description }}" name="{{ $item->name }}" />
-@endforeach
-@endif
-   
-    <meta name="csrf-token" content="{{ csrf_token() }}" />
-    <!-- App favicon -->
-    <link rel="canonical" href="{{ $_SERVER['HTTP_REFERER'] ?? '' }}" />
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-    <!-- App css -->
-    <link href="{{ asset('assets/css/icons.min.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('assets/custom/css/effect.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('assets/css/app-creative.min.css') }}" rel="stylesheet" type="text/css" id="light-style" />
-    <link href="{{ asset('assets/css/app-creative-dark.min.css') }}" rel="stylesheet" type="text/css"
-        id="dark-style" />
-    @if (empty($result))
-        <link rel="stylesheet" href="https://getbootstrap.com/docs/5.1/examples/cover/cover.css">
-    @endif
-    @if (!empty($result))
-        {!! $result->other_tags !!}
-    @endif
-    @if (!empty($result))
-        <style>
-            #top-navbar-animated .nav-link.active {
-                color: {{ $result->primary_color }} !important
-            }
-
-            .bg-dark-50 {
-                border-bottom: 2px solid {{ $result->primary_color }} !important
-            }
-
-            iframe {
-                min-height: 50vh !important;
-                width: 100% !important
-            }
-
-            .text-primary {
-                color: {{ $result->primary_color }} !important;
-            }
-
-            .btn-outline-primary {
-                color: {{ $result->primary_color }} !important;
-                border-color: {{ $result->primary_color }} !important;
-            }
-
-            .btn-outline-primary:hover {
-                background-image: linear-gradient(to right, {{ $result->primary_color }} 0%, {{ $result->secondary_color }} 51%, {{ $result->primary_color }} 100%);
-                background-size: 200% auto;
-                color: white !important;
-                border-color: {{ $result->primary_color }} !important;
-            }
-
-            .btn-primary {
-                background-image: linear-gradient(to right, {{ $result->primary_color }} 0%, {{ $result->secondary_color }} 51%, {{ $result->primary_color }} 100%);
-                background-size: 200% auto;
-                color: white !important;
-                box-shadow: 2px 4px 10px 0px rgb(0 0 0 / 20%);
-                transition: all .5s !important;
-                font-weight: 500 !important;
-                padding: 11px 25px !important;
-                font-size: 1rem !important;
-            }
-
-            .btn-primary:hover {
-                background-position: right center;
-                transition: 0.5s;
-            }
-
-            .btn-dark {
-                background-image: linear-gradient(to right, #517fa4 0%, #243949 51%, #517fa4 100%);
-                background-size: 200% auto;
-                color: white !important;
-                box-shadow: 2px 4px 10px 0px rgb(0 0 0 / 20%);
-                transition: all .5s !important;
-                font-weight: 500 !important;
-                padding: 11px 25px !important;
-                font-size: 1rem !important;
-            }
-
-            .btn-dark:hover {
-                background-position: right center;
-                transition: 0.5s;
-            }
-
-            @media screen and (max-width: 980px) {
-                .contact-card {
-                    position: unset !important;
-                    transform: translate(0, 0) !important;
-                    width: 100% !important;
-                }
-
-                .padding-left-250 {
-                    padding-left: 35px !important
-                }
-            }
-
-            .contact-card {
-                transform: translate(-240px, 80px);
-                z-index: 1;
-                color: white;
-                width: 450px;
-                top: 0%;
-                left: 0%
-            }
-
-            .padding-left-250 {
-                padding: 35px 35px 35px 250px;
-            }
-
-            .bg-trans {
-                background: transparent !important;
-            }
-
-            .fa-lg {
-                font-size: 28px;
-                padding: 5px;
-                border: 2px solid;
-                margin-right: 15px;
-                border-radius: 10px
-            }
-
-            .border-bottom-input {
-                border-top: none !important;
-                border-right: none !important;
-                border-left: none !important;
-                border-radius: 0 !important;
-                border-bottom: 1px solid #ffffff17 !important
-            }
-
-            label.error {
-                font-size: 10px;
-                color: red;
-                position: absolute;
-                right: 0%;
-                bottom: -21px
-            }
-
-            .rounded-5 {
-                border-radius: 30px !important
-            }
-
-            .carousel-caption {
-                left: 50% !important;
-                top: 50% !important;
-                transform: translate(-50%, -50%) !important;
-                width: 100%;
-                text-align: center !important
-            }
-        </style>
-    @endif
-</head>
+@extends('front.customer.layout.template')
+@section('add_on_style')
 <style>
+    #top-navbar-animated .nav-link.active {
+        color: {{ $result->primary_color }} !important
+    }
+
+    .bg-dark-50 {
+        border-bottom: 2px solid {{ $result->primary_color }} !important
+    }
+
+    iframe {
+        min-height: 50vh !important;
+        width: 100% !important
+    }
+
+    .text-primary {
+        color: {{ $result->primary_color }} !important;
+    }
+
+    .btn-outline-primary {
+        color: {{ $result->primary_color }} !important;
+        border-color: {{ $result->primary_color }} !important;
+    }
+
+    .btn-outline-primary:hover {
+        background-image: linear-gradient(to right, {{ $result->primary_color }} 0%, {{ $result->secondary_color }} 51%, {{ $result->primary_color }} 100%);
+        background-size: 200% auto;
+        color: white !important;
+        border-color: {{ $result->primary_color }} !important;
+    }
+
+    .btn-primary {
+        background-image: linear-gradient(to right, {{ $result->primary_color }} 0%, {{ $result->secondary_color }} 51%, {{ $result->primary_color }} 100%);
+        background-size: 200% auto;
+        color: white !important;
+        box-shadow: 2px 4px 10px 0px rgb(0 0 0 / 20%);
+        transition: all .5s !important;
+        font-weight: 500 !important;
+        padding: 11px 25px !important;
+        font-size: 1rem !important;
+    }
+
+    .btn-primary:hover {
+        background-position: right center;
+        transition: 0.5s;
+    }
+
+    .btn-dark {
+        background-image: linear-gradient(to right, #517fa4 0%, #243949 51%, #517fa4 100%);
+        background-size: 200% auto;
+        color: white !important;
+        box-shadow: 2px 4px 10px 0px rgb(0 0 0 / 20%);
+        transition: all .5s !important;
+        font-weight: 500 !important;
+        padding: 11px 25px !important;
+        font-size: 1rem !important;
+    }
+
+    .btn-dark:hover {
+        background-position: right center;
+        transition: 0.5s;
+    }
+
+    @media screen and (max-width: 980px) {
+        .contact-card {
+            position: unset !important;
+            transform: translate(0, 0) !important;
+            width: 100% !important;
+        }
+
+        .padding-left-250 {
+            padding-left: 35px !important
+        }
+    }
+
+    .contact-card {
+        transform: translate(-240px, 80px);
+        z-index: 1;
+        color: white;
+        width: 450px;
+        top: 0%;
+        left: 0%
+    }
+
+    .padding-left-250 {
+        padding: 35px 35px 35px 250px;
+    }
+
+    .bg-trans {
+        background: transparent !important;
+    }
+
+    .fa-lg {
+        font-size: 28px;
+        padding: 5px;
+        border: 2px solid;
+        margin-right: 15px;
+        border-radius: 10px
+    }
+
+    .border-bottom-input {
+        border-top: none !important;
+        border-right: none !important;
+        border-left: none !important;
+        border-radius: 0 !important;
+        border-bottom: 1px solid #ffffff17 !important
+    }
+
+    label.error {
+        font-size: 10px;
+        color: red;
+        position: absolute;
+        right: 0%;
+        bottom: -21px
+    }
+
+    .rounded-5 {
+        border-radius: 30px !important
+    }
+
+    .carousel-caption {
+        left: 50% !important;
+        top: 50% !important;
+        transform: translate(-50%, -50%) !important;
+        width: 100%;
+        text-align: center !important
+    }
     .announcement-pane {
         position: absolute;
         top: 0;
@@ -171,20 +135,7 @@
         text-align: center;
         vertical-align: middle;
         color: white;
-        /* animation: shake 5s; */
-        /* animation-iteration-count: infinite; */
-        /* border-radius: 5px;
-
-        }
-        @keyframes shake {
-            0%   {transform: translate(0px, 1px) rotate(0deg);}
-            25%  {transform: translate(5px, 3px) rotate(0deg);}
-            50%  {transform: translate(10px, 3px) rotate(0deg);}
-            100% {transform: translate(0px, 1px) rotate(0deg);}
-        }
-        .marquee-text {
-            /*font-size: 18px;
-            font-weight: 700;*/
+       
     }
 
     .m-div {
@@ -193,64 +144,10 @@
         padding-right: 30px;
     }
 </style>
-@if (!empty($result))
-
-    <body class="loading" data-layout-config='{"darkMode":false}'>
-
-        <!-- NAVBAR START -->
-        <nav class="navbar navbar-expand-lg p-0 bg-dark-50 sticky-top w-100" id="top-navbar-animated">
-            <div class="container">
-                <!-- logo -->
-                <a href="#contact-us" class="navbar-brand me-lg-5 ">
-                    <img src="{{ $result->page_logo }}" alt="{{ $result->page_title }}" class="logo-dark"
-                        height="60" />
-                </a>
-
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false"
-                    aria-label="Toggle navigation">
-                    <i class="mdi text-white mdi-menu" style="text-shadow: 0 2px black;"></i>
-                </button>
-
-                <!-- menus -->
-                <div class="collapse navbar-collapse" id="navbarNavDropdown">
-
-                    <ul class="navbar-nav ms-auto py-2 align-items-center" id="nav-landing">
-
-                        <li class="nav-item mx-lg-1">
-                            <a class="nav-link text-white" href="#LandingBannnerSliders">Home</a>
-                        </li>
-                        <li class="nav-item mx-lg-1">
-                            <a class="nav-link text-white" href="#about-us">About</a>
-                        </li>
-						 <li class="nav-item mx-lg-1">
-                            <a class="nav-link text-white" href="#crm-features">Services</a>
-                        </li>
-						 @if (csettings('show_products'))
-							@if (isset($products) && !empty($products))
-				                <li class="nav-item mx-lg-1">
-                                    <a class="nav-link text-white" href="#products">Products</a>
-                                </li>
-							@endif
-						@endif
-						
-                        <li class="nav-item mx-lg-1">
-                            <a class="nav-link text-white" href="#contact-us">Contact</a>
-                        </li>
-                        {{-- <li class="nav-item me-0 ms-3">
-                                <a href="https://themes.getbootstrap.com/product/hyper-responsive-admin-dashboard-template/" target="_blank" class="nav-link d-lg-none">Purchase now</a>
-                                <a href="login" target="_blank" class="btn btn-sm btn-primary rounded-pill d-none d-lg-inline-flex">
-                                    <i class="mdi mdi-login-variant me-2"></i> LOGIN
-                                </a>
-                            </li> --}}
-                    </ul>
-
-                </div>
-            </div>
-        </nav>
-        <!-- NAVBAR END -->
-        <!--  Razorpay succes and fail messages are shows here   -->
-
+@endsection
+@section('content')
+    <!--  Razorpay succes and fail messages are shows here   -->
+    @if (!empty($result))
         @if (isset($payment_error) && !empty($payment_error))
             {{-- @include('front.razor_pay_response') --}}
             <section class="py-3" id="about-us1">
@@ -340,11 +237,11 @@
                         @endphp
                         @foreach ($announcements as $ment)
                             <div class="m-div">
-                               
+                            
                                 @if( $count != 0 )
                                 <span class="px-3"> | </span>
                                 @endif
-								 {!! $ment->message !!}
+                                {!! $ment->message !!}
                             </div>
                             @php
                                 $count++;
@@ -512,57 +409,57 @@
         {!! $result->iframe_tags !!}
 
         <style>
-    
+
             .loader {
-              width: 60px;
-              position: absolute;
+            width: 60px;
+            position: absolute;
                 z-index: 9;
                 top: 20%;
                 left: 50%;
             }
             
             .loader-wheel {
-              animation: spin 1s infinite linear;
-              border: 2px solid rgba(30, 30, 30, 0.5);
-              border-left: 4px solid #fff;
-              border-radius: 50%;
-              height: 50px;
-              margin-bottom: 10px;
-              width: 50px;
+            animation: spin 1s infinite linear;
+            border: 2px solid rgba(30, 30, 30, 0.5);
+            border-left: 4px solid #fff;
+            border-radius: 50%;
+            height: 50px;
+            margin-bottom: 10px;
+            width: 50px;
             }
             
             .loader-text {
-              color: #fff;
-              font-family: arial, sans-serif;
+            color: #fff;
+            font-family: arial, sans-serif;
             }
             
             .loader-text:after {
-              content: 'Loading';
-              animation: load 2s linear infinite;
+            content: 'Loading';
+            animation: load 2s linear infinite;
             }
             
             @keyframes spin {
-              0% {
+            0% {
                 transform: rotate(0deg);
-              }
-              100% {
+            }
+            100% {
                 transform: rotate(360deg);
-              }
+            }
             }
             
             @keyframes load {
-              0% {
+            0% {
                 content: 'Loading';
-              }
-              33% {
+            }
+            33% {
                 content: 'Loading.';
-              }
-              67% {
+            }
+            67% {
                 content: 'Loading..';
-              }
-              100% {
+            }
+            100% {
                 content: 'Loading...';
-              }
+            }
             }
             </style>
         <section class="py-3" style="position: relative;">
@@ -593,176 +490,12 @@
                             </div>
                         </div>
                         </form>
-                       
+                    
                     </div>
                 </div>
             </div>
         </section>
-        <footer class="py-3 text-center "
-            style="background: linear-gradient(#020202e0 50%, #00d9ff34) , url('https://images.unsplash.com/photo-1587560699334-cc4ff634909a?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80');background-size:cover;backdrop-filter:blur(5px)">
-            <div class="container">
-                <div class="row justify-content-center align-items-center">
-                    <div class="col-md-12 text-center">
-                        {{-- <img src="assets/images/logo.png" alt="" class="logo-dark" height="18" /> --}}
-
-                        <div class="aos-init" data-aos="fade-up" data-aos-anchor-placement="top-bottom"
-                            data-aos-duration="1400">
-                            <strong class="text-white"> {{ $site_name ?? '' }}</strong>
-                        </div>
-                        <p class="text-white mt-4 aos-init" data-aos="fade-up" data-aos-anchor-placement="top-bottom"
-                            data-aos-duration="1500">{{ $site_name ?? '' }} makes it easier to build better websites
-                            with
-                            <br> great speed. Save hundreds of hours of design
-                            <br> and development by using it.
-                        </p>
-
-                        <div class="aos-init" data-aos="fade-up" data-aos-anchor-placement="top-bottom"
-                            data-aos-duration="2000">
-                            @if ($result->LandingPageSocialMedias == [])
-                                <strong class="text-primary">Follow Us On Social...</strong>
-                            @endif
-                            <ul class="social-list list-inline mt-3">
-                                @if ($result->LandingPageSocialMedias)
-                                    @foreach ($result->LandingPageSocialMedias as $media)
-                                        <li class="list-inline-item text-center">
-                                            <a href="{{ $media->link }}"
-                                                class="social-list-item border-primary text-white btn-outline-primary">
-                                                @if ($media->name == 'Gmail')
-                                                    <i class="mdi mdi-google"></i>
-                                                @endif
-                                                @if ($media->name == 'Whatsapp')
-                                                    <i class="mdi mdi-whatsapp"></i>
-                                                @endif
-                                                @if ($media->name == 'Instagram')
-                                                    <i class="mdi mdi-instagram"></i>
-                                                @endif
-                                                @if ($media->name == 'Reddit')
-                                                    <i class="mdi mdi-reddit"></i>
-                                                @endif
-                                                @if ($media->name == 'Snapchat')
-                                                    <i class="mdi mdi-snapchat"></i>
-                                                @endif
-                                                @if ($media->name == 'YouTube')
-                                                    <i class="mdi mdi-youtube"></i>
-                                                @endif
-                                                @if ($media->name == 'Facebook')
-                                                    <i class="mdi mdi-facebook"></i>
-                                                @endif
-                                                @if ($media->name == 'Twitter')
-                                                    <i class="mdi mdi-twitter"></i>
-                                                @endif
-                                                @if ($media->name == 'LinkedIn')
-                                                    <i class="mdi mdi-linkedin"></i>
-                                                @endif
-                                            </a>
-                                        </li>
-                                    @endforeach
-                                @endif
-                            </ul>
-                        </div>
-                    </div>
-
-                    <div class="col-12 text-center">
-                        <div class="aos-init" data-aos="fade-up" data-aos-anchor-placement="top-bottom"
-                            data-aos-duration="2400">
-                            <ul class="list-unstyled justify-content-center d-flex ps-0 mb-0 mt-3">
-                                <li class="m-2"><a href="#about-us" class="text-light">Home</a></li>
-                                <li class="m-2"><a href="#about-us" class="text-light">About Us</a></li>
-                                <li class="m-2"><a href="#contact-us" class="text-light">Contact us</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="mt-5">
-                            <p class="text-light mt-4 text-center mb-0">
-                                {{ $copyrights ??
-                                    '© 2022 - 2023 PHOENIX TECHNOLOGIES.' }}
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </footer>
-        <div class="modal fade show" id="Mymodal" tabindex="-1" aria-labelledby="myLargeModalLabel"
-            aria-modal="true" role="dialog">
-            <!-- /.modal-dialog -->
-        </div>
-
-        <!-- bundle -->
-        <script src="{{ asset('assets/js/vendor.min.js') }}"></script>
-        <script src="{{ asset('assets/js/app.min.js') }}"></script>
-        <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.js"></script>
-        <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-        <script>
-            $(".enquiry-form").validate({
-                submitHandler: function(form) {
-                    $.ajax({
-                        url: form.action,
-                        type: form.method,
-                        data: $(form).serialize(),
-                        beforeSend: function() {
-                            $('#error').removeClass('alert alert-danger');
-                            $('#error').html('');
-                            $('#error').removeClass('alert alert-success');
-                            $('.loader').show();
-                            $('#send_msg').prop('disabled', true);
-                        },
-                        success: function(response) {
-                            $('.loader').hide();
-                            $('#send_msg').prop('disabled', false);
-
-                            if (response.error.length > 0 && response.status == "1") {
-                                $('#error').addClass('alert alert-danger');
-                                response.error.forEach(display_errors);
-                            } else {
-                                $('#error').addClass('alert alert-success');
-                                response.error.forEach(display_errors);
-                                setTimeout(function() {
-                                    location.reload();
-                                }, 100);
-                            }
-                        }
-                    });
-                }
-            });
-
-            function get_buy_form(product_id) {
-                $.ajax({
-                    url: "{{ route('get.buy.form') }}",
-                    type: 'GET',
-                    data: {
-                        product_id: product_id
-                    },
-                    success: function(res) {
-                        $('#Mymodal').html(res);
-                        $('#Mymodal').modal('show');
-                    }
-                });
-            }
-
-            function display_errors(item, index) {
-                $('#error').append('<div>' + item + '</div>');
-            }
-        </script>
-        <script>
-            $(window).scroll(function() {
-                if ($(this).scrollTop() > 50) {
-                    $('#top-navbar-animated').addClass('bg-dark-50');
-                } else {
-                    $('#top-navbar-animated').removeClass('bg-dark-50');
-                }
-            });
-        </script>
-        <script>
-            AOS.init();
-        </script>
-    </body>
-@else
-
-    <body class="h-100">
+        @else
         <div class="container d-flex w-100 h-100 p-3 mx-auto justify-content-center align-items-center text-center"
             style="min-height: 100vh">
             <main class="px-4">
@@ -772,82 +505,144 @@
                     accusantium beatae aspernatur ab, nobis neque vel nostrum.</p>
             </main>
         </div>
-    </body>
-@endif
+    @endif
+@endsection
+@section('add_on_script')
+    <script>
+        $(".enquiry-form").validate({
+            submitHandler: function(form) {
+                $.ajax({
+                    url: form.action,
+                    type: form.method,
+                    data: $(form).serialize(),
+                    beforeSend: function() {
+                        $('#error').removeClass('alert alert-danger');
+                        $('#error').html('');
+                        $('#error').removeClass('alert alert-success');
+                        $('.loader').show();
+                        $('#send_msg').prop('disabled', true);
+                    },
+                    success: function(response) {
+                        $('.loader').hide();
+                        $('#send_msg').prop('disabled', false);
 
-</html>
-<script>
-    $('#nav-landing .nav-item a').on('click', function(event) {
-        $('#nav-landing .nav-item a').removeClass('active');
-
-        setTimeout(function(){
-            // $(this).addClass('active');
-        }, 500);
-        
-    });
-
-$(window).on('scroll', function() {
-    $('.target').each(function() {
-        console.log( 'window top ', $(window).scrollTop() );
-        console.log( 'position top', $(this).position().top );
-        console.log( ' id', $(this).attr('id') );
-        var window_top = parseInt($(window).scrollTop());
-        var position_top = parseInt($(this).position().top);
-        if( window_top >= position_top ) {
-            var id = $(this).attr('id');
-            $('#nav-landing .nav-item a').removeClass('active');
-            $('#nav-landing .nav-item a[href="#'+ id +'"]').addClass('active');
-        }
-    });
-});
-
-$('#subscribe-btn').click(function(){
-    $('#subscripe-input').removeClass('border border-danger');
-
-    var subscribe_email = $('#subscribe_email').val();
-    if( subscribe_email == '' || subscribe_email == undefined || subscribe_email == null ) {
-        $('#subscripe-input').addClass('border border-danger');
-        $('#subscribe_email').focus();
-        return false;
-    }
-    var form = $('#subscription_form').serialize();
-    $.ajax({
-        url:"{{ route('subscribe.newsletter') }}",
-        type: "POST",
-        data: form,
-        beforeSend: function(){
-            $('.loader').show();
-            $('#subscribe-btn').prop('disabled', true);
-        },
-        success: function(response) {
-            $('.loader').hide();
-            $('#error').show();
-            $('#error').html('');
-
-            $('#subscribe-btn').prop('disabled', false);
-            if( response.status == 1 ) {
-                $('#error').removeClass('alert alert-success');
-                $('#error').addClass('alert alert-danger');
-                response.error.forEach(display_errors);
-            } else {
-                $('#error').removeClass('alert alert-danger');
-                $('#error').addClass('alert alert-success');
-                response.error.forEach(display_errors);
-                $('#subscription_form')[0].reset();
-
+                        if (response.error.length > 0 && response.status == "1") {
+                            $('#error').addClass('alert alert-danger');
+                            response.error.forEach(display_errors);
+                        } else {
+                            $('#error').addClass('alert alert-success');
+                            response.error.forEach(display_errors);
+                            setTimeout(function() {
+                                location.reload();
+                            }, 100);
+                        }
+                    }
+                });
             }
-            $('#error').fadeOut(5000);
-            
+        });
+
+        function get_buy_form(product_id) {
+            $.ajax({
+                url: "{{ route('get.buy.form') }}",
+                type: 'GET',
+                data: {
+                    product_id: product_id
+                },
+                success: function(res) {
+                    $('#Mymodal').html(res);
+                    $('#Mymodal').modal('show');
+                }
+            });
         }
 
-    });
-});
-$('#subscribe_email').keyup(function(){
-    if( this.value.length > 0 ){
-        $('#subscripe-input').removeClass('border border-danger');
+        function display_errors(item, index) {
+            $('#error').append('<div>' + item + '</div>');
+        }
 
-    } else {
-        $('#subscripe-input').addClass('border border-danger');
-    }
-});
-</script>
+        $(window).scroll(function() {
+            if ($(this).scrollTop() > 50) {
+                $('#top-navbar-animated').addClass('bg-dark-50');
+            } else {
+                $('#top-navbar-animated').removeClass('bg-dark-50');
+            }
+        });
+
+        AOS.init();
+
+        $('#nav-landing .nav-item a').on('click', function(event) {
+            $('#nav-landing .nav-item a').removeClass('active');
+
+            setTimeout(function(){
+                $(this).addClass('active');
+            }, 500);
+            
+        });
+
+        $(window).on('scroll', function() {
+            $('.target').each(function() {
+                // console.log( 'window top ', $(window).scrollTop() );
+                // console.log( 'position top', $(this).position().top );
+                // console.log( ' id', $(this).attr('id') );
+                var window_top = parseInt($(window).scrollTop());
+                var position_top = parseInt($(this).position().top);
+                if( window_top >= position_top ) {
+                    var id = $(this).attr('id');
+                    $('#nav-landing .nav-item a').removeClass('active');
+                    $('#nav-landing .nav-item a[href="#'+ id +'"]').addClass('active');
+                }
+            });
+        });
+
+        $('#subscribe-btn').click(function(){
+            $('#subscripe-input').removeClass('border border-danger');
+
+            var subscribe_email = $('#subscribe_email').val();
+            if( subscribe_email == '' || subscribe_email == undefined || subscribe_email == null ) {
+                $('#subscripe-input').addClass('border border-danger');
+                $('#subscribe_email').focus();
+                return false;
+            }
+            var form = $('#subscription_form').serialize();
+            $.ajax({
+                url:"{{ route('subscribe.newsletter') }}",
+                type: "POST",
+                data: form,
+                beforeSend: function(){
+                    $('.loader').show();
+                    $('#subscribe-btn').prop('disabled', true);
+                },
+                success: function(response) {
+                    $('.loader').hide();
+                    $('#error').show();
+                    $('#error').html('');
+
+                    $('#subscribe-btn').prop('disabled', false);
+                    if( response.status == 1 ) {
+                        $('#error').removeClass('alert alert-success');
+                        $('#error').addClass('alert alert-danger');
+                        response.error.forEach(display_errors);
+                    } else {
+                        $('#error').removeClass('alert alert-danger');
+                        $('#error').addClass('alert alert-success');
+                        response.error.forEach(display_errors);
+                        $('#subscription_form')[0].reset();
+
+                    }
+                    $('#error').fadeOut(5000);
+                    
+                }
+
+            });
+        });
+
+        $('#subscribe_email').keyup(function(){
+            if( this.value.length > 0 ){
+                $('#subscripe-input').removeClass('border border-danger');
+
+            } else {
+                $('#subscripe-input').addClass('border border-danger');
+            }
+        });
+    </script>
+@endsection
+    

@@ -13,6 +13,7 @@ File: Main Css File
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  */
 :root {
+  --bs-primay-linear:linear-gradient(to right, #00bfff 0%, #0088ea 51%, #00bfff 100%);
   --bs-blue: #3688fc;
   --bs-indigo: #727cf5;
   --bs-purple: #6b5eae;

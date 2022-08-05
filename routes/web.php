@@ -11,7 +11,10 @@ use App\Http\Middleware\SetViewVariable;
 | routes are loaded by the RouteServiceProvider within a group which
 | contains the "web" middleware group. Now create something great!
 | 
-*/ 
+*/
+ 
+//customer login routes
+Route::get('/profile', [App\Http\Controllers\front\ProfileController::class, 'index'])->name('profile');
 
 Route::get('/send-mail', [App\Http\Controllers\MailController::class, 'sendMail'])->name('send');
 Route::get('/cron-send-mail', [App\Http\Controllers\CronController::class, 'sendMail'])->name('cron.send.mail');
@@ -31,6 +34,8 @@ Route::post('/submit/buy/form', [App\Http\Controllers\front\BuyController::class
 Route::get('/razor/init/request/{order_no}', [App\Http\Controllers\front\BuyController::class, 'razorpay_initiate_request'])->name('razorpay.request');
 Route::post('/razor/complete', [App\Http\Controllers\front\BuyController::class, 'razor_payment_complete'])->name('razor.payments.complete');
 Route::post('/', [App\Http\Controllers\LandingController::class, 'payment_response_page'])->name('razor.payments.finish');
+
+
 //newsletter
 Route::post('/subscribe/newsletter', [App\Http\Controllers\LandingController::class, 'subscribeNewsletter'])->name('subscribe.newsletter');
 
