@@ -7,11 +7,14 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Builder;
 use OwenIt\Auditing\Contracts\Auditable;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 
-class Customer extends Model implements Auditable
+class Customer extends Authenticatable implements Auditable
 {
     use HasFactory;
     use \OwenIt\Auditing\Auditable;
+    use Notifiable;
 
     protected $fillable = [
         'company_id',
@@ -68,5 +71,10 @@ class Customer extends Model implements Auditable
     public function secondary_mobile()
     {
         return $this->hasMany(CustomerMobile::class, 'customer_id')->orderBy('customer_mobile.created_at', 'desc');
+    }
+
+    public function getAuthPassword()
+    {
+      return $this->password;
     }
 }

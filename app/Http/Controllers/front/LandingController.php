@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\front;
 
+use App\Http\Controllers\Controller;
 use App\Helpers\MailEntryHelper;
 use Illuminate\Http\Request;
 use App\Models\CompanySettings;
@@ -22,11 +23,13 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session as FacadesSession;
 use Illuminate\Support\Facades\Validator;
+use Auth;
 
 class LandingController extends Controller
 {
     public function index(Request $request, $permalink = null)
     {
+       
         $info           = CompanySettings::find(1);
         $products       = Product::where('status', 1)->get();
         $params['info'] = $info;
@@ -47,6 +50,8 @@ class LandingController extends Controller
         if (!$result) {
             $result   = LandingPages::latest()->first();
         }
+        $not_home = 'home';
+        $params['not_home'] = $not_home;
         $params['result'] = $result;
         $params['products'] = $products;
         $params['payment_error'] = $payment_error;

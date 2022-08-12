@@ -17,41 +17,32 @@
             </div>
             
             <div class="card-body p-4 py-3">
-                    @if($errors->any())
-                    <div class="alert alert-danger">
-                        <h4>{{$errors->first()}}</h4>
-                    </div>
-                    @endif
-                    @if (Session::has('message'))
+                @if (Session::has('message'))
                     <div class="alert alert-success" role="alert">
                         {{ Session::get('message') }}
                     </div>
                 @endif
+                @if (Session::has('error'))
+                    <div class="alert alert-danger" role="alert">
+                        {{ Session::get('error') }}
+                    </div>
+                @endif
                 <div class="text-center w-75 m-auto">
-                    <h4 class="text-dark-50 text-center pb-0 fw-bold">Sign In</h4>
-                    <p class="text-muted mb-4">Enter your email address and password to access admin panel.</p>
+                    <h4 class="text-dark-50 text-center pb-0 fw-bold">Reset Password</h4>
                 </div>
-                
 
-                <form action="{{ route('login.submit') }}" method="POST" >
+                <form action="{{ route('reset.password.post') }}" method="POST" >
                     @csrf
                     <div class="mb-3">
                         <label for="emailaddress" class="form-label">Email address</label>
                         <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" required autocomplete="email" autofocus>
 
-                        @error('email')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                        @enderror
+                        @if ($errors->has('email'))
+                            <span class="text-danger">{{ $errors->first('email') }}</span>
+                        @endif
                     </div>
 
                     <div class="mb-3">
-                        @if (Route::has('forget.password.get'))
-                            <a class="text-muted float-end" href="{{ route('forget.password.get') }}">
-                                <small> {{ __('Forgot Your Password?') }} </small>
-                            </a>
-                        @endif
                         <label for="password" class="form-label">Password</label>
                         <div class="input-group input-group-merge">
                             <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
@@ -60,25 +51,30 @@
                                 <span class="password-eye"></span>
                             </div>
 
-
-                            @error('password')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                            @enderror
-
                         </div>
+                        @if ($errors->has('password'))
+                            <div class="text-danger">{{ $errors->first('password') }}</div>
+                        @endif
                     </div>
 
-                    <div class="mb-3 mb-3">
-                        <div class="form-check">
-                            <input type="checkbox" class="form-check-input" id="checkbox-signin" checked>
-                            <label class="form-check-label" for="checkbox-signin">Remember me</label>
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Password</label>
+                        <div class="input-group input-group-merge">
+                            <input id="password_confirmation" type="password" class="form-control @error('password_confirmation') is-invalid @enderror" name="password_confirmation" required autocomplete="current-password">
+                            
+                            <div class="input-group-text" data-password="false">
+                                <span class="password-eye"></span>
+                            </div>
+                          
                         </div>
-                    </div>
+                        @if ($errors->has('password_confirmation'))
+                            <span class="text-danger">{{ $errors->first('password_confirmation') }}</span>
+                        @endif
 
+                    </div>
+                    <input type="hidden" name="token" value="{{ $token }}">
                     <div class="mb-0 text-end">
-                        <button class="btn btn-primary px-3" type="submit"><i class="fa fa-user"></i> Log In </button>
+                        <button class="btn btn-primary px-3" type="submit"><i class="fa fa-user"></i> Reset Password</button>
                     </div>
 
                 </form>
@@ -86,14 +82,6 @@
             <div class="card-footer py-2 bg-light"></div>
         </div>
         <!-- end card -->
-
-        {{-- <div class="row mt-3">
-            <div class="col-12 text-center">
-                <p class="text-muted">Don't have an account? <a href="pages-register.html" class="text-muted ms-1"><b>Sign Up</b></a></p>
-            </div> <!-- end col -->
-        </div> --}}
-        <!-- end row -->
-
     </div> <!-- end col -->
 </div>
 @endsection

@@ -14,18 +14,28 @@ use App\Http\Middleware\SetViewVariable;
 */
  
 //customer login routes
-Route::get('/profile', [App\Http\Controllers\front\ProfileController::class, 'index'])->name('profile');
+Route::get('/login', [App\Http\Controllers\front\Auth\LoginController::class, 'index'])->name('customer-login')->middleware(['guest']);
+Route::post('/do/login', [App\Http\Controllers\front\Auth\LoginController::class, 'validate_login'])->name('customer-login-check');
+Route::middleware([SetViewVariable::class, 'auth:client'])->group(function () {
+    Route::get('/profile', [App\Http\Controllers\front\ProfileController::class, 'index'])->name('profile');
+    Route::post('/customer/logout', [App\Http\Controllers\front\Auth\LoginController::class, 'logout'])->name('customer-logout');
+});
 
 Route::get('/send-mail', [App\Http\Controllers\MailController::class, 'sendMail'])->name('send');
 Route::get('/cron-send-mail', [App\Http\Controllers\CronController::class, 'sendMail'])->name('cron.send.mail');
 
 Route::get('/devlogin', [App\Http\Controllers\Auth\LoginController::class, 'login_page'])->name('login');
-Route::post('/logout', [App\Http\Controllers\Auth\LoginController::class, 'logout'])->name('logout');
-Route::post('/login/submit', [App\Http\Controllers\Auth\LoginController::class, 'check_login'])->name('login.submit');
+Route::post('/dev/logout', [App\Http\Controllers\Auth\LoginController::class, 'logout'])->name('logout');
+Route::post('/devlogin/submit', [App\Http\Controllers\Auth\LoginController::class, 'check_login'])->name('login.submit');
+Route::get('devlogin/forget-password', [App\Http\Controllers\Auth\ForgotPasswordController::class, 'showForgetPasswordForm'])->name('forget.password.get');
+Route::post('devlogin/forget-password', [App\Http\Controllers\Auth\ForgotPasswordController::class, 'submitForgetPasswordForm'])->name('forget.password.post'); 
+Route::get('devlogin/reset-password/{token}', [App\Http\Controllers\Auth\ForgotPasswordController::class, 'showResetPasswordForm'])->name('reset.password.get');
+Route::post('devlogin/reset-password', [App\Http\Controllers\Auth\ForgotPasswordController::class, 'submitResetPasswordForm'])->name('reset.password.post');
+
 
 Route::get('generate-pdf', [App\Http\Controllers\PDFController::class, 'generatePDF']);
-Route::get('/{permalink?}', [App\Http\Controllers\LandingController::class, 'index'])->name('landing.index');
-Route::post('/enquiry', [App\Http\Controllers\LandingController::class, 'enquiry_save'])->name('enquiry.save');
+Route::get('/{permalink?}', [App\Http\Controllers\front\LandingController::class, 'index'])->name('landing.index');
+Route::post('/enquiry', [App\Http\Controllers\front\LandingController::class, 'enquiry_save'])->name('enquiry.save');
 Route::get('/approve/invoice/{id}', [App\Http\Controllers\InvoiceController::class, 'approve_invoice'])->name('approve-invoice');
 Route::get('/reject/invoice/{id}', [App\Http\Controllers\InvoiceController::class, 'reject_invoice'])->name('reject-invoice');
 
@@ -33,11 +43,11 @@ Route::get('/get/buy/form', [App\Http\Controllers\front\BuyController::class, 'g
 Route::post('/submit/buy/form', [App\Http\Controllers\front\BuyController::class, 'submit_buy_form'])->name('submit.buy.form');
 Route::get('/razor/init/request/{order_no}', [App\Http\Controllers\front\BuyController::class, 'razorpay_initiate_request'])->name('razorpay.request');
 Route::post('/razor/complete', [App\Http\Controllers\front\BuyController::class, 'razor_payment_complete'])->name('razor.payments.complete');
-Route::post('/', [App\Http\Controllers\LandingController::class, 'payment_response_page'])->name('razor.payments.finish');
+Route::post('/', [App\Http\Controllers\front\LandingController::class, 'payment_response_page'])->name('razor.payments.finish');
 
 
 //newsletter
-Route::post('/subscribe/newsletter', [App\Http\Controllers\LandingController::class, 'subscribeNewsletter'])->name('subscribe.newsletter');
+Route::post('/subscribe/newsletter', [App\Http\Controllers\front\LandingController::class, 'subscribeNewsletter'])->name('subscribe.newsletter');
 
 // Route::any('payu-money-payment', [App\Http\Controllers\PayuMoneyController::class, 'redirectToPayU'])->name('redirectToPayU');
 Route::any('payu-money-payment/{order_no}', [App\Http\Controllers\PayuMoneyController::class, 'redirectToPayU'])->name('redirectToPayU');

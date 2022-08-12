@@ -48,8 +48,9 @@ class LoginController extends Controller
     public function check_login(Request $request)
     {
         $credentials = $request->only('email', 'password');
+       
         if (Auth::attempt($credentials)) {
-            //here check notification count and set in session
+            //here check notification count and set in session  
             //check subsciption has time period
             $company_subscriptions = \DB::table('company_subscriptions')->where('company_id', 1)->first();
             $end_date = date('Y-m-d', strtotime($company_subscriptions->endAt));

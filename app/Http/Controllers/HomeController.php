@@ -32,7 +32,6 @@ class HomeController extends Controller
      */
     public function index()
     {
-       
         // $info = CompanySettings::find(1);
         $today = date('Y-m-d');
         $orders = DashboardOrder::all();
