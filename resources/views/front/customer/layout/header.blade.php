@@ -16,7 +16,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}" />
     <!-- App favicon -->
     <link rel="canonical" href="{{ $_SERVER['HTTP_REFERER'] ?? '' }}" />
-    <link href="http://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <!-- App css -->
     <link href="{{ asset('assets/css/icons.min.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('assets/custom/css/effect.css') }}" rel="stylesheet" type="text/css" />
@@ -24,7 +24,7 @@
     <link href="{{ asset('assets/css/app-creative-dark.min.css') }}" rel="stylesheet" type="text/css"
         id="dark-style" />
     @if (empty($result))
-        <link rel="stylesheet" href="http://getbootstrap.com/docs/5.1/examples/cover/cover.css">
+        <link rel="stylesheet" href="https://getbootstrap.com/docs/5.1/examples/cover/cover.css">
     @endif
     @if (!empty($result))
         {!! $result->other_tags !!}
