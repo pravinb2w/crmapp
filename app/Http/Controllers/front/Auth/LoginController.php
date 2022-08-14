@@ -31,9 +31,9 @@ class LoginController extends Controller
         if (Auth::guard('client')->attempt(['email' => $email, 'password' => $password])) {
             $details = Auth::guard('client')->user();
           
-            return redirect()->route('profile');
+            return response()->json(['message' => 'Login success', 'status' => 1, 'url' => route('profile')]);
         } else {
-            return redirect()->route('customer-login')->withErrors(['message' => 'Invalid Email address or Password']);
+            return response()->json(['message' => 'Invalid Email address or Password', 'status' => 0]);
         }
     }
 
