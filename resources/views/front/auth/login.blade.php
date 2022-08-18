@@ -1,97 +1,57 @@
 @extends('front.customer.layout.template')
 @section('add_on_style')
- 
+ <style>
+   input.otp {
+        width: 51px;
+        padding: 13px;
+        margin: 5px;
+        box-shadow: 1px 1px 1px 1px #ddd;
+        border: 1px solid #ddd;
+    }
+ </style>
 @endsection
 @section('content')
-<script src="https://unpkg.com/vue@3"></script>
+<script src="https://unpkg.com/vue@next"></script>
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script src="https://unpkg.com/vue-router"></script>
+<script src="https://unpkg.com/vue3-otp-input"></script>
 
 
 <div class="" id="app">
     <div class="container-fluid p-5">
         <div class="tab-content">
             <div class="tab-pane show active" id="account">
+                <div v-if="formError" class="alert alert-danger" role="alert">
+                    @{{ formError }}
+                </div>
+                <div v-if="formSuccess" class="alert alert-success" role="alert">
+                    @{{ formSuccess }}
+                </div>
                 <div class="row" v-if="pagetype == 'password'">
                    <div class="col-sm-4 card offset-sm-4 p-3">
-                        @if (Session::has('message'))
-                            <div class="alert alert-success" role="alert">
-                                {{ Session::get('message') }}
-                            </div>
-                        @endif
-                        @if (Session::has('error'))
-                            <div class="alert alert-danger" role="alert">
-                                {{ Session::get('error') }}
-                            </div>
-                        @endif
-                        <div v-if="formError" class="alert alert-danger" role="alert">
-                            @{{ formError }}
-                        </div>
-                        <form class="p-3" v-on:submit="submitLoginPassword" >
-                            @csrf
-                            <h5 class="mb-4 text-uppercase text-center">
-                                Login </h5>
-                            <div class="row">
-                                <div class="mb-3">
-                                    <label for="email_id" class="form-label">Email Id</label>
-                                    <input id="email" type="email" @blur="validateEmail" :class="[isValidEmail ? validClass : inValidClass, 'form-control' ]" @keypress="validateEmail" :class="[isValidEmail ? validClass : inValidClass, 'form-control' ]" v-model="email" name="email" required autocomplete="email" autofocus>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="password" class="form-label w-100">Password
-                                        <a href="#" class="float-end"  > Forgot Password </a>
-                                    </label>
-                                    <div class="input-group input-group-merge">
-                                        <input id="password" type="password" :class="[password.length < 8 ? inValidClass : validClass, 'form-control']" v-model="password"  name="password" required >
-                                        
-                                        <div class="input-group-text" data-password="false">
-                                            <span class="password-eye"></span>
-                                        </div>
-                                      
-                                    </div>
-                                   
-                                </div>
-                               
-                                <div class="text-end pt-3">
-                                    <a href="javascript:void(0)" @click="switchPage('otp')" class="float-start mt-3">Signin using OTP</a>
-                                    <button type="submit" class="btn btn-success mt-2">
-                                        Login
-                                    </button>
-                                </div>
-                            </div> <!-- end row -->
-                        </form>
+                        @include('front.auth.login_with_password')
                    </div>
                 </div>
 
                 <div class="row" v-if="pagetype == 'otp'">
                     <div class="col-sm-4 card offset-sm-4 p-3">
-                         @if (Session::has('message'))
-                             <div class="alert alert-success" role="alert">
-                                 {{ Session::get('message') }}
-                             </div>
-                         @endif
-                         @if (Session::has('error'))
-                             <div class="alert alert-danger" role="alert">
-                                 {{ Session::get('error') }}
-                             </div>
-                         @endif
-                         <form class="p-3" :submit="submitLoginPassword" action="{{ route('customer-login-check') }}" method="POST">
-                             @csrf
-                             <h5 class="mb-4 text-uppercase text-center">
-                                 Login using OTP  </h5>
-                             <div class="row">
-                                 <div class="mb-3">
-                                    <label for="mobile_no" class="form-label">Mobile Number</label>
-                                    <input type="text" maxlength="10" class="form-control" name="mobile_no" @keypress="acceptNumber" id="mobile_no">
-                                 </div>
-                                
-                                 <div class="text-end pt-3">
-                                    <a href="javascript:void(0)" class="float-start mt-3" @click="switchPage('password')">Signin using Password</a>
-                                     <button type="button" onclick="return check();" class="btn btn-success mt-2">
-                                         Login
-                                     </button>
-                                 </div>
-                             </div> <!-- end row -->
-                         </form>
+                        @include('front.auth.login_with_otp')
+                    </div>
+                </div>
+                <div class="row" v-if="pagetype == 'verify_otp'">
+                    <div class="col-sm-4 card offset-sm-4 p-3">
+                        @include('front.auth.otp_verify')
+                    </div>
+                </div>
+
+                <div class="row" v-if="pagetype == 'reset'">
+                    <div class="col-sm-4 card offset-sm-4 p-3">
+                        @include('front.auth.forgot_password')
+                    </div>
+                </div>
+                <div class="row" v-if="pagetype == 'link'">
+                    <div class="col-sm-4 card offset-sm-4 p-3">
+                        @include('front.auth.reset_password')
                     </div>
                 </div>
             </div>
@@ -99,12 +59,14 @@
     </div>       
 </div>
 <script >
+    var page_type = '{{ $page_type ?? "password" }}';
+    
     const { createApp } = Vue
-
+    
     createApp({
       data() {
         return {
-            pagetype: 'password',
+            pagetype: page_type,
             email: '',
             password: '',
             mobile_number: '',
@@ -113,6 +75,20 @@
             validClass: 'is-valid',
             inValidClass: 'is-invalid',
             formError: '',
+            formSuccess: '',
+            gotResponsePassword: false,
+            gotResetResponse: true,
+            gotOtpResponse: true,
+            password_confirmation: '',
+            resetErrors: [],
+            otp1: '',
+            otp2: '',
+            otp3: '',
+            otp4: '',
+            otp5: '',
+            otp6: '',
+            otp: '',
+            isOtpVerified: true,
         }
       },
       methods: {
@@ -128,7 +104,6 @@
         submitLoginPassword: function(e) {
             e.preventDefault();
 
-            let currentObj = this;
             var form = e.target || e.srcElement;
             const formData = $(form).serialize();
             axios.post("{{ route('customer-login-check') }}", formData)            
@@ -138,16 +113,12 @@
                     if( response.data.status == 1 ) {
                         location.href= response.data.url;
                     }
-                // show the redirected response
-                }
-                if (response.status === 301 || response.status === 302) {
-                    // show the redirecting response
                 }
                 
             })
 
             .catch(function (error) {
-                currentObj.output = error;
+                this.formError = error;
             });
         },
         validateEmail: function() {
@@ -156,6 +127,139 @@
             } else {
                 this.isValidEmail = false;
             }
+        },
+        submitForgotPassword: function(e) {
+            e.preventDefault();
+           
+            if( !this.password) {
+                this.errors.push({'password': 'Password required'});
+            }
+            if( !this.password_confirmation) {
+                this.errors.push('Confirm Password required');
+            }
+            if( this.errors ) {
+                return false;
+            }
+            this.gotResponsePassword = true;
+            var form = e.target || e.srcElement;
+            const formData = $(form).serialize();
+            axios.post("{{ route('customer.password.link') }}", formData)            
+            .then( response => {
+                if (response.status == 200 ) {
+                    let message = response.data.error;
+
+                    if( response.data.status == 1 ) {
+                        this.gotResponsePassword = false;
+
+                        this.formError = message.join(',');
+                    } else {
+                        this.formSuccess = message.join(',');
+                        this.switchPage('password');
+                    }
+                    
+                }
+                
+            })
+
+            .catch(function (error) {
+              
+            });
+        },
+      
+        resetForgotPassword: function(e) {
+            e.preventDefault(); 
+            this.formError = '';
+            this.formSuccess = '';
+            this.gotResetResponse = true;
+            var form = e.target || e.srcElement;
+            const formData = $(form).serialize();
+
+            axios.post("{{ route('customer.password.post') }}", formData)            
+            .then( response => {
+                if (response.status == 200 ) {
+                    let message = response.data.error;
+
+                    if( response.data.status == 1 ) {
+                        this.gotResetResponse = false;
+                        this.formError = message.join(',');
+                    } else {
+                        this.formSuccess = message.join(',');
+                        location.href="{{ route('customer-login') }}";
+                    }
+                    
+                }
+                
+            })
+            .catch(function (error) {
+              
+            });
+        },
+
+        submitLoginOtp: function(e) {
+            e.preventDefault();
+
+            this.gotOtpResponse = false;
+            var form = e.target || e.srcElement;
+            this.formError = '';
+            this.formSuccess = '';
+            const formData = $(form).serialize();
+            
+            axios.post("{{ route('customer-login-otp') }}", formData)            
+            .then( response => {
+                if (response.status == 200 ) {
+                    console.log(response.data);
+                    if( response.data.status == 1 ) {
+                        this.gotOtpResponse = true;
+                        this.formError = response.data.message;
+                    } else {
+                        this.formSuccess = response.data.message;
+                        this.otp = response.data.otp;
+                        this.switchPage('verify_otp');
+                    }
+                    
+                }
+                
+            })
+
+            .catch(function (error) {
+              
+            });
+        },
+        verifyOtpLogin: function(e) {
+            e.preventDefault();
+
+            this.isOtpVerified = false;
+            var form = e.target || e.srcElement;
+            this.formError = '';
+            this.formSuccess = '';
+            const formData = $(form).serialize();
+            axios.post("{{ route('customer-verity-otp') }}", formData)            
+            .then( response => {
+                if (response.status == 200 ) {
+                    console.log(response.data);
+                    if( response.data.status == 1 ) {
+                        this.isOtpVerified = true;
+                        this.formError = response.data.message;
+                    } else {
+                        this.formSuccess = response.data.message;
+                        location.href="{{ route('profile') }}";
+                    }
+                    
+                }
+                
+            })
+
+            .catch(function (error) {
+              
+            });
+        },
+        tabChange: function(val){
+            let ele = document.querySelectorAll('.input-otp');
+            if(ele[val-1].value != ''){
+            ele[val].focus()
+            }else if(ele[val-1].value == ''){
+            ele[val-2].focus()
+            }   
         }
 
       }
@@ -164,9 +268,12 @@
 @endsection
 @section('add_on_script')
 <script>
-    function check() {
-        alert();
-    }
+    let digitValidate = function(ele){
+        console.log(ele.value);
+        ele.value = ele.value.replace(/[^0-9]/g,'');
+        }
+
+        
 </script>
   
 @endsection

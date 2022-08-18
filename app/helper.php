@@ -5,6 +5,8 @@ use App\Models\SmsIntegration;
 use App\Models\CompanySettings;
 use App\Models\Automation;
 
+use Illuminate\Support\Facades\Session;
+
 function superadmin()
 {
     $role = \Auth::user()->role_id;
@@ -12,6 +14,26 @@ function superadmin()
         return false;
     }
     return true;
+}
+
+function client() {
+    if( session()->has('client') ) {
+        return session('client');
+    }
+    return false;
+}
+
+function clientRedirectLogin() {
+    if( !session()->has('client') ) {
+        redirect()->route('customer-login');
+    }
+}
+
+function clientRedirectProfile() {
+    // dd( Session::get('client'));
+    if( session()->has('client') ) {
+        redirect()->route('profile');
+    }
 }
 
 function csettings($module)

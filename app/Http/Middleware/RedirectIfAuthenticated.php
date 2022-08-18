@@ -23,9 +23,7 @@ class RedirectIfAuthenticated
         if (Auth::guard('web')->check()) {
             return redirect('/dev/dashboard');
         }
-        elseif (Auth::guard('client')->check()) {
-            return redirect('/profile');
-        }
+       
         foreach ($guards as $guard) {
             if (Auth::guard($guard)->check()) {
                 if( $guard == 'client') {

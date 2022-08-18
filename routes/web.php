@@ -14,9 +14,15 @@ use App\Http\Middleware\SetViewVariable;
 */
  
 //customer login routes
-Route::get('/login', [App\Http\Controllers\front\Auth\LoginController::class, 'index'])->name('customer-login')->middleware(['guest']);
+Route::get('/login', [App\Http\Controllers\front\Auth\LoginController::class, 'index'])->name('customer-login')->middleware('clientGuest');
 Route::post('/do/login', [App\Http\Controllers\front\Auth\LoginController::class, 'validate_login'])->name('customer-login-check');
-Route::middleware([SetViewVariable::class, 'auth:client'])->group(function () {
+Route::post('/send/otp', [App\Http\Controllers\front\Auth\LoginController::class, 'validate_send_otp'])->name('customer-login-otp');
+Route::post('/verify/otp', [App\Http\Controllers\front\Auth\LoginController::class, 'verity_otp_login'])->name('customer-verity-otp');
+Route::post('/forgetpassword/submit', [App\Http\Controllers\front\Auth\ForgotPasswordController::class, 'send_reset_link'])->name('customer.password.link'); 
+Route::get('/reset-password/{token}', [App\Http\Controllers\front\Auth\ForgotPasswordController::class, 'showResetPasswordForm'])->name('customer.password.get');
+Route::post('/reset-password', [App\Http\Controllers\front\Auth\ForgotPasswordController::class, 'resetPassword'])->name('customer.password.post');
+
+Route::middleware([SetViewVariable::class, 'client'])->group(function () {
     Route::get('/profile', [App\Http\Controllers\front\ProfileController::class, 'index'])->name('profile');
     Route::post('/customer/logout', [App\Http\Controllers\front\Auth\LoginController::class, 'logout'])->name('customer-logout');
 });

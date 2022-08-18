@@ -61,6 +61,7 @@ return [
         'Thanks mail for the payment received',
     ],
     'email_type' => [
+        'otp_login',
         'new_registration',
         'new_lead',
         'fresh_lead_internal',

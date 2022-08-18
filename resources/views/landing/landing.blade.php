@@ -1,5 +1,6 @@
 @extends('front.customer.layout.template')
 @section('add_on_style')
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <style>
     #top-navbar-animated .nav-link.active {
         color: {{ $result->primary_color }} !important
@@ -405,6 +406,47 @@
                 </div>
             </div>
         </section>
+        <style>
+            .rightchat {
+                position: fixed;
+                top: 50%;
+                transform: translateY(-50%);
+                right: 0;
+                z-index: 1;
+            }
+            .callus-app {
+                width: 50px;
+                height: 50px;
+                background-color: #3396d6;
+                text-align: center;
+                cursor: pointer;
+                padding: 5px 10px;
+                margin-bottom: 10px;
+                transition: all .5s linear 0s;
+            }
+            .callus-app a, .callus-app a img {
+                width: 30px;
+                height: 30px;
+                font-size: 30px;
+                color: #fff;
+                display: inline-block;
+                position: relative;
+                top: 40%;
+                transform: translateY(-50%);
+            }
+        </style>
+        <div class="rightchat">
+            <div class="callus-app">
+              <a href="javascript:void(0)" onclick="return sendWhatsappApiSms()">
+                <i class="fa fa-whatsapp"></i>
+            </a>
+            </div>
+            <div class="callus-app">
+              <a href="javascript:void(0)" onclick="return sendWhatsappApiSms()">
+                <i class="fa fa-telegram"></i>
+              </a>
+            </div>
+        </div>
 
         {!! $result->iframe_tags !!}
 
@@ -506,6 +548,10 @@
             </main>
         </div>
     @endif
+
+
+  
+  
 @endsection
 @section('add_on_script')
     <script>
