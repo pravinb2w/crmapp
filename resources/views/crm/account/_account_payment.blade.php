@@ -18,6 +18,9 @@
         </thead>
         <tbody  id="prefRow">            
             @if( isset( $gateway ) && !empty($gateway ))
+            @php
+                $iCount = 0;
+            @endphp
                 @foreach ($gateway as $item)
                     <tr id="inputFormRow" >
                         <td style="padding: 5px !important">
@@ -38,12 +41,16 @@
                                     <label for="status" class="">Live Mode</label>
                                     <!-- Success Switch -->
                                     <div class="">
-                                        <input type="checkbox" name="status[]" id="status_{{ $item->id }}" {{ (isset($item->enabled) && $item->enabled == 'on' )  ? 'checked' : ((isset($item->enabled) && $item->enabled == 'test' ) ? '':'checked')}} data-switch="success"/>
+                                        <input type="checkbox" name="status[]" onchange="return showRadioHiddenInput(this, '{{ $iCount }}')" id="status_{{ $item->id }}" {{ (isset($item->enabled) && $item->enabled == 'on' )  ? 'checked' : ((isset($item->enabled) && $item->enabled == 'test' ) ? '':'checked')}} data-switch="success"/>
                                         <label for="status_{{ $item->id }}" data-on-label="" data-off-label=""></label>
+                                        <input type="hidden" name="status[]" id="default_status_{{ $iCount }}" @if(isset($item->enabled) && $item->enabled != 'test' )) disabled @endif;" >
                                     </div>
                                 </div>
                                 <div class="col-6">
                                     <label for="">Test Access Key</label>
+                                    <div class="mt-1">
+                                        <input type="text" name="test_merchant_id[]" id="test_merchant_id" value="{{ $item->test_merchant_id ?? '' }}" class="form-control" placeholder="Test Merchant Id">
+                                    </div>
                                     <div class="mt-1">
                                         <input type="text" name="test_access_key[]" id="test_access_key" value="{{ $item->test_access_key ?? '' }}" class="form-control" placeholder="Test Access Key">
                                     </div>
@@ -53,6 +60,9 @@
                                 </div>
                                 <div class="col-6">
                                     <label for="">Live Access Key</label>
+                                    <div class="mt-1">
+                                        <input type="text" name="live_merchant_id[]" id="live_merchant_id" value="{{ $item->live_merchant_id ?? '' }}" class="form-control" placeholder="Live Merchant Id">
+                                    </div>
                                     <div class="mt-1">
                                         <input type="text" name="live_access_key[]" id="live_access_key" value="{{ $item->live_access_key ?? '' }}" class="form-control" placeholder="Live Access Key">
                                     </div>
@@ -64,6 +74,9 @@
                         </td>
                         <td class="text-center" style="padding: 0 !important;vertical-align: middle;"><button id="removeprefRow" type="button" class="btn btn-danger">Remove</button></td>
                     </tr> 
+                    @php
+                        $iCount++;
+                    @endphp
                 @endforeach
                
             @else
@@ -78,12 +91,17 @@
                             <label for="status" class="">Live Mode</label>
                             <!-- Success Switch -->
                             <div class="">
-                                <input type="checkbox" name="status[]" id="status" {{ (isset($info->status) && $info->status == '1' )  ? 'checked' : ((isset($info->status) && $info->status == '0' ) ? '':'checked')}} data-switch="success"/>
+                                <input type="checkbox" name="status[]" onchange="return showRadioHiddenInput(this, 0)" id="status" {{ (isset($info->status) && $info->status == '1' )  ? 'checked' : ((isset($info->status) && $info->status == '0' ) ? '':'checked')}} data-switch="success"/>
                                 <label for="status" data-on-label="" data-off-label=""></label>
+                                <input type="hidden" name="status[]" id="default_status_0" >
+
                             </div>
                         </div>
                         <div class="col-6">
                             <label for="">Test Access Key</label>
+                            <div class="mt-1">
+                                <input type="text" name="test_merchant_id[]" id="test_merchant_id" class="form-control" placeholder="Test Merchant Id">
+                            </div>
                             <div class="mt-1">
                                 <input type="text" name="test_access_key[]" id="test_access_key" class="form-control" placeholder="Test Access Key">
                             </div>
@@ -93,6 +111,9 @@
                         </div>
                         <div class="col-6">
                             <label for="">Live Access Key</label>
+                            <div class="mt-1">
+                                <input type="text" name="live_merchant_id[]" id="live_merchant_id" class="form-control" placeholder="Live Merchant Id">
+                            </div>
                             <div class="mt-1">
                                 <input type="text" name="live_access_key[]" id="live_access_key" class="form-control" placeholder="Live Access Key">
                             </div>
@@ -114,6 +135,14 @@
 @endphp
 
 <script>
+    function showRadioHiddenInput(value, count) {
+        if( value.checked ) {
+            $('#default_status_'+count).attr('disabled', true);
+        } else {
+            $('#default_status_'+count).attr('disabled', false);
+        }
+    }
+
 var count = 0;
 var payment_gateway = @json($gateway);
 var keys = Object.keys(payment_gateway);
@@ -148,12 +177,16 @@ $("#addprefRow").click(function () {
                         <div class="col-6">
                             <label for="status_`+count+`" class="">Live Mode</label>
                             <div class="">
-                                <input type="checkbox" name="status[]" id="status_`+count+`" {{ (isset($info->status) && $info->status == '1' )  ? 'checked' : ((isset($info->status) && $info->status == '0' ) ? '':'checked')}} data-switch="success"/>
+                                <input type="checkbox" name="status[]" onchange="return showRadioHiddenInput(this, `+count+`)" id="status_`+count+`" {{ (isset($info->status) && $info->status == '1' )  ? 'checked' : ((isset($info->status) && $info->status == '0' ) ? '':'checked')}} data-switch="success"/>
                                 <label for="status_`+count+`" data-on-label="" data-off-label=""></label>
+                                <input type="hidden" name="status[]" id="default_status_`+count+`" >
                             </div>
                         </div>
                         <div class="col-6">
                             <label for="">Test Access Key</label>
+                            <div class="mt-1">
+                                <input type="text" name="test_merchant_id[]" id="test_merchant_id" class="form-control" placeholder="Test Merchant Id">
+                            </div>
                             <div class="mt-1">
                                 <input type="text" name="test_access_key[]" id="test_access_key" class="form-control" placeholder="Test Access Key">
                             </div>
@@ -163,6 +196,9 @@ $("#addprefRow").click(function () {
                         </div>
                         <div class="col-6">
                             <label for="">Live Access Key</label>
+                            <div class="mt-1">
+                                <input type="text" name="live_merchant_id[]" id="live_merchant_id" class="form-control" placeholder="Live Merchant Id">
+                            </div>
                             <div class="mt-1">
                                 <input type="text" name="live_access_key[]" id="live_access_key" class="form-control" placeholder="Live Access Key">
                             </div>

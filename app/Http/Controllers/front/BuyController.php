@@ -88,6 +88,9 @@ class BuyController extends Controller
             } else if ($request->pay_gateway == 'payumoney') {
                 $payment_method = $request->pay_gateway;
                 $route = route('redirectToPayU', ['order_no' => $order_no]);
+            } else {
+                $payment_method = $request->pay_gateway;
+                $route = 'https://phoenixtech.app/ccavenue/pay.php';
             }
 
             $ord_ins['order_id'] = $order_no;
@@ -109,8 +112,14 @@ class BuyController extends Controller
             $ins['temp_no'] = $temp_no;
             Payment::create($ins);
             $success = 'Payment Added';
-
-            return response()->json(['error' => [$success], 'status' => '0', 'order_no' => $order_no, 'payment_method' => $request->pay_gateway, 'route' => $route]);
+            $pay_params = array(
+                    'order_no' => $order_no, 
+                    'name' => $request->name, 
+                    'email' => $request->email,
+                    'mobile_no' => $request->mobile_no,
+                    'amount' => $product_info->price
+                );
+            return response()->json(['error' => [$success], 'pay_params' => $pay_params, 'status' => '0', 'order_no' => $order_no, 'payment_method' => $request->pay_gateway, 'route' => $route]);
         }
         return response()->json(['error' => $validator->errors()->all(), 'status' => '1']);
     }

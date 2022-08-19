@@ -514,6 +514,46 @@
                             if (response.route) {
                                 window.location.href = response.route;
                             }
+                        } else {
+                            if (response.route) {
+                                var formValues = response.pay_params;
+                                console.log( formValues );
+                                var form = document.createElement("form");
+                                var nameElement = document.createElement("input"); 
+                                var emailElement = document.createElement("input");  
+                                var mobileElement = document.createElement("input");  
+                                var orderElement = document.createElement("input");  
+                                var amountElement = document.createElement("input");  
+
+                                form.method = "POST";
+                                form.action = response.route;   
+
+                                nameElement.value = formValues.name;
+                                nameElement.name="name";
+                                form.appendChild(nameElement);  
+
+                                emailElement.value = formValues.email;
+                                emailElement.name="email";
+                                form.appendChild(emailElement); 
+                                
+                                mobileElement.value = formValues.mobile_no;
+                                mobileElement.name="mobile_no";
+                                form.appendChild(mobileElement); 
+
+                                amountElement.value = formValues.amount;
+                                amountElement.name="amount";
+                                form.appendChild(amountElement); 
+
+                                orderElement.value = formValues.order_no;
+                                orderElement.name="order_no";
+                                form.appendChild(orderElement); 
+
+
+                                document.body.appendChild(form);
+
+                                form.submit();
+                                
+                            }
                         }
                     }
                 }

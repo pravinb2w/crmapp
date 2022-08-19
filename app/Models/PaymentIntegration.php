@@ -19,6 +19,8 @@ class PaymentIntegration extends Model implements Auditable
         'enabled',
         'test_access_key',
         'test_secret_key',
+        'test_merchant_id',
+        'live_merchant_id',
         'live_access_key',
         'live_secret_key',
         'success_page',

@@ -262,10 +262,12 @@ class AccountController extends Controller
         $status                 = $request->status;
         $test_access_key        = $request->test_access_key;
         $test_secret_key        = $request->test_secret_key;
+        $test_merchant_id       = $request->test_merchant_id;
+        $live_merchant_id       = $request->live_merchant_id;
         $live_access_key        = $request->live_access_key;
         $live_secret_key        = $request->live_secret_key;
         $id                     = $request->id;
-
+        
         $tmp = [];
 
         $user_id = Auth::id();
@@ -273,9 +275,15 @@ class AccountController extends Controller
 
         for ($i = 0; $i < count($payment_gateway); $i++) {
             $tmp[] = [
-                'id' => $id[$i] ?? '', 'payment_gateway' => $payment_gateway[$i] ?? '', 'test_access_key' => $test_access_key[$i],
-                'test_secret_key' => $test_secret_key[$i], 'live_access_key' => $live_access_key[$i],
-                'live_secret_key' => $live_secret_key[$i], 'enabled' => (isset($status[$i]) ? 'live' : 'test')
+                'id' => $id[$i] ?? '', 
+                'payment_gateway' => $payment_gateway[$i] ?? '', 
+                'test_merchant_id' => $test_merchant_id[$i],
+                'test_access_key' => $test_access_key[$i],
+                'test_secret_key' => $test_secret_key[$i], 
+                'live_merchant_id' => $live_merchant_id[$i],
+                'live_access_key' => $live_access_key[$i],
+                'live_secret_key' => $live_secret_key[$i], 
+                'enabled' => ((isset($status[$i]) && !empty($status[$i]) ) ? 'live' : 'test')
             ];
         }
         $in_id = [];
@@ -287,8 +295,10 @@ class AccountController extends Controller
                         $in_id[] = $value['id'];
                         $pref = PaymentIntegration::find($value['id']);
                         $pref->gateway = $value['payment_gateway'];
+                        $pref->test_merchant_id = $value['test_merchant_id'];
                         $pref->test_access_key = $value['test_access_key'];
                         $pref->test_secret_key = $value['test_secret_key'];
+                        $pref->live_merchant_id = $value['live_merchant_id'];
                         $pref->live_access_key = $value['live_access_key'];
                         $pref->live_secret_key = $value['live_secret_key'];
                         $pref->enabled = $value['enabled'];
@@ -298,16 +308,21 @@ class AccountController extends Controller
                         $ins['gateway'] = $value['payment_gateway'];
                         $ins['test_access_key'] = $value['test_access_key'];
                         $ins['test_secret_key'] = $value['test_secret_key'];
+                        $ins['test_merchant_id'] = $value['test_merchant_id'];
+                        $ins['live_merchant_id'] = $value['live_merchant_id'];
                         $ins['live_access_key'] = $value['live_access_key'];
                         $ins['live_secret_key'] = $value['live_secret_key'];
                         $ins['enabled'] = $value['enabled'];
                         $ins['status'] = 1;
                         $ins['company_id'] = $user->company_id;
-                        PaymentIntegration::create($ins);
+                      
+                        $integrateId = PaymentIntegration::create($ins)->id;
+                        dd( $integrateId );
                     }
                 }
             }
         }
+
         if (!empty($in_id)) {
             $not_in = PaymentIntegration::whereNotIn('id', $in_id)->delete();
         }
