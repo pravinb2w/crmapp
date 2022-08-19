@@ -317,7 +317,7 @@ class AccountController extends Controller
                         $ins['company_id'] = $user->company_id;
                       
                         $integrateId = PaymentIntegration::create($ins)->id;
-                        dd( $integrateId );
+                        // dd( $integrateId );
                     }
                 }
             }
