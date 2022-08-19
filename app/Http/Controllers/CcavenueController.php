@@ -8,7 +8,7 @@ class CcavenueController extends Controller
 {
     public function success_payment(Request $request)
     {
-        info('duria test');
+        echo 'durairaj';
     }
 
     public function cancel_payment(Request $request)
