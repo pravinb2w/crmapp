@@ -8,7 +8,7 @@ class CcavenueController extends Controller
 {
     public function success_payment(Request $request)
     {
-        Log::info('duria test');
+        info('duria test');
     }
 
     public function cancel_payment(Request $request)
