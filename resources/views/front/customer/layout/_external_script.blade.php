@@ -31,62 +31,58 @@
 <!-- end demo js-->
 <script src="{{ asset('assets/custom/js/effect.js') }}"></script>
 
+  <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.js"></script>
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 
- <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.js"></script>
- <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-
- <script>
+  <script>
     $('.nav-link.nav-user').mouseenter(function() {
-        $(this).addClass('show');
-        $(this).attr('aria-expanded', true);
-        $('.profile-dropdown').addClass('show');
-        $('.profile-dropdown').attr('data-bs-popper', 'none');
+      $(this).addClass('show');
+      $(this).attr('aria-expanded', true);
+      $('.profile-dropdown').addClass('show');
+      $('.profile-dropdown').attr('data-bs-popper', 'none');
     })
 
     $('.nav-link.nav-user').mouseleave( function(e) {
 
-        if( ! $(e.toElement).hasClass('profile-dropdown') ) {
-            $(this).removeClass('show');
-            $(this).attr('aria-expanded', false);
-            $('.profile-dropdown').removeClass('show');
-        } else {
-           
-        }
+      if( ! $(e.toElement).hasClass('profile-dropdown') ) {
+        $(this).removeClass('show');
+        $(this).attr('aria-expanded', false);
+        $('.profile-dropdown').removeClass('show');
+      } else {
+          
+      }
        
     });
 
     function goToProfile() {
-        window.location.href="{{ route('profile') }}";
+      window.location.href="{{ route('profile') }}";
     }
-
-    
 
     var modal = document.getElementById("myModal");
 
+    // Get the <span> element that closes the modal
+    var span = document.getElementsByClassName("djclose")[0];
 
-// Get the button that opens the modal
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = function() {
+      modal.style.display = "none";
+    }
 
-// Get the <span> element that closes the modal
-var span = document.getElementsByClassName("djclose")[0];
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function(event) {
+      if (event.target == modal) {
+        modal.style.display = "none";
+      }
+    }
 
+    function sendWhatsappApiSms() {
+      modal.style.display = "block";
+    }
 
+    function getCustomerTab(ident) {
+      var tab_name = $(ident).data('id');
+      
 
-// When the user clicks on <span> (x), close the modal
-span.onclick = function() {
-  modal.style.display = "none";
-}
+    }
 
-// When the user clicks anywhere outside of the modal, close it
-window.onclick = function(event) {
-  if (event.target == modal) {
-    modal.style.display = "none";
-  }
-}
-console.log( modal );
-
-function sendWhatsappApiSms() {
-console.log( modal );
-
-    modal.style.display = "block";
-}
 </script>

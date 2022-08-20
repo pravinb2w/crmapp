@@ -207,7 +207,6 @@
             axios.post("{{ route('customer-login-otp') }}", formData)            
             .then( response => {
                 if (response.status == 200 ) {
-                    console.log(response.data);
                     if( response.data.status == 1 ) {
                         this.gotOtpResponse = true;
                         this.formError = response.data.message;
@@ -236,7 +235,6 @@
             axios.post("{{ route('customer-verity-otp') }}", formData)            
             .then( response => {
                 if (response.status == 200 ) {
-                    console.log(response.data);
                     if( response.data.status == 1 ) {
                         this.isOtpVerified = true;
                         this.formError = response.data.message;
@@ -269,9 +267,8 @@
 @section('add_on_script')
 <script>
     let digitValidate = function(ele){
-        console.log(ele.value);
         ele.value = ele.value.replace(/[^0-9]/g,'');
-        }
+    }
 
         
 </script>

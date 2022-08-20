@@ -8,6 +8,8 @@ use App\Mail\SubmitApproval;
 use App\Mail\TestEmail;
 use App\Models\CompanySettings;
 use App\Models\EmailTemplates;
+use App\Models\Invoice;
+use App\Models\Order;
 use App\Models\SendMail as ModelsSendMail;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
@@ -91,12 +93,28 @@ class SendMail extends Command
                         $to = $item->to;
                         $title = $templateSubject;
 
-                        Mail::send('emails.test', $body, function ($message) use ($to, $title, $from) {
-                            $message->to($to ?? 'duraibytes@gmail.com', 'Phoenix CRM')->subject($title ?? '');
-                            $message->from($from, 'Phoenix CRM');
-                        });
+                        if($item->email_type == 'success_payment') {
+                            $order_id = $item->type_id;
+                            $invoice_info = Invoice::where('order_no', $order_id)->first();
+                            if( isset( $invoice_info ) && !empty( $invoice_info ) ){
+                                $invoice_no = str_replace("/", "_", $invoice_info->invoice_no);
+                                $file = $invoice_no . '.pdf';
 
+                                Mail::send('emails.test', $body, function ($message) use ($to, $title, $from, $file) {
+                                    $message->to($to ?? 'duraibytes@gmail.com', 'Phoenix CRM')->subject($title ?? '');
+                                    $message->from($from, 'Phoenix CRM');
+                                    $message->attach(public_path('/invoice/' . $file));
+                                });
+                            }
+                            
+                        } else {
+                            Mail::send('emails.test', $body, function ($message) use ($to, $title, $from) {
+                                $message->to($to ?? 'duraibytes@gmail.com', 'Phoenix CRM')->subject($title ?? '');
+                                $message->from($from, 'Phoenix CRM');
+                            });
+                        }
                         ModelsSendMail::find($item->id)->delete();
+                        
                     }
                 }
             }

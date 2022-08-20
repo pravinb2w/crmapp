@@ -116,16 +116,15 @@ class CcavenueController extends Controller
                         CommonHelper::send_payment_received_notification($invoice->deal_id);
                     }
     
-                    return redirect()->route('landing.index')->with('status', 'Payment completed!');
+                    return redirect()->route('landing.index');
     
                 } else {
                     $res_msg = ['erorr' => 'error', 'message' => 'Payment Failed', 'order_no' => $order_id];
                     Session::put('razorpay_response', $res_msg);
-                    $_SESSION['razor_response'] = $res_msg;
+                   
                 }
             }
-            
-            return redirect()->route('landing.index')->with('status', 'Payment completed!');
+            return redirect()->route('landing.index');
         }
         
     }
@@ -157,27 +156,5 @@ class CcavenueController extends Controller
             return $pdf->save($path . '/' . str_replace("/", "_", $info->invoice_no) . '.pdf');
         }
     }
-
-    public function cancel_payment(Request $request)
-    {
-        dd($request);
-    }
-
-    public function response_handler(Request $request)
-    {
-
-        $merchant_data = '';
-        $working_key = '81E0204433275CCA7E007B7781545845';
-        $access_code = 'AVOQ87JF30BA32QOAB';
-        $merchant_id = '976366';
-        $orderId = 'ORDTEXT90900';
-        foreach ($_POST as $key => $value) {
-            $merchant_data .= $key . '=' . $value . '&';
-        }
-        $merchant_data .= 'order_id=' . $orderId;
-
-        $encrypted_data = encrypt_crypto($merchant_data, $working_key);
-
-        return view('ccavenue-handler-form', compact('encrypted_data', 'access_code'));
-    }
+    
 }

@@ -210,30 +210,35 @@ class PayuMoneyController extends \InfyOm\Payu\PayuMoneyController
                 $invoice_id = $payment_info->invoice_id;
             } else {
                 $invoice_no = CommonHelper::get_invoice_code();
-                $ins['invoice_no'] = $invoice_no;
-                $ins['order_no'] = $order_no;
-                $ins['issue_date'] = date('Y-m-d');
-                $ins['due_date'] = date('Y-m-d');
-                $ins['customer_id'] = $order_info->customer_id;
-                $ins['address'] = $order_info->customer->address;
-                $ins['email'] = $order_info->customer->email;
-                $ins['total'] = $order_info->product->price;
-                $ins['status'] = 0;
+                $check_invoice = Invoice::where( 'order_no', $order_no )->first();
+                if( isset( $check_invoice ) && !empty( $check_invoice ) ) {
+                    $invoice_id = $check_invoice->id;
+                } else {
+                    $ins['invoice_no'] = $invoice_no;
+                    $ins['order_no'] = $order_no;
+                    $ins['issue_date'] = date('Y-m-d');
+                    $ins['due_date'] = date('Y-m-d');
+                    $ins['customer_id'] = $order_info->customer_id;
+                    $ins['address'] = $order_info->customer->address;
+                    $ins['email'] = $order_info->customer->email;
+                    $ins['total'] = $order_info->product->price;
+                    $ins['status'] = 0;
+                    $invoice_id = Invoice::create($ins)->id;
 
-                $invoice_id = Invoice::create($ins)->id;
-                $up_data = [];
-                $ups['invoice_id'] = $invoice_id;
-                $ups['product_id'] = $order_info->product->id ?? '';
-                $ups['description'] = '';
-                $ups['qty'] = 1;
-                $ups['unit_price'] = $order_info->product->price;
-                $ups['discount'] = 0;
-                $ups['cgst'] = 0;
-                $ups['sgst'] = 0;
-                $ups['igst'] = 0;
-                $ups['amount'] = $order_info->product->price;
-                InvoiceItem::create($ups);
-
+                    $up_data = [];
+                    $ups['invoice_id'] = $invoice_id;
+                    $ups['product_id'] = $order_info->product->id ?? '';
+                    $ups['description'] = '';
+                    $ups['qty'] = 1;
+                    $ups['unit_price'] = $order_info->product->price;
+                    $ups['discount'] = 0;
+                    $ups['cgst'] = 0;
+                    $ups['sgst'] = 0;
+                    $ups['igst'] = 0;
+                    $ups['amount'] = $order_info->product->price;
+                    InvoiceItem::create($ups);
+                }
+                
                 $pdf_template = $request->pdf_template;
                 $this->generatePDF($invoice_id, $pdf_template);
             }

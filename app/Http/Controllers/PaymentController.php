@@ -70,7 +70,7 @@ class PaymentController extends Controller
                 if ($payment->payment_status == 'pending') {
                     $status = '<div><label class="badge bg-warning">' . ucwords($payment->payment_status) . '</label>
                                 <span class="mx-3" role="button"><i class="fa fa-refresh text-primary" onclick="resend_pay_link(' . $payment->id . ')"></i> </span></div>';
-                } else if ($payment->payment_status == 'completed') {
+                } else if ( in_array($payment->payment_status, array('completed', 'paid') )  ) {
                     $status = '<label class="badge bg-success">' . ucwords($payment->payment_status) . '</label>';
                 } else {
                     $status = '<label class="badge bg-danger">' . ucwords($payment->payment_status) . '</label>';

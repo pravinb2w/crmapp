@@ -68,25 +68,25 @@
         
         <ul class="nav nav-pills bg-nav-pills nav-justified mb-3">
             <li class="nav-item">
-                <a href="#account" data-id="account" data-bs-toggle="tab" aria-expanded="false" class="nav-link rounded-0 active customer-tab">
+                <a href="#account" data-id="account" onclick="return getCustomerTab(this)" data-bs-toggle="tab" aria-expanded="false" class="nav-link rounded-0 active customer-tab">
                     <i class="mdi mdi-home-variant d-md-none d-block"></i>
                     <span class="d-none d-md-block">My account</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a href="#kyc" data-id="kyc" data-bs-toggle="tab" aria-expanded="true" class="nav-link rounded-0 customer-tab">
+                <a href="#kyc" data-id="kyc" onclick="return getCustomerTab(this)" data-bs-toggle="tab" aria-expanded="true" class="nav-link rounded-0 customer-tab">
                     <i class="mdi mdi-account-circle d-md-none d-block"></i>
                     <span class="d-none d-md-block">KYC</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a href="#orders" data-id="orders" data-bs-toggle="tab" aria-expanded="false" class="nav-link rounded-0 customer-tab">
+                <a href="#orders" data-id="orders" onclick="return getCustomerTab(this)" data-bs-toggle="tab" aria-expanded="false" class="nav-link rounded-0 customer-tab">
                     <i class="mdi mdi-cart-outline d-md-none d-block"></i>
                     <span class="d-none d-md-block">Orders</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a href="#settings" data-id="settings" data-bs-toggle="tab" aria-expanded="false" class="nav-link rounded-0 customer-tab">
+                <a href="#settings" data-id="settings" onclick="return getCustomerTab(this)" data-bs-toggle="tab" aria-expanded="false" class="nav-link rounded-0 customer-tab">
                     <i class="mdi mdi-cog-outline d-md-none d-block"></i>
                     <span class="d-none d-md-block">Settings</span>
                 </a>

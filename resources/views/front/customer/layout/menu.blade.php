@@ -23,16 +23,16 @@
                 <a class="nav-link text-white" href="#contact-us">Contact</a>
             </li>
           
-            @if( Auth::guard('client')->user() ) 
+            @if( session('client') ) 
             
             <li class="dropdown notification-list">
                 <a class="nav-link nav-user arrow-none me-0" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
                     <span class="account-user-avatar"> 
-                        <img src="{{ Auth::guard('client')->user()->logo ?? asset('assets/images/users/avatar-2.jpg') }}" alt="user-image" class="rounded-circle">
+                        <img src="{{ session('client')->logo ?? asset('assets/images/users/avatar-2.jpg') }}" alt="user-image" class="rounded-circle">
                     </span>
                     <span onclick="goToProfile()">
-                        <span class="account-user-name"> {{ Auth::guard('client')->user()->first_name }}</span>
-                        <span class="account-position"> {{ Auth::guard('client')->user()->company->name ?? '' }}</span>
+                        <span class="account-user-name"> {{ session('client')->first_name }}</span>
+                        <span class="account-position"> {{ session('client')->company->name ?? '' }}</span>
                     </span>
                 </a>
                 <div class="dropdown-menu dropdown-menu-end dropdown-menu-animated topbar-dropdown-menu profile-dropdown" style="">
@@ -73,16 +73,16 @@
         <li class="nav-item mx-lg-1">
             <a class="nav-link text-white" href="{{ url('/') }}">Home</a>
         </li>
-            @if( Auth::guard('client')->user() ) 
+            @if( session('client') ) 
         
             <li class="dropdown notification-list">
                 <a class="nav-link dropdown-toggle nav-user arrow-none me-0" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
                     <span class="account-user-avatar"> 
-                        <img src="{{ Auth::guard('client')->user()->logo ?? asset('assets/images/users/avatar-2.jpg') }}" alt="user-image" class="rounded-circle">
+                        <img src="{{ session('client')->logo ?? asset('assets/images/users/avatar-2.jpg') }}" alt="user-image" class="rounded-circle">
                     </span>
                     <span onclick="goToProfile()">
-                        <span class="account-user-name"> {{ Auth::guard('client')->user()->first_name }}</span>
-                        <span class="account-position"> {{ Auth::guard('client')->user()->company->name ?? '' }}</span>
+                        <span class="account-user-name"> {{ session('client')->first_name }}</span>
+                        <span class="account-position"> {{ session('client')->company->name ?? '' }}</span>
                     </span>
                 </a>
                 <div class="dropdown-menu dropdown-menu-end dropdown-menu-animated topbar-dropdown-menu profile-dropdown" style="">

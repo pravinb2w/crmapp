@@ -27,3 +27,13 @@
         </div> <!-- end card -->
     </div> <!-- end col -->
 </div>
+@section('add_on_script')
+    <script>
+
+        // $(".hover-group").on("mouseenter", function () {
+        //     $(this).find('.delete-group').removeClass('d-none');
+        // }).on("mouseleave", function () {
+        //     $(this).find('.delete-group').addClass('d-none');
+        // });
+    </script>
+@endsection
