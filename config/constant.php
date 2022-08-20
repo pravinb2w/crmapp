@@ -77,6 +77,5 @@ return [
         'payment_url',
         'payment_remainder',
         'general_task',
-
     ],
 ];
