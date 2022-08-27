@@ -101,7 +101,8 @@ function sendWhatsappApi($mobile_no, $type, $params) {
     if( $access_token && $instance_id ) {
         $http_query = "http://wase.co.in/api/send.php?number=$mobile_no&type=$api_type&message=$message&instance_id=$instance_id&access_token=$access_token";
         $response = Http::get($http_query);
-        dd( $response );
+        // dd( $response );
+        return true;
     }
    
 }
