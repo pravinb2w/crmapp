@@ -79,6 +79,7 @@ class PayuMoneyController extends \InfyOm\Payu\PayuMoneyController
             'email_type' => 'cancel_payment',
             'params' => serialize($extract),
             'to' => $order_info->customer->email,
+            'send_type' => 'customer'
         );
 
         SendMail::create($ins_mail);
@@ -150,7 +151,8 @@ class PayuMoneyController extends \InfyOm\Payu\PayuMoneyController
             'type_id' => $order_info->id,
             'email_type' => 'success_payment',
             'params' => serialize($extract),
-            'to' => $order_info->customer->email ?? 'duraibytes@gmail.com'
+            'to' => $order_info->customer->email ?? 'duraibytes@gmail.com',
+            'send_type' => 'customer'
         );
         SendMail::create($ins_mail);
 

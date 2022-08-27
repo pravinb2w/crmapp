@@ -7,6 +7,7 @@ use App\Jobs\SendMailJob;
 use App\Mail\SubmitApproval;
 use App\Mail\TestEmail;
 use App\Models\CompanySettings;
+use App\Models\Customer;
 use App\Models\EmailTemplates;
 use App\Models\Invoice;
 use App\Models\Order;
@@ -69,7 +70,19 @@ class SendMail extends Command
                     $send_mail = new SubmitApproval($extract);
                     // return $send_mail->render();
                     Mail::to($to ?? 'durai@yopmail.com')->send($send_mail);
+
+                    if( $item->send_type == 'customer' ) {
+                        $customer_info = Customer::where('email', $to)->first();
+                        $templateMessage = 'Invoice Approval has been sent to your mail, Please check your inbox and Invoice has been attached';
+                        $media_url = asset('invoice') . '/' . $invoice_no . '.pdf';
+                        if( isset( $customer_info) && !empty( $customer_info ) ) 
+                        {
+                            sendWhatsappApi($customer_info->mobile_no, 'template', $templateMessage, 'media', $media_url, $file);
+                        }
+                    }
                     ModelsSendMail::find($item->id)->delete();
+
+
                 } else {
                     if (isset($econtent) && !empty($econtent)) {
 
@@ -112,9 +125,18 @@ class SendMail extends Command
                                 $message->to($to ?? 'duraibytes@gmail.com', 'Phoenix CRM')->subject($title ?? '');
                                 $message->from($from, 'Phoenix CRM');
                             });
+                            if( $item->send_type == 'customer' ) {
+                                $customer_info = Customer::where('email', $to)->first();
+                                $templateMessage = strip_tags($templateMessage);
+                               
+                                if( isset( $customer_info) && !empty( $customer_info ) ) 
+                                {
+                                    $templateMessage = str_replace(['&nbsp;','&amp;', '&Acirc;', ';'], '', $templateMessage);
+                                    sendWhatsappApi($customer_info->mobile_no, 'template', $templateMessage, 'email');
+                                }
+                            }
                         }
                         ModelsSendMail::find($item->id)->delete();
-                        
                     }
                 }
             }

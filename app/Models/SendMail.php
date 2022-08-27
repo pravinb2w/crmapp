@@ -14,6 +14,7 @@ class SendMail extends Model
         'type_id',
         'email_type',
         'params',
-        'to'
+        'to',
+        'send_type'
     ];
 }

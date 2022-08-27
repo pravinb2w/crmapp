@@ -95,7 +95,7 @@ class LandingController extends Controller
                 //send password in sms 
                 $params = array('password' => $randomString);
                 sendSMS($request->mobile_no, 'new_registration', $params);
-                sendWhatsappApi($request->mobile_no, 'new_registration', $params);
+                sendWhatsappApi($request->mobile_no, 'new_registration', $params, 'sms');
             }
             //get assigned user id 
             $assigned_to = CommonHelper::getLeadAssigner();

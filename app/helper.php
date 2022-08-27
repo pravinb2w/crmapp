@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Http;
 use App\Models\SmsIntegration;
 use App\Models\CompanySettings;
 use App\Models\Automation;
-
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
 
 function superadmin()
@@ -86,22 +86,39 @@ function sendSMS($mobile_no, $type, $params)
     }
 }
 
-function sendWhatsappApi($mobile_no, $type, $params) {
+function sendWhatsappApi($mobile_no, $type = null, $params, $from, $media_url = '', $filename = '') {
     $mobile_no = '91'.$mobile_no;
     $access_token = capi('whatsapp', 'access_token');
     $instance_id = capi('whatsapp', 'instance_id');
-
-    $sms = SmsIntegration::where('sms_type', $type)->first();
-    $message = $sms->template;
-    $message = str_replace("{", "", addslashes($message));
-    $message = str_replace("}", "", $message);
-    extract($params);
-    eval("\$message = \"$message\";");
+    if( $from == 'sms' ) {
+        $sms = SmsIntegration::where('sms_type', $type)->first();
+        $message = $sms->template;
+        $message = str_replace("{", "", addslashes($message));
+        $message = str_replace("}", "", $message);
+        extract($params);
+        eval("\$message = \"$message\";");
+    } else if( $from == 'email' ) {
+        $message = $params;
+    } else if( $from == 'media' ) {
+        $message = $params;
+    }
+   
     $api_type = 'text';
     if( $access_token && $instance_id ) {
-        $http_query = "http://wase.co.in/api/send.php?number=$mobile_no&type=$api_type&message=$message&instance_id=$instance_id&access_token=$access_token";
-        $response = Http::get($http_query);
-        // dd( $response );
+
+        if( $from != 'media') {
+            $http_query = "http://wase.co.in/api/send.php?number=$mobile_no&type=$api_type&message=$message&instance_id=$instance_id&access_token=$access_token";
+            Log::info($http_query);
+            $response = Http::get($http_query);
+        } else {
+            $http_query = "http://wase.co.in/api/send.php?number=$mobile_no&type=text&message=$message&instance_id=$instance_id&access_token=$access_token";
+            Log::info($http_query);
+            $response = Http::get($http_query);
+            $http_query = "http://wase.co.in/api/send.php?number=$mobile_no&type=media&message=$message&media_url=$media_url&filename=$filename&instance_id=$instance_id&access_token=$access_token";
+            Log::info($http_query);
+            $response = Http::get($http_query);
+        }
+        
         return true;
     }
    

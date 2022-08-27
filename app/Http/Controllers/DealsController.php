@@ -716,6 +716,7 @@ class DealsController extends Controller
             'email_type' => 'invoice_approval',
             'params' => json_encode($body),
             'to' => $deal_info->customer->email,
+            'send_type' => 'customer'
         );
         SendMail::create($ins_mail);
 
