@@ -16,8 +16,9 @@ class ClientAuthenticate
      */
     public function handle(Request $request, Closure $next)
     {
+        
         if( session()->get('client') === null ) {
-            redirect()->route('customer-login');
+            return redirect()->route('customer-login');
         }
         return $next($request);
     }

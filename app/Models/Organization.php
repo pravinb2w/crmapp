@@ -50,4 +50,9 @@ class Organization extends Model implements Auditable
     {
         return $this->hasOne(User::class, 'id', 'added_by');
     }
+
+    public function links()
+    {
+        return $this->hasMany(OrganizationLink::class, 'company_id');
+    }
 }

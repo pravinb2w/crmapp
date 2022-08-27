@@ -25,6 +25,11 @@ Route::post('/reset-password', [App\Http\Controllers\front\Auth\ForgotPasswordCo
 Route::middleware([SetViewVariable::class, 'client'])->group(function () {
     Route::get('/profile', [App\Http\Controllers\front\ProfileController::class, 'index'])->name('profile');
     Route::post('/customer/logout', [App\Http\Controllers\front\Auth\LoginController::class, 'logout'])->name('customer-logout');
+    Route::post('/customer/info', [App\Http\Controllers\front\ProfileController::class, 'customer_info'])->name('customer-info');
+    Route::post('/customer/save', [App\Http\Controllers\front\ProfileController::class, 'save_customer'])->name('customer-save');
+    Route::post('/customer/pic/change', [App\Http\Controllers\front\ProfileController::class, 'change_profile_picture'])->name('customer-pic-change');
+    Route::post('/customer/pic/remove', [App\Http\Controllers\front\ProfileController::class, 'remove_profile_picture'])->name('customer-pic-remove');
+    Route::post('/company/info', [App\Http\Controllers\front\ProfileController::class, 'company_info'])->name('company-info');
 });
 
 Route::get('/send-mail', [App\Http\Controllers\MailController::class, 'sendMail'])->name('send');

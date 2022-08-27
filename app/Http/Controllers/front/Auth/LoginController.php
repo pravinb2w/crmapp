@@ -27,7 +27,7 @@ class LoginController extends Controller
         $email = $request->email;
         $password = $request->password;
         $customer_info = Customer::where(['email' => $email, 'status' => 1, 'password' => Hash::make($password)  ])->first();
-
+        
         if( isset( $customer_info ) && !empty( $customer_info ) ) {
             Session::put('client', $customer_info);
           

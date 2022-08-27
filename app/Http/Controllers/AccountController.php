@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ApiData;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -86,7 +87,7 @@ class AccountController extends Controller
     {
 
         $type = $request->type;
-        if (isset($type) && ($type != 'api' && $type != 'link' && $type != 'prefix' && $type != 'common')) {
+        if (isset($type) && ($type != 'api' && $type != 'sms' && $type != 'link' && $type != 'prefix' && $type != 'common')) {
             if ($type == 'company') {
                 $validator   = [
                     'site_name' => ['required', 'string', 'max:255'],
@@ -130,6 +131,7 @@ class AccountController extends Controller
                     $sett->youtube_learning_link = $request->youtube_learning_link;
                     $sett->telegram_link = $request->telegram_link;
                     $sett->gstin_no = $request->gstin_no;
+                    
 
                     if ($request->hasFile('site_logo')) {
                         $file                       = $request->file('site_logo')->store('account', 'public');
@@ -170,7 +172,7 @@ class AccountController extends Controller
             $user = User::find($id);
             $sett = CompanySettings::find($user->company_id);
 
-            if ($type == 'api') {
+            if ($type == 'sms') {
 
                 $sms = SmsIntegration::where('company_id', $user->company_id)->first();
                 $sms_type = $request->sms_type;
@@ -214,6 +216,8 @@ class AccountController extends Controller
                 $sett->facebook_url = $request->facebook_url;
                 $sett->twitter_url = $request->twitter_url;
                 $sett->instagram_url = $request->instagram_url;
+                $sett->instagram_chat_link = $request->instagram_chat_link;
+                $sett->whatsapp_chat_link = $request->whatsapp_chat_link;
                 $sett->update();
             } else if ($type == 'common') {
                 $sett->invoice_terms = $request->invoice_terms;
@@ -249,6 +253,33 @@ class AccountController extends Controller
                         // }
                     }
                 }
+            } else if( $type == 'api' ) {
+               
+                $ins = $request->all();
+                unset( $ins['api_type']);
+                unset( $ins['type']);
+                $ins_array = [];
+                if( isset( $ins ) && !empty( $ins ) ){
+                    foreach ($ins as $key => $value) {
+                        $new_array = [];
+                        $new_array['type'] = $request->api_type;
+                        $new_array['field'] = $key;
+                        $new_array['field_value'] = $value;
+                        $ins_array[] = $new_array;
+                        
+                        $api_info = ApiData::where( ['type' => $request->api_type, 'field' => $key] )->first();
+                        if( isset( $api_info ) && !empty( $api_info ) ) {
+                            $api_info->field_value = $value;
+                            $api_info->update();
+                        } else {
+                            ApiData::create($new_array);
+                        }
+
+                    }
+
+                }
+                
+                
             }
             $success = 'Account settings saved';
             return response()->json(['error' => [$success], 'status' => '0']);

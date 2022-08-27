@@ -67,10 +67,10 @@ class CustomerController extends Controller
                     $action .= '<a href="javascript:void(0);" class="action-icon" onclick="return view_modal(\'customers\', ' . $customers->id . ')"> <i class="mdi mdi-eye"></i></a>';
                 }
                 if (Auth::user()->hasAccess('customers', 'is_edit')) {
-                    $action .= '<a href="javascript:void(0);" class="action-icon" onclick="return get_add_modal(\'customers\', ' . $customers->id . ')"> <i class="mdi mdi-square-edit-outline"></i></a>';
+                   // $action .= '<a href="javascript:void(0);" class="action-icon" onclick="return get_add_modal(\'customers\', ' . $customers->id . ')"> <i class="mdi mdi-square-edit-outline"></i></a>';
                 }
                 if (Auth::user()->hasAccess('customers', 'is_delete')) {
-                    $action .= '<a href="javascript:void(0);" class="action-icon" onclick="return common_soft_delete(\'customers\', ' . $customers->id . ')"> <i class="mdi mdi-delete"></i></a>';
+                   // $action .= '<a href="javascript:void(0);" class="action-icon" onclick="return common_soft_delete(\'customers\', ' . $customers->id . ')"> <i class="mdi mdi-delete"></i></a>';
                 }
 
                 $nested_data['first_name']        = $customers->first_name;

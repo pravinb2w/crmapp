@@ -44,7 +44,9 @@ class CompanySettings extends Model implements Auditable
         'telegram_bot',
         'testimonial_link',
         'youtube_learning_link',
-        'telegram_link'
+        'telegram_link',
+        'whatsapp_chat_link',
+        'instagram_chat_link'
     ];
 
     public function subscription()

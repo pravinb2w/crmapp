@@ -437,12 +437,12 @@
         </style>
         <div class="rightchat">
             <div class="callus-app">
-              <a href="javascript:void(0)" onclick="return sendWhatsappApiSms()">
+              <a href="{{ csettings('whatsapp_chat_link') }}" target="_blank">
                 <i class="fa fa-whatsapp"></i>
             </a>
             </div>
             <div class="callus-app">
-              <a href="javascript:void(0)" onclick="return sendWhatsappApiSms()">
+              <a href="{{ csettings('instagram_chat_link') }}" target="_blank">
                 <i class="fa fa-telegram"></i>
               </a>
             </div>

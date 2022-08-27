@@ -1,17 +1,17 @@
-<form>
-
-    <h5 class="mb-3 text-uppercase bg-light p-2"><i class="mdi mdi-office-building me-1"></i> Company Info</h5>
+<form v-on:submit="companyForm" v-for="(item, kindex) in companyInfo">
+    @csrf
+    <h5 class="mb-4 text-uppercase"><i class="mdi mdi-office-building me-1"></i> Company Info</h5>
     <div class="row">
         <div class="col-md-6">
             <div class="mb-3">
                 <label for="companyname" class="form-label">Company Name</label>
-                <input type="text" class="form-control" id="companyname" placeholder="Enter company name">
+                <input type="text" class="form-control" name="name" v-model="item.name" id="companyname" placeholder="Enter company name">
             </div>
         </div>
         <div class="col-md-6">
             <div class="mb-3">
                 <label for="cwebsite" class="form-label">Website</label>
-                <input type="text" class="form-control" id="cwebsite" placeholder="Enter website url">
+                <input type="text" class="form-control" name="website" v-model="item.website" id="cwebsite" placeholder="Enter website url">
             </div>
         </div> <!-- end col -->
     </div> <!-- end row -->
@@ -19,21 +19,21 @@
         <div class="col-md-6">
             <div class="mb-3">
                 <label for="useremail" class="form-label">Email Address</label>
-                <input type="email" class="form-control" id="useremail" placeholder="Enter email" value="test@gmail.com" disabled>
+                <input type="email" name="email" class="form-control" id="email" placeholder="Enter email" v-model="item.email">
             </div>
         </div>
         <div class="col-md-6">
             <div class="mb-3">
                 <label for="usermobile" class="form-label">Mobile Number</label>
-                <input type="password" class="form-control" id="usermobile" placeholder="9754212312" disabled>
+                <input type="text" name="mobile_no" class="form-control" id="usermobile" placeholder="" v-model="item.mobile_no">
             </div>
         </div> <!-- end col -->
     </div> <!-- end row -->
     <div class="row">
         <div class="col-12">
             <div class="mb-3">
-                <label for="userbio" class="form-label">Address</label>
-                <textarea class="form-control" id="userbio" rows="4" placeholder="Write something..."></textarea>
+                <label for="address" class="form-label">Address</label>
+                <textarea class="form-control" id="address" name="item.address" rows="4" placeholder="Write something..." v-model="item.address"></textarea>
             </div>
         </div> <!-- end col -->
     </div> 
@@ -45,7 +45,7 @@
                 <label for="social-fb" class="form-label">Facebook</label>
                 <div class="input-group">
                     <span class="input-group-text"><i class="mdi mdi-facebook"></i></span>
-                    <input type="text" class="form-control" id="social-fb" placeholder="Url">
+                    <input type="text" class="form-control" v-model="item.links.facebook_url" name="facebook_url" id="facebook_url" placeholder="Url">
                 </div>
             </div>
         </div>
@@ -54,7 +54,7 @@
                 <label for="social-tw" class="form-label">Twitter</label>
                 <div class="input-group">
                     <span class="input-group-text"><i class="mdi mdi-twitter"></i></span>
-                    <input type="text" class="form-control" id="social-tw" placeholder="Username">
+                    <input type="text" class="form-control" v-model="item.links.twitter_url" name="twitter_url" id="twitter_url" placeholder="Url">
                 </div>
             </div>
         </div> <!-- end col -->
@@ -66,7 +66,7 @@
                 <label for="social-insta" class="form-label">Instagram</label>
                 <div class="input-group">
                     <span class="input-group-text"><i class="mdi mdi-instagram"></i></span>
-                    <input type="text" class="form-control" id="social-insta" placeholder="Url">
+                    <input type="text" class="form-control" v-model="item.links.instagram_url" name="instagram_url" id="instagram_url" placeholder="Url">
                 </div>
             </div>
         </div>
@@ -75,7 +75,7 @@
                 <label for="social-lin" class="form-label">Linkedin</label>
                 <div class="input-group">
                     <span class="input-group-text"><i class="mdi mdi-linkedin"></i></span>
-                    <input type="text" class="form-control" id="social-lin" placeholder="Url">
+                    <input type="text" class="form-control" v-model="item.links.linkedin_url" name="linkedin_url" id="linkedin_url" placeholder="Url">
                 </div>
             </div>
         </div> <!-- end col -->
@@ -87,7 +87,7 @@
                 <label for="social-sky" class="form-label">Skype</label>
                 <div class="input-group">
                     <span class="input-group-text"><i class="mdi mdi-skype"></i></span>
-                    <input type="text" class="form-control" id="social-sky" placeholder="@username">
+                    <input type="text" class="form-control" v-model="item.links.skype_url" name="skype_url" id="skype_url" placeholder="Url">
                 </div>
             </div>
         </div>
@@ -96,7 +96,7 @@
                 <label for="social-gh" class="form-label">Github</label>
                 <div class="input-group">
                     <span class="input-group-text"><i class="mdi mdi-github"></i></span>
-                    <input type="text" class="form-control" id="social-gh" placeholder="Username">
+                    <input type="text" class="form-control" v-model="item.links.github_url" name="github_url" id="github_url" placeholder="Username">
                 </div>
             </div>
         </div> <!-- end col -->

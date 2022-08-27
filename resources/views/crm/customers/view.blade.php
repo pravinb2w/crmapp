@@ -51,11 +51,19 @@
                                     <th>
                                         Secondary Phone Number
                                     </th>
-                                    @foreach ($info->secondary_mobile as $item)
+                                  
                                         <td>
-                                            {{ $item->mobile_no ?? '' }}
+                                            <table>
+                                                @foreach ($info->secondary_mobile as $item)
+                                                <tr>
+                                                    <td>
+                                                        {{ $item->mobile_no ?? '' }}
+
+                                                    </td>
+                                                </tr>
+                                                @endforeach
+                                            </table>
                                         </td>
-                                    @endforeach
                                 </tr>
                                 @endif
                                 @if( isset( $info->secondary_email ) && count($info->secondary_email) > 0 )
@@ -63,11 +71,19 @@
                                     <th>
                                         Secondary Email
                                     </th>
-                                    @foreach ($info->secondary_email as $item)
-                                        <td>
-                                            {{ $item->email ?? '' }}
-                                        </td>
-                                    @endforeach
+                                   
+                                    <td>
+                                        <table>
+                                            @foreach ($info->secondary_email as $item)
+                                            <tr>
+                                                <td>
+                                                    {{ $item->email ?? '' }}
+                                                </td>
+                                            </tr>
+                                            @endforeach
+                                        </table>
+                                    </td>
+                                   
                                 </tr>
                                 @endif
                             </table>

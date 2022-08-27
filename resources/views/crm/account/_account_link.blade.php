@@ -22,6 +22,20 @@
             <input type="text" name="instagram_url" value="{{ $info->company->instagram_url ?? '' }}" class="form-control" id="instagram_url" placeholder="Instagram Url">
         </div>
     </div>
+    <hr>
+    <h4>Chat Link</h4>
+    <div class="row mb-3">
+        <label for="instagram_chat_link" class="col-3 col-form-label">Instagram Chat Url</label>
+        <div class="col-9">
+            <input type="text" name="instagram_chat_link" value="{{ $info->company->instagram_chat_link ?? '' }}" class="form-control" id="instagram_chat_link" placeholder="Instagram Chat Url">
+        </div>
+    </div>
+    <div class="row mb-3">
+        <label for="whatsapp_chat_link" class="col-3 col-form-label">Whatsapp Chat Url</label>
+        <div class="col-9">
+            <input type="text" name="whatsapp_chat_link" value="{{ $info->company->whatsapp_chat_link ?? '' }}" class="form-control" id="whatsapp_chat_link" placeholder="Whatsapp Chat Url">
+        </div>
+    </div>
     <div class="justify-content-end row">
         <div class="col-9">
             <button type="submit" class="btn btn-info">Update</button>

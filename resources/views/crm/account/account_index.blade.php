@@ -63,8 +63,13 @@
                             </a>
                         </li>
                         <li class="nav-item">
+                            <a href="#horizontal-form-api" data-bs-toggle="tab" onclick="return get_settings_tab('sms')" aria-expanded="true" class="nav-link">
+                                SMS
+                            </a>
+                        </li>
+                        <li class="nav-item">
                             <a href="#horizontal-form-api" data-bs-toggle="tab" onclick="return get_settings_tab('api')" aria-expanded="true" class="nav-link">
-                                SMS & API
+                                API
                             </a>
                         </li>
                         

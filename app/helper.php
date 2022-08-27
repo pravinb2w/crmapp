@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\ApiData;
 use Illuminate\Support\Facades\Http;
 use App\Models\SmsIntegration;
 use App\Models\CompanySettings;
@@ -46,6 +47,15 @@ function csettings($module)
     }
 }
 
+function capi($type, $field) {
+    $api_info = ApiData::where(['type' => $type, 'field' => $field])->first();
+    if( isset( $api_info ) && !empty( $api_info ) ) {
+        return $api_info->field_value;
+    } else  {
+        return false;
+    }
+}
+
 function automation($activity_type, $field)
 {
     if (csettings('workflow_automation')) {
@@ -76,49 +86,22 @@ function sendSMS($mobile_no, $type, $params)
     }
 }
 
-// *********** Crypto CCAvenue Function *********************
+function sendWhatsappApi($mobile_no, $type, $params) {
+    $mobile_no = '91'.$mobile_no;
+    $access_token = capi('whatsapp', 'access_token');
+    $instance_id = capi('whatsapp', 'instance_id');
 
-function encrypt_crypto($plainText, $key)
-{
-    $secretKey = hextobin(md5($key));
-    $initVector = pack("C*", 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f);
-    $encryptedText = openssl_encrypt($plainText, "AES-128-CBC", $secretKey, OPENSSL_RAW_DATA, $initVector);
-    $encryptedText = bin2hex($encryptedText);
-    return $encryptedText;
-}
-
-function decrypt_crypto($encryptedText, $key)
-{
-    $secretKey         = hextobin(md5($key));
-    $initVector         =  pack("C*", 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f);
-    $encryptedText      = hextobin($encryptedText);
-    $decryptedText         =  openssl_decrypt($encryptedText, "AES-128-CBC", $secretKey, OPENSSL_RAW_DATA, $initVector);
-    return $decryptedText;
-}
-
-// *********** Padding Function *********************
-function pkcs5_pad($plainText, $blockSize)
-{
-    $pad = $blockSize - (strlen($plainText) % $blockSize);
-    return $plainText . str_repeat(chr($pad), $pad);
-}
-
-// ********** Hexadecimal to Binary function for php 4.0 version ********
-function hextobin($hexString)
-{
-    $length = strlen($hexString);
-    $binString = "";
-    $count = 0;
-    while ($count < $length) {
-        $subString = substr($hexString, $count, 2);
-        $packedString = pack("H*", $subString);
-        if ($count == 0) {
-            $binString = $packedString;
-        } else {
-            $binString .= $packedString;
-        }
-
-        $count += 2;
+    $sms = SmsIntegration::where('sms_type', $type)->first();
+    $message = $sms->template;
+    $message = str_replace("{", "", addslashes($message));
+    $message = str_replace("}", "", $message);
+    extract($params);
+    eval("\$message = \"$message\";");
+    $api_type = 'text';
+    if( $access_token && $instance_id ) {
+        $http_query = "http://wase.co.in/api/send.php?number=$mobile_no&type=$api_type&message=$message&instance_id=$instance_id&access_token=$access_token";
+        $response = Http::get($http_query);
+        dd( $response );
     }
-    return $binString;
+   
 }
