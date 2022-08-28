@@ -153,7 +153,7 @@ class SendMail extends Command
                                 }
                             }
                         }
-                        // ModelsSendMail::find($item->id)->delete();
+                        ModelsSendMail::find($item->id)->delete();
                     }
                 }
             }
