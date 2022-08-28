@@ -11,7 +11,7 @@ class NewsletterExport implements FromView
     public function view(): View
     {
         $details = Newsletter::all();
-        return view('crm.exports.invoice_excel', [
+        return view('crm.exports.newsletter_excel', [
             'details' => $details
         ]);
     } 
