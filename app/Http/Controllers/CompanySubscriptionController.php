@@ -121,7 +121,7 @@ class CompanySubscriptionController extends Controller
         $id = $request->id;
 
         $role_validator   = [
-            'company_id'      => ['required', 'string', 'max:255', 'unique:company_subscriptions'],
+            'company_id'      => ['required', 'string', 'max:255', 'unique:company_subscriptions,company_id,'.$id],
             'subscription_id'      => ['required', 'string', 'max:255'],
             'start_date' => ['required', 'date'],
         ];

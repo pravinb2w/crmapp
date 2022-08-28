@@ -23,7 +23,8 @@ class Organization extends Model implements Auditable
         'description',
         'fax',
         'added_by',
-        'status'
+        'status',
+        'dial_code'
     ];
 
     public function scopeLatests(Builder $query)

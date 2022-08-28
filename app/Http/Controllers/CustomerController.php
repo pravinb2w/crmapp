@@ -76,7 +76,7 @@ class CustomerController extends Controller
                 $nested_data['first_name']        = $customers->first_name;
                 $nested_data['company']             = $customers->company->name ?? 'N/A';
                 $nested_data['email']             = $customers->email ?? 'N/A';
-                $nested_data['mobile_no']         = $customers->mobile_no ?? 'N/A';
+                $nested_data['mobile_no']         = ($customers->dial_code ?? '' ).$customers->mobile_no ?? 'N/A';
                 $nested_data['status']            = $customers_status;
                 $nested_data['action']            = $action;
                 $data[]                             = $nested_data;

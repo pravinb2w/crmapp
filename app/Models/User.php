@@ -34,6 +34,7 @@ class User extends Authenticatable implements Auditable
         'status',
         'lead_limit',
         'deal_limit',
+        'dial_code',
         
     ];
 

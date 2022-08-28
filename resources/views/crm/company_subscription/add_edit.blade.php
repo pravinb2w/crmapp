@@ -56,7 +56,7 @@
                     <label for="description" class="col-form-label">Description</label>
                     <!-- Success Switch-->
                     <div>
-                        <textarea name="description" class="form-control" id="description" cols="30" rows="3"></textarea>
+                        <textarea name="description" class="form-control" id="description" cols="30" rows="3">{{ $info->description ?? '' }}</textarea>
                     </div>
                 </div>
                 <div class="mb-3 d-flex align-items-center">

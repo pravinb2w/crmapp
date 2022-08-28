@@ -397,7 +397,14 @@
 
                                                 <div class="form-group">
                                                     <span>Mobile No</span>
-                                                    <div>
+                                                    <div class="d-flex">
+                                                        <select name="dial_code" id="dial_code" class="form-control w-25">
+                                                            @if( isset( $country ) && !empty( $country ) )
+                                                                @foreach ($country as $item)
+                                                                    <option value="{{ $item->dial_code }}">{{ $item->dial_code }}</option>
+                                                                @endforeach
+                                                            @endif
+                                                        </select>
                                                         <input type="text" class="form-control text-start"
                                                             maxlength="10" placeholder="Customer Mobile Number"
                                                             id="mobile_no" name="mobile_no" required>

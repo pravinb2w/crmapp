@@ -7,6 +7,7 @@ use App\Helpers\MailEntryHelper;
 use App\Http\Controllers\Controller;
 use App\Mail\TestEmail;
 use App\Models\CompanySettings;
+use App\Models\Country;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\Order;
@@ -36,12 +37,14 @@ class BuyController extends Controller
         $product_id = $request->product_id;
         $product_info = Product::find($product_id);
         $gateways = PaymentIntegration::all();
+        $country = Country::all();
         $modal_title = 'Buy Now';
         $params = array(
             'product_info' => $product_info,
             'product_id' => $product_id,
             'modal_title' => $modal_title,
-            'gateways' => $gateways
+            'gateways' => $gateways,
+            'country' => $country
         );
         return view('front.buy.buy_form', $params);
     }
@@ -65,6 +68,7 @@ class BuyController extends Controller
                 $customer_id = $customer->id;
                 $customer_info = Customer::find($customer_id);
                 $customer_info->mobile_no = $request->mobile_no;
+                $customer_info->dial_code = $request->dial_code;
                 $customer_info->update();
             } else {
                 $randomString = rand(0, 999999);
@@ -74,6 +78,7 @@ class BuyController extends Controller
                 $ins['email'] = $request->email;
                 $ins['password'] = $password;
                 $ins['mobile_no'] = $request->mobile_no;
+                $ins['dial_code'] = $request->dial_code;
                 $ins['added_by'] = 1;
                 $customer_id = Customer::create($ins)->id;
                 //send password in sms 

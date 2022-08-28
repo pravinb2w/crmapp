@@ -13,24 +13,37 @@
                             <div class="col-12" id="error"></div>
                         </div>
                         <div class="row">
-                            <div class="col-6">
-                                <label for="">Team Name</label>
-                                <div>
-                                    {{ $info->team_name ?? '' }}
-                                </div>
-                            </div>
-                            <div class="col-6">
-                                <label for="">Team Limit</label>
-                                <div>
-                                    {{ $info->team_limit ?? '' }}
-                                </div>
-                            </div>
-                            <div class="col-6 mt-2">
-                                <label for="">Description</label>
-                                <div>
-                                    {{ $info->description ?? '' }}
-                                </div>
-                            </div>
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th class="table-light">
+                                            <label for="">Team Name</label>
+                                        </th>
+                                        <td>
+                                            <div>
+                                                {{ $info->team_name ?? '' }}
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th class="table-light">
+                                            <label for="">Team Limit</label>
+                                        </th>
+                                        <td>
+                                            {{ $info->team_limit ?? '' }}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th class="table-light">
+                                            <label for="">Description</label>
+                                        </th>
+                                        <td>
+                                            {{ $info->description ?? '' }}
+                                        </td>
+                                    </tr>
+                                </thead>
+                            </table>
+                            
                         </div>
                             
                         <div class="col-md-12 mt-2 text-end">

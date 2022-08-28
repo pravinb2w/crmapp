@@ -7,7 +7,8 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use DB;
 use App\Models\CompanySettings;
-
+use App\Models\Country;
+use PHPUnit\Framework\Constraint\Count;
 
 class CompanyController extends Controller
 {
@@ -88,11 +89,12 @@ class CompanyController extends Controller
         }
         $id = $request->id;
         $modal_title = 'Add Company';
+        $country = Country::all();
         if( isset( $id ) && !empty($id) ) {
             $info = CompanySettings::find($id);
             $modal_title = 'Update Company';
         }
-        $params = ['modal_title' => $modal_title, 'id' => $id ?? '', 'info' => $info ?? ''];
+        $params = ['modal_title' => $modal_title, 'id' => $id ?? '', 'info' => $info ?? '', 'country' => $country];
         return view('crm.company.add_edit', $params);
         echo json_encode(['view' => $view]);
         return true;

@@ -30,7 +30,8 @@ class Customer extends Authenticatable implements Auditable
         'status',
         'updated_by',
         'organization_id',
-        'password'
+        'password',
+        'dial_code'
     ];
 
     public function company()

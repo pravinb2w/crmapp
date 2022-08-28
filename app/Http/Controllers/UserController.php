@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Role;
 use App\Models\CompanySettings;
+use App\Models\Country;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
@@ -72,7 +73,7 @@ class UserController extends Controller
                 $nested_data['name']              = $users->name;
                 $nested_data['role']              = $users->role->role ?? '';
                 $nested_data['email']             = $users->email;
-                $nested_data['mobile_no']         = $users->mobile_no;
+                $nested_data['mobile_no']         = ($users->dial_code ?? '').$users->mobile_no;
                 $nested_data['status']            = $users_status;
                 $nested_data['action']            = $action;
                 $data[]                             = $nested_data;
@@ -94,12 +95,13 @@ class UserController extends Controller
         }
         $id = $request->id;
         $modal_title = 'Add User';
+        $country  = Country::all();
         $roles = Role::where('status', 1)->get();
         if (isset($id) && !empty($id)) {
             $info = User::find($id);
             $modal_title = 'Update User';
         }
-        $params = ['modal_title' => $modal_title, 'id' => $id ?? '', 'info' => $info ?? '', 'roles' => $roles];
+        $params = ['modal_title' => $modal_title, 'id' => $id ?? '', 'info' => $info ?? '', 'roles' => $roles, 'country' => $country];
         return view('crm.user.add_edit', $params);
     }
 
@@ -147,6 +149,7 @@ class UserController extends Controller
             $ins['name'] = $request->name;
             $ins['last_name'] = $request->last_name;
             $ins['mobile_no'] = $request->mobile_no;
+            $ins['dial_code'] = $request->dial_code;
             $ins['role_id'] = $request->role_id;
             $ins['email'] = $request->email;
             $ins['lead_limit'] = $request->lead_limit;
@@ -163,6 +166,7 @@ class UserController extends Controller
                 $user->last_name = $request->last_name;
                 $user->email = $request->email;
                 $user->mobile_no = $request->mobile_no;
+                $user->dial_code = $request->dial_code;
                 $user->role_id = $request->role_id;
                 $user->lead_limit = $request->lead_limit;
                 $user->deal_limit = $request->deal_limit;

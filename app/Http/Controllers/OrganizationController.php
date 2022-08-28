@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\CommonHelper;
+use App\Models\Country;
 use App\Models\Organization;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -76,7 +77,7 @@ class OrganizationController extends Controller
                 </div>';
                 $nested_data['name']              = $organizations->name;
                 $nested_data['email']             = $organizations->email;
-                $nested_data['mobile_no']         = $organizations->mobile_no;
+                $nested_data['mobile_no']         = ($organizations->dial_code ?? '').$organizations->mobile_no;
                 $nested_data['status']            = $organizations_status;
                 $nested_data['action']            = $action;
                 $data[]                             = $nested_data;
@@ -98,13 +99,14 @@ class OrganizationController extends Controller
         }
         $id = $request->id;
         $from = $request->from;
+        $country = Country::all();
         $modal_title = 'Add Organization';
 
         if (isset($id) && !empty($id)) {
             $info = Organization::find($id);
             $modal_title = 'Update Organization';
         }
-        $params = ['modal_title' => $modal_title, 'id' => $id ?? '', 'info' => $info ?? '', 'from' => $from];
+        $params = ['modal_title' => $modal_title, 'id' => $id ?? '', 'info' => $info ?? '', 'from' => $from, 'country' => $country];
         return view('crm.organization.add_edit', $params);
     }
 
@@ -149,6 +151,7 @@ class OrganizationController extends Controller
             $ins['name'] = $request->name;
             $ins['email'] = $request->email;
             $ins['mobile_no'] = $request->mobile_no;
+            $ins['dial_code'] = $request->dial_code;
             $ins['address'] = $request->address;
 
             if (isset($id) && !empty($id)) {
@@ -158,6 +161,7 @@ class OrganizationController extends Controller
                 $org->name = $request->name;
                 $org->email = $request->email;
                 $org->mobile_no = $request->mobile_no;
+                $org->dial_code = $request->dial_code;
                 $org->address = $request->address;
 
                 $org->update();

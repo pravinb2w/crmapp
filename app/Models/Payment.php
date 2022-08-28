@@ -38,7 +38,8 @@ class Payment extends Model implements Auditable
         'invoice_id',
         'payment_response',
         'generated_links',
-        'temp_no'
+        'temp_no',
+        'dial_code'
     ];
 
     public function scopeLatests(Builder $query)

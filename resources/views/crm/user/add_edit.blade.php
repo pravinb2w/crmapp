@@ -43,8 +43,15 @@
                         @endif
                         <div class="mb-2">
                             <label for="mobile_no" class="col-form-label">Mobile Number <span class="text-danger">*</span></label>
-                            <div>
-                                <input type="number" name="mobile_no" class="form-control" id="mobile_no" placeholder="Mobile Number" value="{{ $info->mobile_no ?? '' }}" required>
+                            <div class="d-flex">
+                                <select name="dial_code" id="dial_code" class="form-control text-center w-25">
+                                    @if ( isset( $country ) && !empty( $country ) )
+                                        @foreach ($country as $code )
+                                            <option value="{{ $code->dial_code }}">{{ $code->dial_code }}</option>
+                                        @endforeach
+                                    @endif
+                                </select>
+                                <input type="text" maxlength="10" name="mobile_no" class="form-control mobile" id="mobile_no" placeholder="Mobile Number" value="{{ $info->mobile_no ?? '' }}" required>
                             </div>
                         </div>
                         
@@ -123,5 +130,21 @@
             }
         });
 
-        
+        $('input.mobile' ).keypress(function(evt){
+            var theEvent = evt || window.event;
+
+            // Handle paste
+            if (theEvent.type === 'paste') {
+                key = event.clipboardData.getData('text/plain');
+            } else {
+            // Handle key press
+                var key = theEvent.keyCode || theEvent.which;
+                key = String.fromCharCode(key);
+            }
+            var regex = /[0-9]|\./;
+            if( !regex.test(key) ) {
+                theEvent.returnValue = false;
+                if(theEvent.preventDefault) theEvent.preventDefault();
+            }
+        })
 </script>

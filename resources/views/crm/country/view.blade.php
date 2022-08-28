@@ -13,54 +13,80 @@
                             <div class="col-12" id="error"></div>
                         </div>
                         <div class="row">
-                            <div class="col-6">
-                                <label for="">Country</label>
-                                <div>
-                                    {{ $info->country_name ?? '' }}
-                                </div>
-                            </div>
-                            @if(isset( $info->dial_code) && !empty($info->dial_code))
-                            <div class="col-6">
-                                <label for="">Dial Code</label>
-                                <div>
-                                    {{ $info->dial_code ?? '' }}
-                                </div>
-                            </div>
-                            @endif
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th class="table-light">
+                                            <label for="">Country</label>
+                                        </th>
+                                        <td>
+                                            <div>
+                                                {{ $info->country_name ?? '' }}
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    @if(isset( $info->dial_code) && !empty($info->dial_code))
 
-                            @if(isset( $info->country_code) && !empty($info->country_code))
-                            <div class="col-6">
-                                <label for="">Country Code</label>
-                                <div>
-                                    {{ $info->country_code ?? '' }}
-                                </div>
-                            </div>
-                            @endif
+                                    <tr>
+                                        <th class="table-light">
+                                            <label for="">Dial Code</label>
+                                        </th>
+                                        <td>
+                                            <div>
+                                                {{ $info->dial_code ?? '' }}
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    @endif
+                                    @if(isset( $info->country_code) && !empty($info->country_code))
+                                    <tr>
+                                        <th class="table-light">
+                                            <label for="">Country Code</label>
+                                        </th>
+                                        <td>
+                                            <div>
+                                                {{ $info->country_code ?? '' }}
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    @endif
+                                    @if(isset( $info->iso) && !empty($info->iso))
+
+                                    <tr>
+                                        <th class="table-light">
+                                            <label for="">ISO</label>
+                                        </th>
+                                        <td>
+                                            <div>
+                                                {{ $info->iso ?? '' }}
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    @endif
+                                    @if(isset( $info->currency) && !empty($info->currency))
+
+                                    <tr>
+                                        <th class="table-light">
+                                            <label for="">Currency</label>
+                                        </th>
+                                        <td>
+                                            <div>
+                                                {{ $info->currency ?? '' }}
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    @endif
+                                    <tr>
+                                        <th class="table-light">
+                                            <label for="">Description</label>
+                                        </th>
+                                        <td>
+                                            {{ $info->description ?? '' }}
+                                        </td>
+                                    </tr>
+                                </thead>
+                            </table>
                             
-                            @if(isset( $info->iso) && !empty($info->iso))
-                            <div class="col-6">
-                                <label for="">ISO</label>
-                                <div>
-                                    {{ $info->iso ?? '' }}
-                                </div>
-                            </div>
-                            @endif
-
-                            @if(isset( $info->currency) && !empty($info->currency))
-                            <div class="col-6">
-                                <label for="">Currency</label>
-                                <div>
-                                    {{ $info->currency ?? '' }}
-                                </div>
-                            </div>
-                            @endif
-
-                            <div class="col-6">
-                                <label for="">Description</label>
-                                <div>
-                                    {{ $info->description ?? '' }}
-                                </div>
-                            </div>
                         </div>
                             
                         <div class="col-md-12 mt-2 text-end">

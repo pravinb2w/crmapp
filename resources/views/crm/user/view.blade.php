@@ -13,55 +13,47 @@
                             <div class="col-12" id="error"></div>
                         </div>
                         <div class="row">
-                            <div class="col-6">
-                                <label for="">First Name</label>
-                                <div>
-                                    {{ $info->name ?? '' }}
-                                </div>
-                            </div>
-                            <div class="col-6">
-                                <label for="">Last Name</label>
-                                <div>
-                                    {{ $info->last_name ?? '' }}
-                                </div>
-                            </div>
-                            <div class="col-6">
-                                <label for="">Email</label>
-                                <div>
-                                    {{ $info->email ?? '' }}
-                                </div>
-                            </div>
-                            <div class="col-6">
-                                <label for="">Mobile Number</label>
-                                <div>
-                                    {{ $info->mobile_no ?? '' }}
-                                </div>
-                            </div>
+                            <table class="table">
+                                <tr>
+                                    <th class="table-light"> First Name</th>
+                                    <td> {{ $info->name ?? '' }} </td>
+                                </tr>
+                                <tr>
+                                    <th class="table-light"> Last Name</th>
+                                    <td> {{ $info->last_name ?? '' }} </td>
+                                </tr>
+                                <tr>
+                                    <th class="table-light"> Email </th>
+                                    <td> {{ $info->email ?? '' }} </td>
+                                </tr>
+                                <tr>
+                                    <th class="table-light"> Mobile Number</th>
+                                    <td> {{ $info->mobile_no ?? '' }} </td>
+                                </tr>
+                                @if(isset( $info->lead_limit ) && !empty($info->lead_limit))
+                                <tr>
+                                    <th class="table-light">
+                                        <label for="">Lead Limit</label>
+                                    </th>
+                                    <td>
+                                        {{ $info->lead_limit ?? 'N/A' }}
+                                    </td>
+                                </tr>
+                                @endif
+                                @if(isset( $info->deal_limit ) && !empty($info->deal_limit))
+                                <tr>
+                                    <th class="table-light">
+                                        <label for="">Deal Limit</label>
+                                    </th>
+                                    <td>
+                                        {{ $info->deal_limit ?? 'N/A' }}
+                                    </td>
+                                </tr>
+                                @endif
+                            </table>
                            
                         </div>
 
-                        <div class="row">
-                            
-                            @if(isset( $info->lead_limit ) && !empty($info->lead_limit))
-                            <div class="col-6 mt-2">
-                                <label for="">Lead Limit</label>
-                                <div>
-                                    {{ $info->lead_limit ?? 'N/A' }}
-                                </div>
-                            </div>
-                            @endif
-                            @if(isset( $info->deal_limit ) && !empty($info->deal_limit))
-                            <div class="col-6 mt-2">
-                                <label for="">Deal Limit</label>
-                                <div>
-                                    {{ $info->deal_limit ?? 'N/A' }}
-                                </div>
-                            </div>
-                            @endif
-                            
-                        </div>
-                        
-                            
                             <div class="col-md-12 mt-2 text-end">
                                 <button type="button" class="btn btn-light me-2" data-bs-dismiss="modal" aria-label="Close"> Close</button>
                             </div>

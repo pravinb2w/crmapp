@@ -13,6 +13,7 @@ use App\Models\Announcement;
 use CommonHelper;
 use App\Models\EmailTemplates;
 use App\Mail\TestEmail;
+use App\Models\Country;
 use App\Models\Newsletter;
 use App\Models\Product;
 use App\Models\SendMail;
@@ -59,6 +60,7 @@ class LandingController extends Controller
         $params['payment_invoice_no'] = $payment_invoice_no;
         $params['payment_message'] = $payment_message;
         $params['announcements'] = Announcement::all();
+        $params['country'] = Country::all();
         // dd($params);
         return view('landing.landing', $params);
     }
@@ -90,6 +92,7 @@ class LandingController extends Controller
                 $ins['email'] = $request->email;
                 $ins['password'] = $password;
                 $ins['mobile_no'] = $request->mobile_no;
+                $ins['dial_code'] = $request->dial_code;
                 $ins['added_by'] = 1;
                 $customer_id = Customer::create($ins)->id;
                 //send password in sms 

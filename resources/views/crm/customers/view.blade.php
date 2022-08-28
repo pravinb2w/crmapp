@@ -27,7 +27,7 @@
                                         Phone Number
                                     </th>
                                     <td>
-                                        {{ $info->mobile_no ?? '' }}
+                                        {{ ($info->dial_code ?? '').$info->mobile_no ?? '' }}
                                     </td>
                                 </tr>
                                 <tr>
