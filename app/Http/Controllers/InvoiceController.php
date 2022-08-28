@@ -16,9 +16,9 @@ class InvoiceController extends Controller
 {
     public function index(Request $request)
     {
-        $params = [];
+        $params = [ 'btn_fn_param' => '', 'btn_name' => 'Invoice'];
         return view('crm.invoice.index', $params);
-    }
+    } 
 
     public function ajax_list(Request $request)
     {

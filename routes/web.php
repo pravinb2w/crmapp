@@ -419,6 +419,8 @@ Route::middleware([SetViewVariable::class, 'auth'])->prefix('dev')->group(functi
     Route::any('/export/user', [App\Http\Controllers\ExportController::class, 'exportUser'])->name('export.users');
     Route::any('/export/role', [App\Http\Controllers\ExportController::class, 'exportRole'])->name('export.roles');
     Route::any('/export/permission', [App\Http\Controllers\ExportController::class, 'exportPermission'])->name('export.permission');
+    Route::any('/export/invoice', [App\Http\Controllers\ExportController::class, 'exportInvoice'])->name('export.invoice');
+    Route::any('/export/newsletter', [App\Http\Controllers\ExportController::class, 'exportNewsletter'])->name('export.news_letter');
     Route::any('/export/activityStatus', [App\Http\Controllers\ExportController::class, 'exportActivityStatus'])->name('export.activity_status');
     Route::any('/export/taskStatus', [App\Http\Controllers\ExportController::class, 'exportTaskStatus'])->name('export.task_status');
     Route::any('/export/team', [App\Http\Controllers\ExportController::class, 'exportTeam'])->name('export.team');

@@ -24,6 +24,8 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-body"> 
+                    @include('crm.common.common_add_btn')
+
                     <div class="table-responsive">
                         <table class="table table-centered w-100 dt-responsive nowrap" id="invoice-datatable">
                             <thead class="table-light">

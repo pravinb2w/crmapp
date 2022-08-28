@@ -9,9 +9,11 @@ use App\Exports\CountryExport;
 use App\Exports\CustomerExport;
 use App\Exports\DealExport;
 use App\Exports\DealStageExport;
+use App\Exports\InvoiceExport;
 use App\Exports\LeadExport;
 use App\Exports\LeadSourceExport;
 use App\Exports\LeadStageExport;
+use App\Exports\NewsletterExport;
 use App\Exports\NotesExport;
 use App\Exports\OrganizationExport;
 use App\Exports\PageExport;
@@ -160,5 +162,17 @@ class ExportController extends Controller
     public function exportCompanySubscriptions()
     {
         return Excel::download(new CompanySubscriptionExport(), 'companySubscriptions.xlsx');
+    }
+
+    public function exportInvoice()
+    {
+        return Excel::download(new InvoiceExport(), 'Invoice.xlsx');
+
+    }
+
+    public function exportNewsletter()
+    {
+        return Excel::download(new NewsletterExport(), 'Newsletter.xlsx');
+        
     }
 }
