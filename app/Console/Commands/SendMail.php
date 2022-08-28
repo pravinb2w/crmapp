@@ -84,6 +84,7 @@ class SendMail extends Command
 
 
                 } else {
+                 
                     if (isset($econtent) && !empty($econtent)) {
 
                         $extract = unserialize($item->params);
@@ -108,9 +109,12 @@ class SendMail extends Command
 
                         if($item->email_type == 'success_payment') {
                             $order_id = $item->type_id;
-                            $invoice_info = Invoice::where('order_no', $order_id)->first();
+                            $invoice_info = Order::find($order_id);
+                            
+
                             if( isset( $invoice_info ) && !empty( $invoice_info ) ){
-                                $invoice_no = str_replace("/", "_", $invoice_info->invoice_no);
+                                Log::info($invoice_info->invoice);
+                                $invoice_no = str_replace("/", "_", $invoice_info->invoice->invoice_no);
                                 $file = $invoice_no . '.pdf';
 
                                 Mail::send('emails.test', $body, function ($message) use ($to, $title, $from, $file) {
@@ -118,6 +122,19 @@ class SendMail extends Command
                                     $message->from($from, 'Phoenix CRM');
                                     $message->attach(public_path('/invoice/' . $file));
                                 });
+                                
+                                if( $item->send_type == 'customer' ) {
+                                    $customer_info = Customer::where('email', $to)->first();
+                                    $templateMessage = strip_tags($templateMessage);
+                                   
+                                    if( isset( $customer_info) && !empty( $customer_info ) ) 
+                                    {
+                                        $media_url = asset('invoice') . '/' . $invoice_no . '.pdf';
+                                        $templateMessage = str_replace(['&nbsp;','&amp;', '&Acirc;', ';'], '', $templateMessage);
+                                        sendWhatsappApi($customer_info->mobile_no, 'payment', $templateMessage, 'media', $media_url, $file);
+                                    }
+                                }
+
                             }
                             
                         } else {
@@ -136,7 +153,7 @@ class SendMail extends Command
                                 }
                             }
                         }
-                        ModelsSendMail::find($item->id)->delete();
+                        // ModelsSendMail::find($item->id)->delete();
                     }
                 }
             }
