@@ -207,6 +207,8 @@
             return ajax_url = '{{ route("activity-status.add") }}';
         } else if(page_type=='task-status') {
             return ajax_url = '{{ route("task-status.add") }}';
+        } else if(page_type=='document-types') {
+            return ajax_url = '{{ route("document-types.add") }}';
         }
     }
 
@@ -253,6 +255,8 @@
             return ajax_url = '{{ route("payments.view") }}';
         } else if(page_type=='automation') {
             return ajax_url = '{{ route("automation.view") }}';
+        } else if(page_type=='document-types') {
+            return ajax_url = '{{ route("document-types.view") }}';
         }
     }
     function set_delete_url(page_type) {
@@ -308,6 +312,8 @@
             return ajax_url = '{{ route("task-status.delete") }}';
         } else if(page_type=='newsletter') {
             return ajax_url = '{{ route("newsletter.delete") }}';
+        } else if(page_type=='document-types') {
+            return ajax_url = '{{ route("document-types.delete") }}';
         }
     }
 
@@ -358,6 +364,8 @@
             return ajax_url = '{{ route("activity-status.status") }}';
         } else if(page_type == 'task-status' ) {
             return ajax_url = '{{ route("task-status.status") }}';
+        } else if(page_type == 'document-types' ) {
+            return ajax_url = '{{ route("document-types.status") }}';
         }
     }
 

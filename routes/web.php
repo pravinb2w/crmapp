@@ -12,7 +12,6 @@ use App\Http\Middleware\SetViewVariable;
 | contains the "web" middleware group. Now create something great!
 | 
 */
- 
 //customer login routes
 Route::get('/login', [App\Http\Controllers\front\Auth\LoginController::class, 'index'])->name('customer-login')->middleware('clientGuest');
 Route::post('/do/login', [App\Http\Controllers\front\Auth\LoginController::class, 'validate_login'])->name('customer-login-check');
@@ -23,13 +22,20 @@ Route::get('/reset-password/{token}', [App\Http\Controllers\front\Auth\ForgotPas
 Route::post('/reset-password', [App\Http\Controllers\front\Auth\ForgotPasswordController::class, 'resetPassword'])->name('customer.password.post');
 
 Route::middleware([SetViewVariable::class, 'client'])->group(function () {
-    Route::get('/profile', [App\Http\Controllers\front\ProfileController::class, 'index'])->name('profile');
+    Route::get('/profile/account', [App\Http\Controllers\front\ProfileController::class, 'index'])->name('profile');
     Route::post('/customer/logout', [App\Http\Controllers\front\Auth\LoginController::class, 'logout'])->name('customer-logout');
     Route::post('/customer/info', [App\Http\Controllers\front\ProfileController::class, 'customer_info'])->name('customer-info');
     Route::post('/customer/save', [App\Http\Controllers\front\ProfileController::class, 'save_customer'])->name('customer-save');
     Route::post('/customer/pic/change', [App\Http\Controllers\front\ProfileController::class, 'change_profile_picture'])->name('customer-pic-change');
     Route::post('/customer/pic/remove', [App\Http\Controllers\front\ProfileController::class, 'remove_profile_picture'])->name('customer-pic-remove');
     Route::post('/company/info', [App\Http\Controllers\front\ProfileController::class, 'company_info'])->name('company-info');
+    Route::post('/customer/company/save', [App\Http\Controllers\front\ProfileController::class, 'save_company'])->name('customer-company-save');
+    Route::get('/profile/settings', [App\Http\Controllers\front\ProfileController::class, 'settings'])->name('settings');
+    Route::post('/customer/password/save', [App\Http\Controllers\front\ProfileController::class, 'save_password'])->name('customer-password-save');
+
+    Route::get('/profile/kyc', [App\Http\Controllers\front\KycController::class, 'index'])->name('kyc');
+    Route::get('/profile/orders', [App\Http\Controllers\front\KycController::class, 'index'])->name('orders');
+    
 });
 
 Route::get('/send-mail', [App\Http\Controllers\MailController::class, 'sendMail'])->name('send');
@@ -378,6 +384,14 @@ Route::middleware([SetViewVariable::class, 'auth'])->prefix('dev')->group(functi
         Route::post('/country/delete', [App\Http\Controllers\CountryController::class, 'delete'])->name('country.delete');
         Route::post('/country/status', [App\Http\Controllers\CountryController::class, 'change_status'])->name('country.status');
 
+        Route::get('/document-types', [App\Http\Controllers\DocumentTypeController::class, 'index'])->name('document-types');
+        Route::post('/document-types/add', [App\Http\Controllers\DocumentTypeController::class, 'add_edit'])->name('document-types.add');
+        Route::post('/document-types/view', [App\Http\Controllers\DocumentTypeController::class, 'view'])->name('document-types.view');
+        Route::post('/document-types/save', [App\Http\Controllers\DocumentTypeController::class, 'save'])->name('document-types.save');
+        Route::post('/document-types/list', [App\Http\Controllers\DocumentTypeController::class, 'ajax_list'])->name('document-types.list');
+        Route::post('/document-types/delete', [App\Http\Controllers\DocumentTypeController::class, 'delete'])->name('document-types.delete');
+        Route::post('/document-types/status', [App\Http\Controllers\DocumentTypeController::class, 'change_status'])->name('document-types.status');
+
         Route::get('/teams', [App\Http\Controllers\TeamController::class, 'index'])->name('teams');
         Route::post('/teams/add', [App\Http\Controllers\TeamController::class, 'add_edit'])->name('teams.add');
         Route::post('/teams/view', [App\Http\Controllers\TeamController::class, 'view'])->name('teams.view');
@@ -427,6 +441,7 @@ Route::middleware([SetViewVariable::class, 'auth'])->prefix('dev')->group(functi
     Route::any('/export/country', [App\Http\Controllers\ExportController::class, 'exportCountry'])->name('export.country');
     Route::any('/export/subscriptions', [App\Http\Controllers\ExportController::class, 'exportSubscriptions'])->name('export.subscriptions');
     Route::any('/export/company/subscriptions', [App\Http\Controllers\ExportController::class, 'exportCompanySubscriptions'])->name('export.company_subscriptions');
+    Route::any('/export/document/types', [App\Http\Controllers\ExportController::class, 'exportDocumentTypes'])->name('export.document_types');
 
 
     // Email Template Routes

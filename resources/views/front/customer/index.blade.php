@@ -76,29 +76,28 @@
 <div class="topnav" id="app">
    
     <div class="container-fluid p-3">
-
         
         <ul class="nav nav-pills bg-nav-pills nav-justified mb-3">
             <li class="nav-item">
-                <a href="#account" data-id="account" @click="getCustomerTab" data-bs-toggle="tab" aria-expanded="false" :class="[activeMenu == 'account' ? 'active': '', 'nav-link rounded-0 customer-tab']">
+                <a href="#account" data-id="profile" @click="testTab('account')" data-bs-toggle="tab" aria-expanded="false" :class="[activeMenu == 'account' ? 'active': '', 'nav-link rounded-0 customer-tab']">
                     <i class="mdi mdi-home-variant d-md-none d-block"></i>
                     <span class="d-none d-md-block">My account</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a href="#kyc" data-id="kyc" @click="getCustomerTab" data-bs-toggle="tab" aria-expanded="true" class="nav-link rounded-0 customer-tab">
+                <a href="#kyc" data-id="kyc" @click="testTab('kyc')" data-bs-toggle="tab" aria-expanded="true" :class="[activeMenu == 'kyc' ? 'active': '', 'nav-link rounded-0 customer-tab']">
                     <i class="mdi mdi-account-circle d-md-none d-block"></i>
                     <span class="d-none d-md-block">KYC</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a href="#orders" data-id="orders" @click="getCustomerTab" data-bs-toggle="tab" aria-expanded="false" class="nav-link rounded-0 customer-tab">
+                <a href="#orders" data-id="orders" @click="testTab('orders')" data-bs-toggle="tab" aria-expanded="false" :class="[activeMenu == 'orders' ? 'active': '', 'nav-link rounded-0 customer-tab']">
                     <i class="mdi mdi-cart-outline d-md-none d-block"></i>
                     <span class="d-none d-md-block">Orders</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a href="#settings" data-id="settings" @click="getCustomerTab" data-bs-toggle="tab" aria-expanded="false" class="nav-link rounded-0 customer-tab">
+                <a href="#settings" data-id="settings" @click="testTab('settings')" data-bs-toggle="tab" aria-expanded="false" :class="[activeMenu == 'settings' ? 'active': '', 'nav-link rounded-0 customer-tab']">
                     <i class="mdi mdi-cog-outline d-md-none d-block"></i>
                     <span class="d-none d-md-block">Settings</span>
                 </a>
@@ -116,8 +115,17 @@
         </ul>
         
         <div class="tab-content">
-            <div class="tab-pane show active" id="customer-tab-view">
+            <div :class="[activeMenu == 'account' ? 'show active': '', 'tab-pane']" id="account">
                 @include('front.customer.myaccount.index')
+            </div>
+            <div :class="[activeMenu == 'kyc' ? 'show active': '', 'tab-pane']" id="kyc">
+                @include('front.customer.kyc.index')
+            </div>
+            <div :class="[activeMenu == 'orders' ? 'show active': '', 'tab-pane']" id="orders">
+                @include('front.customer.orders.index')
+            </div>
+            <div :class="[activeMenu == 'settings' ? 'show active': '', 'tab-pane']" id="settings">
+                @include('front.customer.settings.index')
             </div>
         </div>
 
@@ -144,7 +152,10 @@
             formError: '',
             formSuccess: '',
             gotCustomerResponse: true,
+            gotCompanyResponse: true,
             gotProfilePicResponse: true,
+            gotPasswordResponse: true,
+
             validClass: 'is-valid',
             inValidClass: 'is-invalid',
             noImage: "{{ asset('assets/images/users/noimaged.png') }}",
@@ -153,9 +164,41 @@
             profileImage: profileImage,
             customerInfo: customerdetails,
             companyInfo: companyDetails,
+            passwordFields: {'password' :'', 'confirmPassword':''},
         }
       },
       methods: {
+        testTab(tab_name) {
+            var url = "{{ URL::to('profile') }}/"+tab_name;
+            history.replaceState( url, '', url);
+        },
+        submitPassword(e) {
+            e.preventDefault();
+            var form = e.target || e.srcElement;
+            const formData = $(form).serialize();
+
+            axios.post("{{ route('customer-password-save') }}", formData)            
+            .then( response => {
+                if (response.status == 200 ) {
+                    let message = response.data.error;
+
+                    this.gotCustomerResponse = true;
+                    if( response.data.status == 0 ) {
+                        toastr.success( message.join(',') );
+                        this.$refs.passForm.reset();
+                    } else {
+                        toastr.error( message.join(',') );
+
+                    }
+                }
+                
+            })
+            .catch(function (error) {
+                this.formError = error;
+
+            });
+            return false;
+        },
         addSecondaryMobileNumberField(index) {
             var phone_object = {phoneNumber: '', delete:false};
             return this.customerInfo[index].secondaryMobileData.push(phone_object);
@@ -212,8 +255,31 @@
 
             });
         },
-        changeProfilePicture: function(e) {
+        companyForm: function(e) {
+            e.preventDefault();
 
+            this.gotCompanyResponse = false;
+            var form = e.target || e.srcElement;
+            const formData = $(form).serialize();
+            axios.post("{{ route('customer-company-save') }}", formData)            
+            .then( response => {
+                if (response.status == 200 ) {
+                    let message = response.data.error;
+                    this.gotCompanyResponse = true;
+                    if( response.data.status == 0 ) {
+                        toastr.success( message.join(',') );
+                    } else {
+                        toastr.error( message.join(',') );
+                    }
+                }
+                
+            })
+            .catch(function (error) {
+                this.formError = error;
+            });
+        },
+        changeProfilePicture: function(e) {
+            
             const file = e.target.files[0];
             this.profileImage = URL.createObjectURL(file);
 
@@ -265,6 +331,9 @@
         }
 
       },
+      
+       
+       
       
     }).mount('#app')
 

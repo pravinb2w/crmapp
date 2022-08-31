@@ -9,7 +9,7 @@
                     <label for="firstname" class="form-label">First Name</label>
                     <input type="text" :class="[item.first_name ? validClass : inValidClass, 'form-control']"  name="first_name" id="firstname" v-model="item.first_name" placeholder="Enter first name">
                 </div>
-            </div>
+            </div> 
             <div class="col-md-6">
                 <div class="mb-3">
                     <label for="lastname" class="form-label">Last Name</label>

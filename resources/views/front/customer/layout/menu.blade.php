@@ -24,11 +24,18 @@
             </li>
           
             @if( session('client') ) 
+            @php
+                $img = asset('assets/images/users/avatar-2.jpg');
+                $customer_info = \DB::table('customers')->where('id', session('client')->id )->first();
+                if( isset( $customer_info->logo ) && !empty( $customer_info->logo ) ) {
+                    $img = asset('storage/').$customer_info->logo;
+                }
+            @endphp
             
             <li class="dropdown notification-list">
                 <a class="nav-link nav-user arrow-none me-0" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
                     <span class="account-user-avatar"> 
-                        <img src="{{ session('client')->logo ?? asset('assets/images/users/avatar-2.jpg') }}" alt="user-image" class="rounded-circle">
+                        <img src="{{ $img }}" alt="user-image" class="rounded-circle">
                     </span>
                     <span onclick="goToProfile()">
                         <span class="account-user-name"> {{ session('client')->first_name }}</span>
@@ -74,14 +81,21 @@
             <a class="nav-link text-white" href="{{ url('/') }}">Home</a>
         </li>
             @if( session('client') ) 
+            @php
+                $img = asset('assets/images/users/noimaged.png');
+                $customer_info = \DB::table('customers')->where('id', session('client')->id )->first();
+                if( isset( $customer_info->logo ) && !empty( $customer_info->logo ) ) {
+                    $img = asset('storage').'/'.$customer_info->logo;
+                }
+            @endphp
         
             <li class="dropdown notification-list">
                 <a class="nav-link dropdown-toggle nav-user arrow-none me-0" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
                     <span class="account-user-avatar"> 
-                        <img src="{{ session('client')->logo ?? asset('assets/images/users/avatar-2.jpg') }}" alt="user-image" class="rounded-circle">
+                        <img src="{{ $img }}" alt="user-image" class="rounded-circle">
                     </span>
                     <span onclick="goToProfile()">
-                        <span class="account-user-name"> {{ session('client')->first_name }}</span>
+                        <span class="account-user-name"> {{ $info->first_name ?? session('client')->first_name }}</span>
                         <span class="account-position"> {{ session('client')->company->name ?? '' }}</span>
                     </span>
                 </a>

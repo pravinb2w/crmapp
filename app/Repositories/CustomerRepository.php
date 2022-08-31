@@ -72,13 +72,23 @@ class CustomerRepository
             'skype_url' => '',
             'github_url' => '',
         );
+        if( isset( $info->company->links ) && !empty( $info->company->links ) ){
+          
+            $links['facebook_url'] = $info->company->links->facebook_url;
+            $links['twitter_url'] = $info->company->links->twitter_url;
+            $links['instagram_url'] = $info->company->links->instagram_url;
+            $links['linkedin_url'] = $info->company->links->linkedin_url;
+            $links['skype_url'] = $info->company->links->skype_url;
+            $links['github_url'] = $info->company->links->github_url;
+        }
 
         $response = array(
-            'name' => '', 
-            'email' => '',
-            'mobile_no' => '',
-            'address' => '',
-            'website' => '',
+            'id' => $info->company->id,
+            'name' => $info->company->name, 
+            'email' => $info->company->email,
+            'mobile_no' => $info->company->mobile_no,
+            'address' => $info->company->address,
+            'website' => $info->company->website,
             'links' => $links,
 
         );

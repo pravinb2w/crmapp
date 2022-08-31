@@ -9,6 +9,7 @@ use App\Exports\CountryExport;
 use App\Exports\CustomerExport;
 use App\Exports\DealExport;
 use App\Exports\DealStageExport;
+use App\Exports\DocumentTypesExport;
 use App\Exports\InvoiceExport;
 use App\Exports\LeadExport;
 use App\Exports\LeadSourceExport;
@@ -173,6 +174,12 @@ class ExportController extends Controller
     public function exportNewsletter()
     {
         return Excel::download(new NewsletterExport(), 'Newsletter.xlsx');
+        
+    }
+
+    public function exportDocumentTypes()
+    {
+        return Excel::download(new DocumentTypesExport(), 'Documenttypes.xlsx');
         
     }
 }

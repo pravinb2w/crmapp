@@ -26,9 +26,13 @@ class LoginController extends Controller
     {
         $email = $request->email;
         $password = $request->password;
-        $customer_info = Customer::where(['email' => $email, 'status' => 1, 'password' => Hash::make($password)  ])->first();
+        $customer_info = Customer::where(['email' => $email, 'status' => 1 ])->first();
         
         if( isset( $customer_info ) && !empty( $customer_info ) ) {
+
+            if( !Hash::check($password, $customer_info->password) ) {
+                return response()->json(['message' => 'Invalid Email address or Password', 'status' => 0]);
+            }
             Session::put('client', $customer_info);
           
             return response()->json(['message' => 'Login success', 'status' => 1, 'url' => route('profile')]);

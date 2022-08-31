@@ -7,9 +7,12 @@ use App\Models\Customer;
 use App\Models\CustomerEmail;
 use App\Models\CustomerMobile;
 use App\Models\LandingPages;
+use App\Models\Organization;
+use App\Models\OrganizationLink;
 use App\Repositories\CustomerRepository;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class ProfileController extends Controller
 {
@@ -122,5 +125,119 @@ class ProfileController extends Controller
         $success                = 'Profile Picture Removed';
         return response()->json(['error' => [$success], 'status' => '0']);
 
+    }
+
+    public function save_company(Request $request)
+    {
+        $id = $request->id;
+        $role_validator   = [
+            'name' => ['required', 'string', 'max:255'],
+            'email'      => ['nullable', 'string', 'max:255', 'unique:organizations,email,' . $id],
+            'mobile_no'      => ['nullable', 'digits:10', 'max:255', 'unique:organizations,mobile_no,' . $id],
+        ];
+        //Validate the product
+        $validator                     = Validator::make($request->all(), $role_validator);
+
+        if ($validator->passes()) {
+            $customer_id = session('client')->id;
+           
+            $company_info = Organization::where('name', $request->name)->first();
+            if( isset( $company_info ) && !empty( $company_info ) ) {
+                $company_id = $company_info->id;
+                $company_info->email = $request->email;
+                $company_info->mobile_no = $request->mobile_no;
+                $company_info->website = $request->website;
+                $company_info->address = $request->address;
+                $company_info->update();
+
+                $links = OrganizationLink::where('company_id', $company_id)->first();
+                if( isset($links) && !empty( $links) ){
+                    $links->facebook_url= $request->facebook_url;
+                    $links->twitter_url= $request->twitter_url;
+                    $links->instagram_url= $request->instagram_url;
+                    $links->linkedin_url= $request->linkedin_url;
+                    $links->skype_url= $request->skype_url;
+                    $links->github_url= $request->github_url;
+                    $links->update();
+                } else {
+                    $link_ins['company_id']= $company_id;
+                    $link_ins['facebook_url']= $request->facebook_url;
+                    $link_ins['twitter_url']= $request->twitter_url;
+                    $link_ins['instagram_url']= $request->instagram_url;
+                    $link_ins['linkedin_url']= $request->linkedin_url;
+                    $link_ins['skype_url']= $request->skype_url;
+                    $link_ins['github_url']= $request->github_url;
+                    OrganizationLink::create($link_ins);
+                }
+                
+
+            } else {
+                $ins_company['name'] = $request->name;
+                $ins_company['email'] = $request->email;
+                $ins_company['mobile_no'] = $request->mobile_no;
+                $ins_company['address'] = $request->address;
+                $ins_company['website'] = $request->website;
+
+                $company_id = Organization::create($ins_company)->id;
+
+                $ins_links['company_id'] = $company_id;
+                $ins_links['facebook_url'] = $request->facebook_url;
+                $ins_links['twitter_url'] = $request->twitter_url;
+                $ins_links['instagram_url'] = $request->instagram_url;
+                $ins_links['linkedin_url'] = $request->linkedin_url;
+                $ins_links['skype_url'] = $request->skype_url;
+                $ins_links['github_url'] = $request->github_url;
+
+                OrganizationLink::create($ins_links);
+            }
+
+            $sett = Customer::find($customer_id);
+            $sett->organization_id = $company_id;
+            $sett->update();
+            $success = 'Updated Success';
+
+            return response()->json(['error' => [$success], 'status' => '0']);
+        }
+        return response()->json(['error' => $validator->errors()->all(), 'status' => '1']);
+    }
+
+    public function settings(Request $request) {
+        
+        $result = LandingPages::where('is_default_landing_page', 1)->first();
+    
+        if (!$result) {
+            $result   = LandingPages::latest()->first();
+        }
+        $not_home = 'auth';
+        $customer_id = session('client')->id;
+        $info = Customer::find( $customer_id );
+        $customerInfo = $this->customerRepository->getCustomerInfo($customer_id);
+        $companyInfo = $this->customerRepository->getcompanyInfo($customer_id);
+        $activeMenu = 'settings';
+        return view('front.customer.index', compact('result', 'not_home', 'info', 'customerInfo', 'companyInfo', 'activeMenu'));
+
+    }
+
+    public function save_password(Request $request)
+    {
+        $id = $request->id;
+        $role_validator   = [
+            'password' => ['required', 'string', 'max:255'],
+            'confirmPassword' => ['required', 'string', 'max:255'],
+        ];
+        //Validate the product
+        $validator                     = Validator::make($request->all(), $role_validator);
+
+        if ($validator->passes()) {
+            $customer_id = session('client')->id;
+           
+            $sett = Customer::find($customer_id);
+            $sett->password = Hash::make($request->password);
+            $sett->update();
+            $success = 'Updated Success';
+
+            return response()->json(['error' => [$success], 'status' => '0']);
+        }
+        return response()->json(['error' => $validator->errors()->all(), 'status' => '1']);
     }
 }

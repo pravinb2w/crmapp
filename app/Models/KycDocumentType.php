@@ -2,29 +2,22 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Eloquent\Builder;
 use OwenIt\Auditing\Contracts\Auditable;
 
-class Organization extends Model implements Auditable
+class KycDocumentType extends Model implements Auditable
 {
     use HasFactory, SoftDeletes;
+
     use \OwenIt\Auditing\Auditable;
 
     protected $fillable = [
-        'company_id',
-        'name',
-        'mobile_no',
-        'email',
-        'address',
-        'logo',
-        'description',
-        'fax',
+        'document_name',
         'added_by',
-        'status',
-        'dial_code'
+        'status'
     ];
 
     public function scopeLatests(Builder $query)
@@ -40,20 +33,14 @@ class Organization extends Model implements Auditable
         }
 
         return  $query->where(function ($query) use ($search) {
-            $query->where('name', 'like', "%{$search}%")
-                ->orWhere('mobile_no', 'like', "%{$search}%")
-                ->orWhere('email', 'like', "%{$search}%")
-                ->orWhere('address', 'like', "%{$search}%");
+            $query->where('document_name', 'like', "%{$search}%")
+                ->orWhere('status', 'like', "%{$search}%");
+               
         });
     }
 
     public function added()
     {
         return $this->hasOne(User::class, 'id', 'added_by');
-    }
-
-    public function links()
-    {
-        return $this->hasOne(OrganizationLink::class, 'company_id');
     }
 }

@@ -18,6 +18,10 @@
     
     <a href="{{ route('country') }}" class="list-group-item list-group-item-action {{ Request::segment(3) == 'country' ? 'active' : '' }}">
         Country</a>
+    <a href="{{ route('document-types') }}" class="list-group-item list-group-item-action {{ Request::segment(3) == 'document-types' ? 'active' : '' }}">
+        Document Types
+    </a>
+    
     @if (Auth::user()->is_dev)
         {{-- <a href="{{ route('pagetype') }}" class="list-group-item list-group-item-action {{ Request::segment(3) == 'pagetype' ? 'active' : '' }}">
             Page Type</a> --}}
