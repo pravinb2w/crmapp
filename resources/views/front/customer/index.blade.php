@@ -139,10 +139,14 @@
 
     var customerdetails = '{!! $customerInfo !!}';
     var companyDetails = '{!! $companyInfo !!}';
+    var documentTypes = '{!! $documentTypes !!}';
+    var kycDocuments = '{!! $kycDocuments !!}';
    
     customerdetails = JSON.parse( customerdetails );
     companyDetails = JSON.parse( companyDetails );
-    
+    documentTypes = JSON.parse( documentTypes );
+    kycDocuments = JSON.parse( kycDocuments );
+    console.log( kycDocuments );
     const { createApp } = Vue
     var activemenu = "{{ $activeMenu ?? 'account' }}";
     var profileImage = "{{ $info->logo ? asset('storage/'.$info->logo) : asset('assets/images/users/noimaged.png') }}";
@@ -155,6 +159,7 @@
             gotCompanyResponse: true,
             gotProfilePicResponse: true,
             gotPasswordResponse: true,
+            gotkycFormResponse: true,
 
             validClass: 'is-valid',
             inValidClass: 'is-invalid',
@@ -164,10 +169,43 @@
             profileImage: profileImage,
             customerInfo: customerdetails,
             companyInfo: companyDetails,
+            kycDocument: kycDocuments,
+            documentTypes:[],
             passwordFields: {'password' :'', 'confirmPassword':''},
         }
-      },
-      methods: {
+    },
+    computed: {
+        kycValidateForm() {
+           console.log( 'its is running' );
+           return this.gotkycFormResponse;
+        },
+    },
+    mounted() {
+        this.documentTypes = documentTypes;
+    },
+    methods: {
+        reuploadDocument: function(kycindex) {
+            
+            swal.fire({
+                title: "Are you sure?",
+                text: "You want to change this imaginary file!",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Yes, Change it!",
+                closeOnConfirm: false
+            }).then((result) => {
+                if( result.isConfirmed) {
+                    let oldObject = this.kycDocument[kycindex];
+                    this.kycDocument[kycindex].image_url= '';
+                    this.kycDocument[kycindex].document_status= false;
+                }
+
+            }); 
+        },       
+        isDisabled: function(doc) {
+            return this.kycDocument.map(item => item.document_id).includes(doc.id);
+        },
         testTab(tab_name) {
             var url = "{{ URL::to('profile') }}/"+tab_name;
             history.replaceState( url, '', url);
@@ -195,7 +233,6 @@
             })
             .catch(function (error) {
                 this.formError = error;
-
             });
             return false;
         },
@@ -213,6 +250,13 @@
         deleteSecondaryEmailField(kindex,index) {
             this.customerInfo[kindex].secondaryEmailData.splice(index,1);
         },
+        addRowDocument() {
+            var kycObject = {document:'',document_type:'',image_url:'',document_id:'', customerDocumentId:'', document_status: false};
+            return this.kycDocument.push(kycObject);
+        },
+        deleteRowDocument(kycindex) {
+            this.kycDocument.splice(kycindex,1);
+        },
         validateEmail: function(items) {
             let emailData = items;
             let checkEmail = emailData.email;
@@ -222,7 +266,6 @@
             } else {
                 emailData.emailClass = this.inValidClass+' form-control';
             }
-
         },
         acceptNumber: function(event) {
             let keyCode = event.keyCode;
@@ -328,9 +371,52 @@
             .catch(function (error) {
                 this.formError = error;
             });
-        }
+        },
+        submitKycForm: function(e) {
+            e.preventDefault();
+            var form = e.target || e.srcElement;
+            let formData = new FormData(form);
+            
+            this.gotkycFormResponse = false;
+          
+            axios.post("{{ route('kyc-submit') }}", formData,{
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                },
+            })            
+            .then( response => {
+                if (response.status == 200 ) {
+                    let message = response.data.error;
 
-      },
+                    this.gotkycFormResponse = true;
+                    if( response.data.status == 0 ) {
+                        toastr.success( message.join(',') );
+                    } else {
+                        toastr.error( message.join(',') );
+                    }
+                    if( response.data.kycDocuments ) {
+                        let types = response.data.kycDocuments;
+                        types = JSON.parse( types );
+                        this.kycDocument = types;
+                    }
+                }
+                
+            })
+            .catch(function (error) {
+                this.formError = error;
+            });
+        },
+        fileChange(event, kycindex) {
+            if( !event.target.files.length ) {
+                this.kycDocument[kycindex].document = false;
+            } else {
+                this.kycDocument[kycindex].document = true;
+            }
+        }
+        
+
+      }
+        
       
        
        

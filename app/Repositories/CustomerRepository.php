@@ -3,6 +3,8 @@
 namespace App\Repositories;
 
 use App\Models\Customer;
+use App\Models\CustomerDocument;
+use App\Models\KycDocumentType;
 
 class CustomerRepository
 {
@@ -95,4 +97,44 @@ class CustomerRepository
 
         return json_encode( array( $response ));
     }
+
+    public function getDocumentTypes() {
+        $all = KycDocumentType::where('status', 1)->get();
+        $links = [];
+        if( isset( $all ) && !empty( $all ) ){
+
+            foreach ($all as $item) {
+                $tmp = [];
+                $tmp['id'] = $item->id;
+                $tmp['type'] = $item->document_name;
+                $links[] = $tmp;
+            }
+          
+        }
+
+        return json_encode( $links);
+    }
+
+    public function getKycDocumentDetails() 
+    {
+        $all = CustomerDocument::where('customer_id', session('client')->id )->get();
+        $result = [];
+        $tmp = ['document' => '', 'document_type' => '', 'image_url' => '', 'document_id' => '', 'customerDocumentId' => '', 'document_status' => ''];
+
+        if( isset( $all ) && !empty( $all ) ) {
+            foreach ($all as $key => $value) {
+                $tmp = ['document' => '', 'document_type' => '', 'image_url' => '', 'document_id' => '', 'customerDocumentId' => '', 'document_status' => ''];
+                $tmp['document_type'] = $value->documentType->document_name;
+                $tmp['image_url'] = asset('storage').'/'.$value->document; 
+                $tmp['document_id'] = $value->document_id; 
+                $tmp['customerDocumentId'] = $value->id; 
+                $tmp['document_status'] = $value->status; 
+                $result[] = $tmp;
+            }
+        } else {
+            $result[] = $tmp;
+        }
+        return json_encode( $result );
+    }
+    
 }

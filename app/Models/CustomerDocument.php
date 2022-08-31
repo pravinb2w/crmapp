@@ -8,16 +8,22 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use OwenIt\Auditing\Contracts\Auditable;
 
-class CustomerDocument extends Model
+class CustomerDocument extends Model implements Auditable
 {
     use HasFactory, SoftDeletes;
 
     use \OwenIt\Auditing\Auditable;
 
     protected $fillable = [
-        'document_name',
-        'added_by',
-        'status'
+        'customer_id',
+        'document_id',
+        'document',
+        'uploadAt',
+        'approvedAt',
+        'approvedBy',
+        'rejectedAt',
+        'reject_reason',
+        'description'
     ];
 
     public function scopeLatests(Builder $query)
@@ -25,22 +31,15 @@ class CustomerDocument extends Model
         return $query->orderBy(static::CREATED_AT, 'desc');
     }
 
-    public function scopeSearch(Builder $query, $search)
+    public function documentType()
     {
-
-        if (empty($search)) {
-            return $query;
-        }
-
-        return  $query->where(function ($query) use ($search) {
-            $query->where('document_name', 'like', "%{$search}%")
-                ->orWhere('status', 'like', "%{$search}%");
-               
-        });
+        return $this->hasOne(KycDocumentType::class, 'id', 'document_id');
     }
 
-    public function added()
+    public function customer()
     {
-        return $this->hasOne(User::class, 'id', 'added_by');
+        return $this->hasOne(Customer::class, 'id', 'customer_id');
     }
+
+    
 }

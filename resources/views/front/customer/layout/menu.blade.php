@@ -25,13 +25,12 @@
           
             @if( session('client') ) 
             @php
-                $img = asset('assets/images/users/avatar-2.jpg');
+                $img = asset('assets/images/users/noimaged.png');
                 $customer_info = \DB::table('customers')->where('id', session('client')->id )->first();
                 if( isset( $customer_info->logo ) && !empty( $customer_info->logo ) ) {
-                    $img = asset('storage/').$customer_info->logo;
+                    $img = asset('storage').'/'.$customer_info->logo;
                 }
             @endphp
-            
             <li class="dropdown notification-list">
                 <a class="nav-link nav-user arrow-none me-0" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
                     <span class="account-user-avatar"> 
@@ -49,11 +48,11 @@
                     </div>
     
                     <!-- item-->
-                    <a href="javascript:void(0)" onclick="return get_tabs('account')" class="dropdown-item notify-item">
+                    <a href="{{ route('profile') }}"  class="dropdown-item notify-item">
                         <i class="mdi mdi-account-edit me-1"></i>
                         <span>My Account</span>
                     </a>
-                    <a  href="javascript:void(0)" onclick="return get_tabs('account')" class="dropdown-item notify-item">
+                    <a  href="{{ route('profile-settings') }}" class="dropdown-item notify-item">
                         <i class="uil-shield me-1"></i>
                         <span>Change Password</span>
                     </a>
@@ -106,11 +105,11 @@
                     </div>
 
                     <!-- item-->
-                    <a href="javascript:void(0)" onclick="return get_tabs('account')" class="dropdown-item notify-item">
+                    <a href="{{ route('profile') }}"  class="dropdown-item notify-item">
                         <i class="mdi mdi-account-edit me-1"></i>
                         <span>My Account</span>
                     </a>
-                    <a  href="javascript:void(0)" onclick="return get_tabs('account')" class="dropdown-item notify-item">
+                    <a  href="{{ route('profile-settings') }}" class="dropdown-item notify-item">
                         <i class="uil-shield me-1"></i>
                         <span>Change Password</span>
                     </a>

@@ -14,6 +14,7 @@ use App\Models\DealStage;
 use App\Models\PrefixSetting;
 use App\Models\CompanySettings;
 use App\Models\Customer;
+use App\Models\CustomerDocument;
 use App\Models\Organization;
 use Auth;
 
@@ -2308,5 +2309,51 @@ class CommonHelper
             }
         }
         return true;
+    }
+
+    public static function sendKycVerificationInternal( $customer_document_id ){
+            $document_info = CustomerDocument::find($customer_document_id);
+            $user_info = User::where('is_dev', 1)->first();
+            $company = CompanySettings::find(1);
+
+            $date_div = '<strong class="text-primary">' . date('d M Y h:i A') . '</strong>';
+            $title = 'Need Approval KYC Document';
+            $message = 'Customer ' . $document_info->customer->first_name . ' has uploaded document '.$document_info->documentType->document_name.'  at ' . $date_div.' .';
+
+            $ins = array(
+                'title' => $title,
+                'message' => $message,
+                'type' => 'kyc-approval',
+                'url' => 'javascript:void(0);',
+                'type_id' => $customer_document_id,
+                'user_id' => $user_info->id,
+                'assigned_by' => null,
+                'created_at' => date('Y-m-d H:i:s')
+            );
+
+            $extract = array(
+                'rm_name' => $user_info->name,
+                'message' => $message,
+                'additional_information' => '',
+                'company_name' => $company->site_name,
+                'subject' => $title,
+
+            );
+
+            $ins_mail = array(
+                'type' => 'Kyc Approval',
+                'type_id' => $customer_document_id,
+                'email_type' => 'general_task',
+                'params' => serialize($extract),
+                'to' => $user_info->email ?? 'duraibytes@gmail.com'
+            );
+
+            if (!empty($ins)) {
+                DB::table('notifications')->insert($ins);
+            }
+            if (!empty($ins_mail)) {
+                DB::table('send_mail')->insert($ins_mail);
+            }
+            return true;
     }
 }

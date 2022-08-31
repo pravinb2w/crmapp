@@ -34,7 +34,10 @@ class ProfileController extends Controller
         $info = Customer::find( $customer_id );
         $customerInfo = $this->customerRepository->getCustomerInfo($customer_id);
         $companyInfo = $this->customerRepository->getcompanyInfo($customer_id);
-        return view('front.customer.index', compact('result', 'not_home', 'info', 'customerInfo', 'companyInfo'));
+        $documentTypes = $this->customerRepository->getDocumentTypes();
+        $kycDocuments = $this->customerRepository->getKycDocumentDetails();
+
+        return view('front.customer.index', compact('result', 'not_home', 'info', 'customerInfo', 'companyInfo','documentTypes','kycDocuments'));
 
     }
 
@@ -213,8 +216,10 @@ class ProfileController extends Controller
         $info = Customer::find( $customer_id );
         $customerInfo = $this->customerRepository->getCustomerInfo($customer_id);
         $companyInfo = $this->customerRepository->getcompanyInfo($customer_id);
+        $documentTypes = $this->customerRepository->getDocumentTypes();
+        $kycDocuments = $this->customerRepository->getKycDocumentDetails();
         $activeMenu = 'settings';
-        return view('front.customer.index', compact('result', 'not_home', 'info', 'customerInfo', 'companyInfo', 'activeMenu'));
+        return view('front.customer.index', compact('result', 'not_home', 'info', 'customerInfo', 'companyInfo', 'activeMenu','documentTypes', 'kycDocuments'));
 
     }
 

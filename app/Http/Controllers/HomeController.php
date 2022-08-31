@@ -368,7 +368,7 @@ class HomeController extends Controller
             $result = Notification::where('user_id', $user_id)->orderBy('id', 'desc')->get();
             $count = Notification::where('user_id', $user_id)->where('is_read', 0)->count();
         } else {
-            $result = Notification::groupBy('type_id')->orderBy('id', 'desc')->get();
+            $result = Notification::groupBy('type_id', 'type')->orderBy('id', 'desc')->get();
             $count = Notification::where('is_read', 0)->count();
         }
         $params = array('list' => $result, 'count' => $count, 'role_id' => $role_id ?? '');

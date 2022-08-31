@@ -30,10 +30,12 @@ Route::middleware([SetViewVariable::class, 'client'])->group(function () {
     Route::post('/customer/pic/remove', [App\Http\Controllers\front\ProfileController::class, 'remove_profile_picture'])->name('customer-pic-remove');
     Route::post('/company/info', [App\Http\Controllers\front\ProfileController::class, 'company_info'])->name('company-info');
     Route::post('/customer/company/save', [App\Http\Controllers\front\ProfileController::class, 'save_company'])->name('customer-company-save');
-    Route::get('/profile/settings', [App\Http\Controllers\front\ProfileController::class, 'settings'])->name('settings');
+    Route::get('/profile/settings', [App\Http\Controllers\front\ProfileController::class, 'settings'])->name('profile-settings');
     Route::post('/customer/password/save', [App\Http\Controllers\front\ProfileController::class, 'save_password'])->name('customer-password-save');
 
     Route::get('/profile/kyc', [App\Http\Controllers\front\KycController::class, 'index'])->name('kyc');
+    Route::post('/profile/kyc/submit', [App\Http\Controllers\front\KycController::class, 'kycSubmit'])->name('kyc-submit');
+
     Route::get('/profile/orders', [App\Http\Controllers\front\KycController::class, 'index'])->name('orders');
     
 });
