@@ -37,6 +37,9 @@
                                         </div>
                                         <div v-else class="text-center mt-1">
                                             <a :href="kycItem.image_url" target="_blank" rel="noopener noreferrer">View File</a>
+                                            <div class="text-muted" v-if="kycItem.document_status == 'rejected'">
+                                                Reject Reason: @{{ kycItem.reject_reason }}
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

@@ -129,6 +129,7 @@ class CustomerRepository
                 $tmp['document_id'] = $value->document_id; 
                 $tmp['customerDocumentId'] = $value->id; 
                 $tmp['document_status'] = $value->status; 
+                $tmp['reject_reason'] = $value->reject_reason; 
                 $result[] = $tmp;
             }
         } else {

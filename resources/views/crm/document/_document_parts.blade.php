@@ -5,6 +5,11 @@
             <label class="form-check-label" for="task1">
             {{ $item->documentType->document_name }} 
             </label>
+            @if( $item->status == 'rejected' )
+            <div class="text-muted">
+                Reason: {{ $item->reject_reason }}
+            </div>
+            @endif
         </div> <!-- end checkbox -->
     </div> <!-- end col -->
     <div class="col-sm-8">

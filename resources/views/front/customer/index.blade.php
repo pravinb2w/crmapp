@@ -251,7 +251,7 @@
             this.customerInfo[kindex].secondaryEmailData.splice(index,1);
         },
         addRowDocument() {
-            var kycObject = {document:'',document_type:'',image_url:'',document_id:'', customerDocumentId:'', document_status: false};
+            var kycObject = {document:'',document_type:'',image_url:'',document_id:'', customerDocumentId:'', document_status: false, reject_reason:null};
             return this.kycDocument.push(kycObject);
         },
         deleteRowDocument(kycindex) {
