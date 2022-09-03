@@ -26,24 +26,24 @@
     </div>
 
     <ul class="social-list list-inline mt-3 mb-0">
-        @if( $info->customer->company->links->facebook_url )
+        @if( isset( $info->customer->company->links->facebook_url ) && !empty( $info->customer->company->links->facebook_url ) )
         <li class="list-inline-item">
             <a href="{{ $info->customer->company->links->facebook_url }}" target="_blank" class="social-list-item border-primary text-primary"><i class="mdi mdi-facebook"></i></a>
         </li>
         @endif
-        @if( $info->customer->company->links->twitter_url )
+        @if( isset( $info->customer->company->links->twitter_url ) && !empty( $info->customer->company->links->twitter_url )  )
        
         <li class="list-inline-item">
             <a href="{{  $info->customer->company->links->twitter_url }}" target="_blank" class="social-list-item border-info text-info"><i class="mdi mdi-twitter"></i></a>
         </li>
         @endif
-        @if( $info->customer->company->links->instagram_url )
+        @if( isset( $info->customer->company->links->instagram_url ) && !empty( $info->customer->company->links->instagram_url ) )
        
         <li class="list-inline-item">
             <a href="{{  $info->customer->company->links->instagram_url }}" target="_blank" class="social-list-item border-danger text-danger"><i class="mdi mdi-instagram"></i></a>
         </li>
         @endif
-        @if( $info->customer->company->links->linkedin_url )
+        @if( isset( $info->customer->company->links->linkedin_url ) && !empty( $info->customer->company->links->linkedin_url ) )
        
         <li class="list-inline-item">
             <a href="{{  $info->customer->company->links->linkedin_url }}" target="_blank" class="social-list-item border-warnig text-warnig"><i class="mdi mdi-linkedin"></i></a>
