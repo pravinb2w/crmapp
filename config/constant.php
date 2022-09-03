@@ -16,6 +16,7 @@ return [
         'products',
         'pages',
         'customers',
+        'customer_document_approval',
         'users',
         'invoices',
         'payments',

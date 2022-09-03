@@ -73,23 +73,31 @@
                 </div>
             </li>
             @endif
-
-            @if(Auth::user()->hasAccess('customers', 'is_view') || Auth::user()->hasAccess('organizations', 'is_view') )
+            @php
+                $route = Route::currentRouteName();
+                // print_r( $route );
+            @endphp
+            @if(Auth::user()->hasAccess('customers', 'is_view') || Auth::user()->hasAccess('organizations', 'is_view') || Auth::user()->hasAccess('customer_document_approval', 'is_view') )
             <li class="side-nav-item">
-                <a data-bs-toggle="collapse" href="#sidebarEmail" aria-expanded="false" aria-controls="sidebarEmail" class="side-nav-link">
+                <a data-bs-toggle="collapse" href="#sidebarEmail" aria-expanded="@if($route=='customer_document_approval.customer.view') true @else false @endif" aria-controls="sidebarEmail" class="side-nav-link">
                     <i class="mdi mdi-account-tie"></i>
                     <span> People </span>
                     <span class="menu-arrow"></span>
                 </a>
-                <div class="collapse" id="sidebarEmail">
+                <div class="collapse @if($route=='customer_document_approval.customer.view') show @endif" id="sidebarEmail">
                     <ul class="side-nav-second-level">
                         @if(Auth::user()->hasAccess('customers', 'is_view'))
                         <li>
                             <a href="{{ route('customers') }}">Customers</a>
                         </li>
                         @endif
+                        @if(Auth::user()->hasAccess('customer_document_approval', 'is_view'))
+                        <li class="@if($route=='customer_document_approval.customer.view') menuitem-active @endif">
+                            <a href="{{ route('customer_document_approval') }}" class="@if($route=='customer_document_approval.customer.view') active @endif">Customers Document Approval</a>
+                        </li>
+                        @endif
                         @if(Auth::user()->hasAccess('organizations', 'is_view'))
-                        <li>
+                        <li >
                             <a href="{{ route('organizations') }}">Organizations</a>
                         </li>
                         @endif

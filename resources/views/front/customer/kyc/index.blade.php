@@ -42,7 +42,7 @@
                                 </div>
                                 <div class="col-2 d-flex" id="tooltip-container2">
                                     
-                                    <a v-if="kycItem.document_status == 'rejected'" href="javascript: void(0);" class="social-list-item border-danger text-danger" data-bs-container="#tooltip-container2" data-bs-toggle="tooltip" data-bs-placement="top" title="Verification Rejected">
+                                    <a v-if="kycItem.document_status == 'rejected'" href="javascript: void(0);" class="social-list-item border-danger text-danger mx-2" data-bs-container="#tooltip-container2" data-bs-toggle="tooltip" data-bs-placement="top" title="Verification Rejected">
                                         <i class="mdi mdi-close valid-doc"></i>
                                     </a>
                                    
@@ -52,11 +52,8 @@
                                     <a v-if="kycItem.document_status == 'pending'" href="javascript: void(0);" class="social-list-item border-warning text-warning mx-2"  data-bs-container="#tooltip-container2" data-bs-toggle="tooltip" data-bs-placement="top" title="Approval Pending">
                                         <i class="mdi mdi-refresh valid-doc"></i>
                                     </a>
-                                    <a v-if="kycItem.document_status == 'rejected'" href="javascript: void(0);"  class="social-list-item border-success text-success" data-bs-container="#tooltip-container2" data-bs-toggle="tooltip" data-bs-placement="top" title="Reupload">
-                                        <i class="mdi mdi-upload valid-doc"></i>
-                                    </a>
 
-                                    <a v-if="kycItem.document_status == 'rejected' || kycItem.document_status == 'pending'" @click="reuploadDocument(kycindex)" href="javascript: void(0);" class="social-list-item border-success text-success" data-bs-container="#tooltip-container2" data-bs-toggle="tooltip" data-bs-placement="top" title="Reupload or Change file">
+                                    <a v-if="kycItem.document_status == 'rejected' || kycItem.document_status == 'pending'" @click="reuploadDocument(kycindex)" href="javascript: void(0);" class="social-list-item border-success text-success mx-2" data-bs-container="#tooltip-container2" data-bs-toggle="tooltip" data-bs-placement="top" title="Reupload or Change file">
                                         <i class="mdi mdi-upload valid-doc"></i>
                                     </a>
                                     <template v-if="!kycItem.document_status" >

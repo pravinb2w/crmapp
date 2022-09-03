@@ -78,4 +78,24 @@ class Customer extends Authenticatable implements Auditable
     {
       return $this->password;
     }
+
+    public function documents()
+    {
+        return $this->hasMany(CustomerDocument::class, 'customer_id');
+    }
+
+    public function rejectDocuments()
+    {
+        return $this->hasMany(CustomerDocument::class, 'customer_id')->where('customer_documents.status', 'rejected');
+    }
+
+    public function approvedDocuments()
+    {
+        return $this->hasMany(CustomerDocument::class, 'customer_id')->where('customer_documents.status', 'approved');
+    }
+
+    public function pendingDocuments()
+    {
+        return $this->hasMany(CustomerDocument::class, 'customer_id')->where('customer_documents.status', 'pending');
+    }
 }

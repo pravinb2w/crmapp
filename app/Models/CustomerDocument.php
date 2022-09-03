@@ -22,14 +22,34 @@ class CustomerDocument extends Model implements Auditable
         'approvedAt',
         'approvedBy',
         'rejectedAt',
+        'rejectedBy',
         'reject_reason',
-        'description'
+        'description',
+        'status'
     ];
 
     public function scopeLatests(Builder $query)
     {
         return $query->orderBy(static::CREATED_AT, 'desc');
     }
+
+    public function scopeSearch(Builder $query, $search)
+    {
+
+        if (empty($search)) {
+            return $query;
+        }
+
+        return  $query->where(function ($query) use ($search) {
+            $query->where('customer_documents.status', 'like', "%{$search}%")
+                ->orWhere('customer_documents.uploadAt', 'like', "%{$search}%")
+                ->orWhere('customers.first_name', 'like', "%{$search}%")
+                ->orWhere('customers.email', 'like', "%{$search}%")
+                ->orWhere('customers.mobile_no', 'like', "%{$search}%")
+                ->orWhere('kyc_document_types.document_name', 'like', "%{$search}%");
+        });
+    }
+
 
     public function documentType()
     {

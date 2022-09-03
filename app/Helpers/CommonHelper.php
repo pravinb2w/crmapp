@@ -2312,48 +2312,80 @@ class CommonHelper
     }
 
     public static function sendKycVerificationInternal( $customer_document_id ){
-            $document_info = CustomerDocument::find($customer_document_id);
-            $user_info = User::where('is_dev', 1)->first();
-            $company = CompanySettings::find(1);
+        $document_info = CustomerDocument::find($customer_document_id);
+        $user_info = User::where('is_dev', 1)->first();
+        $company = CompanySettings::find(1);
 
-            $date_div = '<strong class="text-primary">' . date('d M Y h:i A') . '</strong>';
-            $title = 'Need Approval KYC Document';
-            $message = 'Customer ' . $document_info->customer->first_name . ' has uploaded document '.$document_info->documentType->document_name.'  at ' . $date_div.' .';
+        $date_div = '<strong class="text-primary">' . date('d M Y h:i A') . '</strong>';
+        $title = 'Need Approval KYC Document';
+        $message = 'Customer ' . $document_info->customer->first_name . ' has uploaded document '.$document_info->documentType->document_name.'  at ' . $date_div.' .';
 
-            $ins = array(
-                'title' => $title,
-                'message' => $message,
-                'type' => 'kyc-approval',
-                'url' => 'javascript:void(0);',
-                'type_id' => $customer_document_id,
-                'user_id' => $user_info->id,
-                'assigned_by' => null,
-                'created_at' => date('Y-m-d H:i:s')
-            );
+        $ins = array(
+            'title' => $title,
+            'message' => $message,
+            'type' => 'kyc-approval',
+            'url' => 'javascript:void(0);',
+            'type_id' => $customer_document_id,
+            'user_id' => $user_info->id,
+            'assigned_by' => null,
+            'created_at' => date('Y-m-d H:i:s')
+        );
 
-            $extract = array(
-                'rm_name' => $user_info->name,
-                'message' => $message,
-                'additional_information' => '',
-                'company_name' => $company->site_name,
-                'subject' => $title,
+        $extract = array(
+            'rm_name' => $user_info->name,
+            'message' => $message,
+            'additional_information' => '',
+            'company_name' => $company->site_name,
+            'subject' => $title,
 
-            );
+        );
 
-            $ins_mail = array(
-                'type' => 'Kyc Approval',
-                'type_id' => $customer_document_id,
-                'email_type' => 'general_task',
-                'params' => serialize($extract),
-                'to' => $user_info->email ?? 'duraibytes@gmail.com'
-            );
+        $ins_mail = array(
+            'type' => 'Kyc Approval',
+            'type_id' => $customer_document_id,
+            'email_type' => 'general_task',
+            'params' => serialize($extract),
+            'to' => $user_info->email ?? 'duraibytes@gmail.com'
+        );
 
-            if (!empty($ins)) {
-                DB::table('notifications')->insert($ins);
-            }
-            if (!empty($ins_mail)) {
-                DB::table('send_mail')->insert($ins_mail);
-            }
-            return true;
+        if (!empty($ins)) {
+            DB::table('notifications')->insert($ins);
+        }
+        if (!empty($ins_mail)) {
+            DB::table('send_mail')->insert($ins_mail);
+        }
+        return true;
+    }
+
+    public static function sendDocumentStatusCustomer( $customer_id, $customer_document_id, $status ){
+        $document_info = CustomerDocument::find($customer_document_id);
+        $customer_info = Customer::find($customer_id);
+        $company = CompanySettings::find(1);
+
+        $date_div = '<strong class="text-primary">' . date('d M Y h:i A') . '</strong>';
+        $title = 'Document '.$status;
+        $message = $document_info->documentType->document_name.' Document has been '.$status.' by '.auth()->user()->name.'  at ' . $date_div.' . Please login to see Document status';
+
+        $extract = array(
+            'rm_name' => $customer_info->first_name.' '.$customer_info->last_name,
+            'message' => $message,
+            'additional_information' => '',
+            'company_name' => $company->site_name,
+            'subject' => $title,
+
+        );
+
+        $ins_mail = array(
+            'type' => 'Kyc Approval',
+            'type_id' => $customer_document_id,
+            'email_type' => 'general_task',
+            'params' => serialize($extract),
+            'to' => $customer_info->email ?? 'duraibytes@gmail.com'
+        );
+       
+        if (!empty($ins_mail)) {
+            DB::table('send_mail')->insert($ins_mail);
+        }
+        return true;
     }
 }

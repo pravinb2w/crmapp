@@ -42,7 +42,7 @@ class KycController extends Controller
     {
 
         $role_validator   = [
-            'document_id' => ['required', 'string', 'max:255'],
+            'document_id' => ['required', 'max:255'],
         ];
         //Validate the product
         $validator                     = Validator::make($request->all(), $role_validator);
@@ -67,6 +67,11 @@ class KycController extends Controller
                     $ins['document']        = $file;
                     $ins['uploadAt']        = date('Y-m-d H:i:s');
                     $ins['status']          = 'pending';
+                    $ins['rejectedAt']      = null;
+                    $ins['rejectedBy']      = null;
+                    $ins['reject_reason']   = null;
+                    $ins['approvedAt']      = null;
+                    $ins['approvedBy']      = null;
 
                     $doc_id = CustomerDocument::updateOrCreate(array('id' => $customerDocumentId ),$ins)->id;
 
