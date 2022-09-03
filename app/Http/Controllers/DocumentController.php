@@ -113,11 +113,15 @@ class DocumentController extends Controller
         if( $request->status == 'approved') {
             $info->approvedAt = date('Y-m-d H:i:s');
             $info->approvedBy = Auth::id();
+            $info->reject_reason = null;
+            $info->rejectedBy = null;
+            $info->rejectedAt = null;
         } else {
             $info->rejectedAt = date('Y-m-d H:i:s');
             $info->rejectedBy = Auth::id();
             $info->reject_reason = $request->reason;
-            
+            $info->approvedAt = null;
+            $info->approvedBy = null;
 
         }
         $info->update();
