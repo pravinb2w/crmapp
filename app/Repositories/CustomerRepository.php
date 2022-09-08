@@ -137,5 +137,140 @@ class CustomerRepository
         }
         return json_encode( $result );
     }
+
+    public function getCustomerOrders() {
+        $info = Customer::find(session('client')->id);
+
+        $orders = array(
+                    'lastOrder' => array(),
+                    'pendingApproval' => array(),
+                    'rejectedInvoice' => array(),
+                    'orderHistory' => array()
+                );
+        
+        if( isset( $info->lastOrder ) && !empty( $info->lastOrder ) ) {
+            $lorder[ 'date' ] = date( 'M d Y, h:i A', strtotime($info->lastOrder->created_at));
+            $lorder[ 'orderNo' ] = $info->lastOrder->order_id ?? 'N/A';
+            $lorder[ 'invoiceNo' ] = $info->lastOrder->invoice->invoice_no ?? 'N/a';
+            if( isset( $info->lastOrder->invoice->items ) && $info->lastOrder->invoice->items ) {
+                $price = 0;
+                $qty = 0;
+                $product_name = '';
+                $name = [];
+                foreach ( $info->lastOrder->invoice->items as $key => $value) {
+                    $name[] = $value->product->product_name;
+                    $price = $price + $value->amount;
+                    $qty = $qty + $value->qty;
+                }
+                $product_name = implode(",", $name);
+
+            }
+            
+            $lorder[ 'product' ] = $product_name;
+            $lorder[ 'price' ] = $price;
+            $lorder[ 'qty' ] = $qty;
+            $lorder[ 'payment_status' ] = ucfirst($info->lastOrder->payment->payment_status);
+            $lorder[ 'order_status' ] = ucfirst($info->lastOrder->status);
+            $invoice_no = str_replace("/", "_", $info->lastOrder->invoice->invoice_no );
+            $lorder[ 'file' ] = asset('invoice') . '/' . $invoice_no . '.pdf';
+
+            $orders['lastOrder'] = $lorder;
+        }
+
+        if( isset( $info->pendingApprovalInvoices ) && !empty( $info->pendingApprovalInvoices ) ) {
+            $ptemp = [];
+            foreach ( $info->pendingApprovalInvoices as $item ) {
+                $pending = [];
+                $pending[ 'date' ] = date( 'M d Y, h:i A', strtotime($item->created_at));
+                $pending[ 'invoiceNo' ] = $item->invoice_no ?? 'N/a';
+                if( isset( $item->items ) && $item->items ) {
+                    $price = 0;
+                    $qty = 0;
+                    $product_name = '';
+                    $name = [];
+                    foreach ( $item->items as $key => $value) {
+                        $name[] = $value->product->product_name;
+                        $price = $price + $value->amount;
+                        $qty = $qty + $value->qty;
+                    }
+                    $product_name = implode(",", $name);
+
+                }
+                
+                $pending[ 'product' ] = $product_name;
+                $pending[ 'price' ] = $price;
+                $pending[ 'qty' ] = $qty;
+                $pending[ 'status' ] = $item->status;
+                $invoice_no = str_replace("/", "_", $item->invoice_no );
+                $pending[ 'file' ] = asset('invoice') . '/' . $invoice_no . '.pdf';
+                $ptemp[] = $pending;
+            }
+            $orders['pendingApproval'] = $ptemp;
+        }
+
+        if( isset( $info->rejectedApprovalInvoices ) && !empty( $info->rejectedApprovalInvoices ) ) {
+            $ptemp = [];
+            foreach ( $info->rejectedApprovalInvoices as $item ) {
+                $pending = [];
+                $pending[ 'date' ] = date( 'M d Y, h:i A', strtotime($item->created_at));
+                $pending[ 'invoiceNo' ] = $item->invoice_no ?? 'N/a';
+                if( isset( $item->items ) && $item->items ) {
+                    $price = 0;
+                    $qty = 0;
+                    $product_name = '';
+                    $name = [];
+                    foreach ( $item->items as $key => $value) {
+                        $name[] = $value->product->product_name;
+                        $price = $price + $value->amount;
+                        $qty = $qty + $value->qty;
+                    }
+                    $product_name = implode(",", $name);
+                }
+                
+                $pending[ 'product' ] = $product_name;
+                $pending[ 'price' ] = $price;
+                $pending[ 'qty' ] = $qty;
+                $pending[ 'status' ] = $item->status;
+                $invoice_no = str_replace("/", "_", $item->invoice_no );
+                $pending[ 'file' ] = asset('invoice') . '/' . $invoice_no . '.pdf';
+                $ptemp[] = $pending;
+            }
+            $orders['rejectedInvoice'] = $ptemp;
+        }
+
+        if( isset( $info->orders ) && !empty( $info->orders ) ) {
+            foreach ($info->orders as $order ) {
+                $lorder = [];
+                $lorder[ 'date' ] = date( 'M d Y, h:i A', strtotime($order->created_at));
+                $lorder[ 'orderNo' ] = $order->order_id ?? 'N/A';
+                $lorder[ 'invoiceNo' ] = $order->invoice->invoice_no ?? 'N/a';
+                if( isset( $order->invoice->items ) && $order->invoice->items ) {
+                    $price = 0;
+                    $qty = 0;
+                    $product_name = '';
+                    $name = [];
+                    foreach ( $order->invoice->items as $key => $value) {
+                        $name[] = $value->product->product_name;
+                        $price = $price + $value->amount;
+                        $qty = $qty + $value->qty;
+                    }
+                    $product_name = implode(",", $name);
+
+                }
+                
+                $lorder[ 'product' ] = $product_name;
+                $lorder[ 'price' ] = $price;
+                $lorder[ 'qty' ] = $qty;
+                $lorder[ 'payment_status' ] = ucfirst($order->payment->payment_status);
+                $lorder[ 'order_status' ] = ucfirst($order->status);
+                $invoice_no = str_replace("/", "_", $order->invoice->invoice_no );
+                $lorder[ 'file' ] = asset('invoice') . '/' . $invoice_no . '.pdf';
+
+                $orders['orderHistory'][] = $lorder;
+            }
+            
+        }
+        return json_encode( $orders );
+    }
     
 }

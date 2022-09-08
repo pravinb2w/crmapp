@@ -53,7 +53,7 @@
                                         <i class="mdi mdi-check valid-doc"></i>
                                     </a>
                                     <a v-if="kycItem.document_status == 'pending'" href="javascript: void(0);" class="social-list-item border-warning text-warning mx-2"  data-bs-container="#tooltip-container2" data-bs-toggle="tooltip" data-bs-placement="top" title="Approval Pending">
-                                        <i class="mdi mdi-refresh valid-doc"></i>
+                                        <i class="mdi mdi-timer-sand valid-doc"></i>
                                     </a>
 
                                     <a v-if="kycItem.document_status == 'rejected' || kycItem.document_status == 'pending'" @click="reuploadDocument(kycindex)" href="javascript: void(0);" class="social-list-item border-success text-success mx-2" data-bs-container="#tooltip-container2" data-bs-toggle="tooltip" data-bs-placement="top" title="Reupload or Change file">

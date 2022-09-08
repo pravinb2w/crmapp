@@ -81,7 +81,7 @@
             <li class="nav-item">
                 <a href="#account" data-id="profile" @click="testTab('account')" data-bs-toggle="tab" aria-expanded="false" :class="[activeMenu == 'account' ? 'active': '', 'nav-link rounded-0 customer-tab']">
                     <i class="mdi mdi-home-variant d-md-none d-block"></i>
-                    <span class="d-none d-md-block">My account</span>
+                    <span class="d-none d-md-block">My Account</span>
                 </a>
             </li>
             <li class="nav-item">
@@ -140,13 +140,16 @@
     var customerdetails = '{!! $customerInfo !!}';
     var companyDetails = '{!! $companyInfo !!}';
     var documentTypes = '{!! $documentTypes !!}';
+    
     var kycDocuments = '{!! $kycDocuments !!}';
+    var orderInfo = '{!! $orderInfo !!}';
    
     customerdetails = JSON.parse( customerdetails );
     companyDetails = JSON.parse( companyDetails );
     documentTypes = JSON.parse( documentTypes );
     kycDocuments = JSON.parse( kycDocuments );
-    console.log( kycDocuments );
+    orderInfo = JSON.parse( orderInfo );
+    console.log( orderInfo );
     const { createApp } = Vue
     var activemenu = "{{ $activeMenu ?? 'account' }}";
     var profileImage = "{{ $info->logo ? asset('storage/'.$info->logo) : asset('assets/images/users/noimaged.png') }}";
@@ -172,6 +175,7 @@
             kycDocument: kycDocuments,
             documentTypes:[],
             passwordFields: {'password' :'', 'confirmPassword':''},
+            orderDetails: orderInfo,
         }
     },
     computed: {

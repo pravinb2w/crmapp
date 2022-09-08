@@ -36,4 +36,8 @@ class Order extends Model implements Auditable
     public function invoice() {
         return $this->hasOne(Invoice::class, 'order_no', 'order_id');
     }
+
+    public function payment() {
+        return $this->hasOne(Payment::class, 'order_id', 'order_id');
+    }
 }

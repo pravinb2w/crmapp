@@ -41,6 +41,7 @@ class Customer extends Authenticatable implements Auditable
 
     public function added()
     {
+       
         return $this->hasOne(User::class, 'id', 'added_by');
     }
 
@@ -97,5 +98,21 @@ class Customer extends Authenticatable implements Auditable
     public function pendingDocuments()
     {
         return $this->hasMany(CustomerDocument::class, 'customer_id')->where('customer_documents.status', 'pending');
+    }
+
+    public function lastOrder() {
+        return $this->hasOne(Order::class, 'customer_id', 'id')->orderBy('orders.id', 'desc');
+    }
+
+    public function pendingApprovalInvoices() {
+        return $this->hasMany(Invoice::class, 'customer_id')->where('invoices.status', '0')->whereNull('approved_at')->whereNull('rejected_at');
+    }
+
+    public function rejectedApprovalInvoices() {
+        return $this->hasMany(Invoice::class, 'customer_id')->whereNull('approved_at')->whereNotNull('rejected_at');
+    }
+
+    public function orders() {
+        return $this->hasMany(Order::class, 'customer_id')->orderBy('orders.id', 'desc');
     }
 }
