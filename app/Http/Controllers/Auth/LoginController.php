@@ -53,8 +53,9 @@ class LoginController extends Controller
             //here check notification count and set in session  
             //check subsciption has time period
             $company_subscriptions = \DB::table('company_subscriptions')->where('company_id', 1)->first();
-            $end_date = date('Y-m-d', strtotime($company_subscriptions->endAt));
             $today = date('Y-m-d');
+
+            $end_date = date('Y-m-d', strtotime($company_subscriptions->endAt ?? $today));
             
             if( isset($company_subscriptions) && $today > $end_date  ){
                 Auth::logout();
