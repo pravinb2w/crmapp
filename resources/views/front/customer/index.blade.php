@@ -143,6 +143,7 @@
     
     var kycDocuments = '{!! $kycDocuments !!}';
     var orderInfo = '{!! $orderInfo !!}';
+    console.log( orderInfo );
    
     customerdetails = JSON.parse( customerdetails );
     companyDetails = JSON.parse( companyDetails );

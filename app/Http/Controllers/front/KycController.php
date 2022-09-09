@@ -34,8 +34,10 @@ class KycController extends Controller
         $customerInfo = $this->customerRepository->getCustomerInfo($customer_id);
         $companyInfo = $this->customerRepository->getcompanyInfo($customer_id);
         $kycDocuments = $this->customerRepository->getKycDocumentDetails();
+        $orderInfo = $this->customerRepository->getCustomerOrders();
+
         $activeMenu = 'kyc';
-        return view('front.customer.index', compact('result', 'not_home', 'info', 'customerInfo', 'companyInfo', 'activeMenu', 'documentTypes', 'kycDocuments'));
+        return view('front.customer.index', compact('result', 'not_home', 'info', 'customerInfo', 'companyInfo', 'activeMenu', 'documentTypes', 'kycDocuments', 'orderInfo'));
     }
 
     public function kycSubmit(Request $request) 

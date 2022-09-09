@@ -65,7 +65,6 @@ class CustomerRepository
 
     public function getCompanyInfo($customer_id) {
         $info = Customer::find( $customer_id );
-        // dd( $info->company );
         $links =  array(
             'facebook_url' => '',
             'twitter_url' => '',
@@ -74,6 +73,7 @@ class CustomerRepository
             'skype_url' => '',
             'github_url' => '',
         );
+        
         if( isset( $info->company->links ) && !empty( $info->company->links ) ){
           
             $links['facebook_url'] = $info->company->links->facebook_url;
@@ -85,12 +85,12 @@ class CustomerRepository
         }
 
         $response = array(
-            'id' => $info->company->id,
-            'name' => $info->company->name, 
-            'email' => $info->company->email,
-            'mobile_no' => $info->company->mobile_no,
-            'address' => $info->company->address,
-            'website' => $info->company->website,
+            'id' => $info->company->id ?? '',
+            'name' => $info->company->name ?? '', 
+            'email' => $info->company->email ?? '',
+            'mobile_no' => $info->company->mobile_no ?? '',
+            'address' => $info->company->address ?? '',
+            'website' => $info->company->website ?? '',
             'links' => $links,
 
         );
