@@ -37,6 +37,7 @@ Route::middleware([SetViewVariable::class, 'client'])->group(function () {
     Route::post('/profile/kyc/submit', [App\Http\Controllers\front\KycController::class, 'kycSubmit'])->name('kyc-submit');
 
     Route::get('/profile/orders', [App\Http\Controllers\front\OrderController::class, 'index'])->name('orders');
+    Route::post('/profile/orders/reject', [App\Http\Controllers\front\OrderController::class, 'rejectInvoice'])->name('orders.reject');
     
 });
 

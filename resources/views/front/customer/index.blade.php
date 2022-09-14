@@ -143,7 +143,6 @@
     
     var kycDocuments = '{!! $kycDocuments !!}';
     var orderInfo = '{!! $orderInfo !!}';
-    console.log( orderInfo );
    
     customerdetails = JSON.parse( customerdetails );
     companyDetails = JSON.parse( companyDetails );
@@ -207,7 +206,65 @@
                 }
 
             }); 
-        },       
+        },  
+        changeDocumentStatus: function(invoiceId, status) {
+            if( status == 'approved' ) {
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: 'You are trying to Approve Invoice',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, do it!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                       
+                    }
+                })
+            } else {
+
+                Swal.fire({
+                    title: "Are you sure to Reject ?",
+                    text: "Add Reject reason here",
+                    input: 'text',
+                    showCancelButton: true,
+                    inputValidator: (value) => {
+                        if (!value) {
+                            return 'Reason is required!'
+                        }
+                    }        
+                }).then((result) => {
+                    if (result.value) {
+                        var reason = result.value;
+                        let formData = {status:status, id:invoiceId,reason:reason};
+                        axios.post("{{ route('orders.reject') }}", formData)            
+                        .then( response => {
+                            
+                            if (response.status == 200 ) {
+                                let message = response.data.error;
+                                if( response.data.status == 0 ) {
+                                    toastr.success( message.join(',') );
+                                    var orders = response.data.orderInfo;
+                                    orders = JSON.parse(orders);
+                                    this.orderDetails = orders;
+                                } else {
+                                    toastr.error( message.join(',') );
+
+                                }
+                            }
+                            
+                        })
+                        .catch(function (error) {
+                            this.formError = error;
+                        });
+                        return false;
+
+                    }
+                });
+            }
+
+        },  
         isDisabled: function(doc) {
             return this.kycDocument.map(item => item.document_id).includes(doc.id);
         },

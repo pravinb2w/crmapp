@@ -181,6 +181,7 @@ class CustomerRepository
             $ptemp = [];
             foreach ( $info->pendingApprovalInvoices as $item ) {
                 $pending = [];
+                $pending['id'] = $item->id;
                 $pending[ 'date' ] = date( 'M d Y, h:i A', strtotime($item->created_at));
                 $pending[ 'invoiceNo' ] = $item->invoice_no ?? 'N/a';
                 if( isset( $item->items ) && $item->items ) {
@@ -208,9 +209,9 @@ class CustomerRepository
             $orders['pendingApproval'] = $ptemp;
         }
 
-        if( isset( $info->rejectedApprovalInvoices ) && !empty( $info->rejectedApprovalInvoices ) ) {
+        if( isset( $info->rejectedInvoices ) && !empty( $info->rejectedInvoices ) ) {
             $ptemp = [];
-            foreach ( $info->rejectedApprovalInvoices as $item ) {
+            foreach ( $info->rejectedInvoices as $item ) {
                 $pending = [];
                 $pending[ 'date' ] = date( 'M d Y, h:i A', strtotime($item->created_at));
                 $pending[ 'invoiceNo' ] = $item->invoice_no ?? 'N/a';
@@ -230,6 +231,7 @@ class CustomerRepository
                 $pending[ 'product' ] = $product_name;
                 $pending[ 'price' ] = $price;
                 $pending[ 'qty' ] = $qty;
+                $pending[ 'reject_reason' ] = $item->reject_reason;
                 $pending[ 'status' ] = $item->status;
                 $invoice_no = str_replace("/", "_", $item->invoice_no );
                 $pending[ 'file' ] = asset('invoice') . '/' . $invoice_no . '.pdf';

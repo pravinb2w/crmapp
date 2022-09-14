@@ -13,6 +13,7 @@ class LoginController extends Controller
 {
 
     public function index(Request $request) {
+        
         $result = LandingPages::where('is_default_landing_page', 1)->first();
         if (!$result) {
             $result   = LandingPages::latest()->first();

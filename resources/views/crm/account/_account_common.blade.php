@@ -46,6 +46,14 @@
             <label for="show_products" data-on-label="" data-off-label=""></label>
         </div>
     </div>
+    {{-- <div class="row mb-3">
+        <label for="show_products" class="col-3 col-form-label">Default Payment Gateway</label>
+        <!-- Success Switch -->
+        <div class="col-9">
+            <input type="checkbox" name="show_products" id="show_products" {{ (isset($info->company->show_products) && $info->company->show_products == '1' )  ? 'checked' : '' }} data-switch="success"/>
+            <label for="show_products" data-on-label="" data-off-label=""></label>
+        </div>
+    </div> --}}
     <div class="row mb-3">
         <label for="invoice_terms" class="col-3 col-form-label">Invoice Terms and Condition </label>
         <div class="col-9">

@@ -2,9 +2,7 @@
 @section('add_on_style')
  <style>
    input.otp {
-        width: 51px;
         padding: 13px;
-        margin: 5px;
         box-shadow: 1px 1px 1px 1px #ddd;
         border: 1px solid #ddd;
     }
@@ -18,7 +16,7 @@
 
 
 <div class="" id="app">
-    <div class="container-fluid p-5">
+    <div class="container-fluid p-3">
         <div class="tab-content">
             <div class="tab-pane show active" id="account">
                 <div v-if="formError" class="alert alert-danger" role="alert">
@@ -28,29 +26,29 @@
                     @{{ formSuccess }}
                 </div>
                 <div class="row" v-if="pagetype == 'password'">
-                   <div class="col-sm-4 card offset-sm-4 p-3">
+                   <div class="col-sm-12 col-md-8 col-lg-4 card offset-lg-4 offset-md-2 p-3">
                         @include('front.auth.login_with_password')
                    </div>
                 </div>
 
                 <div class="row" v-if="pagetype == 'otp'">
-                    <div class="col-sm-4 card offset-sm-4 p-3">
+                    <div class="col-sm-12 col-md-8 col-lg-4 card offset-lg-4 offset-md-2 p-3">
                         @include('front.auth.login_with_otp')
                     </div>
                 </div>
                 <div class="row" v-if="pagetype == 'verify_otp'">
-                    <div class="col-sm-4 card offset-sm-4 p-3">
+                    <div class="col-sm-12 col-md-8 col-lg-4 card offset-lg-4 offset-md-2 p-3">
                         @include('front.auth.otp_verify')
                     </div>
                 </div>
 
                 <div class="row" v-if="pagetype == 'reset'">
-                    <div class="col-sm-4 card offset-sm-4 p-3">
+                    <div class="col-sm-12 col-md-8 col-lg-4 card offset-lg-4 offset-md-2 p-3">
                         @include('front.auth.forgot_password')
                     </div>
                 </div>
                 <div class="row" v-if="pagetype == 'link'">
-                    <div class="col-sm-4 card offset-sm-4 p-3">
+                    <div class="col-sm-12 col-md-8 col-lg-4 card offset-lg-4 offset-md-2 p-3">
                         @include('front.auth.reset_password')
                     </div>
                 </div>

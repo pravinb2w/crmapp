@@ -34,17 +34,22 @@ class BuyController extends Controller
 
     public function get_buy_form(Request $request)
     {
-        $product_id = $request->product_id;
-        $product_info = Product::find($product_id);
-        $gateways = PaymentIntegration::all();
-        $country = Country::all();
-        $modal_title = 'Buy Now';
+        $product_id         = $request->product_id;
+        $product_info       = Product::find($product_id);
+        $gateways           = PaymentIntegration::all();
+        $country            = Country::all();
+        $modal_title        = 'Buy Now';
+        if( isset(session('client')->id) && !empty( session('client')->id ) ) {
+            $customer_info  = Customer::find(session('client')->id);
+        }
+        
         $params = array(
             'product_info' => $product_info,
             'product_id' => $product_id,
             'modal_title' => $modal_title,
             'gateways' => $gateways,
-            'country' => $country
+            'country' => $country,
+            'customer_info' => $customer_info ?? ''
         );
         return view('front.buy.buy_form', $params);
     }
@@ -63,29 +68,33 @@ class BuyController extends Controller
             $product_info = Product::find($request->product_id);
             $order_no = 'TXN' . date('mdyhis');
             $temp_no = base64_encode('TEMP' . date('mdyhis'));
-
-            if (isset($customer) && !empty($customer)) {
-                $customer_id = $customer->id;
-                $customer_info = Customer::find($customer_id);
-                $customer_info->mobile_no = $request->mobile_no;
-                $customer_info->dial_code = $request->dial_code;
-                $customer_info->update();
+            if( isset(session('client')->id) && !empty( session('client')->id ) ) {
+                $customer_id = session('client')->id;
             } else {
-                $randomString = rand(0, 999999);
-                $password = Hash::make($randomString);
-                $ins['status'] = 1;
-                $ins['first_name'] = $request->name;
-                $ins['email'] = $request->email;
-                $ins['password'] = $password;
-                $ins['mobile_no'] = $request->mobile_no;
-                $ins['dial_code'] = $request->dial_code;
-                $ins['added_by'] = 1;
-                $customer_id = Customer::create($ins)->id;
-                //send password in sms 
-                $params = array('password' => $randomString);
-                sendSMS($request->mobile_no, 'new_registration', $params);
-                MailEntryHelper::welcomeMessage($customer_id ?? null, $request->email);
+                if (isset($customer) && !empty($customer)) {
+                    $customer_id = $customer->id;
+                    $customer_info = Customer::find($customer_id);
+                    $customer_info->mobile_no = $request->mobile_no;
+                    $customer_info->dial_code = $request->dial_code;
+                    $customer_info->update();
+                } else {
+                    $randomString = rand(0, 999999);
+                    $password = Hash::make($randomString);
+                    $ins['status'] = 1;
+                    $ins['first_name'] = $request->name;
+                    $ins['email'] = $request->email;
+                    $ins['password'] = $password;
+                    $ins['mobile_no'] = $request->mobile_no;
+                    $ins['dial_code'] = $request->dial_code;
+                    $ins['added_by'] = 1;
+                    $customer_id = Customer::create($ins)->id;
+                    //send password in sms 
+                    $params = array('password' => $randomString);
+                    sendSMS($request->mobile_no, 'new_registration', $params);
+                    MailEntryHelper::welcomeMessage($customer_id ?? null, $request->email);
+                }
             }
+            
 
             if ($request->pay_gateway == 'razorpay') {
                 $payment_method = 'razor';
@@ -100,7 +109,7 @@ class BuyController extends Controller
 
             $ord_ins['order_id'] = $order_no;
             $ord_ins['amount'] = $product_info->price;
-            $ord_ins['customer_id'] = $customer_id;
+            $ord_ins['customer_id'] = session('client')->id ?? $customer_id;
             $ord_ins['product_code'] = $product_info->product_code;
             $ord_ins['payment_gateway'] = $request->pay_gateway;
             $ord_ins['description'] = '';
@@ -109,7 +118,7 @@ class BuyController extends Controller
             Order::create($ord_ins);
 
             $ins['payment_mode'] = 'online';
-            $ins['customer_id'] = $customer_id;
+            $ins['customer_id'] = session('client')->id ?? $customer_id;
             $ins['amount'] = $product_info->price;
             $ins['payment_method'] = $payment_method;
             $ins['order_id'] = $order_no;
@@ -316,7 +325,15 @@ class BuyController extends Controller
                 CommonHelper::send_payment_received_notification($invoice->deal_id);
             }
 
-            return redirect()->route('landing.index')->with('status', 'Profile updated!');
+            if( isset(session('client')->id) && !empty( session('client')->id ) ) {
+
+                return redirect()->route('orders')->with('status', 'Profile updated!');
+
+            } else {
+
+                return redirect()->route('landing.index')->with('status', 'Profile updated!');
+
+            }
 
             // You can create this page
         } else {
@@ -325,13 +342,26 @@ class BuyController extends Controller
             $res_msg = ['erorr' => 'error', 'message' => 'Payment Failed', 'order_no' => $pay_info->order_id];
             Session::put('razorpay_response', $res_msg);
             $_SESSION['razor_response'] = $res_msg;
+
+            if( isset(session('client')->id) && !empty( session('client')->id ) ) {
+
+                return redirect()->route('orders')->with('status', 'Profile updated!');
+
+            } else {
             
-            return redirect()->route('landing.index')->with('status', 'Profile updated!');
+                return redirect()->route('landing.index')->with('status', 'Profile updated!');
+            }
 
             // You can create this page
         }
         session()->forget('pay_post');
-        return redirect()->route('landing.index');
+        if( isset(session('client')->id) && !empty( session('client')->id ) ) {
+
+            return redirect()->route('orders')->with('status', 'Profile updated!');
+
+        } else {
+            return redirect()->route('landing.index');
+        }
     }
 
     public function generatePDF($id, $pdf_template = '')

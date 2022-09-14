@@ -382,7 +382,7 @@
                                                     <div>
                                                         <input type="text" class="form-control text-start"
                                                             placeholder="Customer Name" id="name" name="name"
-                                                            required>
+                                                            required value="{{ $customer_info->first_name ?? '' }}">
                                                     </div>
                                                 </div>
 
@@ -391,7 +391,7 @@
                                                     <div>
                                                         <input type="text" class="form-control text-start"
                                                             placeholder="Customer Email" id="email" name="email"
-                                                            required>
+                                                            required value="{{ $customer_info->email ?? '' }}">
                                                     </div>
                                                 </div>
 
@@ -407,7 +407,7 @@
                                                         </select>
                                                         <input type="text" class="form-control text-start"
                                                             maxlength="10" placeholder="Customer Mobile Number"
-                                                            id="mobile_no" name="mobile_no" required>
+                                                            id="mobile_no" name="mobile_no" required value="{{ $customer_info->mobile_no ?? '' }}">
                                                     </div>
                                                 </div>
                                             </div>
