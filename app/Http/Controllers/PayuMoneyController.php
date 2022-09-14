@@ -87,7 +87,11 @@ class PayuMoneyController extends \InfyOm\Payu\PayuMoneyController
         $res_msg = ['erorr' => 'error', 'message' => $error_Message, 'order_no' => $order_no];
         Session::put('razorpay_response', $res_msg);
 
-        return redirect()->route('landing.index')->with('status', 'Payment Failed!');
+        if( isset(session('client')->id) && !empty( session('client')->id ) ) {
+            return redirect()->route('orders')->with('status', 'Payment Failed!');        
+        } else {
+            return redirect()->route('landing.index')->with('status', 'Payment Failed!');
+        }
     }
 
     public function paymentSuccess(Request $request)
@@ -163,7 +167,11 @@ class PayuMoneyController extends \InfyOm\Payu\PayuMoneyController
         $res_msg = ['erorr' => 'success', 'message' => $error_Message, 'order_no' => $order_no, 'invoice_no' => $invoice->invoice_no];
         Session::put('razorpay_response', $res_msg);
 
-        return redirect()->route('landing.index')->with('status', 'Payment Failed!');
+        if( isset(session('client')->id) && !empty( session('client')->id ) ) {
+            return redirect()->route('orders')->with('status', 'Payment Failed!');        
+        } else {
+            return redirect()->route('landing.index')->with('status', 'Payment Failed!');
+        }
     }
 
     public function checkHasValidHas($data)

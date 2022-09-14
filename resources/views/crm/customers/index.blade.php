@@ -24,7 +24,7 @@
                 <div class="card">
                     <div class="card-body">
                         {{-- <h4 class="header-title">Personal Preferences</h4> --}}
-                        {{-- @include('crm.common.common_add_btn') --}}
+                        @include('crm.common.common_add_btn')
                         <div class="table-responsive">
                             <table class="table table-centered w-100 dt-responsive nowrap" id="customers-datatable">
                                 <thead class="table-light">

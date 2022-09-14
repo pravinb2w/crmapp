@@ -116,8 +116,12 @@ class CcavenueController extends Controller
                     if (isset($invoice->deal_id) && !empty($invoice->deal_id)) {
                         CommonHelper::send_payment_received_notification($invoice->deal_id);
                     }
-    
-                    return redirect()->route('landing.index');
+                    
+                    if( isset(session('client')->id) && !empty( session('client')->id ) ) {
+                        return redirect()->route('orders')->with('status', 'Profile updated!');        
+                    } else {
+                        return redirect()->route('landing.index');
+                    }
     
                 } else {
                     $res_msg = ['erorr' => 'error', 'message' => 'Payment Failed', 'order_no' => $order_id];
@@ -125,7 +129,11 @@ class CcavenueController extends Controller
                    
                 }
             }
-            return redirect()->route('landing.index');
+            if( isset(session('client')->id) && !empty( session('client')->id ) ) {
+                return redirect()->route('orders')->with('status', 'Profile updated!');        
+            } else {
+                return redirect()->route('landing.index');
+            }
         }
         
     }

@@ -131,11 +131,11 @@
 
     </div>       
 </div>
-
+<div class="modal fade show" id="Mymodal" tabindex="-1" aria-labelledby="myLargeModalLabel"
+    aria-modal="true" role="dialog">
+    <!-- /.modal-dialog -->
+</div>
 <script>
-// swal.fire("Good job!", "You clicked the button!", "success", {
-//   button: "Aww yiss!",
-// });
 
     var customerdetails = '{!! $customerInfo !!}';
     var companyDetails = '{!! $companyInfo !!}';
@@ -149,12 +149,12 @@
     documentTypes = JSON.parse( documentTypes );
     kycDocuments = JSON.parse( kycDocuments );
     orderInfo = JSON.parse( orderInfo );
-    console.log( orderInfo );
+   
     const { createApp } = Vue
     var activemenu = "{{ $activeMenu ?? 'account' }}";
     var profileImage = "{{ $info->logo ? asset('storage/'.$info->logo) : asset('assets/images/users/noimaged.png') }}";
     createApp({
-      data() {
+      data() { 
         return {
             formError: '',
             formSuccess: '',
@@ -207,6 +207,20 @@
 
             }); 
         },  
+        getBuyForm: function(invoiceId) {
+            console.log( 'invoiceid', invoiceId );
+            $.ajax({
+                url: "{{ route('get.invoice.buy.form') }}",
+                type: 'GET',
+                data: {
+                    invoiceId: invoiceId
+                },
+                success: function(res) {
+                    $('#Mymodal').html(res);
+                    $('#Mymodal').modal('show');
+                }
+            });
+        },
         changeDocumentStatus: function(invoiceId, status) {
             if( status == 'approved' ) {
                 Swal.fire({
@@ -219,7 +233,7 @@
                     confirmButtonText: 'Yes, do it!'
                 }).then((result) => {
                     if (result.isConfirmed) {
-                       
+                        this.getBuyForm(invoiceId);
                     }
                 })
             } else {

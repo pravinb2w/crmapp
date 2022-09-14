@@ -152,10 +152,11 @@ class CustomerRepository
             $lorder[ 'date' ] = date( 'M d Y, h:i A', strtotime($info->lastOrder->created_at));
             $lorder[ 'orderNo' ] = $info->lastOrder->order_id ?? 'N/A';
             $lorder[ 'invoiceNo' ] = $info->lastOrder->invoice->invoice_no ?? 'N/a';
+            $price = 0;
+            $qty = 0;
+            $product_name = '';
             if( isset( $info->lastOrder->invoice->items ) && $info->lastOrder->invoice->items ) {
-                $price = 0;
-                $qty = 0;
-                $product_name = '';
+                
                 $name = [];
                 foreach ( $info->lastOrder->invoice->items as $key => $value) {
                     $name[] = $value->product->product_name;
@@ -164,15 +165,17 @@ class CustomerRepository
                 }
                 $product_name = implode(",", $name);
 
+                $lorder[ 'payment_status' ] = ucfirst($info->lastOrder->payment->payment_status ?? '');
+                $lorder[ 'order_status' ] = ucfirst($info->lastOrder->status);
+                $invoice_no = str_replace("/", "_", $info->lastOrder->invoice->invoice_no );
+                $lorder[ 'file' ] = asset('invoice') . '/' . $invoice_no . '.pdf';
+
             }
             
             $lorder[ 'product' ] = $product_name;
             $lorder[ 'price' ] = $price;
             $lorder[ 'qty' ] = $qty;
-            $lorder[ 'payment_status' ] = ucfirst($info->lastOrder->payment->payment_status);
-            $lorder[ 'order_status' ] = ucfirst($info->lastOrder->status);
-            $invoice_no = str_replace("/", "_", $info->lastOrder->invoice->invoice_no );
-            $lorder[ 'file' ] = asset('invoice') . '/' . $invoice_no . '.pdf';
+           
 
             $orders['lastOrder'] = $lorder;
         }
@@ -215,26 +218,31 @@ class CustomerRepository
                 $pending = [];
                 $pending[ 'date' ] = date( 'M d Y, h:i A', strtotime($item->created_at));
                 $pending[ 'invoiceNo' ] = $item->invoice_no ?? 'N/a';
+
+                $price = 0;
+                $qty = 0;
+                $product_name = '';
+                $name = [];
+
                 if( isset( $item->items ) && $item->items ) {
-                    $price = 0;
-                    $qty = 0;
-                    $product_name = '';
-                    $name = [];
+                    
                     foreach ( $item->items as $key => $value) {
                         $name[] = $value->product->product_name;
                         $price = $price + $value->amount;
                         $qty = $qty + $value->qty;
                     }
                     $product_name = implode(",", $name);
+
+                    $pending[ 'product' ] = $product_name;
+                    $pending[ 'price' ] = $price;
+                    $pending[ 'qty' ] = $qty;
+                    $pending[ 'reject_reason' ] = $item->reject_reason;
+                    $pending[ 'status' ] = $item->status;
+                    $invoice_no = str_replace("/", "_", $item->invoice_no );
+                    $pending[ 'file' ] = asset('invoice') . '/' . $invoice_no . '.pdf';
                 }
                 
-                $pending[ 'product' ] = $product_name;
-                $pending[ 'price' ] = $price;
-                $pending[ 'qty' ] = $qty;
-                $pending[ 'reject_reason' ] = $item->reject_reason;
-                $pending[ 'status' ] = $item->status;
-                $invoice_no = str_replace("/", "_", $item->invoice_no );
-                $pending[ 'file' ] = asset('invoice') . '/' . $invoice_no . '.pdf';
+               
                 $ptemp[] = $pending;
             }
             $orders['rejectedInvoice'] = $ptemp;
@@ -257,16 +265,14 @@ class CustomerRepository
                         $qty = $qty + $value->qty;
                     }
                     $product_name = implode(",", $name);
-
+                    $lorder[ 'product' ] = $product_name;
+                    $lorder[ 'price' ] = $price;
+                    $lorder[ 'qty' ] = $qty;
+                    $lorder[ 'payment_status' ] = ucfirst($order->payment->payment_status);
+                    $lorder[ 'order_status' ] = ucfirst($order->status);
+                    $invoice_no = str_replace("/", "_", $order->invoice->invoice_no );
+                    $lorder[ 'file' ] = asset('invoice') . '/' . $invoice_no . '.pdf';
                 }
-                
-                $lorder[ 'product' ] = $product_name;
-                $lorder[ 'price' ] = $price;
-                $lorder[ 'qty' ] = $qty;
-                $lorder[ 'payment_status' ] = ucfirst($order->payment->payment_status);
-                $lorder[ 'order_status' ] = ucfirst($order->status);
-                $invoice_no = str_replace("/", "_", $order->invoice->invoice_no );
-                $lorder[ 'file' ] = asset('invoice') . '/' . $invoice_no . '.pdf';
 
                 $orders['orderHistory'][] = $lorder;
             }

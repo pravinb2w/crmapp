@@ -54,6 +54,30 @@ class BuyController extends Controller
         return view('front.buy.buy_form', $params);
     }
 
+    public function getInvoiceBuyForm(Request $request)
+    {
+        $invoiceId          = $request->invoiceId;
+        $invoice_info       = Invoice::find( $invoiceId );
+        $product_id         = $invoice_info->items[0]->product_id;
+        $product_info       = Product::find($product_id);
+        $gateways           = PaymentIntegration::all();
+        $country            = Country::all();
+        $modal_title        = 'Buy Now';
+        if( isset(session('client')->id) && !empty( session('client')->id ) ) {
+            $customer_info  = Customer::find(session('client')->id);
+        }
+        
+        $params = array(
+            'product_info' => $product_info,
+            'product_id' => $product_id,
+            'modal_title' => $modal_title,
+            'gateways' => $gateways,
+            'country' => $country,
+            'customer_info' => $customer_info ?? ''
+        );
+        return view('front.buy.buy_form', $params);
+    }
+
     public function submit_buy_form(Request $request)
     {
         //pay_gateway
