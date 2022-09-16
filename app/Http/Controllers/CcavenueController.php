@@ -130,7 +130,7 @@ class CcavenueController extends Controller
                 }
             }
             if( isset(session('client')->id) && !empty( session('client')->id ) ) {
-                return redirect()->route('orders')->with('status', 'Profile updated!');        
+                return redirect()->route('orders');        
             } else {
                 return redirect()->route('landing.index');
             }

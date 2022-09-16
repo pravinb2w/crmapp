@@ -74,7 +74,38 @@
 
 
 <div class="topnav" id="app">
-   
+    @if ( session('razorpay_response' ) )
+    @php
+        $response = session('razorpay_response');
+    @endphp
+    @if( $response['erorr'] == 'success')
+       
+        <div class=" text-center alert alert-success">
+            <h5>
+                Your order Payment Successfully done
+            </h5>
+            <p class="w-100 text-center">
+                Order No: {{ $response['order_no'] ?? 'N/A' }}
+            </p>
+        </div>
+            
+    @else
+        <div class=" text-center alert alert-danger">
+            <h5>
+                Your order Payment Failed
+            </h5>
+            <p class="w-100 text-center">
+                Order No: {{ $response['order_no'] ?? 'N/A' }}
+            </p>
+        </div>
+    @endif
+    @php
+        // unset(session('razorpay_response'));
+        Illuminate\Support\Facades\Session::forget('razorpay_response'); 
+
+    @endphp
+@endif
+
     <div class="container-fluid p-3">
         
         <ul class="nav nav-pills bg-nav-pills nav-justified mb-3">
@@ -149,7 +180,6 @@
     documentTypes = JSON.parse( documentTypes );
     kycDocuments = JSON.parse( kycDocuments );
     orderInfo = JSON.parse( orderInfo );
-   
     const { createApp } = Vue
     var activemenu = "{{ $activeMenu ?? 'account' }}";
     var profileImage = "{{ $info->logo ? asset('storage/'.$info->logo) : asset('assets/images/users/noimaged.png') }}";

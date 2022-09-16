@@ -25,7 +25,7 @@
 
                     <div class="table-responsive">
                         <table class="table table-centered w-100 dt-responsive nowrap" id="ladingPage-datatable">
-                            <thead class="table-light">
+                            <thead class="table-primary">
                                 <tr>
                                     <th>S.No</th>
                                     <th class="all">Page Name</th>

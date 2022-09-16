@@ -74,7 +74,7 @@
                     {{-- <h4 class="header-title">Personal Preferences</h4> --}}
                     <div class="table-responsive">
                         <table class="table table-centered w-100 dt-responsive nowrap" id="reports-datatable">
-                            <thead class="table-light">
+                            <thead class="table-primary">
                                 <tr>
                                     <th>Payment Date</th>
                                     <th>Payment Mode</th>

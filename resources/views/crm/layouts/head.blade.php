@@ -13,7 +13,7 @@
 @endforeach
 @endif
     <meta name="csrf-token" content="{{ csrf_token() }}" />
-    
+     
     {{-- {{ dd($cm_favicon) }} --}}
     <!-- App favicon -->
     <link rel="shortcut icon" href="{{ asset('storage/'.$cm_favicon) }}">

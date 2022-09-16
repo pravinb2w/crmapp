@@ -30,7 +30,7 @@
 
                     <div class="table-responsive">
                         <table class="table table-centered w-100 dt-responsive" id="notes-datatable">
-                            <thead class="table-light">
+                            <thead class="table-primary">
                                 <tr>
                             
                                     <th style="width: 40%"> Note </th>

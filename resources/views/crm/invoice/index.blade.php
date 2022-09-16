@@ -28,7 +28,7 @@
 
                     <div class="table-responsive">
                         <table class="table table-centered w-100 dt-responsive nowrap" id="invoice-datatable">
-                            <thead class="table-light">
+                            <thead class="table-primary">
                                 <tr>
                                     <th> Invoice No </th>
                                     <th> Deal </th>

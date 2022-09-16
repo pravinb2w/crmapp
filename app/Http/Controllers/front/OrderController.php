@@ -8,6 +8,7 @@ use App\Models\Invoice;
 use App\Models\LandingPages;
 use App\Repositories\CustomerRepository;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
 class OrderController extends Controller
 {

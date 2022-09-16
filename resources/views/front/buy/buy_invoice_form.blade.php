@@ -321,8 +321,8 @@
                         <div class="col-12" id="error"></div>
                     </div>
                     <div class="row">
-                        <form action="{{ route('submit.buy.form') }}" id="buy-form" method="POST">
-                            <input type="hidden" name="product_id" id="product_id" value="{{ $product_id ?? '' }}">
+                        <form action="{{ route('submit.buy.invoice.form') }}" id="buy-form" method="POST">
+                            <input type="hidden" name="invoice_id" id="invoice_id" value="{{ $invoice_info->id ?? '' }}">
 
                             <div class="col-12">
 
@@ -334,46 +334,61 @@
 
                                     <!-- Left Column / Headphones Image -->
                                     <div class="left-column">
-                                        <img src="{{ $product_info->image ?? 'http://127.0.0.1:8000/storage/files/1/webdesign.png' }}"
-                                            alt="">
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th> Product </th>
+                                                    <th> Price x Qty </th>
+                                                    <th> Tax </th>
+                                                    <th> Discount </th>
+                                                    <th>
+                                                        Total
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @if( isset( $invoice_info->items ) && !empty( $invoice_info->items ))
+                                                    @foreach ($invoice_info->items as $item)
+                                                        <tr>
+                                                            <td>
+                                                                <h4>{{ $item->product->product_name ?? '' }}</h4>
+                                                                <small> {{ $item->product->hsn_no }}</small>
+                                                                <div><small class="text-muted badge badge-info">{{ $item->product->product_code }}</small></div>
+                                                            </td>
+                                                            <td>
+                                                                {{ $item->unit_price }} x {{  $item->qty }}
+                                                            </td>
+                                                            <td>
+                                                                {{ $item->cgst + $item->sgst + $item->igst }}
+                                                            </td>
+                                                            <td>
+                                                                {{ $item->discount }}
+                                                            </td>
+                                                            <td>
+                                                                <b>{{ $item->amount }}</b>
+                                                            </td>
+                                                        </tr>
+                                                    @endforeach
+                                                @endif
+                                                
+                                                <tr>
+                                                    <td colspan="4">
+                                                        Total
+                                                    </td>
+                                                    
+                                                    <td>
+                                                        <b>{{ $invoice_info->total }}</b>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
 
                                     </div>
                                     <!-- Right Column -->
                                     <div class="right-column">
 
-                                        <!-- Product Description -->
-                                        <div class="product-description">
-                                            <span>{{ $product_info->package->subscription_name ?? '' }}</span>
-                                            <h1>{{ $product_info->product_name ?? '' }}</h1>
-                                            <p> {{ $product_info->description ?? '' }} </p>
-                                        </div>
-                                        <div class="row mb-3">
-                                            <div class="col-6">
-                                                <span>HSN</span>
-                                                <div class="color-choose">
-                                                    <div>
-                                                        <label
-                                                            for="">{{ $product_info->hsn_no ?? 'N/A' }}</label>
-                                                    </div>
-
-                                                </div>
-                                            </div>
-                                            <div class="col-6">
-                                                <span>Product Code</span>
-                                                <div class="color-choose">
-                                                    <div>
-                                                        <label
-                                                            for="">{{ $product_info->product_code ?? 'N/A' }}</label>
-                                                    </div>
-
-                                                </div>
-
-                                            </div>
-                                        </div>
-
                                         <!-- Product Configuration -->
                                         <div class="product-configuration">
-
 
                                             <!-- Product Color -->
                                             <div class="product-color">
@@ -452,7 +467,7 @@
 
                                         <!-- Product Pricing -->
                                         <div class="product-price">
-                                            <span>INR {{ $product_info->price }}</span>
+                                            <span>INR {{ $invoice_info->total }}</span>
                                             {{-- <a href="#" class="cart-btn">Buy Now</a> --}}
                                             <button type="submit" class="cart-btn" id="proceed"> Proceed</button>
 

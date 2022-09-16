@@ -6,7 +6,7 @@
 
                 <div class="table-responsive">
                     <table class="table mb-0">
-                        <thead class="table-dark">
+                        <thead class="table-primary">
                             <tr>
                                 <th> Date </th>
                                 <th> Order No </th>
@@ -30,12 +30,12 @@
                                 <td> @{{ orderDetails.lastOrder.qty }} </td>
                                 <td>
                                     <h5>
-                                        <span class="badge badge-success-lighten" v-if="orderDetails.lastOrder.payment_status == 'Paid'">
+                                        <span class="badge badge-danger-lighten" v-if="orderDetails.lastOrder.payment_status == 'Failed'">
 
                                             <i class="mdi mdi-bitcoin"></i>
                                             @{{ orderDetails.lastOrder.payment_status }}
                                         </span>
-                                        <span class="badge badge-danger-lighten" v-else>
+                                        <span class="badge badge-success-lighten" v-else>
                                             <i class="mdi mdi-bitcoin"></i>
                                             @{{ orderDetails.lastOrder.payment_status }}
                                         </span>
@@ -69,7 +69,7 @@
 
                 <div class="table-responsive">
                     <table class="table mb-0">
-                        <thead class="table-dark">
+                        <thead class="table-primary">
                             <tr>
                                 <th> Date </th>
                                 <th> Invoice No </th>
@@ -132,7 +132,7 @@
                     Customer Orders
                 </h5>
                 <table id="scroll-horizontal-datatable" class="table w-100 nowrap">
-                    <thead class="table-dark">
+                    <thead class="table-primary">
                         <tr>
                             <th>Invoice No</th>
                             <th>Invoice Date</th>
@@ -162,7 +162,11 @@
                             <td> @{{ history.price }}</td>
                             <td>
                                 <h5>
-                                    <span class="badge badge-success-lighten" v-if="orderDetails.lastOrder.payment_status == 'Paid'">
+                                    <span class="badge badge-success-lighten" v-if="history.payment_status == 'Paid'">
+                                        <i class="mdi mdi-bitcoin"></i>
+                                        @{{ history.payment_status }}
+                                    </span>
+                                    <span class="badge badge-warning-lighten" v-else-if="history.payment_status == 'Pending'">
                                         <i class="mdi mdi-bitcoin"></i>
                                         @{{ history.payment_status }}
                                     </span>
@@ -174,7 +178,11 @@
                             </td>
                             <td>
                                 <h5>
-                                    <span class="badge badge-success-lighten" v-if="orderDetails.lastOrder.order_status == 'Completed'">
+                                    <span class="badge badge-success-lighten" v-if="history.order_status == 'Completed'">
+                                        <i class="mdi mdi-bitcoin"></i>
+                                        @{{ history.order_status }} 
+                                    </span>
+                                    <span class="badge badge-warning-lighten" v-else-if="history.order_status == 'Pending'">
                                         <i class="mdi mdi-bitcoin"></i>
                                         @{{ history.order_status }} 
                                     </span>
@@ -197,7 +205,7 @@
 
                 <div class="table-responsive">
                     <table class="table mb-0">
-                        <thead class="table-dark">
+                        <thead class="table-primary">
                             <tr>
                                 <th> Date </th>
                                 <th> Invoice No </th>

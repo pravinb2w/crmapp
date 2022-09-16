@@ -62,6 +62,7 @@ Route::get('/reject/invoice/{id}', [App\Http\Controllers\InvoiceController::clas
 Route::get('/get/buy/form', [App\Http\Controllers\front\BuyController::class, 'get_buy_form'])->name('get.buy.form');
 Route::get('/get/invoice/buy/form', [App\Http\Controllers\front\BuyController::class, 'getInvoiceBuyForm'])->name('get.invoice.buy.form');
 Route::post('/submit/buy/form', [App\Http\Controllers\front\BuyController::class, 'submit_buy_form'])->name('submit.buy.form');
+Route::post('/submit/buy/form', [App\Http\Controllers\front\BuyController::class, 'submitInvoiceBuyForm'])->name('submit.buy.invoice.form');
 Route::get('/razor/init/request/{order_no}', [App\Http\Controllers\front\BuyController::class, 'razorpay_initiate_request'])->name('razorpay.request');
 Route::post('/razor/complete', [App\Http\Controllers\front\BuyController::class, 'razor_payment_complete'])->name('razor.payments.complete');
 Route::post('/', [App\Http\Controllers\front\LandingController::class, 'payment_response_page'])->name('razor.payments.finish');

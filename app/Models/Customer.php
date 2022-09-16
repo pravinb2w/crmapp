@@ -105,7 +105,7 @@ class Customer extends Authenticatable implements Auditable
     }
 
     public function pendingApprovalInvoices() {
-        return $this->hasMany(Invoice::class, 'customer_id')->where('invoices.status', '0')->whereNull('approved_at')->whereNull('rejected_at');
+        return $this->hasMany(Invoice::class, 'customer_id')->where('invoices.status', '0')->whereNotNull('pending_at')->whereNull('approved_at')->whereNull('rejected_at');
     }
 
     public function rejectedInvoices() {

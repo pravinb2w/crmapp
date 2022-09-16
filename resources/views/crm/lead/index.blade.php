@@ -29,7 +29,7 @@
 
                         <div class="table-responsive">
                             <table class="table table-centered w-100 dt-responsive nowrap" id="leads-datatable">
-                                <thead class="table-light">
+                                <thead class="table-primary">
                                     <tr>
                                         <th class="all">Title</th>
                                         <th>Lead Type</th>

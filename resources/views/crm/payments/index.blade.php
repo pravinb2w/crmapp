@@ -29,7 +29,7 @@
 
                     <div class="table-responsive">
                         <table class="table table-centered w-100 dt-responsive nowrap" id="payments-datatable">
-                            <thead class="table-light">
+                            <thead class="table-primary">
                                 <tr>
                                     <th>Date</th>
                                     <th>Order No</th>

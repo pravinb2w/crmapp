@@ -73,9 +73,80 @@ class BuyController extends Controller
             'modal_title' => $modal_title,
             'gateways' => $gateways,
             'country' => $country,
-            'customer_info' => $customer_info ?? ''
+            'customer_info' => $customer_info ?? '',
+            'invoice_info' => $invoice_info ?? ''
         );
-        return view('front.buy.buy_form', $params);
+       
+        return view('front.buy.buy_invoice_form', $params);
+    }
+
+    public function submitInvoiceBuyForm(Request $request)
+    {
+        //pay_gateway
+        $role_validator   = [
+            'pay_gateway'      => ['required', 'string', 'max:255'],
+        ];
+        //Validate the product
+        $validator                     = Validator::make($request->all(), $role_validator);
+
+        if ($validator->passes()) {
+
+            $invoice_id         = $request->invoice_id;
+            $customer           = Customer::where('email', $request->email)->first();
+            $customer_id        = $customer->id;
+            $invoice_info       = Invoice::find($invoice_id);
+            $order_no           = 'TXN' . date('mdyhis');
+            $temp_no            = base64_encode('TEMP' . date('mdyhis'));
+
+            if( isset(session('client')->id) && !empty( session('client')->id ) ) {
+                $customer_id    = session('client')->id;
+            }
+            
+            if ($request->pay_gateway == 'razorpay') {
+                $payment_method = 'razor';
+                $route          = route('razorpay.request', ['order_no' => $order_no]);
+            } else if ($request->pay_gateway == 'payumoney') {
+                $payment_method = $request->pay_gateway;
+                $route          = route('redirectToPayU', ['order_no' => $order_no]);
+            } else {
+                $payment_method = $request->pay_gateway;
+                $route          = 'https://phoenixtech.app/ccavenue/pay.php';
+            }
+
+            $ord_ins['order_id'] = $order_no;
+            $ord_ins['amount'] = $invoice_info->total;
+            $ord_ins['customer_id'] = session('client')->id ?? $customer_id;
+            $ord_ins['invoice_no'] = $invoice_info->invoice_no;
+            $ord_ins['payment_gateway'] = $request->pay_gateway;
+            $ord_ins['description'] = '';
+            $ord_ins['status'] = 'pending';
+
+            Order::create($ord_ins);
+
+            $ins['payment_mode'] = 'online';
+            $ins['customer_id'] = session('client')->id ?? $customer_id;
+            $ins['amount'] = $invoice_info->total;
+            $ins['payment_method'] = $payment_method;
+            $ins['order_id'] = $order_no;
+            $ins['invoice_id'] = $invoice_info->id;
+            $ins['payment_status'] = 'pending';
+            $ins['temp_no'] = $temp_no;
+            Payment::create($ins);
+
+            $invoice_info->order_no = $order_no;
+            $invoice_info->update();
+
+            $success = 'Payment Added';
+            $pay_params = array(
+                    'order_no' => $order_no, 
+                    'name' => $request->name, 
+                    'email' => $request->email,
+                    'mobile_no' => $request->mobile_no,
+                    'amount' => $invoice_info->total
+                );
+            return response()->json(['error' => [$success], 'pay_params' => $pay_params, 'status' => '0', 'order_no' => $order_no, 'payment_method' => $request->pay_gateway, 'route' => $route]);
+        }
+        return response()->json(['error' => $validator->errors()->all(), 'status' => '1']);
     }
 
     public function submit_buy_form(Request $request)
@@ -351,14 +422,13 @@ class BuyController extends Controller
 
             if( isset(session('client')->id) && !empty( session('client')->id ) ) {
 
-                return redirect()->route('orders')->with('status', 'Profile updated!');
+                return redirect()->route('orders')->with('status', 'Payment Success!');
 
             } else {
 
-                return redirect()->route('landing.index')->with('status', 'Profile updated!');
+                return redirect()->route('landing.index')->with('status', 'Payment Success!');
 
             }
-
             // You can create this page
         } else {
             $pay_info->payment_status = 'failed';
@@ -369,11 +439,11 @@ class BuyController extends Controller
 
             if( isset(session('client')->id) && !empty( session('client')->id ) ) {
 
-                return redirect()->route('orders')->with('status', 'Profile updated!');
+                return redirect()->route('orders')->with('status', 'Payment Failed!');
 
             } else {
             
-                return redirect()->route('landing.index')->with('status', 'Profile updated!');
+                return redirect()->route('landing.index')->with('status', 'Payment failed!');
             }
 
             // You can create this page
@@ -381,7 +451,7 @@ class BuyController extends Controller
         session()->forget('pay_post');
         if( isset(session('client')->id) && !empty( session('client')->id ) ) {
 
-            return redirect()->route('orders')->with('status', 'Profile updated!');
+            return redirect()->route('orders');
 
         } else {
             return redirect()->route('landing.index');

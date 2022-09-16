@@ -33,7 +33,7 @@
                     @include('crm.common.common_add_btn')
                     <div class="table-responsive">
                         <table class="table table-centered w-100 dt-responsive nowrap" id="company-datatable">
-                            <thead class="table-light">
+                            <thead class="table-primary">
                                 <tr>
                                     <th class="all" style="width: 20px;">
                                         <div class="form-check">

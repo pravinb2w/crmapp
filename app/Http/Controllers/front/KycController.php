@@ -11,6 +11,8 @@ use App\Models\LandingPages;
 use App\Repositories\CustomerRepository;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
+
 
 class KycController extends Controller
 {

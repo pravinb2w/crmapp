@@ -25,7 +25,7 @@
         <div class="card-body">
             
             <table class="table table-centered w-100" id="log-datatable">
-                <thead class="table-light">
+                <thead class="table-primary">
                     <tr>
                         <th>Log Date</th>
                         <th>Logged By</th>

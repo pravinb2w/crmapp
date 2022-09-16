@@ -26,7 +26,7 @@
                         @include('crm.common.common_add_btn')
                         <div class="table-responsive">
                             <table class="table table-centered w-100 dt-responsive nowrap" id="deals-datatable">
-                                <thead class="table-light">
+                                <thead class="table-primary">
                                     <tr>
                                         <th> Title </th>
                                         <th> Customer </th>

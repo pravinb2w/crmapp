@@ -33,7 +33,7 @@
 
                         <div class="table-responsive">
                             <table class="table table-centered w-100 dt-responsive nowrap" id="roles-datatable">
-                                <thead class="table-light">
+                                <thead class="table-primary">
                                     <tr>
                                         <th class="all">Role</th>
                                         <th>Added By</th>

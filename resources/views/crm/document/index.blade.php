@@ -26,7 +26,7 @@
                       
                         <div class="table-responsive">
                             <table class="table table-centered w-100 dt-responsive nowrap" id="customer_document_approval-datatable">
-                                <thead class="table-light">
+                                <thead class="table-primary">
                                     <tr>
                                         <th>Customer</th>
                                         <th>Document</th>
