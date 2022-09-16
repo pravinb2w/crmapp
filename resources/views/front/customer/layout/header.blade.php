@@ -1,5 +1,5 @@
 @php
-    $user = \DB::table('users')->where('is_dev', 1)->whereNotNull('sorting_order')->first();
+    $user = \DB::table('users')->where('is_dev', 1)->first();
     // dd( $meta_data );
 @endphp
 <head>
