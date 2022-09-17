@@ -168,6 +168,19 @@
         });
     }
 
+    function taskComment_list(task_id) {
+        $.ajax({
+            url: "{{ route('tasks.comment.list') }}",
+            type: 'POST',
+            data: {
+                task_id: task_id
+            },
+            success: function(response) {
+                $('#comment_list').html(response);
+            }
+        });
+    }
+
     function copy_link(link) {
         var inp = document.createElement('input');
         document.body.appendChild(inp)

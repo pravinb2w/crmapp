@@ -97,7 +97,10 @@
                 {"data" : "action" },
             ],
             "pageLength":25,
-            
+            columnDefs: [
+                { orderable: false, targets: -1 }
+            ]
+                            
         } );
     });
 

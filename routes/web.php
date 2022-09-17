@@ -271,6 +271,9 @@ Route::middleware([SetViewVariable::class, 'auth'])->prefix('dev')->group(functi
         Route::post('/delete', [App\Http\Controllers\TaskController::class, 'delete'])->name('tasks.delete');
         Route::post('/status', [App\Http\Controllers\TaskController::class, 'change_status'])->name('tasks.status');
         Route::post('/complete/status', [App\Http\Controllers\TaskController::class, 'complete_task'])->name('tasks.complete');
+        Route::post('/comment/save', [App\Http\Controllers\TaskController::class, 'comment_save'])->name('tasks.comment.save');
+        Route::post('/comment/list', [App\Http\Controllers\TaskController::class, 'comment_list'])->name('tasks.comment.list');
+        Route::post('/comment/modal', [App\Http\Controllers\TaskController::class, 'comment_modal'])->name('tasks.comment.modal');
     });
 
     Route::prefix('organizations')->group(function () {

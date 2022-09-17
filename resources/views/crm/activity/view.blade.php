@@ -25,7 +25,7 @@
                 div#comment_list::-webkit-scrollbar-thumb {
                     background: cadetblue;
                 }
-            </style>
+            </style> 
                 <div class="modal-body d-flex justify-content-center align-items-center h-100 p-3">
                     <div class="w-100">
                         <div class="row">

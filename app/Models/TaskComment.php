@@ -8,13 +8,14 @@ use Illuminate\Database\Eloquent\Builder;
 use OwenIt\Auditing\Contracts\Auditable;
 use Auth;
 
-class ActivityComment extends Model implements Auditable
+class TaskComment extends Model implements Auditable
 {
+    use HasFactory; 
     use HasFactory;
     use \OwenIt\Auditing\Auditable;
-    protected $table = 'acitivity_comments';
+    protected $table = 'task_comments';
     protected $fillable = [
-        'activity_id',
+        'task_id',
         'comments',
         'added_by'
     ]; 
@@ -23,4 +24,5 @@ class ActivityComment extends Model implements Auditable
     {
         return $this->hasOne(User::class, 'id', 'added_by');
     }
+
 }

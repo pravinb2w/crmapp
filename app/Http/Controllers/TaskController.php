@@ -9,6 +9,7 @@ use DB;
 use CommonHelper;
 use App\Models\Task;
 use App\Models\Status;
+use App\Models\TaskComment;
 use App\Models\User;
 
 class TaskController extends Controller
@@ -244,5 +245,23 @@ class TaskController extends Controller
             $status = '1';
         }
         return response()->json(['error' => $update_msg, 'status' => $status]);
+    }
+
+    public function comment_save(Request $request)
+    {
+        $comment = $request->comment;
+
+        $ins['comments'] = $comment;
+        $ins['added_by'] = Auth::id();
+        $ins['task_id'] = $request->task_id;
+
+        TaskComment::create($ins);
+        $params = array('task_id' => $request->task_id, 'status' => '1');
+        return response()->json($params);
+    }
+    public function comment_list(Request $request)
+    {
+        $comment_list = TaskComment::where('task_id', $request->task_id)->orderBy('id', 'desc')->get();
+        return view('crm.tasks.comment_list', compact('comment_list'));
     }
 }
