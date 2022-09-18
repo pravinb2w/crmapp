@@ -27,14 +27,39 @@ class DataBaseBackupController extends Controller
         return response()->download($data->file_name);
     }
 
+    public function doBackup()
+    {
+        $host   = env('DB_HOST');
+        $port   = env('DB_PORT');
+        $user   = env('DB_USERNAME');
+        $pass   = env('DB_PASSWORD');
+        $dbname = env('DB_DATABASE');
+
+        \Spatie\DbDumper\Databases\MySql::create()
+        ->setDbName($dbname)
+        ->setUserName($user)
+        ->setPassword($pass)
+        ->dumpToFile('dump.sql');
+    }
+
     public function backup()
     {
-        $host   = 'localhost';
+
+        $host   = "127.0.0.1:8000";
         $user   = env('DB_USERNAME');
         $pass   = env('DB_PASSWORD');
         $dbname = env('DB_DATABASE');
         $tables = '*';
 
+        $directory = 'public/';
+        $dateAndTime = "".date('d-m-Y-H-i-s');
+        $fileName = "".$dbname.$dateAndTime.".sql";
+        $backupFile = "mysqldump --user=$user --password='$pass' --host=$host $dbname > ".$directory.$fileName;
+
+        exec($backupFile,$output);
+        echo 'backup done';
+        die;
+ 
         error_reporting(0);
 
         $conn = new mysqli($host, $user, $pass, $dbname);
@@ -124,5 +149,7 @@ class DataBaseBackupController extends Controller
         readfile($backup_file_name);
         exec('rm ' . $backup_file_name); 
     }
+
+
 }
 

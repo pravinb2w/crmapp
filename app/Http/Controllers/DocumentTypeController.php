@@ -83,10 +83,10 @@ class DocumentTypeController extends Controller
             return response('Forbidden.', 403);
         }
         $id = $request->id;
-        $modal_title = 'Add Country';
+        $modal_title = 'Add Document Type';
         if (isset($id) && !empty($id)) {
             $info = KycDocumentType::find($id);
-            $modal_title = 'Update Country';
+            $modal_title = 'Update Document Type';
         }
         $params = ['modal_title' => $modal_title, 'id' => $id ?? '', 'info' => $info ?? ''];
         return view('crm.customer_document_type.add_edit', $params);

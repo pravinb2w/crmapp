@@ -33,14 +33,6 @@
 
                 <form action="{{ route('reset.password.post') }}" method="POST" >
                     @csrf
-                    <div class="mb-3">
-                        <label for="emailaddress" class="form-label">Email address</label>
-                        <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" required autocomplete="email" autofocus>
-
-                        @if ($errors->has('email'))
-                            <span class="text-danger">{{ $errors->first('email') }}</span>
-                        @endif
-                    </div>
 
                     <div class="mb-3">
                         <label for="password" class="form-label">Password</label>
@@ -58,7 +50,7 @@
                     </div>
 
                     <div class="mb-3">
-                        <label for="password" class="form-label">Password</label>
+                        <label for="password" class="form-label">Confirm Password</label>
                         <div class="input-group input-group-merge">
                             <input id="password_confirmation" type="password" class="form-control @error('password_confirmation') is-invalid @enderror" name="password_confirmation" required autocomplete="current-password">
                             

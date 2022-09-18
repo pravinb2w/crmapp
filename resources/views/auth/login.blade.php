@@ -27,6 +27,11 @@
                         {{ Session::get('message') }}
                     </div>
                 @endif
+                @if (Session::has('error'))
+                    <div class="alert alert-danger" role="alert">
+                        {{ Session::get('error') }}
+                    </div>
+                @endif
                 <div class="text-center w-75 m-auto">
                     <h4 class="text-dark-50 text-center pb-0 fw-bold">Sign In</h4>
                     <p class="text-muted mb-4">Enter your email address and password to access admin panel.</p>

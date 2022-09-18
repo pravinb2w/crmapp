@@ -66,7 +66,17 @@ class ForgotPasswordController extends Controller
      * @return response()
      */
     public function showResetPasswordForm($token) { 
-       return view('auth.forgetPasswordLink', ['token' => $token]);
+        $check = DB::table('password_resets')
+                            ->where([
+                              'token' => $token
+                            ])
+                            ->first();
+        if( isset( $check ) && !empty( $check ) ) {
+            return view('auth.forgetPasswordLink', ['token' => $token]);
+        } else {
+            return redirect()->route('login')->with('error', 'Invalid token or expired.!');
+
+        }
     }
 
     /**
@@ -77,14 +87,12 @@ class ForgotPasswordController extends Controller
     public function submitResetPasswordForm(Request $request)
     {
         $request->validate([
-            'email' => 'required|email|exists:users',
             'password' => 'required|string|min:6|confirmed',
             'password_confirmation' => 'required'
         ]);
 
         $updatePassword = DB::table('password_resets')
                             ->where([
-                              'email' => $request->email, 
                               'token' => $request->token
                             ])
                             ->first();
@@ -93,10 +101,10 @@ class ForgotPasswordController extends Controller
             return back()->withInput()->with('error', 'Invalid token!');
         }
 
-        $user = User::where('email', $request->email)
+        $user = User::where('email', $updatePassword->email)
                     ->update(['password' => Hash::make($request->password)]);
 
-        DB::table('password_resets')->where(['email'=> $request->email])->delete();
+        DB::table('password_resets')->where(['token'=> $request->token])->delete();
 
         return redirect()->route('login')->with('message', 'Your password has been changed!');
     }

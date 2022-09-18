@@ -9,7 +9,7 @@ class NewsletterController extends Controller
 {
     public function index(Request $request)
     {
-        $params = array('btn_name' => 'News Letter', 'btn_fn_param' => 'notes');
+        $params = array('btn_name' => 'News Letter', 'btn_fn_param' => '');
         return view('crm.newsletter.index', $params);
     }
 

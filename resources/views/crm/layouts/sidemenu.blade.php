@@ -267,7 +267,7 @@
                             <a href="{{ route('reports.sales') }}">Sales</a>
                         </li>
                         <li>
-                            <a href="{{ route('reports.started') }}">Deals Started/Convertion</a>
+                            <a href="{{ route('reports.started') }}">Deals Started/Conversion</a>
                         </li>
                         <li>
                             <a href="{{ route('reports.planned') }}">Activities Planned Vs Done</a>
