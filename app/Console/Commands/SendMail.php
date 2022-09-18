@@ -15,6 +15,8 @@ use App\Models\SendMail as ModelsSendMail;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Storage;
+
 
 class SendMail extends Command
 {
@@ -74,7 +76,9 @@ class SendMail extends Command
                     if( $item->send_type == 'customer' ) {
                         $customer_info = Customer::where('email', $to)->first();
                         $templateMessage = 'Invoice Approval has been sent to your mail, Please check your inbox and Invoice has been attached';
-                        $media_url = asset('invoice') . '/' . $invoice_no . '.pdf';
+                        // $media_url = asset('invoice') . '/' . $invoice_no . '.pdf';
+                        $media_url = storage_path('app/public/invoice/'.$invoice_no.'.pdf');
+
                         if( isset( $customer_info) && !empty( $customer_info ) ) 
                         {
                             sendWhatsappApi($customer_info->mobile_no, 'template', $templateMessage, 'media', $media_url, $file);
@@ -116,11 +120,13 @@ class SendMail extends Command
                                 Log::info($invoice_info->invoice);
                                 $invoice_no = str_replace("/", "_", $invoice_info->invoice->invoice_no);
                                 $file = $invoice_no . '.pdf';
+                                $media_url = storage_path('app/public/invoice/'.$invoice_no.'.pdf');
 
-                                Mail::send('emails.test', $body, function ($message) use ($to, $title, $from, $file) {
+
+                                Mail::send('emails.test', $body, function ($message) use ($to, $title, $from, $media_url) {
                                     $message->to($to ?? 'duraibytes@gmail.com', 'Phoenix CRM')->subject($title ?? '');
                                     $message->from($from, 'Phoenix CRM');
-                                    $message->attach(public_path('/invoice/' . $file));
+                                    $message->attach($media_url);
                                 });
                                 
                                 if( $item->send_type == 'customer' ) {
@@ -129,7 +135,7 @@ class SendMail extends Command
                                    
                                     if( isset( $customer_info) && !empty( $customer_info ) ) 
                                     {
-                                        $media_url = asset('invoice') . '/' . $invoice_no . '.pdf';
+                                        // $media_url = asset('invoice') . '/' . $invoice_no . '.pdf';
                                         $templateMessage = str_replace(['&nbsp;','&amp;', '&Acirc;', ';'], '', $templateMessage);
                                         sendWhatsappApi($customer_info->mobile_no, 'payment', $templateMessage, 'media', $media_url, $file);
                                     }

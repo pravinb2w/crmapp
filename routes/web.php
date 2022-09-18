@@ -58,6 +58,7 @@ Route::get('/{permalink?}', [App\Http\Controllers\front\LandingController::class
 Route::post('/enquiry', [App\Http\Controllers\front\LandingController::class, 'enquiry_save'])->name('enquiry.save');
 Route::get('/approve/invoice/{id}', [App\Http\Controllers\InvoiceController::class, 'approve_invoice'])->name('approve-invoice');
 Route::get('/reject/invoice/{id}', [App\Http\Controllers\InvoiceController::class, 'reject_invoice'])->name('reject-invoice');
+Route::get('/download/invoice/{id}', [App\Http\Controllers\InvoiceController::class, 'downloadInvoice'])->name('download-invoice');
 
 Route::get('/get/buy/form', [App\Http\Controllers\front\BuyController::class, 'get_buy_form'])->name('get.buy.form');
 Route::get('/get/invoice/buy/form', [App\Http\Controllers\front\BuyController::class, 'getInvoiceBuyForm'])->name('get.invoice.buy.form');

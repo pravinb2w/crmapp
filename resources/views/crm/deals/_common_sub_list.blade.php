@@ -154,7 +154,7 @@
                                                 @endif
                                                 @if (Auth::user()->hasAccess('deals', 'is_view') || superadmin())
                                                     <a class="dropdown-item" target="_blank"
-                                                        href="{{ asset('invoice') . '/' . $litem['invoice_no'] . '.pdf' }}">Download
+                                                        href="{{ Storage::url('public/invoice'). '/' . $litem['invoice_no'] . '.pdf' }}">Download
                                                         Pdf</a>
                                                 @endif
                                             @elseif(($litem['activity_type'] != 'note' &&

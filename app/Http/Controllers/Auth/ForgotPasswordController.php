@@ -51,7 +51,7 @@ class ForgotPasswordController extends Controller
             'email' => $request->email, 
             'token' => $token, 
             'created_at' => Carbon::now()
-          ]);
+          ]); 
         CommonHelper::setMailConfig();
         Mail::send('emails.forgetPassword', ['token' => $token], function($message) use($request){
             $message->to($request->email);

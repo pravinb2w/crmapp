@@ -6,6 +6,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Storage;
 
 class SubmitApproval extends Mailable
 {
@@ -31,7 +32,9 @@ class SubmitApproval extends Mailable
     {
         $invoice_no = str_replace("/", "_", $this->body['invoice_no']);
         $file = $invoice_no . '.pdf';
+        $media_url = storage_path('app/public/invoice/'.$invoice_no.'.pdf');
+
         return $this->markdown('emails.submit_approval')->subject('Approval for Invoice')
-            ->attach(public_path('/invoice/' . $file));
+            ->attach($media_url);
     }
 }

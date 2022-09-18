@@ -172,4 +172,10 @@ class InvoiceController extends Controller
         $pdf = PDF::loadView('crm.invoice.templates.invoice_type_one', $data);
         return $pdf->download('test.pdf');
     }
+
+    public function downloadInvoice(Request $request) {
+        $id = $request->id;
+        $info = Invoice::find($id);
+        dd( $info );
+    }
 }
