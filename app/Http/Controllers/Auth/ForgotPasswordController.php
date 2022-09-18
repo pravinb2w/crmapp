@@ -55,6 +55,7 @@ class ForgotPasswordController extends Controller
         CommonHelper::setMailConfig();
         Mail::send('emails.forgetPassword', ['token' => $token], function($message) use($request){
             $message->to($request->email);
+            $message->from('phoenixtechnologies2022@gmail.com', 'Phoenix CRM');
             $message->subject('Reset Password');
         });
 
