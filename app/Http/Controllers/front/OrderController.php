@@ -9,6 +9,7 @@ use App\Models\LandingPages;
 use App\Repositories\CustomerRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Storage;
 
 class OrderController extends Controller
 {
@@ -17,6 +18,8 @@ class OrderController extends Controller
     {
         $this->customerRepository = $customerRepository;
     }
+
+    
     
     public function index( Request $request ) {
         $result = LandingPages::where('is_default_landing_page', 1)->first();

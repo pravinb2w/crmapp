@@ -349,11 +349,13 @@ class PayuMoneyController extends \InfyOm\Payu\PayuMoneyController
 
         if (!empty($pdf_template)) {
             $pdf = PDF::loadView('crm.invoice.templates.invoice_template_' . $pdf_template, $data);
-            $path = public_path('invoice');
+            // $path = public_path('invoice');
+            $path = public_path('storage/invoice');
             return $pdf->save($path . '/' . str_replace("/", "_", $info->invoice_no) . '.pdf');
         } else {
             $pdf = PDF::loadView('mypdf', $data);
-            $path = public_path('invoice');
+            // $path = public_path('invoice');
+            $path = public_path('storage/invoice');
             return $pdf->save($path . '/' . str_replace("/", "_", $info->invoice_no) . '.pdf');
         }
     }

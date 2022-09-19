@@ -11,15 +11,8 @@
             <label for="password" class="form-label w-100">Password
                 <a href="javascript:void(0)" class="float-end" @click="switchPage('reset')" > Forgot Password </a>
             </label>
-            <div class="input-group input-group-merge">
-                <input id="password" type="password" :class="[password.length < 8 ? inValidClass : validClass, 'form-control']" v-model="password"  name="password" required >
-                
-                <div class="input-group-text" data-password="false">
-                    <span class="password-eye"></span>
-                </div>
-              
-            </div>
-           
+            <input id="password" type="password" :class="[password.length < 8 ? inValidClass : validClass, 'form-control']" v-model="password"  name="password" required >
+
         </div>
        
         <div class="text-end pt-3">

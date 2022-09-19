@@ -321,7 +321,7 @@
                         <div class="col-12" id="error"></div>
                     </div>
                     <div class="row">
-                        <form action="{{ route('submit.buy.form') }}" id="buy-form" method="POST">
+                        <form action="" id="buy-form" method="POST">
                             <input type="hidden" name="product_id" id="product_id" value="{{ $product_id ?? '' }}">
 
                             <div class="col-12">
@@ -491,7 +491,7 @@
     $("#buy-form").validate({
         submitHandler: function(form) {
             $.ajax({
-                url: form.action,
+                url: "{{ route('submit.buy.form') }}",
                 type: form.method,
                 data: $(form).serialize(),
                 beforeSend: function() {

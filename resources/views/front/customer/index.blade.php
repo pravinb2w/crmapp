@@ -80,7 +80,7 @@
     @endphp
     @if( $response['erorr'] == 'success')
        
-        <div class=" text-center alert alert-success">
+        <div class=" text-center alert alert-success payment-error" v-show="elementVisible" class="hideElement">
             <h5>
                 Your order Payment Successfully done
             </h5>
@@ -90,7 +90,7 @@
         </div>
             
     @else
-        <div class=" text-center alert alert-danger">
+        <div class=" text-center alert alert-danger payment-error" v-show="elementVisible" class="hideElement">
             <h5>
                 Your order Payment Failed
             </h5>
@@ -99,11 +99,8 @@
             </p>
         </div>
     @endif
-    @php
-        // unset(session('razorpay_response'));
-        Illuminate\Support\Facades\Session::forget('razorpay_response'); 
-
-    @endphp
+   
+   
 @endif
 
     <div class="container-fluid p-3">
@@ -206,6 +203,7 @@
             documentTypes:[],
             passwordFields: {'password' :'', 'confirmPassword':''},
             orderDetails: orderInfo,
+            elementVisible: true,
         }
     },
     computed: {
@@ -521,7 +519,10 @@
         }
         
 
-      }
+      },
+        created() {
+            setTimeout(() => this.elementVisible = false, 3000)
+        }
         
       
        
@@ -529,10 +530,13 @@
       
     }).mount('#app')
 
-   
 </script>
   
-    
+@php
+// unset(session('razorpay_response'));
+Illuminate\Support\Facades\Session::forget('razorpay_response'); 
+
+@endphp
 @endsection
 @section('add_on_script')
     <script>

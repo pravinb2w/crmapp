@@ -5,6 +5,7 @@ namespace App\Repositories;
 use App\Models\Customer;
 use App\Models\CustomerDocument;
 use App\Models\KycDocumentType;
+use Illuminate\Support\Facades\Storage;
 
 class CustomerRepository
 {
