@@ -38,6 +38,7 @@
                     </div>
 
                     <div class="mb-0 text-end">
+                        <a href="{{ route('login') }}" class="btn btn-light"> Back to Login</a>
                         <button class="btn btn-primary px-3" type="submit"><i class="fa fa-user"></i> Send Password Link </button>
                     </div>
 

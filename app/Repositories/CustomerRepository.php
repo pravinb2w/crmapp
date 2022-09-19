@@ -271,8 +271,9 @@ class CustomerRepository
                     $lorder[ 'payment_status' ] = ucfirst($order->payment->payment_status);
                     $lorder[ 'order_status' ] = ucfirst($order->status);
                     $invoice_no = str_replace("/", "_", $order->invoice->invoice_no );
-                    $lorder[ 'file' ] = asset('invoice') . '/' . $invoice_no . '.pdf';
+                    $lorder[ 'file' ] = Storage::url('public/invoice') . '/' . $invoice_no . '.pdf';
                 }
+               
 
                 $orders['orderHistory'][] = $lorder;
             }

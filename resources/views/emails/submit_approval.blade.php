@@ -1,22 +1,16 @@
-@component('mail::message')
 <h2>Hello {{ $body['name'] }},</h2>
 
-<div>
+<div style="margin-bottom: 10px;">
 Please find attachment,
 </div>
-<div style="width:100%;display:inline-flex;text-align:center">
+<div style="width:100%;display:inline-flex;text-align:center;margin-bottom:10px;">
 <div style="margin-right:20px;">
-@component('mail::button', ['url' => $body['url_a'], 'color' => 'success'])
-Approve and Pay
-@endcomponent
+<a href="{{ $body['url_a'] }}" style="background-color: green;color:white;padding:5px;border-radius:5px">Approve and Pay</a>
 </div>
 <div>
-@component('mail::button', ['url' => $body['url_b']])
-Reject
-@endcomponent
+    <a href="{{ $body['url_b'] }}" target="_blank" style="background: red;color:white;padding:5px;border-radius:5px" > Reject </a>
 </div>
 </div>
 
 Thanks,<br>
 {{ config('app.name') }}
-@endcomponent

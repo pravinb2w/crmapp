@@ -110,6 +110,8 @@ function sendWhatsappApi($mobile_no, $type = null, $params, $from, $media_url = 
             $http_query = "http://wase.co.in/api/send.php?number=$mobile_no&type=$api_type&message=$message&instance_id=$instance_id&access_token=$access_token";
             Log::info($http_query);
             $response = Http::get($http_query);
+            Log::info($response);
+
         } else {
             $http_query = "http://wase.co.in/api/send.php?number=$mobile_no&type=text&message=$message&instance_id=$instance_id&access_token=$access_token";
             Log::info($http_query);
@@ -117,6 +119,7 @@ function sendWhatsappApi($mobile_no, $type = null, $params, $from, $media_url = 
             $http_query = "http://wase.co.in/api/send.php?number=$mobile_no&type=media&message=$message&media_url=$media_url&filename=$filename&instance_id=$instance_id&access_token=$access_token";
             Log::info($http_query);
             $response = Http::get($http_query);
+            Log::info($response);
         }
         
         return true;

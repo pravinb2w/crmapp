@@ -136,6 +136,9 @@ class InvoiceController extends Controller
             Payment::create($ins);
             $success = 'Payment Added';
 
+            $info->order_no = $order_no;
+            $info->update();
+
             $route = route('razorpay.request', ['order_no' => $order_no]);
             $params['route'] = $route;
             //here need to do payment process

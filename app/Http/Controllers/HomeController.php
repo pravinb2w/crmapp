@@ -12,6 +12,7 @@ use App\Models\Deal;
 use App\Models\DealPipline;
 use App\Models\User;
 use App\Models\Notification;
+use Illuminate\Support\Facades\Storage;
 
 class HomeController extends Controller
 {

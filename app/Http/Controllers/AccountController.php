@@ -348,12 +348,13 @@ class AccountController extends Controller
                         $ins['company_id'] = $user->company_id;
                       
                         $integrateId = PaymentIntegration::create($ins)->id;
-                        // dd( $integrateId );
+                        $in_id[] = $integrateId;
+                        // print_r( $integrateId );
                     }
                 }
             }
         }
-
+        
         if (!empty($in_id)) {
             $not_in = PaymentIntegration::whereNotIn('id', $in_id)->delete();
         }

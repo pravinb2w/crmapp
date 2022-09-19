@@ -44,10 +44,10 @@ class MailController extends Controller
 
             $media_url = storage_path('app/public/invoice/INV_2022_0011.pdf');
 
-            Mail::send('emails.test', $body, function ($message) use ($media_url) {
+            Mail::send('emails.test', $body, function ($message) {
                 $message->to('duraibytes@gmail.com', 'Tutorials Point')->subject('Laravel Basic Testing Mail');
                 $message->from('durairajnet@gmail.com', 'Durai bytes');
-                $message->attach($media_url);
+                // $message->attach($media_url);
             });
             echo 'Test email sent successfully';
             // return redirect()->back()->with('success', 'Test email sent successfully');
@@ -55,6 +55,11 @@ class MailController extends Controller
             dd($e->getMessage());
             // return redirect()->back()->withErrors($e->getMessage());
         }
+    }
+
+    public function sendWhatsapp()
+    {
+        sendWhatsappApi('9551706025', 'template', 'welcome', 'email');
     }
 }
 

@@ -11,7 +11,8 @@
                 <div class="w-100">
                     <div class="row">
                         <div class="col-12 text-end">
-                            <a class="btn btn-primary" target="_blank" href="{{ asset('invoice').'/'. str_replace("/", "_", $info->invoice_no) . '.pdf' }}">Download PDF</a>
+                            <a class="btn btn-primary" target="_blank" href="{{ Storage::url('public/invoice'). '/' . str_replace('/', '_', $info->invoice_no ?? '') . '.pdf' }}" 
+                           >Download PDF</a>
                         </div>
                     </div>
                     @include('crm.invoice._invoice_table')  

@@ -55,6 +55,7 @@ class SendMail extends Command
         CommonHelper::setMailConfig();
         $company_info = CompanySettings::find(1);
         $from = $company_info->smtp_user;
+        // $from = 'phoenixtechnologies2022@gmail.com';
         $data = ModelsSendMail::all();
 
         if (isset($data) && !empty($data)) {
@@ -69,9 +70,17 @@ class SendMail extends Command
                     $invoice_no = str_replace("/", "_", $extract['invoice_no']);
                     $file = $invoice_no . '.pdf';
 
-                    $send_mail = new SubmitApproval($extract);
+                    // $send_mail = new SubmitApproval($extract);
+                    $media_url = storage_path('app/public/invoice/'.$invoice_no.'.pdf');
+
                     // return $send_mail->render();
-                    Mail::to($to ?? 'durai@yopmail.com')->send($send_mail);
+                    $body[ 'body'] = $extract;
+                    // Mail::to($to ?? 'durai@yopmail.com')->send($send_mail);
+                    Mail::send('emails.submit_approval', $body, function ($message) use ($to, $media_url, $title, $from) {
+                        $message->to($to)->subject($title);
+                        $message->from($from, 'Phoenix CRM');
+                        $message->attach($media_url);
+                    });
 
                     if( $item->send_type == 'customer' ) {
                         $customer_info = Customer::where('email', $to)->first();
@@ -114,7 +123,6 @@ class SendMail extends Command
                         if($item->email_type == 'success_payment') {
                             $order_id = $item->type_id;
                             $invoice_info = Order::find($order_id);
-                            
 
                             if( isset( $invoice_info ) && !empty( $invoice_info ) ){
                                 Log::info($invoice_info->invoice);
@@ -148,6 +156,7 @@ class SendMail extends Command
                                 $message->to($to ?? 'duraibytes@gmail.com', 'Phoenix CRM')->subject($title ?? '');
                                 $message->from($from, 'Phoenix CRM');
                             });
+                          
                             if( $item->send_type == 'customer' ) {
                                 $customer_info = Customer::where('email', $to)->first();
                                 $templateMessage = strip_tags($templateMessage);

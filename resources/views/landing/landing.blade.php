@@ -168,7 +168,7 @@
                                         Order No: {{ $payment_order_no ?? 'N/A' }}
                                     </p>
                                     <a class="btn btn-primary btn-sm" target="_blank"
-                                        href="{{ asset('invoice') . '/' . str_replace('/', '_', $payment_invoice_no ?? '') . '.pdf' }}">Download
+                                        href={{ Storage::url('public/invoice'). '/' . str_replace('/', '_', $payment_invoice_no ?? '') . '.pdf' }}>Download
                                         Invoice</a>
                                 </div>
                             </div>
