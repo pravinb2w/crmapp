@@ -1,3 +1,9 @@
+<style>
+    tbody, td {
+   
+    vertical-align: middle !important;
+}
+</style>
 <div class="row">
     <div class="col-xl-12 col-lg-12">
         <div class="card text-center" v-if="orderDetails.lastOrder">
@@ -20,15 +26,26 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <td>
+                                <td class="align-middle">
                                    @{{ orderDetails.lastOrder.date }}
                                 </td>
-                                <td> @{{ orderDetails.lastOrder.orderNo }} </td>
-                                <td> @{{ orderDetails.lastOrder.invoiceNo }}</td>
-                                <td> @{{ orderDetails.lastOrder.product }} </td>
-                                <td> @{{ orderDetails.lastOrder.price }} </td>
-                                <td> @{{ orderDetails.lastOrder.qty }} </td>
-                                <td>
+                                <td class="align-middle"> @{{ orderDetails.lastOrder.orderNo }} </td>
+                                <td class="align-middle">
+                                    <span class="label label-info-lighten"> @{{ orderDetails.lastOrder.invoiceNo }} </span>
+                                     <span>
+                                        <a :href="orderDetails.lastOrder.file"
+                                                target="_blank" data-bs-container="#tooltip-container9"
+                                                data-bs-toggle="tooltip" data-bs-placement="bottom" title=""
+                                                class="btn btn-link text-muted btn-lg px-1"
+                                                data-bs-original-title="Download">
+                                                <i class="uil uil-cloud-download text-success"></i>
+                                            </a>
+                                    </span>
+                                </td>
+                                <td class="align-middle"> @{{ orderDetails.lastOrder.product }} </td>
+                                <td class="align-middle"> @{{ orderDetails.lastOrder.price }} </td>
+                                <td class="align-middle"> @{{ orderDetails.lastOrder.qty }} </td>
+                                <td class="align-middle">
                                     <h5>
                                         <span class="badge badge-danger-lighten" v-if="orderDetails.lastOrder.payment_status == 'Failed'">
 
@@ -42,7 +59,7 @@
                                            
                                     </h5>
                                 </td>
-                                <td>
+                                <td class="align-middle">
                                     <h5>
                                         <span class="badge badge-success-lighten" v-if="orderDetails.lastOrder.order_status == 'Completed'">
                                             <i class="mdi mdi-bitcoin"></i>
@@ -81,14 +98,14 @@
                         </thead>
                         <tbody>
                             <tr v-for="pending in orderDetails.pendingApproval">
-                                <td>
+                                <td class="align-middle">
                                     @{{ pending.date }}
                                 </td>
-                                <td> @{{ pending.invoiceNo }}</td>
-                                <td> @{{ pending.product }} </td>
-                                <td> @{{ pending.price }} </td>
-                                <td> @{{ pending.qty }} </td>
-                                <td>
+                                <td class="align-middle"> @{{ pending.invoiceNo }}</td>
+                                <td class="align-middle"> @{{ pending.product }} </td>
+                                <td class="align-middle"> @{{ pending.price }} </td>
+                                <td class="align-middle"> @{{ pending.qty }} </td>
+                                <td class="align-middle">
                                     <div class="col-auto" id="tooltip-container9">
                                         <!-- Button -->
                                         <a :href="pending.file"
@@ -96,7 +113,7 @@
                                             data-bs-toggle="tooltip" data-bs-placement="bottom" title=""
                                             class="btn btn-link text-muted btn-lg px-1"
                                             data-bs-original-title="Download">
-                                            <i class="uil uil-cloud-download"></i>
+                                            <i class="uil uil-cloud-download text-success"></i>
                                         </a>
                                         <a href="javascript:void(0);"
                                             @click="changeDocumentStatus( pending.id, 'approved')" title="Approve"
@@ -145,22 +162,22 @@
                     </thead>
                     <tbody>
                         <tr  v-for="history in orderDetails.orderHistory">
-                            <td> @{{ history.invoiceNo }}
+                            <td class="align-middle"> @{{ history.invoiceNo }}
                                 <span>
                                     <a :href="history.file"
                                             target="_blank" data-bs-container="#tooltip-container9"
                                             data-bs-toggle="tooltip" data-bs-placement="bottom" title=""
                                             class="btn btn-link text-muted btn-lg px-1"
                                             data-bs-original-title="Download">
-                                            <i class="uil uil-cloud-download"></i>
+                                            <i class="uil uil-cloud-download text-success"></i>
                                         </a>
                                 </span>
                             </td>
-                            <td> @{{ history.date }}</td>
-                            <td> @{{ history.product  }}</td>
-                            <td> @{{ history.qty }}</td>
-                            <td> @{{ history.price }}</td>
-                            <td>
+                            <td class="align-middle"> @{{ history.date }}</td>
+                            <td class="align-middle"> @{{ history.product  }}</td>
+                            <td class="align-middle"> @{{ history.qty }}</td>
+                            <td class="align-middle"> @{{ history.price }}</td>
+                            <td class="align-middle">
                                 <h5>
                                     <span class="badge badge-success-lighten" v-if="history.payment_status == 'Paid'">
                                         <i class="mdi mdi-bitcoin"></i>
@@ -176,7 +193,7 @@
                                     </span>
                                 </h5>
                             </td>
-                            <td>
+                            <td class="align-middle">
                                 <h5>
                                     <span class="badge badge-success-lighten" v-if="history.order_status == 'Completed'">
                                         <i class="mdi mdi-bitcoin"></i>
@@ -218,15 +235,15 @@
                         </thead>
                         <tbody>
                             <tr v-for="pending in orderDetails.rejectedInvoice">
-                                <td>
+                                <td class="align-middle">
                                     @{{ pending.date }}
                                 </td>
-                                <td> @{{ pending.invoiceNo }}</td>
-                                <td> @{{ pending.product }} </td>
-                                <td> @{{ pending.price }} </td>
-                                <td> @{{ pending.qty }} </td>
-                                <td> @{{ pending.reject_reason }} </td>
-                                <td>
+                                <td class="align-middle"> @{{ pending.invoiceNo }}</td>
+                                <td class="align-middle"> @{{ pending.product }} </td>
+                                <td class="align-middle"> @{{ pending.price }} </td>
+                                <td class="align-middle"> @{{ pending.qty }} </td>
+                                <td class="align-middle"> @{{ pending.reject_reason }} </td>
+                                <td class="align-middle">
                                     <div class="col-auto" id="tooltip-container9">
                                         <!-- Button -->
                                         <a :href="pending.file"

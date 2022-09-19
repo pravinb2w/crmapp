@@ -150,6 +150,7 @@ class CustomerRepository
                 );
         
         if( isset( $info->lastOrder ) && !empty( $info->lastOrder ) ) {
+
             $lorder[ 'date' ] = date( 'M d Y, h:i A', strtotime($info->lastOrder->created_at));
             $lorder[ 'orderNo' ] = $info->lastOrder->order_id ?? 'N/A';
             $lorder[ 'invoiceNo' ] = $info->lastOrder->invoice->invoice_no ?? 'N/a';
@@ -169,16 +170,16 @@ class CustomerRepository
                 $lorder[ 'payment_status' ] = ucfirst($info->lastOrder->payment->payment_status ?? '');
                 $lorder[ 'order_status' ] = ucfirst($info->lastOrder->status);
                 $invoice_no = str_replace("/", "_", $info->lastOrder->invoice->invoice_no );
-                $lorder[ 'file' ] = asset('invoice') . '/' . $invoice_no . '.pdf';
+                $lorder[ 'file' ] = Storage::url('public/invoice') . '/' . $invoice_no . '.pdf';
 
             }
             
             $lorder[ 'product' ] = $product_name;
             $lorder[ 'price' ] = $price;
             $lorder[ 'qty' ] = $qty;
-           
 
             $orders['lastOrder'] = $lorder;
+
         }
 
         if( isset( $info->pendingApprovalInvoices ) && !empty( $info->pendingApprovalInvoices ) ) {
@@ -207,7 +208,7 @@ class CustomerRepository
                 $pending[ 'qty' ] = $qty;
                 $pending[ 'status' ] = $item->status;
                 $invoice_no = str_replace("/", "_", $item->invoice_no );
-                $pending[ 'file' ] = asset('invoice') . '/' . $invoice_no . '.pdf';
+                $pending[ 'file' ] = Storage::url('public/invoice') . '/' . $invoice_no . '.pdf';
                 $ptemp[] = $pending;
             }
             $orders['pendingApproval'] = $ptemp;
@@ -240,7 +241,7 @@ class CustomerRepository
                     $pending[ 'reject_reason' ] = $item->reject_reason;
                     $pending[ 'status' ] = $item->status;
                     $invoice_no = str_replace("/", "_", $item->invoice_no );
-                    $pending[ 'file' ] = asset('invoice') . '/' . $invoice_no . '.pdf';
+                    $pending[ 'file' ] = Storage::url('public/invoice') . '/' . $invoice_no . '.pdf';
                 }
                 
                
