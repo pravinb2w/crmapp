@@ -31,8 +31,9 @@
                             $ex_date = strtotime($expiry_date);
                             $datediff = $ex_date - $now;
                             $diff_days = round($datediff / (60 * 60 * 24));
+                            $expiry_remainder_days = $expiry_remainder_days ?? 30;
                         @endphp
-                        @if( isset( $expiry_date ) && $diff_days <= 30 )
+                        @if( isset( $expiry_date ) && $diff_days <= $expiry_remainder_days )
                             <div class="main-alert alert alert-danger fade show" role="alert">
                                 <strong>Info - </strong> 
                                 Your subscription will end on {{ date('d M Y', strtotime($expiry_date)) }}, Please Recharge to continue our services.

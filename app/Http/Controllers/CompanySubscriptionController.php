@@ -146,6 +146,7 @@ class CompanySubscriptionController extends Controller
             $ins['startAt'] = date('Y-m-d', strtotime($startAt));
             $ins['endAt'] = $endAt ?? date('Y-m-d');
             $ins['total_amount'] = $request->total_amount;
+            $ins['expiry_remainder_days'] = $request->expiry_remainder_days;
             $ins['description'] = $request->description;
 
             $check_where = ['company_id' => $company_id, 'subscription_id' => $subscription_id];
@@ -176,6 +177,7 @@ class CompanySubscriptionController extends Controller
                 $comp->endAt = $endAt ?? date('Y-m-d');
                 $comp->total_amount = $request->total_amount;
                 $comp->description = $request->description;
+                $comp->expiry_remainder_days = $request->expiry_remainder_days;
                 $comp->update();
                 if ($status == 1) {
                     $info = CompanySubscription::find($id);

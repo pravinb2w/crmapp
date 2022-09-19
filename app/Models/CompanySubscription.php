@@ -20,6 +20,7 @@ class CompanySubscription extends Model implements Auditable
         'endAt',
         'total_amount',
         'description',
+        'expiry_remainder_days',
         'status',
         'deleted_at',
     ];

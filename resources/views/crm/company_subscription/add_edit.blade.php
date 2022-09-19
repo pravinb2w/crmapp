@@ -49,7 +49,13 @@
                     <label for="total_amount" class="col-form-label">Total Amount <span class="text-danger">*</span></label>
                     <!-- Success Switch-->
                     <div>
-                        <input type="text" name="total_amount" id="total_amount" value="{{ $info->total_amount ?? '' }}" class="form-control" required/>
+                        <input type="text" name="total_amount" id="total_amount" value="{{ $info->total_amount ?? '' }}" class="form-control mobile" required/>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="expiry_remainder_days" class="col-form-label">Expiry Remainder Days <span class="text-danger">*</span></label>
+                    <div>
+                        <input type="number" min="1" name="expiry_remainder_days" id="expiry_remainder_days" value="{{ $info->expiry_remainder_days ?? '' }}" class="form-control mobile" required/>
                     </div>
                 </div>
                 <div class="mb-3">

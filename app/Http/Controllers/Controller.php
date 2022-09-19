@@ -29,6 +29,7 @@ class Controller extends BaseController
         View::share('site_name', $company_info->site_name ?? '');
         View::share('meta_data', $meta_data ?? '');
         View::share('expiry_date', $company_subscriptions->endAt ?? '');
+        View::share('expiry_remainder_days', $company_subscriptions->expiry_remainder_days ?? '30');
         
     }
 }
