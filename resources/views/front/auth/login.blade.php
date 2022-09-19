@@ -79,6 +79,7 @@
             gotOtpResponse: true,
             password_confirmation: '',
             resetErrors: [],
+            errors: [],
             otp1: '',
             otp2: '',
             otp3: '',
@@ -129,15 +130,6 @@
         submitForgotPassword: function(e) {
             e.preventDefault();
            
-            if( !this.password) {
-                this.errors.push({'password': 'Password required'});
-            }
-            if( !this.password_confirmation) {
-                this.errors.push('Confirm Password required');
-            }
-            if( this.errors ) {
-                return false;
-            }
             this.gotResponsePassword = true;
             var form = e.target || e.srcElement;
             const formData = $(form).serialize();
@@ -182,7 +174,9 @@
                         this.formError = message.join(',');
                     } else {
                         this.formSuccess = message.join(',');
-                        location.href="{{ route('customer-login') }}";
+                        setTimeout(() => {
+                            location.href="{{ route('customer-login') }}";
+                        }, 500);
                     }
                     
                 }
