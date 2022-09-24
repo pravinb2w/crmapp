@@ -67,9 +67,15 @@ class PaymentController extends Controller
             $i = 1;
             foreach ($list as $payment) {
                 $status = '';
-                if ($payment->payment_status == 'pending') {
-                    $status = '<div><label class="badge bg-warning">' . ucwords($payment->payment_status) . '</label>
+                if ($payment->payment_status == 'pending' ) {
+                    if( $payment->payment_mode == 'offline') {
+                        $status = '<div><label class="badge bg-warning">' . ucwords($payment->payment_status) . '</label>
+                               </div>';
+                    } else {
+                        $status = '<div><label class="badge bg-warning">' . ucwords($payment->payment_status) . '</label>
                                 <span class="mx-3" role="button"><i class="fa fa-refresh text-primary" onclick="resend_pay_link(' . $payment->id . ')"></i> </span></div>';
+                    }
+                    
                 } else if ( in_array($payment->payment_status, array('completed', 'paid') )  ) {
                     $status = '<label class="badge bg-success">' . ucwords($payment->payment_status) . '</label>';
                 } else {
@@ -156,6 +162,9 @@ class PaymentController extends Controller
         if ($validator->passes()) {
             $invoice_id = $request->invoice_id;
             $invoice_info = Invoice::find($invoice_id);
+            if( $request->amount > $invoice_info->total ) {
+                return response()->json(['error' => ['Amount must be valid invoice amount'], 'status' => '1']);
+            }
             $order_no = 'TXN' . date('mdyhis');
             $temp_no = base64_encode('TEMP' . date('mdyhis'));
 

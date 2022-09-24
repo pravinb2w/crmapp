@@ -13,8 +13,8 @@
         Activity Status</a>
     <a href="{{ route('task-status') }}" class="list-group-item list-group-item-action {{ Request::segment(3) == 'task-status' ? 'active' : '' }}">
         Task Status</a>
-    <a href="{{ route('teams') }}" class="list-group-item list-group-item-action {{ Request::segment(3) == 'teams' ? 'active' : '' }}">
-        Teams</a>
+    {{-- <a href="{{ route('teams') }}" class="list-group-item list-group-item-action {{ Request::segment(3) == 'teams' ? 'active' : '' }}">
+        Teams</a> --}}
     
     <a href="{{ route('country') }}" class="list-group-item list-group-item-action {{ Request::segment(3) == 'country' ? 'active' : '' }}">
         Country</a>
