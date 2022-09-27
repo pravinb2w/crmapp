@@ -299,10 +299,7 @@
             @endif
 
         </ul>
-
-       
         <!-- End Sidebar -->
-
         <div class="clearfix"></div>
 
     </div>
