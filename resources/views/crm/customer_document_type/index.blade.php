@@ -11,21 +11,17 @@
                         <ol class="breadcrumb m-0">
                             <li class="breadcrumb-item"><a href="javascript: void(0);">CRM</a></li>
                             <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
-                            <li class="breadcrumb-item active">Country</li>
+                            <li class="breadcrumb-item active">Document Types</li>
                         </ol>
                     </div>
-                    <h4 class="page-title">Settings </h4>
+                    <h4 class="page-title">Document Types </h4>
                 </div>
             </div>
         </div>
         <!-- end page title -->
         <div class="row">
-            <div class="col-lg-2">
-                <div>
-                    @include('crm.layouts.setup_menu')
-                </div>
-            </div>
-            <div class="col-lg-10">
+            
+            <div class="col-lg-12">
                 <div class="card">
                     <div class="card-body">
                         {{-- <h4 class="header-title">Personal Preferences</h4> --}}
@@ -67,7 +63,7 @@
                 "processing": true,
                 "serverSide": true,
                 "ajax": {
-                    "url": "<?= route('document-types.list') ?>",
+                    "url": "<?= route('document_types.list') ?>",
                     "dataType": "json",
                     "type": "POST",
                     "data": {

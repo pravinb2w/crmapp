@@ -14,7 +14,7 @@ class DocumentController extends Controller
 {
     public function index(Request $request)
     {
-        $params = array('btn_name' => 'Customers Document Approval', 'btn_fn_param' => '');
+        $params = array('btn_name' => 'Customers Document Approval', 'btn_fn_param' => '', 'is_add_exits' => 'no');
         return view('crm.document.index', $params);
     }
 

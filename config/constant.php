@@ -17,6 +17,7 @@ return [
         'pages',
         'customers',
         'customer_document_approval',
+        'document_types',
         'users',
         'invoices',
         'payments',
@@ -27,6 +28,8 @@ return [
         'master_data',
         'bulk_import',
         'organizations',
+        'newsletter',
+        'settings'
     ],
     'payment_method' => [
         'cash',

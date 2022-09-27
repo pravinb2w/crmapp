@@ -6,6 +6,7 @@ use App\Exports\ActivityExport;
 use App\Exports\ActivityStatusExport;
 use App\Exports\CompanySubscriptionExport;
 use App\Exports\CountryExport;
+use App\Exports\CustomerApprovalDocumentExport;
 use App\Exports\CustomerExport;
 use App\Exports\DealExport;
 use App\Exports\DealStageExport;
@@ -180,6 +181,12 @@ class ExportController extends Controller
     public function exportDocumentTypes()
     {
         return Excel::download(new DocumentTypesExport(), 'Documenttypes.xlsx');
+        
+    }
+
+    public function exportCustomerDocumentApproval()
+    {
+        return Excel::download(new CustomerApprovalDocumentExport(), 'CustomerApprovalDocuments.xlsx');
         
     }
 }

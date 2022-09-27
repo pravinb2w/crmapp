@@ -120,10 +120,10 @@ Route::middleware([SetViewVariable::class, 'auth'])->prefix('dev')->group(functi
     Route::post('/customers/delete', [App\Http\Controllers\CustomerController::class, 'delete'])->name('customers.delete');
     Route::post('/customers/status', [App\Http\Controllers\CustomerController::class, 'change_status'])->name('customers.status');
 
-    Route::get('/customers/document/approvals', [App\Http\Controllers\DocumentController::class, 'index'])->name('customer_document_approval');
-    Route::post('/customers/document/list', [App\Http\Controllers\DocumentController::class, 'ajax_list'])->name('customer_document_approval.list');
-    Route::post('/customers/document/change/status', [App\Http\Controllers\DocumentController::class, 'changeDocumentStatus'])->name('customer_document_approval.change.status');
-    Route::get('/customers/docment/view/{id}', [App\Http\Controllers\DocumentController::class, 'customerView'])->name('customer_document_approval.customer.view');
+    Route::get('/customers/document/approvals', [App\Http\Controllers\DocumentController::class, 'index'])->name('customer_document_approval')->middleware('checkAccess:is_view');
+    Route::post('/customers/document/list', [App\Http\Controllers\DocumentController::class, 'ajax_list'])->name('customer_document_approval.list')->middleware('checkAccess:is_view');
+    Route::post('/customers/document/change/status', [App\Http\Controllers\DocumentController::class, 'changeDocumentStatus'])->name('customer_document_approval.change.status')->middleware('checkAccess:is_edit');
+    Route::get('/customers/docment/view/{id}', [App\Http\Controllers\DocumentController::class, 'customerView'])->name('customer_document_approval.customer.view')->middleware('checkAccess:is_view');
 
     Route::post('/autocomplete_org', [App\Http\Controllers\CustomerController::class, 'autocomplete_organization'])->name('autocomplete_org');
     Route::post('/autocomplete_org_save', [App\Http\Controllers\CustomerController::class, 'autocomplete_organization_save'])->name('autocomplete_org_save');
@@ -316,7 +316,15 @@ Route::middleware([SetViewVariable::class, 'auth'])->prefix('dev')->group(functi
         Route::post('/delete', [App\Http\Controllers\DealStageController::class, 'delete'])->name('dealstages.delete')->middleware('checkAccess:is_delete');
         Route::post('/status', [App\Http\Controllers\DealStageController::class, 'change_status'])->name('dealstages.status');
     });
-
+    Route::prefix('document_types')->group(function () {
+        Route::get('/', [App\Http\Controllers\DocumentTypeController::class, 'index'])->name('document_types')->middleware('checkAccess:is_view');
+        Route::post('/add', [App\Http\Controllers\DocumentTypeController::class, 'add_edit'])->name('document_types.add')->middleware('checkAccess:is_edit');
+        Route::post('/view', [App\Http\Controllers\DocumentTypeController::class, 'view'])->name('document_types.view')->middleware('checkAccess:is_view');
+        Route::post('/save', [App\Http\Controllers\DocumentTypeController::class, 'save'])->name('document_types.save');
+        Route::post('/list', [App\Http\Controllers\DocumentTypeController::class, 'ajax_list'])->name('document_types.list')->middleware('checkAccess:is_view');
+        Route::post('/delete', [App\Http\Controllers\DocumentTypeController::class, 'delete'])->name('document_types.delete')->middleware('checkAccess:is_delete');
+        Route::post('/status', [App\Http\Controllers\DocumentTypeController::class, 'change_status'])->name('document_types.status')->middleware('checkAccess:is_edit');
+    });
     Route::prefix('settings')->group(function () {
         Route::get('/', [App\Http\Controllers\SettingController::class, 'index'])->name('settings');
         //activity status route
@@ -399,13 +407,7 @@ Route::middleware([SetViewVariable::class, 'auth'])->prefix('dev')->group(functi
         Route::post('/country/delete', [App\Http\Controllers\CountryController::class, 'delete'])->name('country.delete');
         Route::post('/country/status', [App\Http\Controllers\CountryController::class, 'change_status'])->name('country.status');
 
-        Route::get('/document-types', [App\Http\Controllers\DocumentTypeController::class, 'index'])->name('document-types');
-        Route::post('/document-types/add', [App\Http\Controllers\DocumentTypeController::class, 'add_edit'])->name('document-types.add');
-        Route::post('/document-types/view', [App\Http\Controllers\DocumentTypeController::class, 'view'])->name('document-types.view');
-        Route::post('/document-types/save', [App\Http\Controllers\DocumentTypeController::class, 'save'])->name('document-types.save');
-        Route::post('/document-types/list', [App\Http\Controllers\DocumentTypeController::class, 'ajax_list'])->name('document-types.list');
-        Route::post('/document-types/delete', [App\Http\Controllers\DocumentTypeController::class, 'delete'])->name('document-types.delete');
-        Route::post('/document-types/status', [App\Http\Controllers\DocumentTypeController::class, 'change_status'])->name('document-types.status');
+        
 
         Route::get('/teams', [App\Http\Controllers\TeamController::class, 'index'])->name('teams');
         Route::post('/teams/add', [App\Http\Controllers\TeamController::class, 'add_edit'])->name('teams.add');
@@ -457,7 +459,7 @@ Route::middleware([SetViewVariable::class, 'auth'])->prefix('dev')->group(functi
     Route::any('/export/subscriptions', [App\Http\Controllers\ExportController::class, 'exportSubscriptions'])->name('export.subscriptions');
     Route::any('/export/company/subscriptions', [App\Http\Controllers\ExportController::class, 'exportCompanySubscriptions'])->name('export.company_subscriptions');
     Route::any('/export/document/types', [App\Http\Controllers\ExportController::class, 'exportDocumentTypes'])->name('export.document_types');
-
+    Route::any('/export/customer/document/approval', [App\Http\Controllers\ExportController::class, 'exportCustomerDocumentApproval'])->name('export.customers_document_approval');
 
     // Email Template Routes
     Route::prefix('email-template')->group(function () {

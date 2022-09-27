@@ -31,7 +31,6 @@
                             <table class="table table-centered w-100 dt-responsive nowrap" id="leadsource-datatable">
                                 <thead class="table-light">
                                     <tr>
-
                                         <th class="all">Lead Source</th>
                                         <th>Status</th>
                                         <th style="width: 80px;">Action</th>

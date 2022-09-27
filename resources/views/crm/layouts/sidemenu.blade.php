@@ -86,6 +86,11 @@
                 </a>
                 <div class="collapse @if($route=='customer_document_approval.customer.view') show @endif" id="sidebarEmail">
                     <ul class="side-nav-second-level">
+                        @if(Auth::user()->hasAccess('organizations', 'is_view'))
+                        <li >
+                            <a href="{{ route('organizations') }}">Organizations</a>
+                        </li>
+                        @endif
                         @if(Auth::user()->hasAccess('customers', 'is_view'))
                         <li>
                             <a href="{{ route('customers') }}">Customers</a>
@@ -96,9 +101,11 @@
                             <a href="{{ route('customer_document_approval') }}" class="@if($route=='customer_document_approval.customer.view') active @endif">Customers Document Approval</a>
                         </li>
                         @endif
-                        @if(Auth::user()->hasAccess('organizations', 'is_view'))
-                        <li >
-                            <a href="{{ route('organizations') }}">Organizations</a>
+                        @if(Auth::user()->hasAccess('document_type', 'is_view'))
+                        <li>
+                            <a href="{{ route('document_types') }}" >
+                                Document Types
+                            </a>
                         </li>
                         @endif
                     </ul>
@@ -279,7 +286,7 @@
                 </div>
             </li>
             @endif
-            @if(!Auth::user()->role_id)
+            @if(Auth::user()->hasAccess('settings', 'is_view'))
 
             <li class="side-nav-title side-nav-item">Setup</li>
 
