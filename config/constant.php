@@ -12,6 +12,7 @@ return [
         'leadstage',
         'dealstages',
         'deals',
+        'global_configuration',
         'tasks',
         'products',
         'pages',

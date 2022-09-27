@@ -55,7 +55,7 @@
                                 Profile
                             </a>
                         </li>
-                        @if(Auth::user()->hasAccess('account', 'is_edit'))
+                        @if(Auth::user()->hasAccess('global_configuration', 'is_edit'))
 
                         <li class="nav-item">
                             <a href="#horizontal-form-company" data-bs-toggle="tab" onclick="return get_settings_tab('company')" aria-expanded="false" class="nav-link">
