@@ -5,8 +5,7 @@ namespace App\Http\Middleware;
 use App\Models\CompanySettings;
 use Closure;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Route;
+
 
 class CompanyExist
 {

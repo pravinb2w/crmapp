@@ -59,6 +59,7 @@ class AccountController extends Controller
         $gateway = PaymentIntegration::all();
 
         $payFromMethod = planSettings('payment_gateway');
+        
         $dynamic_gateways = [];
         if( isset( $payFromMethod ) && !empty( $payFromMethod ) ) {
             $payFrom = explode( ',', $payFromMethod );

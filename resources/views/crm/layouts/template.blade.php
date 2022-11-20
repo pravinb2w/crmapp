@@ -28,6 +28,7 @@
                     <div class="row">
                         @php
                             $now = time(); // or your date as well
+                            // dd($expiry_date);
                             $ex_date = strtotime($expiry_date);
                             $datediff = $ex_date - $now;
                             $diff_days = round($datediff / (60 * 60 * 24));

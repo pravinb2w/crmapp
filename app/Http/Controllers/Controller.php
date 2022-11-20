@@ -17,8 +17,9 @@ class Controller extends BaseController
     public function __construct()
     {
         //its just a dummy data object.
-        $company_info = DB::table('company_settings')->where('id', 1)->first();
-        $company_subscriptions = DB::table('company_subscriptions')->where('company_id', 1)->first();
+        
+        $company_info = DB::table('company_settings')->where('site_code', request()->segment(1))->first();
+        $company_subscriptions = DB::table('company_subscriptions')->where('company_id', $company_info->id)->first();
         $meta_data = DB::table('landing_pages')
                         ->select('landing_page_meta_details.*')
                         ->join('landing_page_meta_details', 'landing_page_meta_details.page_id', '=', 'landing_pages.id')

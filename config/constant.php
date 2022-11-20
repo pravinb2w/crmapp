@@ -1,30 +1,30 @@
 <?php
-$payFromMethod = planSettings('payment_gateway');
-$dynamic_gateways = [];
-if( isset( $payFromMethod ) && !empty( $payFromMethod ) ) {
-    $payFrom = explode( ',', $payFromMethod );
-    if( !empty( $payFrom ) ) {
-        foreach ($payFrom as $item) {
-            if( $item == 'payu') {
-                $field = 'payumoney';
-                $value = 'PayUmoney';
-            } else if($item == 'ccavenue') {
-                $field = 'ccavenue';
-                $value = 'CCAvenue';
-            } else if($item == 'razorpay') {
-                $field = 'razorpay';
-                $value = 'Razor Pay';
-            }
-            $dynamic_gateways[$field] = $value;
-        }
-    }
-} else {
-    $dynamic_gateways = [
-                            'razorpay' => 'Razor Pay',
-                            'ccavenue' => 'CCAvenue',
-                            'payumoney' => 'PayUmoney'
-                        ];
-}
+// $payFromMethod = planSettings('payment_gateway');
+// $dynamic_gateways = [];
+// if( isset( $payFromMethod ) && !empty( $payFromMethod ) ) {
+//     $payFrom = explode( ',', $payFromMethod );
+//     if( !empty( $payFrom ) ) {
+//         foreach ($payFrom as $item) {
+//             if( $item == 'payu') {
+//                 $field = 'payumoney';
+//                 $value = 'PayUmoney';
+//             } else if($item == 'ccavenue') {
+//                 $field = 'ccavenue';
+//                 $value = 'CCAvenue';
+//             } else if($item == 'razorpay') {
+//                 $field = 'razorpay';
+//                 $value = 'Razor Pay';
+//             }
+//             $dynamic_gateways[$field] = $value;
+//         }
+//     }
+// } else {
+$dynamic_gateways = [
+                        'razorpay' => 'Razor Pay',
+                        'ccavenue' => 'CCAvenue',
+                        'payumoney' => 'PayUmoney'
+                    ];
+
 
 $dynamic_tasks = '';
 
