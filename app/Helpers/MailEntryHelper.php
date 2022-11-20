@@ -10,7 +10,11 @@ class MailEntryHelper
 {
     public static function welcomeMessage($lead_id = null, $to_email)
     {
-        $company = CompanySettings::find(1);
+        if( isset(auth()->user()->company_id ) ) {
+            $company = CompanySettings::find(auth()->user()->company_id);
+        } else {
+            $company = CompanySettings::where('site_code', request()->segment(1))->first();
+        }
 
         $extract = array(
             'app_name' => env('APP_NAME'),
@@ -29,16 +33,22 @@ class MailEntryHelper
             'email_type' => 'new_registration',
             'params' => serialize($extract),
             'to' => $to_email ?? 'duraibytes@gmail.com',
+            'company_id' => $company->id,
             'send_type' => 'customer'
         );
-        if (automation('New Lead Addition', 'is_mail_to_customer')) {
+
+        if (automation('New Customer Addition', 'is_mail_to_customer')) {
             SendMail::create($ins_mail);
         }
     }
 
     public static function leadAddition($lead_id, $to_email)
     {
-        $company = CompanySettings::find(1);
+        if( isset(auth()->user()->company_id ) ) {
+            $company = CompanySettings::find(auth()->user()->company_id);
+        } else {
+            $company = CompanySettings::where('site_code', request()->segment(1))->first();
+        }
 
         $extract = array(
             'app_name' => env('APP_NAME'),
@@ -46,7 +56,7 @@ class MailEntryHelper
             'telegram_bot_link' => $company->telegram_bot ?? '',
             'telegram_link' => $company->telegram_link ?? '',
             'youtube_learning_link' => $company->youtube_learning_link ?? '',
-            'company_name' => $company->site_name,
+            'company_name' => $company->site_name
         );
 
         $ins_mail = array(
@@ -55,8 +65,10 @@ class MailEntryHelper
             'email_type' => 'new_lead',
             'params' => serialize($extract),
             'to' => $to_email ?? 'duraibytes@gmail.com',
+            'company_id' => $company->id,
             'send_type' => 'customer'
         );
+
         if (automation('New Lead Addition', 'is_mail_to_customer')) {
             SendMail::create($ins_mail);
         }
@@ -64,7 +76,11 @@ class MailEntryHelper
 
     public static function dealConversion($lead_id, $to_email)
     {
-        $company = CompanySettings::find(1);
+        if( isset(auth()->user()->company_id ) ) {
+            $company = CompanySettings::find(auth()->user()->company_id);
+        } else {
+            $company = CompanySettings::where('site_code', request()->segment(1))->first();
+        }
         $lead_info = Lead::find($lead_id);
         $extract = array(
             'app_name' => env('APP_NAME'),
@@ -78,6 +94,7 @@ class MailEntryHelper
             'email_type' => 'deal_conversion',
             'params' => serialize($extract),
             'to' => $to_email ?? 'duraibytes@gmail.com',
+            'company_id' => $company->id,
             'send_type' => 'customer'
         );
         if (automation('Conversion from Lead to Deal', 'is_mail_to_customer')) {

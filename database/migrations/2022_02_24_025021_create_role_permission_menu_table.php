@@ -15,6 +15,8 @@ class CreateRolePermissionMenuTable extends Migration
     {
         Schema::create('role_permission_menu', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('company_id')->comment('from companysettings')->nullable();
+            $table->foreign('company_id')->references('id')->on('company_settings')->onDelete('no action');
             $table->unsignedBigInteger('permission_id')->comment('from roles');
             $table->foreign('permission_id')->references('id')->on('role_permissions')->onDelete('no action');
             $table->string('menu')->nullable();

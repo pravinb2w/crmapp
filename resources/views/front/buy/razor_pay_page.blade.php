@@ -47,7 +47,7 @@ document.getElementById('rzp-button1').onclick = function(e){
 </script>
 
 <!-- This form is hidden -->
-<form action="{{ route('razor.payments.complete')}}" method="POST" hidden>
+<form action="{{ route('razor.payments.complete', $companyCode)}}" method="POST" hidden>
         <input type="hidden" value="{{csrf_token()}}" name="_token" /> 
         <input type="text" class="form-control" id="rzp_paymentid"  name="rzp_paymentid">
         <input type="text" class="form-control" id="rzp_orderid" name="rzp_orderid">

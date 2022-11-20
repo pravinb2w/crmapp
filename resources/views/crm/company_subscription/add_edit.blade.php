@@ -1,5 +1,5 @@
 <div class="modal-dialog modal-md modal-right">
-    <form class="modal-content h-100" id="csubscription-form" method="POST" action="{{ route('company-subscriptions.save') }}" autocomplete="off">
+    <form class="modal-content h-100" id="csubscription-form" method="POST" action="{{ route('company-subscriptions.save', $companyCode) }}" autocomplete="off">
         <div class="modal-header">
             <h4 class="modal-title" id="myLargeModalLabel">{{ $modal_title }}</h4>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>

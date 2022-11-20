@@ -51,7 +51,7 @@ class ForgotPasswordController extends Controller
        
     }
 
-    public function showResetPasswordForm(Request $request, $token) {
+    public function showResetPasswordForm(Request $request, $companyCode, $token) {
         $result = LandingPages::where('is_default_landing_page', 1)->first();
         $check = DB::table('customer_password_resets')->where('token', $token)->first();
         if( isset( $check ) && !empty( $check ))

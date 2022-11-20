@@ -16,7 +16,7 @@ use CommonHelper;
 
 class UserController extends Controller
 {
-    public function index(Type $var = null)
+    public function index()
     {
         $params = array('btn_name' => 'Users', 'btn_fn_param' => 'users');
         return view('crm.user.index', $params);
@@ -38,22 +38,25 @@ class UserController extends Controller
         $search             = $request->input('search.value');
         $approve_status     = $request->input('approve_status');
 
-        $total_list         = User::whereNotNull('role_id')->count();
+        $total_list         = User::whereNotNull('role_id')->companyRelatedOnly()->count();
+        
         // DB::enableQueryLog();
         if ($order != 'id') {
             $list               = User::skip($start)->take($limit)->whereNotNull('role_id')->orderBy($order, $dir)
                 ->search($search)
+                ->companyRelatedOnly()
                 ->get();
         } else {
             $list               = User::skip($start)->take($limit)->whereNotNull('role_id')->Latests()
                 ->search($search)
+                ->companyRelatedOnly()
                 ->get();
         }
         // $query = DB::getQueryLog();
         if (empty($request->input('search.value'))) {
-            $total_filtered = User::whereNotNull('role_id')->count();
+            $total_filtered = User::whereNotNull('role_id')->companyRelatedOnly()->count();
         } else {
-            $total_filtered = User::whereNotNull('role_id')->search($search)
+            $total_filtered = User::whereNotNull('role_id')->companyRelatedOnly()->search($search)
                 ->count();
         }
 
@@ -122,15 +125,15 @@ class UserController extends Controller
         $id = $request->id;
         if (isset($id) && !empty($id)) {
             $role_validator   = [
-                'email'      => ['required', 'email', 'string', 'max:255', 'unique:users,email,' . $id],
-                'mobile_no'      => ['required', 'digits:10', 'max:255', 'unique:users,mobile_no,' . $id],
+                'email'      => ['required', 'email', 'string', 'max:255', 'unique:users,email,' . $id.',id,company_id,'.auth()->user()->company_id],
+                'mobile_no'      => ['required', 'digits:10', 'max:255', 'unique:users,mobile_no,' . $id.',id,company_id,'.auth()->user()->company_id],
                 // 'password' => ['required', 'string', 'min:6'],
 
             ];
         } else {
             $role_validator   = [
                 'name' => ['required', 'string', 'max:255'],
-                'email'      => ['required', 'email', 'string', 'max:255', 'unique:roles,role'],
+                'email'      => ['required', 'email', 'string', 'max:255', 'unique:roles,role,NULL,id,company_id,'.auth()->user()->company_id],
                 'mobile_no' => ['required', 'digits:10', 'max:255'],
                 'password' => ['required', 'string', 'min:6'],
 

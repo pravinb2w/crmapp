@@ -15,6 +15,8 @@ class CreateTaskCommentsTable extends Migration
     {
         Schema::create('task_comments', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('company_id')->comment('from companysettings')->nullable();
+            $table->foreign('company_id')->references('id')->on('company_settings')->onDelete('no action');
             $table->unsignedBigInteger('task_id')->comment('from tasks');
             $table->foreign('task_id')->references('id')->on('tasks')->onDelete('no action');
             $table->string('comments');

@@ -167,7 +167,7 @@
                                 </span>
                                 <div class="custom-form-group">
                                     <input name="feature_icon[]" type="file" id="" class="form-control mb-3" required>
-                                    <label for="" class="custom-label bg-white">Icon Image</label>
+                                    <label for="" class="custom-label bg-white">Icon Image (45px*45px)</label>
                                 </div> 
                                 <div class="custom-form-group">
                                     <input type="text" name="feature_title[]" id="" class="form-control mb-3" required  placeholder="Type here...">
@@ -414,7 +414,7 @@
                     <input type="hidden" name="page_logo_data_url"  class="form-control mb-2 d-one"  value="{{ $result->page_logo  }}">
                     <input type="file" name="page_logo" id="page_logo" class="form-control mb-2 d-none" onchange="previewFile(this);" >
                 @else
-                    <input type="file" name="page_logo" id="page_logo" class="form-control mb-2 d-none" onchange="previewFile(this);" >
+                    <input type="file" name="page_logo" id="page_logo" required class="form-control mb-2 d-none" onchange="previewFile(this);" >
                 @endif
 
                 <div style="width: 200px" class="border-0 mx-auto my-2">
@@ -452,8 +452,8 @@
                 <div class="my-1"><i class="me-2 bi bi-calendar-check-fill"></i> Publish: <b>Immediately</b></div>
                 @if( isset( $result->permalink ) && !empty($result->permalink))
                     <div class="my-1"><i class="me-2 bi bi-calendar-check-fill"></i> 
-                        Permalink: <b>{{ route('landing.index', [$result->permalink]) }}</b> 
-                        <span role="button" onclick="return copy_link('{{ route('landing.index', [$row->permalink]) }}')"> <i class="fa fa-copy"></i></span>
+                        Permalink: <b>{{ route('landing.index', [$companyCode, $result->permalink]) }}</b> 
+                        <span role="button" onclick="return copy_link('{{ route('landing.index', [$companyCode, $row->permalink]) }}')"> <i class="fa fa-copy"></i></span>
                     </div>
                 @endif
                 <div class="my-1 mt-2">

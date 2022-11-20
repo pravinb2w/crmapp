@@ -28,6 +28,7 @@
                                         <input type="hidden" name="document_id[]" v-if="!kycItem.image_url" v-model="kycItem.document_id">
                                         <input type="hidden" :name="'customerDocumentId_'+kycItem.document_id+''"  v-model="kycItem.customerDocumentId">
                                     </div>
+                                    <input type="hidden" name="deleteDocumentId" id="deleteDocumentId" value="">
                                 </div>
                                 <div class="col-5">
                                     <div class="mb-3">

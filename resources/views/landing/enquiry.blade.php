@@ -52,7 +52,7 @@ left: 33%;
   }
 }
 </style>
-<form id="enquiry-form" class="enquiry-form p-0" method="POST" action="{{ route('enquiry.save') }}" autocomplete="off">
+<form id="enquiry-form" class="enquiry-form p-0" method="POST" action="{{ route('enquiry.save', $companyCode) }}" autocomplete="off">
     <div class="loader" style="display: none;">
         <div class="loader-wheel"></div>
         <div class="loader-text"></div>

@@ -16,6 +16,8 @@ class CreateCustomerPasswordResetsTable extends Migration
         Schema::create('customer_password_resets', function (Blueprint $table) {
             $table->string('email')->index();
             $table->string('token');
+            $table->unsignedBigInteger('company_id')->comment('from companysettings')->nullable();
+            $table->foreign('company_id')->references('id')->on('company_settings')->onDelete('no action');
             $table->timestamp('created_at')->nullable();
         });
     }

@@ -219,7 +219,7 @@
         }).then((result) => {
             /* Read more about isConfirmed, isDenied below */
             if (result.isConfirmed) {
-                var ajax_url = "{{ route('deals.activity-delete') }}";
+                var ajax_url = "{{ route('deals.activity-delete', $companyCode) }}";
                 $.ajaxSetup({
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -237,6 +237,10 @@
                         if (response.deal_id) {
                             if (lead_type == 'files') {
                                 lead_type = 'file';
+                            } else if( lead_type == 'note' ) {
+                                lead_type = 'note';
+                            } else {
+                                lead_type = 'activity';
                             }
                             get_deal_common_sub_list(response.deal_id, lead_type);
                         }

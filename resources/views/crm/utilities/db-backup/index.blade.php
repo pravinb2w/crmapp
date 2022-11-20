@@ -10,7 +10,7 @@
                 <div class="page-title-right">
                     <ol class="breadcrumb m-0">
                         <li class="breadcrumb-item"><a href="javascript: void(0);">CRM</a></li>
-                        <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
+                        <li class="breadcrumb-item"><a href="{{ route('dashboard', $companyCode) }}">Dashboard</a></li>
                         <li class="breadcrumb-item active">Data Base Backup</li>
                     </ol>
                 </div>
@@ -18,7 +18,7 @@
             </div>
         </div>
     </div>
-    <form class="text-end" action="{{ route('create.backup') }}" method="POST" >
+    <form class="text-end" action="{{ route('create.backup', $companyCode) }}" method="POST" >
         @csrf
         <button type="submit" class="btn btn-sm btn-primary mb-2">+ Create Backup</button>
     </form>
@@ -47,11 +47,11 @@
                             <td>{{ $row->created_by }}</td>
                             <td>
                                 <div class="x-y">
-                                    <form action="{{ route('download.database-backup',$row->id) }}" method="POST" class="me-2">
+                                    <form action="{{ route('download.database-backup',['id' => $row->id, 'companyCode' => $companyCode ]) }}" method="POST" class="me-2">
                                         @csrf
                                         <button type="submit" class="btn btn-sm btn-info"><i class="mdi-download mdi"></i></button>
                                     </form>
-                                    <form action="{{ route('delete.database-backup', $row->id) }}" method="POST">
+                                    <form action="{{ route('delete.database-backup', ['id' => $row->id, 'companyCode' => $companyCode]) }}" method="POST">
                                         @method('delete')
                                         @csrf
                                         <button type="submit" class="show_confirm  btn btn-sm btn-danger"><i class="mdi-trash-can mdi"></i></button>

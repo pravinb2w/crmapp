@@ -10,7 +10,7 @@
                 <div class="page-title-right">
                     <ol class="breadcrumb m-0">
                         <li class="breadcrumb-item"><a href="javascript: void(0);">CRM</a></li>
-                        <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
+                        <li class="breadcrumb-item"><a href="{{ route('dashboard', $companyCode) }}">Dashboard</a></li>
                         <li class="breadcrumb-item active">Email Templates</li>
                     </ol>
                 </div>
@@ -20,7 +20,7 @@
     </div>     
     <div class="text-end">
         @if( $email_count < Auth::user()->hasLimit('template'))
-        <a href="{{ route('create.email_template') }}" class="btn btn-sm btn-primary mb-2">+ Add Template</a>
+        <a href="{{ route('create.email_template', $companyCode) }}" class="btn btn-sm btn-primary mb-2">+ Add Template</a>
         @endif
     </div>
     <div class="card border shadow">
@@ -40,9 +40,9 @@
                         </div>
                         <p class="mb-1 mt-1">
                             <div class="d-flex">
-                                <a href="{{ route('edit.email_template', $row->id) }}" class="me-2"><i class="fa fa-pencil"></i> <u>Edit</u></a>
+                                <a href="{{ route('edit.email_template', [ 'id' => $row->id, 'companyCode' => $companyCode ]) }}" class="me-2"><i class="fa fa-pencil"></i> <u>Edit</u></a>
                             
-                                <form method="post" action="{{ route('delete.email_template', $row->id) }}">
+                                <form method="post" action="{{ route('delete.email_template', [ 'id' => $row->id, 'companyCode' => $companyCode]) }}">
                                     @csrf
                                     <a type="submit"  class="show_confirm text-danger"><i class="fa fa-trash"></i> <u>Delete</u></a>
                                 </form>

@@ -31,7 +31,7 @@
                     <h4 class="text-dark-50 text-center pb-0 fw-bold">Reset Password</h4>
                 </div>
 
-                <form action="{{ route('reset.password.post') }}" method="POST" >
+                <form action="{{ route('reset.password.post', $companyCode) }}" method="POST" >
                     @csrf
 
                     <div class="mb-3">
@@ -65,6 +65,7 @@
 
                     </div>
                     <input type="hidden" name="token" value="{{ $token }}">
+                    <input type="hidden" name="companyCode" value="{{ $companyCode }}">
                     <div class="mb-0 text-end">
                         <button class="btn btn-primary px-3" type="submit"><i class="fa fa-user"></i> Reset Password</button>
                     </div>

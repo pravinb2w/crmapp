@@ -16,6 +16,7 @@ class CreateCompanySettingsTable extends Migration
         Schema::create('company_settings', function (Blueprint $table) {
             $table->id();
             $table->string('site_name');
+            $table->string('site_code')->nullable();
             $table->text('site_url')->nullable();
             $table->text('site_logo')->nullable();
             $table->text('site_favicon')->nullable();

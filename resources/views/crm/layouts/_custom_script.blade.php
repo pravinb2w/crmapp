@@ -19,7 +19,7 @@
                     }
                 });
                 $.ajax({
-                    url: "{{ route('deals.make_stage_completed') }}",
+                    url: "{{ route('deals.make_stage_completed', $companyCode) }}",
                     type: 'POST',
                     data: {
                         stage_id: stage_id,
@@ -50,7 +50,7 @@
     }
 
     function edit_activity(page_type, activity_id, lead_id = '', deal_id = '') {
-        var ajax_url = "{{ route('activities.edit') }}";
+        var ajax_url = "{{ route('activities.edit', $companyCode) }}";
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -84,7 +84,7 @@
             }
         });
         $.ajax({
-            url: "{{ route('common.notification.list') }}" + '?_token=' + '{{ csrf_token() }}',
+            url: "{{ route('common.notification.list', $companyCode) }}" + '?_token=' + '{{ csrf_token() }}',
             type: 'POST',
 
             success: function(response) {
@@ -101,7 +101,7 @@
             }
         });
         $.ajax({
-            url: "{{ route('common.notification.read') }}",
+            url: "{{ route('common.notification.read', $companyCode) }}",
             type: 'POST',
             data: {
                 id: id
@@ -123,7 +123,7 @@
             }
         });
         $.ajax({
-            url: "{{ route('notification.check') }}",
+            url: "{{ route('notification.check', $companyCode) }}",
             type: 'POST',
             success: function(response) {
                 if (response.title) {
@@ -143,7 +143,7 @@
             }
         });
         $.ajax({
-            url: "{{ route('activities.comment.modal') }}",
+            url: "{{ route('activities.comment.modal', $companyCode) }}",
             type: 'POST',
             data: {
                 activity_id: activity_id
@@ -157,7 +157,7 @@
 
     function comment_list(activity_id) {
         $.ajax({
-            url: "{{ route('activities.comment.list') }}",
+            url: "{{ route('activities.comment.list', $companyCode) }}",
             type: 'POST',
             data: {
                 activity_id: activity_id
@@ -170,7 +170,7 @@
 
     function taskComment_list(task_id) {
         $.ajax({
-            url: "{{ route('tasks.comment.list') }}",
+            url: "{{ route('tasks.comment.list', $companyCode) }}",
             type: 'POST',
             data: {
                 task_id: task_id
@@ -206,7 +206,7 @@
         }).then((result) => {
             /* Read more about isConfirmed, isDenied below */
             if (result.isConfirmed) {
-                var ajax_url = "{{ route('payment.resend.url') }}";
+                var ajax_url = "{{ route('payment.resend.url', $companyCode) }}";
                 $.ajaxSetup({
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -239,7 +239,7 @@
             }
         });
         $.ajax({
-            url: "{{ route('export.customers') }}",
+            url: "{{ route('export.customers', $companyCode) }}",
             method: 'POST',
             xhrFields: {
                 responseType: 'blob',

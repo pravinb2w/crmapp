@@ -119,11 +119,11 @@ class LeadTypeController extends Controller
 
         if (isset($id) && !empty($id)) {
             $role_validator   = [
-                'type'      => ['required', 'string', 'max:255', 'unique:lead_types,type,' . $id],
+                'type'      => ['required', 'string', 'max:255', 'unique:lead_types,type,' . $id.',id,company_id,'.auth()->user()->company_id],
             ];
         } else {
             $role_validator   = [
-                'type'      => ['required', 'string', 'max:255', 'unique:lead_types,type'],
+                'type'      => ['required', 'string', 'max:255', 'unique:lead_types,type,null,id,company_id,'.auth()->user()->company_id],
             ];
         }
         //Validate the product

@@ -55,7 +55,7 @@
     });
 
     function goToProfile() {
-      window.location.href="{{ route('profile') }}";
+      window.location.href="{{ route('profile', $companyCode) }}";
     }
 
     var modal = document.getElementById("myModal");

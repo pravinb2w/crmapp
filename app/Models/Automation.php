@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Scopes\CompanyScope;
+use App\Traits\ObservantTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
@@ -9,7 +11,7 @@ use Auth;
 
 class Automation extends Model
 {
-    use HasFactory;
+    use HasFactory, ObservantTrait;
     protected $fillable = [
         'activity_type',
         'activity_title',
@@ -25,6 +27,11 @@ class Automation extends Model
         'added_by',
 
     ];
+
+    protected static function booted()
+    {
+        static::addGlobalScope(new CompanyScope);
+    }
 
     public function scopeRoledata( Builder $query ){
         $role = Auth::user()->role_id;

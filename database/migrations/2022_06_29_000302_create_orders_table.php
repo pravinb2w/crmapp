@@ -15,6 +15,8 @@ class CreateOrdersTable extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('company_id')->comment('from companysettings')->nullable();
+            $table->foreign('company_id')->references('id')->on('company_settings')->onDelete('no action');
             $table->string('order_id');
             $table->decimal('amount');
             $table->unsignedBigInteger('customer_id')->comment('from customertable');

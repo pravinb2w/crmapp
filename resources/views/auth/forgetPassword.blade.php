@@ -26,7 +26,7 @@
                     <h4 class="text-dark-50 text-center pb-0 fw-bold">Reset Password</h4>
                 </div>
 
-                <form action="{{ route('forget.password.post') }}" method="POST" >
+                <form action="{{ route('forget.password.post', $companyCode) }}" method="POST" >
                     @csrf
                     <div class="mb-3">
                         <label for="emailaddress" class="form-label">Email address</label>
@@ -38,7 +38,7 @@
                     </div>
 
                     <div class="mb-0 text-end">
-                        <a href="{{ route('login') }}" class="btn btn-light"> Back to Login</a>
+                        <a href="{{ route('login', $companyCode) }}" class="btn btn-light"> Back to Login</a>
                         <button class="btn btn-primary px-3" type="submit"><i class="fa fa-user"></i> Send Password Link </button>
                     </div>
 

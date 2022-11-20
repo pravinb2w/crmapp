@@ -15,6 +15,8 @@ class CreateSendMailTable extends Migration
     {
         Schema::create('send_mail', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('company_id')->comment('from companysettings')->nullable();
+            $table->foreign('company_id')->references('id')->on('company_settings')->onDelete('no action');
             $table->string('type')->comment('lead,deal,invoice,payment');
             $table->unsignedBigInteger('type_id');
             $table->string('email_type');

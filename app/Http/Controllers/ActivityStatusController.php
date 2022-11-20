@@ -13,7 +13,7 @@ class ActivityStatusController extends Controller
 {
     public function index(Request $request)
     {
-        $urls_name = $request->segment(3);
+        $urls_name = $request->segment(4);
         $urls = explode("-", $urls_name);
         $status_type = current($urls);
         $params = array('type' => $status_type, 'btn_name' => ucwords(str_replace("-", " ", $urls_name)), 'btn_fn_param' => $urls_name);
@@ -27,7 +27,7 @@ class ActivityStatusController extends Controller
             return response('Forbidden.', 403);
         }
 
-        $urls_name = $request->segment(3);
+        $urls_name = $request->segment(4);
         $urls = explode("-", $urls_name);
         $status_type = current($urls);
 
@@ -96,7 +96,7 @@ class ActivityStatusController extends Controller
         if (!$request->ajax()) {
             return response('Forbidden.', 403);
         }
-        $urls_name = $request->segment(3);
+        $urls_name = $request->segment(4);
         $urls = explode("-", $urls_name);
         $status_type = current($urls);
 
@@ -116,7 +116,7 @@ class ActivityStatusController extends Controller
         $id = $request->id;
         $status_validator   = [
             'status_name'      => ['required', 'string', 'max:255', Rule::unique('status')->where(function ($query) use ($request, $id) {
-                return $query->where('type', $request->type)->when($id != '', function ($q) use ($id) {
+                return $query->where('type', $request->type)->where('company_id', auth()->user()->company_id)->when($id != '', function ($q) use ($id) {
                     return $q->where('id', '!=', $id);
                 });
             })],

@@ -35,6 +35,7 @@ class LandingPageSeeder extends Seeder
                                     ',
                 'primary_color'  => '#00BFFF',
                 'secondary_color'=> '#002D86',
+                'company_id' => 1
             ] 
         ];
         $data_banner = [
@@ -45,6 +46,7 @@ class LandingPageSeeder extends Seeder
                 'image'         =>  'https://images.unsplash.com/photo-1551033541-2075d8363c66?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1yZWxhdGVkfDV8fHxlbnwwfHx8fA%3D%3D&auto=format&fit=crop&w=500&q=60' ,
                 'content'       =>  'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed
                 diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus.' ,
+                'company_id' => 1
             ],
             [
                 'page_id'       =>  1,
@@ -53,33 +55,44 @@ class LandingPageSeeder extends Seeder
                 'image'         =>  'https://images.unsplash.com/photo-1619597455322-4fbbd820250a?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1yZWxhdGVkfDE2fHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=500&q=60' ,
                 'content'       =>  'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed
                 diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus.' ,
+                'company_id' => 1
             ],
         ];
         $data_input = [
             [
                 'page_id' => 1,
                 'input_type' => 'fullname',
-                'input_required' => '1' 
+                'input_required' => '1' ,
+                'company_id' => 1
+
             ] ,
             [
                 'page_id' => 1,
                 'input_type' => 'email',
-                'input_required' => '1' 
+                'input_required' => '1' ,
+                'company_id' => 1
+
             ] ,
             [
                 'page_id' => 1,
                 'input_type' => 'mobile_no',
-                'input_required' => '1' 
+                'input_required' => '1',
+                'company_id' => 1
+
             ] ,
             [
                 'page_id' => 1,
                 'input_type' => 'subject',
-                'input_required' => '0' 
+                'input_required' => '0',
+                'company_id' => 1
+
             ] ,
             [
                 'page_id' => 1,
                 'input_type' => 'message',
-                'input_required' => '0' 
+                'input_required' => '0' ,
+                'company_id' => 1
+
             ] 
         ];
         $data_media = [
@@ -87,19 +100,25 @@ class LandingPageSeeder extends Seeder
                 'page_id' => 1,
                 'name' => 'Instagram',
                 'link' => 'https://www.instagram.com/',
-                'icon' => '0' 
+                'icon' => '0',
+                'company_id' => 1
+
             ] ,
             [
                 'page_id' => 1,
                 'name' => 'Facebook',
                 'link' => 'https://www.facebook.com/',
-                'icon' => '0' 
+                'icon' => '0',
+                'company_id' => 1
+
             ] ,
             [
                 'page_id' => 1,
                 'name' => 'YouTube',
                 'link' => 'https://www.youtube.com/',
-                'icon' => '0' 
+                'icon' => '0',
+                'company_id' => 1
+
             ] ,
         ];
         $data_feature = [
@@ -107,37 +126,43 @@ class LandingPageSeeder extends Seeder
                 'page_id'   => 1,
                 'icon'      => 'https://cdn-icons-png.flaticon.com/512/3174/3174745.png',
                 'title'     => 'Quality Resources',
-                'content'   => 'Sed ut perspiciatis remque laudan unde omnis iste natus error sit voluptatem accusantium dolo remque laudan tiuotam.'
+                'content'   => 'Sed ut perspiciatis remque laudan unde omnis iste natus error sit voluptatem accusantium dolo remque laudan tiuotam.',
+                'company_id' => 1
             ],
             [
                 'page_id'   => 1,
                 'icon'      => 'https://cdn-icons-png.flaticon.com/512/3174/3174763.png',
                 'title'     => 'At solmen va esser',
-                'content'   => 'Sed ut perspiciatis remque laudan unde omnis iste natus error sit voluptatem accusantium dolo remque laudan tiuotam.'
+                'content'   => 'Sed ut perspiciatis remque laudan unde omnis iste natus error sit voluptatem accusantium dolo remque laudan tiuotam.',
+                'company_id' => 1
             ],
             [
                 'page_id'   => 1,
                 'icon'      => 'https://cdn-icons-png.flaticon.com/512/3174/3174755.png',
                 'title'     => 'Quality Resources',
-                'content'   => 'Sed ut perspiciatis remque laudan unde omnis iste natus error sit voluptatem accusantium dolo remque laudan tiuotam.'
+                'content'   => 'Sed ut perspiciatis remque laudan unde omnis iste natus error sit voluptatem accusantium dolo remque laudan tiuotam.',
+                'company_id' => 1
             ],
             [
                 'page_id'   => 1,
                 'icon'      => 'https://cdn-icons-png.flaticon.com/512/3174/3174727.png',
                 'title'     => 'At solmen va esser',
-                'content'   => 'Sed ut perspiciatis remque laudan unde omnis iste natus error sit voluptatem accusantium dolo remque laudan tiuotam.'
+                'content'   => 'Sed ut perspiciatis remque laudan unde omnis iste natus error sit voluptatem accusantium dolo remque laudan tiuotam.',
+                'company_id' => 1
             ],
             [
                 'page_id'   => 1,
                 'icon'      => 'https://cdn-icons-png.flaticon.com/512/3174/3174725.png',
                 'title'     => 'Quality Resources',
-                'content'   => 'Sed ut perspiciatis remque laudan unde omnis iste natus error sit voluptatem accusantium dolo remque laudan tiuotam.'
+                'content'   => 'Sed ut perspiciatis remque laudan unde omnis iste natus error sit voluptatem accusantium dolo remque laudan tiuotam.',
+                'company_id' => 1
             ],
             [
                 'page_id'   => 1,
                 'icon'      => 'https://cdn-icons-png.flaticon.com/512/3174/3174753.png',
                 'title'     => 'At solmen va esser',
-                'content'   => 'Sed ut perspiciatis remque laudan unde omnis iste natus error sit voluptatem accusantium dolo remque laudan tiuotam.'
+                'content'   => 'Sed ut perspiciatis remque laudan unde omnis iste natus error sit voluptatem accusantium dolo remque laudan tiuotam.',
+                'company_id' => 1
             ],
         ];
         \DB::table('landing_pages')->insert($data);

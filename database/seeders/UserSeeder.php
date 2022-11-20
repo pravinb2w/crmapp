@@ -19,7 +19,7 @@ class UserSeeder extends Seeder
         DB::table('users')->insert([
             'name' => "Alexia",
             // 'email' => Str::random(10).'@gmail.com',
-            'email' => 'admin@yopmail.com',
+            'email' => 'adminCrm@yopmail.com',
             'password' => Hash::make('password'),
             'company_id' => 1,
             'status' => 1,

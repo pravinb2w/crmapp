@@ -1,6 +1,6 @@
 <div class="modal-dialog modal-lg modal-right">
 
-    <form id="automation-form" method="POST" action="{{ route('automation.save') }}" autocomplete="off"
+    <form id="automation-form" method="POST" action="{{ route('automation.save', $companyCode) }}" autocomplete="off"
         class="modal-content h-100">
         <div class="modal-header">
             <h4 class="modal-title" id="myLargeModalLabel">{{ $modal_title }}</h4>

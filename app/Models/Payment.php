@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Scopes\CompanyScope;
+use App\Traits\ObservantTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -10,7 +12,7 @@ use OwenIt\Auditing\Contracts\Auditable;
 
 class Payment extends Model implements Auditable
 {
-    use HasFactory;
+    use HasFactory,ObservantTrait;
     use \OwenIt\Auditing\Auditable;
 
     protected $fillable = [
@@ -42,6 +44,11 @@ class Payment extends Model implements Auditable
         'dial_code'
     ];
 
+    protected static function booted()
+    {
+        static::addGlobalScope(new CompanyScope);
+    }
+
     public function scopeLatests(Builder $query)
     {
         return $query->orderBy(static::CREATED_AT, 'desc');
@@ -57,6 +64,9 @@ class Payment extends Model implements Auditable
         return  $query->where(function ($query) use ($search) {
             $query->where('payment_mode', 'like', "%{$search}%")
                 ->orWhere('amount', 'like', "%{$search}%")
+                ->orWhere('payment_status', 'like', "%{$search}%")
+                ->orWhere('order_id', 'like', "%{$search}%")
+                ->orWhere('name', 'like', "%{$search}%")
                 ->orWhere('payment_method', 'like', "%{$search}%");
         });
     }

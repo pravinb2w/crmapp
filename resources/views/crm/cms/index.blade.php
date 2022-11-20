@@ -9,7 +9,7 @@
                 <div class="page-title-right">
                     <ol class="breadcrumb m-0">
                         <li class="breadcrumb-item"><a href="javascript: void(0);">CRM</a></li>
-                        <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
+                        <li class="breadcrumb-item"><a href="{{ route('dashboard', $companyCode) }}">Dashboard</a></li>
                         <li class="breadcrumb-item active"> Pages </li>
                     </ol>
                 </div>
@@ -48,8 +48,8 @@
                                             <td><img src="{{  $row->page_logo }} "  height="40px" alt=""></td>
                                             <td>
                                                 <div>
-                                                    <label for="" id="">{{ route('landing.index', [$row->permalink]) }}</label>
-                                                    <span role="button" onclick="return copy_link('{{ route('landing.index', [$row->permalink]) }}')"> <i class="fa fa-copy"></i></span>
+                                                    <label for="" id="">{{ route('landing.index', [$companyCode, $row->permalink]) }}</label>
+                                                    <span role="button" onclick="return copy_link('{{ route('landing.index', [$companyCode, $row->permalink]) }}')"> <i class="fa fa-copy"></i></span>
                                                 </div>
                                             </td>
                                             <td>{{ $row->created_at }}</td>
@@ -63,7 +63,7 @@
                                             </td>
                                             <td>
                                                 @if(Auth::user()->hasAccess('pages', 'is_edit') )
-                                                <a href="{{ route('pages.edit', $row->id) }}" class="action-icon"><i class="mdi mdi-square-edit-outline"></i></a>
+                                                <a href="{{ route('pages.edit', [$companyCode,$row->id]) }}" class="action-icon"><i class="mdi mdi-square-edit-outline"></i></a>
                                                 @endif
                                                 @if(Auth::user()->hasAccess('pages', 'is_delete') )
                                                 <a href="#" class="action-icon"><i class="mdi mdi-delete"></i> </a>

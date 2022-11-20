@@ -11,7 +11,7 @@
                 <div class="page-title-right">
                     <ol class="breadcrumb m-0">
                         <li class="breadcrumb-item"><a href="javascript: void(0);">CRM</a></li>
-                        <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
+                        <li class="breadcrumb-item"><a href="{{ route('dashboard', $companyCode) }}">Dashboard</a></li>
                         <li class="breadcrumb-item active">Company</li>
                     </ol>
                 </div>
@@ -30,7 +30,7 @@
             <div class="card">
                 <div class="card-body">
                     {{-- <h4 class="header-title">Personal Preferences</h4> --}}
-                    @include('crm.common.common_add_btn')
+                    {{-- @include('crm.common.common_add_btn') --}}
                     <div class="table-responsive">
                         <table class="table table-centered w-100 dt-responsive nowrap" id="company-datatable">
                             <thead class="table-primary">
@@ -42,6 +42,7 @@
                                         </div>
                                     </th>
                                     <th>Company</th>
+                                    <th>Company Code</th>
                                     <th>Status</th>
                                     <th style="width: 80px;">Action</th>
                                 </tr>
@@ -74,7 +75,7 @@
             "processing"    : true,
             "serverSide"    : true,
             "ajax"          : {
-                "url"       : "<?= route( 'company.list' ); ?>",
+                "url"       : "<?= route( 'company.list', $companyCode ); ?>",
                 "dataType"  : "json",
                 "type"      : "POST",
                 "data"      : { "_token" : "<?=csrf_token();?>" }
@@ -82,6 +83,7 @@
             "columns"       : [
                 {"data" : "id"},
                 {"data" : "site_name"},
+                {"data" : "site_code"},
                 {"data" : "status" },
                 {"data" : "action" },
             ],

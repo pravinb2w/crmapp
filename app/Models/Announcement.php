@@ -2,13 +2,15 @@
 
 namespace App\Models;
 
+use App\Scopes\CompanyScope;
+use App\Traits\ObservantTrait;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Announcement extends Model
 {
-    use HasFactory;
+    use HasFactory, ObservantTrait;
 
     protected   $fillable = [
         "subject",
@@ -18,6 +20,11 @@ class Announcement extends Model
         "show_my_name",
         "page_id",
     ];
+
+    protected static function booted()
+    {
+        static::addGlobalScope(new CompanyScope);
+    }
 
     public function scopeLatests(Builder $query)
     {

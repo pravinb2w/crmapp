@@ -15,7 +15,7 @@
                 <div class="page-title-right">
                     <ol class="breadcrumb m-0">
                         <li class="breadcrumb-item"><a href="javascript: void(0);">CRM</a></li>
-                        <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
+                        <li class="breadcrumb-item"><a href="{{ route('dashboard', $companyCode) }}">Dashboard</a></li>
                         <li class="breadcrumb-item active">{{ $title }}</li>
                     </ol>
                 </div>
@@ -121,7 +121,7 @@
             "serverSide"    : true,
 
             "ajax"          : {
-                "url"       : "<?= route( 'reports.forecast.list' ); ?>",
+                "url"       : "<?= route( 'reports.forecast.list', $companyCode ); ?>",
                 "dataType"  : "json",
                 "type"      : "POST",
                 "data"      : { "_token" : "<?=csrf_token();?>", "date":date,"search":search }
@@ -147,7 +147,7 @@
             }
         });
         $.ajax({
-            url: "{{ route('reports.forecast.download') }}",
+            url: "{{ route('reports.forecast.download', $companyCode) }}",
             method:'POST',
             xhrFields: {
                 responseType: 'blob',
@@ -184,7 +184,7 @@
             }
         });
         $.ajax({
-            url: "{{ route('reports.forecast_pdf.download') }}",
+            url: "{{ route('reports.forecast_pdf.download', $companyCode) }}",
             method:'POST',
             data: {date:date},
             xhrFields: {

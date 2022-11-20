@@ -12,7 +12,7 @@ use DB;
 
 class OrganizationController extends Controller
 {
-    public function index(Type $var = null)
+    public function index()
     {
         $params = array('btn_name' => 'Organization', 'btn_fn_param' => 'organizations');
         return view('crm.organization.index', $params);
@@ -129,16 +129,16 @@ class OrganizationController extends Controller
 
         if (isset($id) && !empty($id)) {
             $role_validator   = [
-                'name'      => ['required', 'string', 'max:255', 'unique:organizations,name,' . $id],
-                'email'      => ['nullable', 'string', 'max:255', 'unique:organizations,email,' . $id],
-                'mobile_no'      => ['nullable', 'digits:10', 'max:255', 'unique:organizations,mobile_no,' . $id],
+                'name'      => ['required', 'string', 'max:255', 'unique:organizations,name,' . $id.',id,company_id,'.auth()->user()->company_id],
+                'email'      => ['nullable', 'string', 'max:255', 'unique:organizations,email,' . $id.',id,company_id,'.auth()->user()->company_id],
+                'mobile_no'      => ['nullable', 'digits:10', 'max:255', 'unique:organizations,mobile_no,' . $id.',id,company_id,'.auth()->user()->company_id],
 
             ];
         } else {
             $role_validator   = [
-                'name'      => ['required', 'string', 'max:255', 'unique:organizations,name'],
-                'email'      => ['nullable', 'string', 'max:255', 'unique:organizations,email'],
-                'mobile_no'      => ['nullable', 'digits:10', 'max:255', 'unique:organizations,mobile_no'],
+                'name'      => ['required', 'string', 'max:255', 'unique:organizations,name,null,id,company_id,'.auth()->user()->company_id],
+                'email'      => ['nullable', 'string', 'max:255', 'unique:organizations,email,null,id,company_id,'.auth()->user()->company_id],
+                'mobile_no'      => ['nullable', 'digits:10', 'max:255', 'unique:organizations,mobile_no,null,id,company_id,'.auth()->user()->company_id],
 
             ];
         }

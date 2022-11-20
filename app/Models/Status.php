@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Scopes\CompanyScope;
+use App\Traits\ObservantTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -10,7 +12,7 @@ use Illuminate\Database\Eloquent\Builder;
 
 class Status extends Model
 {
-    use HasFactory;
+    use HasFactory,ObservantTrait;
     use SoftDeletes;
     protected $table = 'status';
     protected $fillable = [
@@ -20,6 +22,12 @@ class Status extends Model
         "is_active",
         "color"
     ];
+
+    protected static function booted()
+    {
+        static::addGlobalScope(new CompanyScope);
+    }
+
     public function scopeLatests( Builder $query ) {
         return $query->orderBy( static::CREATED_AT, 'desc' );
     }

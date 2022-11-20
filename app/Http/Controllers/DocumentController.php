@@ -25,6 +25,7 @@ class DocumentController extends Controller
             return response('Forbidden.', 403);
         }
 
+        $companyCode        = $request->segment(1);
         $columns            = ['customers.first_name', 'kyc_document_types.document_name', 'uploadAt','approvedAt','rejectedAt', 'status', 'id'];
 
         $limit              = $request->input('length');
@@ -40,6 +41,7 @@ class DocumentController extends Controller
             $list               = CustomerDocument::select('customer_documents.*', 'customers.first_name', 'customers.email', 'customers.mobile_no', 'kyc_document_types.document_name' )
                                     ->join('customers', 'customers.id', '=', 'customer_documents.customer_id')
                                     ->join('kyc_document_types', 'kyc_document_types.id', '=', 'customer_documents.document_id')
+                                    ->where('customer_documents.company_id', auth()->user()->company_id)
                                     ->skip($start)
                                     ->take($limit)
                                     ->search($search)
@@ -49,6 +51,7 @@ class DocumentController extends Controller
         } else {
             $list               = CustomerDocument::join('customers', 'customers.id', '=', 'customer_documents.customer_id')
                                     ->join('kyc_document_types', 'kyc_document_types.id', '=', 'customer_documents.document_id')
+                                    ->where('customer_documents.company_id', auth()->user()->company_id)
                                     ->skip($start)
                                     ->take($limit)
                                     ->Latests()
@@ -57,11 +60,12 @@ class DocumentController extends Controller
         }
         // $query = DB::getQueryLog();
         if (empty($request->input('search.value'))) {
-            $total_filtered = CustomerDocument::count();
+            $total_filtered = CustomerDocument::where('customer_documents.company_id', auth()->user()->company_id)->count();
         } else {
             $total_filtered = CustomerDocument::join('customers', 'customers.id', '=', 'customer_documents.customer_id')
                                 ->join('kyc_document_types', 'kyc_document_types.id', '=', 'customer_documents.document_id')
-                                ->search($search)
+                                    ->where('customer_documents.company_id', auth()->user()->company_id)
+                                    ->search($search)
                                 ->count();
         }
 
@@ -72,10 +76,12 @@ class DocumentController extends Controller
                 $customers_status                         = '<div class="badge bg-danger" role="button" onclick="change_status(\'customers\',' . $customers->id . ', 1)"> '.strtoupper($customers->status).' </div>';
                 if ($customers->status == 'approved') {
                     $customers_status                     = '<div class="badge bg-success" role="button" onclick="change_status(\'customers\',' . $customers->id . ', 0)"> '.strtoupper($customers->status).' </div>';
+                } else if( $customers->status == 'pending' ) {
+                    $customers_status                         = '<div class="badge bg-warning" role="button" onclick="change_status(\'customers\',' . $customers->id . ', 1)"> '.strtoupper($customers->status).' </div>';
                 }
                 $action = '';
                 if (Auth::user()->hasAccess('customer_document_approval', 'is_view')) {
-                    $action .= '<a href="'.route('customer_document_approval.customer.view', ['id' => $customers->id]).'" target="_blank" class="action-icon" > <i class="mdi mdi-eye"></i></a>';
+                    $action .= '<a href="'.route('customer_document_approval.customer.view', ['id' => $customers->id, 'companyCode' => $companyCode]).'" target="_blank" class="action-icon" > <i class="mdi mdi-eye"></i></a>';
                 }
                
 

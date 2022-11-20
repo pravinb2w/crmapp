@@ -77,7 +77,7 @@
                        
                             <div class="card col-7">
                                 <div class="card-body">
-                                    <form action="{{ route('tasks.comment.save') }}" id="comment_form" method="POST">
+                                    <form action="{{ route('tasks.comment.save', $companyCode) }}" id="comment_form" method="POST">
                                         <input type="hidden" name="task_id" id="task_id" value="{{ $info->id }}">
                                         <div class="row">
                                             <div class="col-8">

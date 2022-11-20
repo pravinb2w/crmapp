@@ -18,7 +18,7 @@ class ClientAuthenticate
     {
         
         if( session()->get('client') === null ) {
-            return redirect()->route('customer-login');
+            return redirect()->route('customer-login', request()->segment(1));
         }
         return $next($request);
     }

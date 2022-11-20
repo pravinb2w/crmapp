@@ -15,8 +15,10 @@ class CreateOrganizatioLinksTable extends Migration
     {
         Schema::create('organization_links', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('company_id')->comment('from organizations')->nullable();
-            $table->foreign('company_id')->references('id')->on('organizations')->onDelete('cascade');
+            $table->unsignedBigInteger('company_id')->comment('from companysettings')->nullable();
+            $table->foreign('company_id')->references('id')->on('company_settings')->onDelete('no action');
+            $table->unsignedBigInteger('organization_id')->comment('from organizations')->nullable();
+            $table->foreign('organization_id')->references('id')->on('organizations')->onDelete('cascade');
             $table->string('facebook_url')->nullable();
             $table->string('twitter_url')->nullable();
             $table->string('instagram_url')->nullable();

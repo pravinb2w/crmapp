@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Scopes\CompanyScope;
+use App\Traits\ObservantTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use OwenIt\Auditing\Contracts\Auditable;
@@ -11,7 +13,7 @@ use Auth;
 
 class Task extends Model implements Auditable
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes, ObservantTrait;
     use \OwenIt\Auditing\Auditable;
     protected $fillable = [
         'task_name',
@@ -25,6 +27,11 @@ class Task extends Model implements Auditable
         'status',
         'status_id'
     ];
+
+    protected static function booted()
+    {
+        static::addGlobalScope(new CompanyScope);
+    }
     
     public function scopeLatests( Builder $query ) {
         return $query->orderBy( static::CREATED_AT, 'desc' );

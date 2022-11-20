@@ -15,6 +15,8 @@ class CreateNotesTable extends Migration
     {
         Schema::create('notes', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('company_id')->comment('from companysettings')->nullable();
+            $table->foreign('company_id')->references('id')->on('company_settings')->onDelete('no action');
             $table->text('notes');
             $table->unsignedBigInteger('lead_id')->comment('from leads')->nullable();
             $table->foreign('lead_id')->references('id')->on('leads')->onDelete('no action');

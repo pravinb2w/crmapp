@@ -15,6 +15,8 @@ class CreateLandingPageFormInputsTable extends Migration
     {
         Schema::create('landing_page_form_inputs', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('company_id')->comment('from companysettings')->nullable();
+            $table->foreign('company_id')->references('id')->on('company_settings')->onDelete('no action');
             $table->integer('page_id');
             $table->string('input_type');
             $table->string('input_required');

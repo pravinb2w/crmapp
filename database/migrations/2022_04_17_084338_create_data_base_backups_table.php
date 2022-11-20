@@ -15,6 +15,8 @@ class CreateDataBaseBackupsTable extends Migration
     {
         Schema::create('data_base_backups', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('company_id')->comment('from companysettings')->nullable();
+            $table->foreign('company_id')->references('id')->on('company_settings')->onDelete('no action');
             $table->string("file_path");
             $table->string("file_name");
             $table->string("file_size");

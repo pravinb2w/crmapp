@@ -89,22 +89,22 @@
                 </div>
 
                 <!-- item-->
-                <a href="{{ route('account') }}" class="dropdown-item notify-item">
+                <a href="{{ route('account', $companyCode) }}" class="dropdown-item notify-item">
                     <i class="mdi mdi-account-edit me-1"></i>
                     <span>My Account</span>
                 </a>
-                <a href="{{ route('change_password') }}" class="dropdown-item notify-item">
+                <a href="{{ route('change_password', $companyCode) }}" class="dropdown-item notify-item">
                     <i class="uil-shield me-1"></i>
                     <span>Change Password</span>
                 </a>
                 <!-- item-->
-                <a class="dropdown-item notify-item" href="{{ route('logout') }}"
+                <a class="dropdown-item notify-item" href="{{ route('logout', $companyCode) }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
                     <i class="mdi mdi-logout me-1"></i>
                     <span>Logout</span>
                 </a>
-                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                <form id="logout-form" action="{{ route('logout', $companyCode) }}" method="POST" class="d-none">
                     @csrf
                 </form>
             </div>
@@ -117,23 +117,23 @@
     <div class="d-none d-lg-block  mt-md-3 text-center">
         <div class="btn-group">
             @if(Auth::user()->hasAccess('deals', 'is_view') && Auth::user()->hasAccess('deals', 'is_edit')) 
-                <a class="btn-sm btn" href="{{ route('deals') }}">Deals</a>
+                <a class="btn-sm btn" href="{{ route('deals', $companyCode) }}">Deals</a>
                 <a class="btn-sm btn poniter-0" href="#">|</a>
             @endif
             @if(Auth::user()->hasAccess('customers', 'is_view') && Auth::user()->hasAccess('customers', 'is_edit')) 
-                <a class="btn-sm btn" href="{{ route('customers') }}">Contacts</a>
+                <a class="btn-sm btn" href="{{ route('customers', $companyCode) }}">Contacts</a>
                 <a class="btn-sm btn poniter-0" href="#">|</a>
             @endif
             @if(Auth::user()->hasAccess('organizations', 'is_view') && Auth::user()->hasAccess('organizations', 'is_edit')) 
-                <a class="btn-sm btn" href="{{ route('organizations') }}">Organization</a>
+                <a class="btn-sm btn" href="{{ route('organizations', $companyCode) }}">Organization</a>
                 <a class="btn-sm btn poniter-0" href="#">|</a>
             @endif
             @if(Auth::user()->hasAccess('activities', 'is_view') && Auth::user()->hasAccess('activities', 'is_edit')) 
-                <a class="btn-sm btn" href="{{ route('activities') }}">Activities</a>
+                <a class="btn-sm btn" href="{{ route('activities', $companyCode) }}">Activities</a>
                 <a class="btn-sm btn poniter-0" href="#">|</a>
             @endif
             @if(Auth::user()->hasAccess('notes', 'is_view') && Auth::user()->hasAccess('notes', 'is_edit')) 
-                <a class="btn-sm btn " href="{{ route('notes') }}">Notes</a>
+                <a class="btn-sm btn " href="{{ route('notes', $companyCode) }}">Notes</a>
             @endif
         </div>
     </div>

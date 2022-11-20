@@ -71,7 +71,7 @@
         $('#error').removeClass("alert alert-success");
         $.ajax({
             type:'POST',
-            url: '{{ route("account.save") }}',
+            url: '{{ route("account.save", $companyCode) }}',
             data: formData,
             contentType: false,
             processData: false,

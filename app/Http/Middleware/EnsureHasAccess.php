@@ -29,7 +29,8 @@ class EnsureHasAccess
                     ->join('role_permission_menu', function ($join) use ($route_name) {
                         $join->on('role_permissions.id', '=', 'role_permission_menu.permission_id')
                             ->where('role_permission_menu.menu', '=', $route_name);
-                    })->where('role_permissions.role_id', $role_id)->first();
+                    })->where('role_permissions.role_id', $role_id)
+                    ->where('role_permissions.company_id', auth()->user()->company_id)->first();
             if( isset($info) && !empty($info)) {
                 if( isset( $info->$access ) && $info->$access == 'on') {
 

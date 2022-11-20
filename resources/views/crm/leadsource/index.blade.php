@@ -40,7 +40,7 @@
             "processing": true,
             "serverSide": true,
             "ajax": {
-                "url": "<?= route('leadsource.list') ?>",
+                "url": "<?= route('leadsource.list', $companyCode) ?>",
                 "dataType": "json",
                 "type": "POST",
                 "data": {

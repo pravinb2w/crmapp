@@ -322,6 +322,7 @@
                     </div>
                     <div class="row">
                         <form action="" id="buy-form" method="POST">
+
                             <input type="hidden" name="product_id" id="product_id" value="{{ $product_id ?? '' }}">
 
                             <div class="col-12">
@@ -329,8 +330,7 @@
                                 @csrf
                                 <main class="container"
                                     style="margin: 0 auto;position: relative;
-                                padding: 15px;
-                                display: flex;">
+                                padding: 15px;display: flex;">
 
                                     <!-- Left Column / Headphones Image -->
                                     <div class="left-column">
@@ -491,7 +491,7 @@
     $("#buy-form").validate({
         submitHandler: function(form) {
             $.ajax({
-                url: "{{ route('submit.buy.form') }}",
+                url: "{{ route('submit.buy.form', $companyCode) }}",
                 type: form.method,
                 data: $(form).serialize(),
                 beforeSend: function() {

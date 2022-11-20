@@ -32,6 +32,13 @@ class BuyController extends Controller
     const TEST_URL = 'https://sandboxsecure.payu.in';
     const PRODUCTION_URL = 'https://secure.payu.in';
 
+    public $companyCode;
+
+    public function __construct(Request $request)
+    {
+        $this->companyCode = $request->segment(1);
+    }
+
     public function get_buy_form(Request $request)
     {
         $product_id         = $request->product_id;
@@ -104,7 +111,7 @@ class BuyController extends Controller
             
             if ($request->pay_gateway == 'razorpay') {
                 $payment_method = 'razor';
-                $route          = route('razorpay.request', ['order_no' => $order_no]);
+                $route          = route('razorpay.request', ['order_no' => $order_no, 'companyCode' => $this->companyCode]);
             } else if ($request->pay_gateway == 'payumoney') {
                 $payment_method = $request->pay_gateway;
                 $route          = route('redirectToPayU', ['order_no' => $order_no]);
@@ -193,10 +200,10 @@ class BuyController extends Controller
 
             if ($request->pay_gateway == 'razorpay') {
                 $payment_method = 'razor';
-                $route = route('razorpay.request', ['order_no' => $order_no]);
+                $route = route('razorpay.request', ['order_no' => $order_no, 'companyCode' => $this->companyCode]);
             } else if ($request->pay_gateway == 'payumoney') {
                 $payment_method = $request->pay_gateway;
-                $route = route('redirectToPayU', ['order_no' => $order_no]);
+                $route = route('redirectToPayU', ['order_no' => $order_no, 'companyCode' => $this->companyCode]);
             } else {
                 $payment_method = $request->pay_gateway;
                 $route = 'https://phoenixtech.app/ccavenue/pay.php';
@@ -422,11 +429,11 @@ class BuyController extends Controller
 
             if( isset(session('client')->id) && !empty( session('client')->id ) ) {
 
-                return redirect()->route('orders')->with('status', 'Payment Success!');
+                return redirect()->route('orders', $this->companyCode)->with('status', 'Payment Success!');
 
             } else {
 
-                return redirect()->route('landing.index')->with('status', 'Payment Success!');
+                return redirect()->route('landing.index', $this->companyCode)->with('status', 'Payment Success!');
 
             }
             // You can create this page
@@ -439,27 +446,27 @@ class BuyController extends Controller
 
             if( isset(session('client')->id) && !empty( session('client')->id ) ) {
 
-                return redirect()->route('orders')->with('status', 'Payment Failed!');
+                return redirect()->route('orders', $this->companyCode)->with('status', 'Payment Failed!');
 
             } else {
             
-                return redirect()->route('landing.index')->with('status', 'Payment failed!');
+                return redirect()->route('landing.index', $this->companyCode)->with('status', 'Payment failed!');
             }
-
             // You can create this page
         }
         session()->forget('pay_post');
         if( isset(session('client')->id) && !empty( session('client')->id ) ) {
 
-            return redirect()->route('orders');
+            return redirect()->route('orders', $this->companyCode);
 
         } else {
-            return redirect()->route('landing.index');
+            return redirect()->route('landing.index', $this->companyCode);
         }
     }
 
     public function generatePDF($id, $pdf_template = '')
     {
+
         $info = Invoice::find($id);
         $company = CompanySettings::find(1);
         $taxable = DB::table('invoice_items')

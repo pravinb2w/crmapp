@@ -19,18 +19,22 @@ class PositionSeeder extends Seeder
             [
                 'content' => 'mytask',
                 'position' => 'left',
+                'company_id' => 1
             ],
             [
                 'content' => 'alltask',
                 'position' => 'bottom-left',
+                'company_id' => 1
             ],
             [
                 'content' => 'closingweek',
                 'position' => 'right',
+                'company_id' => 1
             ],
             [
                 'content' => 'mytask',
                 'position' => 'bottom-right',
+                'company_id' => 1
             ]
         ];
         DB::table('dashboard_orders')->insert($ins);

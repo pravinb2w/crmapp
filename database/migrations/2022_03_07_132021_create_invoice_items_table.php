@@ -15,6 +15,8 @@ class CreateInvoiceItemsTable extends Migration
     {
         Schema::create('invoice_items', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('company_id')->comment('from companysettings')->nullable();
+            $table->foreign('company_id')->references('id')->on('company_settings')->onDelete('no action');
             $table->unsignedBigInteger('invoice_id')->comment('from invoices');
             $table->foreign('invoice_id')->references('id')->on('invoices')->onDelete('no action');
             $table->unsignedBigInteger('product_id')->comment('from products');

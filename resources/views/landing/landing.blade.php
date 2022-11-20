@@ -589,7 +589,7 @@
 
         function get_buy_form(product_id) {
             $.ajax({
-                url: "{{ route('get.buy.form') }}",
+                url: "{{ route('get.buy.form', $companyCode) }}",
                 type: 'GET',
                 data: {
                     product_id: product_id
@@ -650,7 +650,7 @@
             }
             var form = $('#subscription_form').serialize();
             $.ajax({
-                url:"{{ route('subscribe.newsletter') }}",
+                url:"{{ route('subscribe.newsletter', $companyCode) }}",
                 type: "POST",
                 data: form,
                 beforeSend: function(){

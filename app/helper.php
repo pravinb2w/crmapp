@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Http;
 use App\Models\SmsIntegration;
 use App\Models\CompanySettings;
 use App\Models\Automation;
+use App\Models\Subscription;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
 
@@ -39,7 +41,12 @@ function clientRedirectProfile() {
 
 function csettings($module)
 {
-    $company_info = CompanySettings::select($module)->first();
+    if( isset(auth()->user()->company_id ) ) {
+        $company_info = CompanySettings::select($module)->where('id', auth()->user()->company_id)->first();
+    } else {
+        $company_info = CompanySettings::select($module)->where('site_code', request()->segment(1))->first();
+    }
+    
     if (isset($company_info) && !empty($company_info)) {
         return $company_info->$module ?? null;
     } else {
@@ -59,9 +66,10 @@ function capi($type, $field) {
 function automation($activity_type, $field)
 {
     if (csettings('workflow_automation')) {
+
         //check activity type is exist yes or no
         $info = Automation::where('activity_type', $activity_type)->first();
-        if (isset($info) && !empty($info)) {
+        if (isset($info) && !empty($info) && hasPlanSettings('work_automation')) {
             return $info->$field ?? 0;
         } else {
             return false;
@@ -71,32 +79,51 @@ function automation($activity_type, $field)
     }
 }
 
+
+function hasPlanSettings($field)
+{
+    //check activity type is exist yes or no
+    $info = Subscription::join('company_subscriptions', 'company_subscriptions.subscription_id','=','subscriptions.id')
+            ->where('company_id', auth()->user()->company_id )->first();
+    if (isset($info->$field) && $info->$field == 'yes') {
+        return true;
+    } else {
+        return false;
+    }
+   
+}
+
+
 function sendSMS($mobile_no, $type, $params)
 {
     $sms = SmsIntegration::where('sms_type', $type)->first();
-    $templateMessage = $sms->template;
-    $templateMessage = str_replace("{", "", addslashes($templateMessage));
-    $templateMessage = str_replace("}", "", $templateMessage);
-    extract($params);
-    eval("\$templateMessage = \"$templateMessage\";");
+    
     if (isset($sms) && !empty($sms)) {
+        $templateMessage = $sms->template;
+        $templateMessage = str_replace("{", "", addslashes($templateMessage));
+        $templateMessage = str_replace("}", "", $templateMessage);
+        extract($params);
+        eval("\$templateMessage = \"$templateMessage\";");
         $http_query = "https://smshorizon.co.in/api/sendsms.php?user=$sms->user_name&apikey=$sms->api_key&mobile=$mobile_no&message=$templateMessage&senderid=$sms->sender_id&type=$sms->type&tid=$sms->template_id";
         $response = Http::get($http_query);
         return $response;
     }
 }
 
-function sendWhatsappApi($mobile_no, $type = null, $params, $from, $media_url = '', $filename = '') {
+function sendWhatsappApi($mobile_no, $type, $params, $from, $media_url = '', $filename = '') {
     $mobile_no = '91'.$mobile_no;
     $access_token = capi('whatsapp', 'access_token');
     $instance_id = capi('whatsapp', 'instance_id');
     if( $from == 'sms' ) {
         $sms = SmsIntegration::where('sms_type', $type)->first();
-        $message = $sms->template;
-        $message = str_replace("{", "", addslashes($message));
-        $message = str_replace("}", "", $message);
-        extract($params);
-        eval("\$message = \"$message\";");
+        if( isset( $sms ) && !empty( $sms ) ) {
+            $message = $sms->template;
+            $message = str_replace("{", "", addslashes($message));
+            $message = str_replace("}", "", $message);
+            extract($params);
+            eval("\$message = \"$message\";");
+        }
+        
     } else if( $from == 'email' ) {
         $message = $params;
     } else if( $from == 'media' ) {
@@ -125,4 +152,44 @@ function sendWhatsappApi($mobile_no, $type = null, $params, $from, $media_url = 
         return true;
     }
    
+}
+
+function getCompanyCode($code) {
+    $date = date('Yi');
+    $prefix = 'PX';
+    $company_code = $prefix.'-'.$code.$date;
+
+    $info = \DB::table('company_settings')->where('site_code', $company_code )->first();
+    $is_exist = false;
+    if( isset( $info ) && !empty( $info ) ) {
+        $is_exist = true;
+    }
+
+    while ($is_exist) {
+        getCompanyCode($code);
+    }
+    return $company_code;
+}
+
+function planSettings($field)
+{
+    //check activity type is exist yes or no
+    $info = Subscription::join('company_subscriptions', 'company_subscriptions.subscription_id','=','subscriptions.id')
+            ->where('company_id', auth()->user()->company_id )->first();
+    if (isset($info->$field)) {
+        return $info->$field;
+    } else {
+        return false;
+    }
+   
+}
+
+function getDatabaseSize() {
+    // dd( $_SERVER );
+    $sizesInfo = DB::select('SELECT table_name AS "Table",
+    sum(ROUND(((data_length + index_length) / 1024 / 1024), 2)) AS "Size (MB)"
+    FROM information_schema.TABLES
+    WHERE table_schema = "laravelauth"
+    ORDER BY (data_length + index_length) DESC');
+    return $sizesInfo;
 }

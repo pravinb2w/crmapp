@@ -26,6 +26,14 @@ class PayuMoneyController extends \InfyOm\Payu\PayuMoneyController
     const TEST_URL = 'https://sandboxsecure.payu.in';
     const PRODUCTION_URL = 'https://secure.payu.in';
 
+
+    public $companyCode;
+
+    public function __construct(Request $request)
+    {
+        $this->companyCode = $request->segment(1);
+    }
+
     public function paymentCancel(Request $request)
     {
         $data = $request->all();
@@ -63,7 +71,7 @@ class PayuMoneyController extends \InfyOm\Payu\PayuMoneyController
         $payment_info->update();
 
         //send email 
-        $company = CompanySettings::find(1);
+        $company = CompanySettings::where('id', $order_info->company_id)->first();
         $extract = array(
             'name' => $order_info->customer->first_name,
             'order_no' => $order_no,
@@ -88,9 +96,9 @@ class PayuMoneyController extends \InfyOm\Payu\PayuMoneyController
         Session::put('razorpay_response', $res_msg);
 
         if( isset(session('client')->id) && !empty( session('client')->id ) ) {
-            return redirect()->route('orders')->with('status', 'Payment Failed!');        
+            return redirect()->route('orders', $company->site_code)->with('status', 'Payment Failed!');        
         } else {
-            return redirect()->route('landing.index')->with('status', 'Payment Failed!');
+            return redirect()->route('landing.index', $company->site_code)->with('status', 'Payment Failed!');
         }
     }
 
@@ -142,7 +150,7 @@ class PayuMoneyController extends \InfyOm\Payu\PayuMoneyController
         $payment_info->update();
 
         //send email 
-        $company = CompanySettings::find(1);
+        $company = CompanySettings::find($order_info->company_id);
         $extract = array(
             'company_name' => $company->site_name,
             'product' => $order_info->order_id . ' ' . $order_info->product->product_name ?? '',
@@ -168,9 +176,9 @@ class PayuMoneyController extends \InfyOm\Payu\PayuMoneyController
         Session::put('razorpay_response', $res_msg);
 
         if( isset(session('client')->id) && !empty( session('client')->id ) ) {
-            return redirect()->route('orders')->with('status', 'Payment Failed!');        
+            return redirect()->route('orders', $company->site_code)->with('status', 'Payment Failed!');        
         } else {
-            return redirect()->route('landing.index')->with('status', 'Payment Failed!');
+            return redirect()->route('landing.index', $company->site_code)->with('status', 'Payment Failed!');
         }
     }
 

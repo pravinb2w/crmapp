@@ -1,5 +1,5 @@
 <div class="modal-dialog modal-md modal-right">
-    <form id="leadtypeform" method="POST" action="{{ route('leadstage.save') }}" autocomplete="off" class="modal-content h-100">
+    <form id="leadtypeform" method="POST" action="{{ route('leadstage.save', $companyCode) }}" autocomplete="off" class="modal-content h-100">
         <div class="modal-header">
             <h4 class="modal-title" id="myLargeModalLabel">{{ $modal_title }}</h4>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>

@@ -10,6 +10,13 @@ use App\Imports\ImportCustomer;
 
 class BulkPdfImport extends Controller
 {
+    public $companyCode;
+
+    public function __construct(Request $request)
+    {
+        $this->companyCode = $request->segment(1);
+    }
+    
     public function index(Request $request)
     {
         return view('crm.utilities.bulk_import.index');

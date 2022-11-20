@@ -15,6 +15,8 @@ class CreateTaxesTable extends Migration
     {
         Schema::create('taxes', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('company_id')->comment('from companysettings')->nullable();
+            $table->foreign('company_id')->references('id')->on('company_settings')->onDelete('no action');
             $table->unsignedBigInteger('group_id')->comment('from tax_groups');
             $table->foreign('group_id')->references('id')->on('tax_groups')->onDelete('no action');
             $table->string('tax_name');

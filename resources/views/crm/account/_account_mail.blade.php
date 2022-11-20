@@ -57,7 +57,7 @@
         $('#error').html('');
         $.ajax({
             type:'POST',
-            url: '{{ route("account.company.save") }}',
+            url: '{{ route("account.company.save", $companyCode) }}',
             data: formData,
             contentType: false,
             processData: false,

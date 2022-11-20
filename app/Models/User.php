@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Scopes\CompanyScope;
+use App\Traits\ObservantTrait;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -13,7 +15,7 @@ use DB;
 
 class User extends Authenticatable implements Auditable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable, ObservantTrait;
     use \OwenIt\Auditing\Auditable;
     /**
      * The attributes that are mass assignable.
@@ -57,6 +59,7 @@ class User extends Authenticatable implements Auditable
         'email_verified_at' => 'datetime',
     ];
 
+    
 
     public function company()
     {
@@ -66,6 +69,10 @@ class User extends Authenticatable implements Auditable
     public function role()
     {
         return $this->hasOne(Role::class, 'id', 'role_id');
+    }
+
+    public function scopeCompanyRelatedOnly( Builder $query ) {
+        return $query->where( 'users.company_id', auth()->user()->company_id );
     }
 
     public function scopeLatests( Builder $query ) {
@@ -108,21 +115,54 @@ class User extends Authenticatable implements Auditable
     }
 
     public function hasLimit($module) {
-            
-        $info = DB::table('company_subscriptions')
+        $checkLimitArray = array(
+            'users' => 'no_of_employees',
+            'dealstages' => 'no_of_deal_stages',
+            'customers' => 'no_of_clients',
+            'deals' => 'no_of_deals',
+            'pages' => 'no_of_pages',
+            'products' => 'no_of_products',
+            'template' => 'no_of_email_templates'
+        ); 
+        if( isset($checkLimitArray[$module]) ) {
+            $column = $checkLimitArray[$module];
+            $usedCount = 0;
+            $info = DB::table('company_subscriptions')
+                ->select('subscriptions.*', 'company_subscriptions.startAt', 'company_subscriptions.endAt')
                 ->join('subscriptions', function ($join) {
                     $join->on('company_subscriptions.subscription_id', '=', 'subscriptions.id');
-                })->where('company_subscriptions.status', 1)->first();
+                })->where('company_subscriptions.company_id', auth()->user()->company_id)
+                ->where('company_subscriptions.status', 1)
+                ->where('company_id', auth()->user()->company_id)
+                ->first();
+            if( isset($info) && !empty($info)) {
+                $count = $info->$column ?? 0;
+                
+                if( $module == 'dealstages') {
+                    $usedCount = DealStage::count();
+                } else if( $module == 'users' ) {
+                    $usedCount = User::count();
+                } else if( $module == 'customers' ) {
+                    $usedCount = Customer::count();
+                } else if( $module == 'deals' ) {
+                    $usedCount = Deal::count();
+                } else if( $module == 'pages' ) {
+                    $usedCount = LandingPages::count();
+                } else if( $module == 'products' ) {
+                    $usedCount = Product::count();
+                }
 
-        if( isset($info) && !empty($info)) {
-            
-            if( $module == 'template' ) {
-                return $info->no_of_email_templates ?? 0;
-            } else {
-                return false;
+                if( $count > $usedCount ) {
+                    return true;
+                } else {
+                    return false;
+                }
             }
-            
+            return true;
+
+        } else {
+            return true;
         }
-        return true;
+        
     }
 }

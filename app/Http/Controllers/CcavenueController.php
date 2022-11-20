@@ -23,6 +23,7 @@ class CcavenueController extends Controller
         $order_id = $_POST['order_id'];
         if( isset( $order_id ) && !empty( $order_id ) ) {
             $order_info = Order::where('order_id', $order_id)->first();
+            $company = CompanySettings::find($order_info->company_id);
             $payment_info = Payment::where('order_id', $order_id)->first();
             if( isset( $order_info ) && !empty( $order_info ) ) {
 
@@ -91,7 +92,7 @@ class CcavenueController extends Controller
                     Session::put('razorpay_response', $res_msg);
                     
                     //send email 
-                    $company = CompanySettings::find(1);
+                    
                     $product_name = '';
                     if( isset($order_info->product->product_name) && !empty($order_info->product->product_name) ) {
                         $product_name = $order_info->product->product_name;
@@ -130,9 +131,9 @@ class CcavenueController extends Controller
                 }
             }
             if( isset(session('client')->id) && !empty( session('client')->id ) ) {
-                return redirect()->route('orders');        
+                return redirect()->route('orders', $company->site_code);        
             } else {
-                return redirect()->route('landing.index');
+                return redirect()->route('landing.index', $company->site_code);
             }
         }
         
@@ -141,7 +142,7 @@ class CcavenueController extends Controller
     public function generatePDF($id, $pdf_template = '')
     {
         $info = Invoice::find($id);
-        $company = CompanySettings::find(1);
+        $company = CompanySettings::find($info->company_id);
         $taxable = DB::table('invoice_items')
             ->join('products', 'invoice_items.product_id', '=', 'products.id')
             ->select('products.hsn_no', 'invoice_items.qty', 'invoice_items.unit_price', DB::raw('(invoice_items.qty * invoice_items.unit_price) as price'), 'invoice_items.cgst', 'invoice_items.sgst', 'invoice_items.igst')

@@ -13,6 +13,7 @@ use App\Models\CompanySettings;
 use App\Models\PrefixSetting;
 use App\Models\SmsIntegration;
 use App\Models\PaymentIntegration;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
 
 
@@ -25,6 +26,20 @@ class AccountController extends Controller
 
     public function index(Request $request)
     {
+        // dd( env('DB_DATABASE') );
+        // $fileSize = getDatabaseSize();
+        // dd( $fileSize );
+        // $file_size = 0;
+        // $filepath   = storage_path('app/public');
+        // foreach( File::allFiles($filepath) as $file)
+        // {
+        //     dump( $file );
+        //     $file_size += $file->getSize();
+        // }
+        // $mb_size = number_format($file_size / 1048576,2);
+        // dd( $mb_size );
+
+        
         $type = $request->segment(3);
         $url = 'change';
         if (empty($type)) {
@@ -42,7 +57,28 @@ class AccountController extends Controller
         $prefix = PrefixSetting::where(['company_id' => $info->company_id, 'status' => 1])->get();
         $sms = SmsIntegration::where('company_id', $info->company_id)->get();
         $gateway = PaymentIntegration::all();
-        $params = ['type' => $type, 'info' => $info, 'prefix' => $prefix, 'sms' => $sms, 'gateway' => $gateway];
+
+        $payFromMethod = planSettings('payment_gateway');
+        $dynamic_gateways = [];
+        if( isset( $payFromMethod ) && !empty( $payFromMethod ) ) {
+            $payFrom = explode( ',', $payFromMethod );
+            if( !empty( $payFrom ) ) {
+                foreach ($payFrom as $item) {
+                    if( $item == 'payu') {
+                        $field = 'payumoney';
+                        $value = 'PayUmoney';
+                    } else if($item == 'ccavenue') {
+                        $field = 'ccavenue';
+                        $value = 'CCAvenue';
+                    } else if($item == 'razorpay') {
+                        $field = 'razorpay';
+                        $value = 'Razor Pay';
+                    }
+                    $dynamic_gateways[$field] = $value;
+                }
+            }
+        } 
+        $params = ['type' => $type, 'info' => $info, 'prefix' => $prefix, 'sms' => $sms, 'gateway' => $gateway, 'dynamic_gateways' => $dynamic_gateways];
         $view = 'crm.account._account_' . $type;
         return view($view, $params);
     }

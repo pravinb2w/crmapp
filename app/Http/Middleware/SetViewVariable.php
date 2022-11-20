@@ -29,7 +29,8 @@ class SetViewVariable
 
         View::share('cm_profile_image', $user->image ?? '');
         View::share('cm_role', $user->role->role ?? 'SuperAdmin');
-
+        View::share('companyCode', $request->segment(1) ?? '');
+        // dd( $request->segment(1));
         return $next($request);
     }
 }

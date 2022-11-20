@@ -2,12 +2,14 @@
 
 namespace App\Models;
 
+use App\Scopes\CompanyScope;
+use App\Traits\ObservantTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class OrganizationLink extends Model
 {
-    use HasFactory;
+    use HasFactory,ObservantTrait;
     protected $fillable = [
         'company_id',
         'facebook_url',
@@ -17,4 +19,9 @@ class OrganizationLink extends Model
         'skype_url',
         'github_url',
     ];
+
+    protected static function booted()
+    {
+        static::addGlobalScope(new CompanyScope);
+    }
 }

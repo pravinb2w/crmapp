@@ -15,6 +15,8 @@ class CreateLandingPagesTable extends Migration
     {
         Schema::create('landing_pages', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('company_id')->comment('from companysettings')->nullable();
+            $table->foreign('company_id')->references('id')->on('company_settings')->onDelete('no action');
             $table->text("page_title");
             $table->longText("page_logo");
             $table->text("permalink");

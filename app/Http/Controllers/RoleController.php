@@ -55,10 +55,11 @@ class RoleController extends Controller
         if ($list) {
             $i = 1;
             foreach ($list as $roles) {
-                $roles_status                         = '<div class="badge bg-danger"> Inactive </div>';
-                if ($roles->status == '1') {
-                    $roles_status                     = '<div class="badge bg-success"> Active </div>';
+                $roles_status                         = '<div class="badge bg-danger" role="button" onclick="change_status(\'roles\',' . $roles->id . ', 1)"> Inactive </div>';
+                if ($roles->status == 1) {
+                    $roles_status                     = '<div class="badge bg-success" role="button" onclick="change_status(\'roles\',' . $roles->id . ', 0)"> Active </div>';
                 }
+              
                 $action = '
                 <a href="javascript:void(0);" class="action-icon" onclick="return view_modal(\'roles\', ' . $roles->id . ')"> <i class="mdi mdi-eye"></i></a>
                 <a href="javascript:void(0);" class="action-icon" onclick="return get_add_modal(\'roles\', ' . $roles->id . ')"> <i class="mdi mdi-square-edit-outline"></i></a>
@@ -93,8 +94,6 @@ class RoleController extends Controller
         }
         $params = ['modal_title' => $modal_title, 'id' => $id ?? '', 'info' => $info ?? ''];
         return view('crm.roles.add_edit', $params);
-        echo json_encode(['view' => $view]);
-        return true;
     }
 
     public function view(Request $request)
@@ -114,11 +113,11 @@ class RoleController extends Controller
         $id = $request->id;
         if (isset($id) && !empty($id)) {
             $role_validator   = [
-                'role'      => ['required', 'string', 'max:255', 'unique:roles,role,' . $id],
+                'role'      => ['required', 'string', 'max:255', 'unique:roles,role,' . $id.',id,company_id,'.auth()->user()->company_id],
             ];
         } else {
             $role_validator   = [
-                'role'      => ['required', 'string', 'max:255', 'unique:roles,role'],
+                'role'      => ['required', 'string', 'max:255', 'unique:roles,role,null,id,company_id,'.auth()->user()->company_id],
             ];
         }
         //Validate the product
@@ -154,5 +153,16 @@ class RoleController extends Controller
         $role->delete();
         $delete_msg = 'Deleted successfully';
         return response()->json(['error' => [$delete_msg], 'status' => '0']);
+    }
+
+    public function change_status(Request $request)
+    {
+        $id = $request->id;
+        $status = $request->status;
+        $info = Role::find($id);
+        $info->status = $status;
+        $info->update();
+        $update_msg = 'Updated successfully';
+        return response()->json(['error' => [$update_msg], 'status' => '0']);
     }
 }

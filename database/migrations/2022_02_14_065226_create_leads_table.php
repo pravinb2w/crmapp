@@ -15,6 +15,8 @@ class CreateLeadsTable extends Migration
     {
         Schema::create('leads', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('company_id')->comment('from companysettings')->nullable();
+            $table->foreign('company_id')->references('id')->on('company_settings')->onDelete('no action');
             $table->unsignedBigInteger('customer_id')->comment('from customertable');
             $table->foreign('customer_id')->references('id')->on('customers')->onDelete('no action');
             $table->string('lead_title')->nullable();

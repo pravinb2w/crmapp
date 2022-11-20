@@ -1,5 +1,5 @@
 
-<form id="deal-activites-form"  method="POST" action="{{ route('deals.save-activity') }}" autocomplete="off">
+<form id="deal-activites-form"  method="POST" action="{{ route('deals.save-activity', $companyCode) }}" autocomplete="off">
     @csrf
     <input type="hidden" name="deal_id" value="{{ $id ?? '' }}">
     <label for="">Title</label>

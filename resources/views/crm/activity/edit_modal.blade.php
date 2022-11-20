@@ -75,7 +75,7 @@
                 <div class="col-12" id="error">
                 </div>
             </div>
-            <form class="form-horizontal" id="activites-form" method="POST" action="{{ route('activities.save') }}" autocomplete="off">
+            <form class="form-horizontal" id="activites-form" method="POST" action="{{ route('activities.save', $companyCode) }}" autocomplete="off">
                 <div class="modal-body d-flex justify-content-center align-items-center h-100 p-3">
                     <div class="w-100" id="activitiy-icon">
                         <label for="">Title</label>
@@ -264,7 +264,7 @@
                         }
                     });
             $.ajax({
-                    url: "{{ route('autocomplete_customer') }}",
+                    url: "{{ route('autocomplete_customer', $companyCode) }}",
                     method:'POST',
                     data: {org:inputs},
                     success:function(response){
@@ -282,7 +282,7 @@
                         }
                     });
             $.ajax({
-                    url: "{{ route('autocomplete_lead_deal') }}",
+                    url: "{{ route('autocomplete_lead_deal', $companyCode) }}",
                     method:'POST',
                     data: {org:inputs},
                     success:function(response){

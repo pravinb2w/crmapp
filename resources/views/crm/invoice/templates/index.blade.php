@@ -11,7 +11,7 @@
                 <div class="page-title-right">
                     <ol class="breadcrumb m-0">
                         <li class="breadcrumb-item"><a href="javascript: void(0);">CRM</a></li>
-                        <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
+                        <li class="breadcrumb-item"><a href="{{ route('dashboard', $companyCode) }}">Dashboard</a></li>
                         <li class="breadcrumb-item active">Invoice Template</li>
                     </ol>
                 </div>
@@ -21,7 +21,7 @@
     </div>     
     <!-- end page title --> 
     <section>
-        <form action="{{ route('invoices-templates') }}" method="POST">
+        <form action="{{ route('invoices-templates', $companyCode) }}" method="POST">
             @csrf
             <div class="row">
                 <div class="col-md-3">

@@ -37,7 +37,7 @@
                                 <div class="card col-12">
                                     <div class="card-body">
                                         <h4 style="text-transform: uppercase">{{ $info->subject }} : {{ $info->activity_type }}</h4>
-                                        <form action="{{ route('activities.comment.save') }}" id="comment_form" method="POST">
+                                        <form action="{{ route('activities.comment.save', $companyCode) }}" id="comment_form" method="POST">
                                             <input type="hidden" name="activity_id" id="activity_id" value="{{ $id }}">
                                             <div class="row">
                                                 <div class="col-8">

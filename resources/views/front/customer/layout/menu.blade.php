@@ -48,21 +48,21 @@
                     </div>
     
                     <!-- item-->
-                    <a href="{{ route('profile') }}"  class="dropdown-item notify-item">
+                    <a href="{{ route('profile', $companyCode) }}"  class="dropdown-item notify-item">
                         <i class="mdi mdi-account-edit me-1"></i>
                         <span>My Account</span>
                     </a>
-                    <a  href="{{ route('profile-settings') }}" class="dropdown-item notify-item">
+                    <a  href="{{ route('profile-settings', $companyCode) }}" class="dropdown-item notify-item">
                         <i class="uil-shield me-1"></i>
                         <span>Change Password</span>
                     </a>
                     <!-- item-->
-                    <a class="dropdown-item notify-item" href="{{ route('customer-logout') }}" onclick="event.preventDefault();
+                    <a class="dropdown-item notify-item" href="{{ route('customer-logout', $companyCode) }}" onclick="event.preventDefault();
                                                          document.getElementById('logout-form').submit();">
                         <i class="mdi mdi-logout me-1"></i>
                         <span>Logout</span>
                     </a>
-                    <form id="logout-form" action="{{ route('customer-logout') }}" method="POST" class="d-none">
+                    <form id="logout-form" action="{{ route('customer-logout', $companyCode) }}" method="POST" class="d-none">
                         @csrf
                     </form>
                 </div>
@@ -70,7 +70,7 @@
             @else 
            
             <li class="nav-item me-0 ms-3">
-                <a href="{{ route('customer-login') }}" target="_blank" class="btn btn-sm btn-primary rounded-pill d-none d-lg-inline-flex" style="font-size: var(--bs-body-font-size) !important;"> 
+                <a href="{{ route('customer-login', $companyCode) }}" target="_blank" class="btn btn-sm btn-primary rounded-pill d-none d-lg-inline-flex" style="font-size: var(--bs-body-font-size) !important;"> 
                     <i class="mdi mdi-login-variant"></i> &nbsp; Login
                 </a>
             </li>
@@ -105,21 +105,21 @@
                     </div>
 
                     <!-- item-->
-                    <a href="{{ route('profile') }}"  class="dropdown-item notify-item">
+                    <a href="{{ route('profile', $companyCode) }}"  class="dropdown-item notify-item">
                         <i class="mdi mdi-account-edit me-1"></i>
                         <span>My Account</span>
                     </a>
-                    <a  href="{{ route('profile-settings') }}" class="dropdown-item notify-item">
+                    <a  href="{{ route('profile-settings', $companyCode) }}" class="dropdown-item notify-item">
                         <i class="uil-shield me-1"></i>
                         <span>Change Password</span>
                     </a>
                     <!-- item-->
-                    <a class="dropdown-item notify-item" href="{{ route('customer-logout') }}" onclick="event.preventDefault();
+                    <a class="dropdown-item notify-item" href="{{ route('customer-logout', $companyCode) }}" onclick="event.preventDefault();
                                                         document.getElementById('logout-form').submit();">
                         <i class="mdi mdi-logout me-1"></i>
                         <span>Logout</span>
                     </a>
-                    <form id="logout-form" action="{{ route('customer-logout') }}" method="POST" class="d-none">
+                    <form id="logout-form" action="{{ route('customer-logout', $companyCode) }}" method="POST" class="d-none">
                         @csrf
                     </form>
                 </div>
@@ -127,7 +127,7 @@
             @else 
         
             <li class="nav-item me-0 ms-3">
-                <a href="{{ route('customer-login') }}" target="_blank" class="btn btn-sm btn-primary rounded-pill d-none d-lg-inline-flex" style="font-size: var(--bs-body-font-size) !important;"> 
+                <a href="{{ route('customer-login', $companyCode) }}" target="_blank" class="btn btn-sm btn-primary rounded-pill d-none d-lg-inline-flex" style="font-size: var(--bs-body-font-size) !important;"> 
                     <i class="mdi mdi-login-variant"></i> &nbsp; Login
                 </a>
             </li>

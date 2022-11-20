@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Scopes\CompanyScope;
+use App\Traits\ObservantTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -10,7 +12,7 @@ use OwenIt\Auditing\Contracts\Auditable;
 
 class LeadType extends Model implements Auditable
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes,ObservantTrait;
     use \OwenIt\Auditing\Auditable;
 
     protected $fillable = [
@@ -20,6 +22,11 @@ class LeadType extends Model implements Auditable
         'status',
         'company_id'
     ];
+
+    protected static function booted()
+    {
+        static::addGlobalScope(new CompanyScope);
+    }
 
     public function scopeLatests(Builder $query)
     {

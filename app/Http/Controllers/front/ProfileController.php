@@ -19,13 +19,14 @@ use Illuminate\Support\Facades\Hash;
 class ProfileController extends Controller
 {
     private CustomerRepository $customerRepository;
+    public $companyCode;
     public function __construct( CustomerRepository $customerRepository)
     {
         $this->customerRepository = $customerRepository;
+        $this->companyCode = request()->segment(1);
     }
 
     public function index(Request $request) {
-        
         $result = LandingPages::where('is_default_landing_page', 1)->first();
     
         if (!$result) {

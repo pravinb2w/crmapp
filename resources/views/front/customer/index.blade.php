@@ -131,12 +131,12 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a href="{{ route('customer-logout') }}" onclick="event.preventDefault();
+                <a href="{{ route('customer-logout', $companyCode) }}" onclick="event.preventDefault();
                 document.getElementById('logout-form').submit();" class="nav-link rounded-0">
                     <i class="mdi mdi-exit-to-app d-md-none d-block"></i>
                     <span class="d-none d-md-block">Logout</span>
                 </a>
-                <form id="logout-form" action="{{ route('customer-logout') }}" method="POST" class="d-none">
+                <form id="logout-form" action="{{ route('customer-logout', $companyCode) }}" method="POST" class="d-none">
                     @csrf
                 </form>
             </li>
@@ -238,7 +238,7 @@
         getBuyForm: function(invoiceId) {
             console.log( 'invoiceid', invoiceId );
             $.ajax({
-                url: "{{ route('get.invoice.buy.form') }}",
+                url: "{{ route('get.invoice.buy.form', $companyCode) }}",
                 type: 'GET',
                 data: {
                     invoiceId: invoiceId
@@ -280,7 +280,7 @@
                     if (result.value) {
                         var reason = result.value;
                         let formData = {status:status, id:invoiceId,reason:reason};
-                        axios.post("{{ route('orders.reject') }}", formData)            
+                        axios.post("{{ route('orders.reject', $companyCode) }}", formData)            
                         .then( response => {
                             
                             if (response.status == 200 ) {
@@ -311,7 +311,7 @@
             return this.kycDocument.map(item => item.document_id).includes(doc.id);
         },
         testTab(tab_name) {
-            var url = "{{ URL::to('profile') }}/"+tab_name;
+            var url = "{{ URL::to($companyCode.'/profile') }}/"+tab_name;
             history.replaceState( url, '', url);
         },
         submitPassword(e) {
@@ -319,7 +319,7 @@
             var form = e.target || e.srcElement;
             const formData = $(form).serialize();
 
-            axios.post("{{ route('customer-password-save') }}", formData)            
+            axios.post("{{ route('customer-password-save', $companyCode) }}", formData)            
             .then( response => {
                 if (response.status == 200 ) {
                     let message = response.data.error;
@@ -359,7 +359,9 @@
             return this.kycDocument.push(kycObject);
         },
         deleteRowDocument(kycindex) {
+            var deleteDocument = this.kycDocument[kycindex];
             this.kycDocument.splice(kycindex,1);
+            document.getElementById('deleteDocumentId').value = deleteDocument.document_id;
         },
         validateEmail: function(items) {
             let emailData = items;
@@ -382,7 +384,7 @@
             this.gotCustomerResponse = false;
             var form = e.target || e.srcElement;
             const formData = $(form).serialize();
-            axios.post("{{ route('customer-save') }}", formData)            
+            axios.post("{{ route('customer-save', $companyCode) }}", formData)            
             .then( response => {
                 if (response.status == 200 ) {
                     let message = response.data.error;
@@ -408,7 +410,7 @@
             this.gotCompanyResponse = false;
             var form = e.target || e.srcElement;
             const formData = $(form).serialize();
-            axios.post("{{ route('customer-company-save') }}", formData)            
+            axios.post("{{ route('customer-company-save', $companyCode) }}", formData)            
             .then( response => {
                 if (response.status == 200 ) {
                     let message = response.data.error;
@@ -433,7 +435,7 @@
             let formData = new FormData();
             formData.append('image', file);
             this.gotProfilePicResponse = false;
-            axios.post("{{ route('customer-pic-change') }}", formData,{
+            axios.post("{{ route('customer-pic-change', $companyCode) }}", formData,{
                 headers: {
                     "Content-Type": "multipart/form-data",
                 },
@@ -458,7 +460,7 @@
         removeProfilePicture: function(e){
             this.gotProfilePicResponse = false;
             this.profileImage = this.noImage;
-            axios.post("{{ route('customer-pic-remove') }}")            
+            axios.post("{{ route('customer-pic-remove', $companyCode) }}")            
             .then( response => {
                 if (response.status == 200 ) {
                     let message = response.data.error;
@@ -483,7 +485,7 @@
             
             this.gotkycFormResponse = false;
           
-            axios.post("{{ route('kyc-submit') }}", formData,{
+            axios.post("{{ route('kyc-submit', $companyCode) }}", formData,{
                 headers: {
                     "Content-Type": "multipart/form-data",
                 },

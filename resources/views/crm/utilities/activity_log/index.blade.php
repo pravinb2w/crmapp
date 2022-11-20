@@ -10,7 +10,7 @@
                 <div class="page-title-right">
                     <ol class="breadcrumb m-0">
                         <li class="breadcrumb-item"><a href="javascript: void(0);">CRM</a></li>
-                        <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
+                        <li class="breadcrumb-item"><a href="{{ route('dashboard', $companyCode) }}">Dashboard</a></li>
                         <li class="breadcrumb-item active">Activiy Logs</li>
                     </ol>
                 </div>
@@ -55,7 +55,7 @@
             "processing"    : true,
             "serverSide"    : true, 
             "ajax"          : {
-                "url"       : "<?= route( 'activity_log.log' ); ?>",
+                "url"       : "<?= route( 'activity_log.log', $companyCode ); ?>",
                 "dataType"  : "json",
                 "type"      : "POST",
                 "data"      : { "_token" : "<?=csrf_token();?>" }
@@ -78,7 +78,7 @@
     }
 
     function get_log_view(log_id){
-        var ajax_url = "{{ route('activity_log.view') }}";
+        var ajax_url = "{{ route('activity_log.view', $companyCode) }}";
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')

@@ -94,7 +94,7 @@ form#activites-form>div>label>i {
                 <div class="page-title-right">
                     <ol class="breadcrumb m-0">
                         <li class="breadcrumb-item"><a href="javascript: void(0);">CRM</a></li>
-                        <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
+                        <li class="breadcrumb-item"><a href="{{ route('dashboard', $companyCode) }}">Dashboard</a></li>
                         <li class="breadcrumb-item active"> Leads </li>
                     </ol>
                 </div>
@@ -124,13 +124,14 @@ form#activites-form>div>label>i {
                                                 <span>Notes</span>
                                             </a>
                                         </li>
-
+                                        @if( hasPlanSettings('activities') )
                                         <li class="nav-item">
                                             <a href="#Activity" data-bs-toggle="tab" data-id="activity" aria-expanded="true" class="nav-link rounded-0 lead-tab">
                                                 <i class="uil uil-user"></i>
                                                 <span >Activity</span>
                                             </a>
-                                        </li>  
+                                        </li> 
+                                        @endif 
                                         @endif
                                     @endif
                                     <li class="nav-item">
@@ -169,7 +170,7 @@ form#activites-form>div>label>i {
       
 <script>
     function get_tab(tab, lead_id){
-        var ajax_url = "{{ route('leads.get_tab') }}";
+        var ajax_url = "{{ route('leads.get_tab', $companyCode) }}";
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -203,7 +204,7 @@ form#activites-form>div>label>i {
             }
         });
         $.ajax({
-            url: "{{ route('leads.save-notes') }}",
+            url: "{{ route('leads.save-notes', $companyCode) }}",
             type: 'POST',
             data: form_data,
             beforeSend: function() {
@@ -235,7 +236,7 @@ form#activites-form>div>label>i {
             }).then((result) => {
                 /* Read more about isConfirmed, isDenied below */
                 if (result.isConfirmed) {
-                    var ajax_url = "{{ route('leads.activity-delete') }}";
+                    var ajax_url = "{{ route('leads.activity-delete', $companyCode) }}";
                     $.ajaxSetup({
                         headers: {
                             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')

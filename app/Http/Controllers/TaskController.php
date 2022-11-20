@@ -134,15 +134,13 @@ class TaskController extends Controller
         $id = $request->id;
         $from = $request->from;
         $modal_title = 'Add Tasks';
-        $users = User::whereNotNull('role_id')->get();
+        $users = User::whereNotNull('role_id')->where('company_id', auth()->user()->company_id)->get();
         if (isset($id) && !empty($id)) {
             $info = Task::find($id);
             $modal_title = 'Update Tasks';
         }
         $params = ['modal_title' => $modal_title, 'id' => $id ?? '', 'info' => $info ?? '', 'users' => $users, 'from' => $from];
         return view('crm.tasks.add_edit', $params);
-        echo json_encode(['view' => $view]);
-        return true;
     }
 
     public function view(Request $request)

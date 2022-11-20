@@ -12,7 +12,7 @@ use App\Models\Subscription;
 
 class ProductController extends Controller
 {
-    public function index(Type $var = null)
+    public function index()
     {
 
         $params = array('btn_name' => 'Product', 'btn_fn_param' => 'products');
@@ -75,7 +75,6 @@ class ProductController extends Controller
                 $nested_data['product_name']      = $products->product_name;
                 $nested_data['product_code']      = $products->product_code;
                 $nested_data['hsn_no']            = $products->hsn_no ?? '';
-                $nested_data['price']            = $products->price ?? '';
                 $nested_data['added']             = $products->added->name;
                 $nested_data['status']            = $products_status;
                 $nested_data['action']            = $action;

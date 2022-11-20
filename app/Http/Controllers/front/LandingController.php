@@ -28,10 +28,18 @@ use Auth;
 
 class LandingController extends Controller
 {
-    public function index(Request $request, $permalink = null)
+    public $companyCode;
+
+    public function __construct(Request $request)
     {
-       
-        $info           = CompanySettings::find(1);
+        $this->companyCode = $request->segment(1);
+    }
+
+    public function index(Request $request, $companyCode = null, $permalink = null)
+    {
+        $companyInfo   = CompanySettings::where('site_code', $companyCode)->first();
+
+        $info           = CompanySettings::find($companyInfo->id);
         $products       = Product::where('status', 1)->get();
         $params['info'] = $info;
         $response = $request->session()->pull('razorpay_response');
@@ -111,7 +119,7 @@ class LandingController extends Controller
             $lea['lead_description'] = $request->message;
             $lead_id = Lead::create($lea)->id;
             //insert in notification
-            CommonHelper::send_lead_notification($lead_id, $assigned_to);
+            CommonHelper::send_lead_notification($lead_id, $assigned_to, '', '', $this->companyCode );
 
             //send email to new customer
             if (isset($customer) && !empty($customer)) {
@@ -138,8 +146,7 @@ class LandingController extends Controller
         if ($validator->passes()) {
             $ins['email'] = $request->subscribe_email;
             $news_id = Newsletter::create($ins)->id;
-
-            $company = CompanySettings::find(1);
+            $company = CompanySettings::where('site_code', $this->companyCode)->first();
             $title = 'Newsletter Subscription Activation';
             $message = 'Thanks for subscribing Newsletter.';
             $extract = array(
@@ -156,6 +163,7 @@ class LandingController extends Controller
                 'type_id' => $news_id,
                 'email_type' => 'general_task',
                 'params' => serialize($extract),
+                'company_id' => $company->id,
                 'to' => $request->subscribe_email ?? 'duraibytes@gmail.com'
             );
             DB::table('send_mail')->insert($ins_mail);

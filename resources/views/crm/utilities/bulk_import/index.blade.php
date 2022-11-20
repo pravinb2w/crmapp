@@ -10,7 +10,7 @@
                 <div class="page-title-right">
                     <ol class="breadcrumb m-0">
                         <li class="breadcrumb-item"><a href="javascript: void(0);">CRM</a></li>
-                        <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
+                        <li class="breadcrumb-item"><a href="{{ route('dashboard', $companyCode) }}">Dashboard</a></li>
                         <li class="breadcrumb-item active">Bulk Import</li>
                     </ol>
                 </div>
@@ -40,7 +40,7 @@
                     @endif
                 </div>
                 <div class="col-6">
-                    <form action="{{ route('store.bulk_import') }}" method="POST" enctype="multipart/form-data">
+                    <form action="{{ route('store.bulk_import', $companyCode) }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="mb-3">
                             <strong class="mb-1"> Customer Data File </strong>

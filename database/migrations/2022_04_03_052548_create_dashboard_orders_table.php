@@ -15,6 +15,8 @@ class CreateDashboardOrdersTable extends Migration
     {
         Schema::create('dashboard_orders', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('company_id')->comment('from companysettings')->nullable();
+            $table->foreign('company_id')->references('id')->on('company_settings')->onDelete('no action');
             $table->string('content');
             $table->string('position');
             $table->string('type')->nullable();

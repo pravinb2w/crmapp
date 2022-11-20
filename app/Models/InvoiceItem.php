@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Scopes\CompanyScope;
+use App\Traits\ObservantTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -9,7 +11,7 @@ use Illuminate\Database\Eloquent\Builder;
 
 class InvoiceItem extends Model
 {
-    use HasFactory;
+    use HasFactory, ObservantTrait;
     protected $fillable = [
        'invoice_id',
        'product_id',
@@ -22,6 +24,11 @@ class InvoiceItem extends Model
        'igst',
        'amount',
     ];
+
+    protected static function booted()
+    {
+        static::addGlobalScope(new CompanyScope);
+    }
 
     public function invoice()
     {

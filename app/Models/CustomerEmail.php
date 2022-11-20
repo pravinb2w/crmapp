@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Scopes\CompanyScope;
+use App\Traits\ObservantTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -9,7 +11,7 @@ use Illuminate\Database\Eloquent\Builder;
 
 class CustomerEmail extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes, ObservantTrait;
 
     protected $table = 'custor_email';
     protected $fillable = [
@@ -22,4 +24,9 @@ class CustomerEmail extends Model
         'updated_by',
         'customer_id'
     ];
+
+    protected static function booted()
+    {
+        static::addGlobalScope(new CompanyScope);
+    }
 }

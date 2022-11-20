@@ -15,6 +15,8 @@ class CreateAcitivityCommentsTable extends Migration
     {
         Schema::create('acitivity_comments', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('company_id')->comment('from companysettings')->nullable();
+            $table->foreign('company_id')->references('id')->on('company_settings')->onDelete('no action');
             $table->unsignedBigInteger('activity_id')->comment('from activities');
             $table->foreign('activity_id')->references('id')->on('activities')->onDelete('no action');
             $table->string('comments');

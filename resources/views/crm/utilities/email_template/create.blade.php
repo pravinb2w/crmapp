@@ -11,7 +11,7 @@
                 <div class="page-title-right">
                     <ol class="breadcrumb m-0">
                         <li class="breadcrumb-item"><a href="javascript: void(0);">CRM</a></li>
-                        <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
+                        <li class="breadcrumb-item"><a href="{{ route('dashboard', $companyCode) }}">Dashboard</a></li>
                         <li class="breadcrumb-item active">Create Email Template</li>
                     </ol>
                 </div>
@@ -21,7 +21,7 @@
     </div>     
     <div class="row m-0">
         <div class="col-md-12 ps-0">
-            <form class="card" id="mail_template_form" action="{{ route('store.email_template') }}" method="post">
+            <form class="card" id="mail_template_form" action="{{ route('store.email_template', $companyCode) }}" method="post">
                 @csrf
                 <div class="card-header list-group-item border-0 active">
                     <strong>Template Creation</strong>

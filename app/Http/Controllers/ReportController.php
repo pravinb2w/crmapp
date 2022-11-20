@@ -21,6 +21,13 @@ use DB;
 class ReportController extends Controller
 {
 
+    public $companyCode;
+
+    public function __construct(Request $request)
+    {
+        $this->companyCode = $request->segment(1);
+    }
+
     public function deal_started(Request $request) {
         $params['title'] = 'Deals Started and Convertion Reports';
         return view('crm.reports._started', $params);
@@ -103,6 +110,7 @@ class ReportController extends Controller
             'data'              => $data,
             'recordsFiltered'   => intval( $total_filtered )
         ] );
+
     }
 
     public function deal_started_download(Request $request)
@@ -123,7 +131,7 @@ class ReportController extends Controller
         } else {
             $deals = Deal::all();
         }
-        $pdf = PDF::loadView('crm.exports.started_pdf', ['deals' => $deals]);
+        $pdf = PDF::loadView('crm.exports.started_pdf', ['deals' => $deals, 'companyCode' => $this->companyCode]);
         
         $path = public_path('pdf/');
         $fileName =  time().'.'. 'pdf' ;
@@ -241,7 +249,7 @@ class ReportController extends Controller
         } else {
             $deals = Payment::all();
         }
-        $pdf = PDF::loadView('crm.exports.sales_pdf', ['deals' => $deals])->setPaper('a4', 'landscape');;
+        $pdf = PDF::loadView('crm.exports.sales_pdf', ['deals' => $deals,'companyCode' => $this->companyCode])->setPaper('a4', 'landscape');;
         
         $path = public_path('pdf/');
         $fileName =  time().'.'. 'pdf' ;
@@ -347,7 +355,7 @@ class ReportController extends Controller
 
         $fore = Invoice::whereDate('due_date', '>=', $start_date)->whereDate('due_date', '<=', $end_date)->get();
         
-        $pdf = PDF::loadView('crm.exports.forecast_pdf', ['fore' => $fore])->setPaper('a4', 'portrait');;
+        $pdf = PDF::loadView('crm.exports.forecast_pdf', ['fore' => $fore, 'companyCode' => $this->companyCode])->setPaper('a4', 'portrait');;
         
         $path = public_path('pdf/');
         $fileName =  time().'.'. 'pdf' ;
@@ -400,8 +408,8 @@ class ReportController extends Controller
                             ->when(isset($start_date) && !empty($start_date), function($query) use($start_date, $end_date){
                                 return $query->whereDate('created_at', '>=', $start_date)->whereDate('created_at', '<=', $end_date);
                             })
-                            ->search( $search )->whereDate('created_at', '>=', $start_date)->whereDate('created_at', '<=', $end_date)
-                                ->get();
+                            ->search( $search )
+                            ->get();
 
             if( empty( $request->input( 'search.value' ) ) ) {
                 $total_filtered = Activity::count();
@@ -498,7 +506,6 @@ class ReportController extends Controller
         if( !empty($list)) {
             array_multisort($sort, SORT_DESC, $list);
         }
-            
         $data           = array();
         if( $list ) {
             $i=1;
@@ -515,7 +522,6 @@ class ReportController extends Controller
                 $data[]                         = $nested_data;
             }
         }
-
         return response()->json( [ 
             'draw'              => intval( $request->input( 'draw' ) ),
             'recordsTotal'      => intval( $total_filtered ),
@@ -554,8 +560,7 @@ class ReportController extends Controller
                             ->when(isset($start_date) && !empty($start_date), function($query) use($start_date, $end_date){
                                 return $query->whereDate('created_at', '>=', $start_date)->whereDate('created_at', '<=', $end_date);
                             })
-                            ->whereDate('created_at', '>=', $start_date)->whereDate('created_at', '<=', $end_date)
-                                ->get();
+                            ->get();
 
             
         } elseif( isset($request->type ) && $request->type == 'task' ) {
@@ -636,7 +641,7 @@ class ReportController extends Controller
             array_multisort($sort, SORT_DESC, $list);
         }
         
-        $pdf = PDF::loadView('crm.exports.planned_pdf', ['list' => $list])->setPaper('a4', 'portrait');;
+        $pdf = PDF::loadView('crm.exports.planned_pdf', ['list' => $list, 'companyCode' => $this->companyCode])->setPaper('a4', 'portrait');;
         
         $path = public_path('pdf/');
         $fileName =  time().'.'. 'pdf' ;

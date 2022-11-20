@@ -13,7 +13,7 @@
                     Payment Successfully Completed.
                 </div>
                 <div class="text-center mb-3 mt-3">
-                    <a href="{{ route('payments') }}" class="btn btn-success"> Go to Payment List</a>
+                    <a href="{{ route('payments', $companyCode) }}" class="btn btn-success"> Go to Payment List</a>
                 </div>
             </div>
         </div>

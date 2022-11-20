@@ -1,5 +1,5 @@
 <div class="modal-dialog modal-lg modal-right">
-    <form id="product-form" method="POST" action="{{ route('products.save') }}" autocomplete="off" class="modal-content h-100">
+    <form id="product-form" method="POST" action="{{ route('products.save', $companyCode) }}" autocomplete="off" class="modal-content h-100">
         <div class="modal-header">
             <h4 class="modal-title" id="myLargeModalLabel">{{ $modal_title }}</h4>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -130,8 +130,11 @@
     </form>  
 </div>
 <script src="/vendor/laravel-filemanager/js/stand-alone-button.js"></script>
+@php
+    $url = url($companyCode.'/dev/laravel-filemanager');
+@endphp
 <script>
-    var route_prefix = "{{ url('dev/laravel-filemanager') }}";
+    var route_prefix = "{{ $url }}";
 </script>
     <script>$('#lfm').filemanager('file', {prefix: route_prefix});</script>
     <script>
@@ -198,7 +201,7 @@
                                 $('#Mymodal').modal('hide');
                             },100);
                             if( from == 'dashboard' ) {
-                                window.location.href="{{ route('products') }}";
+                                window.location.href="{{ route('products', $companyCode) }}";
                             } else {
                                 ReloadDataTableModal('products-datatable');
                             }

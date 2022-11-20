@@ -17,6 +17,7 @@ class CompanySettings extends Model implements Auditable
     protected $fillable = [
         'subscription_id',
         'site_name',
+        'site_code',
         'site_url',
         'site_logo',
         'site_favicon',
@@ -51,7 +52,7 @@ class CompanySettings extends Model implements Auditable
 
     public function subscription()
     {
-        return $this->hasOne(CompanySubscription::class, 'id', 'subscription_id');
+        return $this->hasOne(CompanySubscription::class, 'id', 'subscription_id')->where('status', 1);
     }
 
     public function sms()

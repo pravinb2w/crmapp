@@ -1,5 +1,5 @@
 <div class="modal-dialog modal-lg modal-right">
-    <form id="notes-form" method="POST" action="{{ route('notes.save') }}" autocomplete="off" class="modal-content h-100">
+    <form id="notes-form" method="POST" action="{{ route('notes.save', $companyCode) }}" autocomplete="off" class="modal-content h-100">
         <div class="modal-header">
             <h4 class="modal-title" id="myLargeModalLabel">{{ $modal_title }}</h4>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -113,7 +113,7 @@
                             $('#Mymodal').modal('hide');
                         },100);
                         if( from == 'dashboard' ) {
-                            window.location.href="{{ route('notes') }}";
+                            window.location.href="{{ route('notes', $companyCode) }}";
                         } else {
                             ReloadDataTableModal('notes-datatable');
                         }
@@ -131,7 +131,7 @@
                     }
                 });
         $.ajax({
-                url: "{{ route('autocomplete_lead_deal') }}",
+                url: "{{ route('autocomplete_lead_deal', $companyCode) }}",
                 method:'POST',
                 data: {org:inputs},
                 success:function(response){

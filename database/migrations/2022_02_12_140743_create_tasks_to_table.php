@@ -15,6 +15,8 @@ class CreateTasksToTable extends Migration
     {
         Schema::create('tasks', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('company_id')->comment('from companysettings')->nullable();
+            $table->foreign('company_id')->references('id')->on('company_settings')->onDelete('no action');
             $table->string('task_name');
             $table->unsignedBigInteger('assigned_to')->comment('from usertable')->nullable();
             $table->foreign('assigned_to')->references('id')->on('users')->onDelete('no action');

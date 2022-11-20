@@ -10,7 +10,7 @@
                     <div class="page-title-right">
                         <ol class="breadcrumb m-0">
                             <li class="breadcrumb-item"><a href="javascript: void(0);">CRM</a></li>
-                            <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
+                            <li class="breadcrumb-item"><a href="{{ route('dashboard', $companyCode) }}">Dashboard</a></li>
                             <li class="breadcrumb-item active">Page Type</li>
                         </ol>
                     </div>
@@ -68,7 +68,7 @@
                 "processing": true,
                 "serverSide": true,
                 "ajax": {
-                    "url": "<?= route('permissions.list') ?>",
+                    "url": "<?= route('permissions.list', $companyCode) ?>",
                     "dataType": "json",
                     "type": "POST",
                     "data": {

@@ -12,6 +12,13 @@ use Illuminate\Support\Facades\Session;
 class LoginController extends Controller
 {
 
+    public $companyCode;
+
+    public function __construct(Request $request)
+    {
+        $this->companyCode = $request->segment(1);
+    }
+
     public function index(Request $request) {
         
         $result = LandingPages::where('is_default_landing_page', 1)->first();
@@ -36,7 +43,7 @@ class LoginController extends Controller
             }
             Session::put('client', $customer_info);
           
-            return response()->json(['message' => 'Login success', 'status' => 1, 'url' => route('profile')]);
+            return response()->json(['message' => 'Login success', 'status' => 1, 'url' => route('profile', $this->companyCode)]);
         } else {
             return response()->json(['message' => 'Invalid Email address or Password', 'status' => 0]);
         }
@@ -99,6 +106,6 @@ class LoginController extends Controller
 
     public function logout(Request $request) {
         session()->forget('client');
-        return redirect()->route('customer-login');
+        return redirect()->route('customer-login', $this->companyCode);
     }
 }

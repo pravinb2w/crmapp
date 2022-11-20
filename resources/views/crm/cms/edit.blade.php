@@ -11,7 +11,7 @@
                 <div class="page-title-right">
                     <ol class="breadcrumb m-0">
                         <li class="breadcrumb-item"><a href="javascript: void(0);">CRM</a></li>
-                        <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
+                        <li class="breadcrumb-item"><a href="{{ route('dashboard', $companyCode) }}">Dashboard</a></li>
                         <li class="breadcrumb-item active"> Pages </li>
                     </ol>
                 </div>
@@ -44,7 +44,7 @@
             $('#error').removeClass("alert alert-success");
             $.ajax({
                 type:'POST',
-                url: '{{ route("pages.update" , $result->id) }}',
+                url: '{{ route("pages.update" , [$companyCode, $result->id]) }}',
                 data: formData,
                 contentType: false,
                 processData: false,
@@ -59,7 +59,7 @@
                         $('#error').addClass('alert alert-success');
                         $('#error').text(response.success);
                         setTimeout(() => {
-                            window.location.href="{{ route('pages') }}";                            
+                            window.location.href="{{ route('pages', $companyCode) }}";                            
                         }, 300);
                     }
                     $('.loader').hide();

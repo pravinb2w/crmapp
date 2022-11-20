@@ -15,6 +15,8 @@ class CreateKycDocumentTypesTable extends Migration
     {
         Schema::create('kyc_document_types', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('company_id')->comment('from companysettings')->nullable();
+            $table->foreign('company_id')->references('id')->on('company_settings')->onDelete('no action');
             $table->string('document_name');
             $table->integer('status')->default(1)->comment('1-active,0-inactive');
             $table->unsignedBigInteger('added_by')->nullable()->comment('from usertable');

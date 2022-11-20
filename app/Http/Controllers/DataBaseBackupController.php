@@ -8,6 +8,13 @@ use mysqli;
 
 class DataBaseBackupController extends Controller
 {
+    public $companyCode;
+
+    public function __construct(Request $request)
+    {
+        $this->companyCode = $request->segment(1);
+    }
+
     public function index()
     {
         $data   =   DataBaseBackup::latest()->paginate(10);
@@ -21,7 +28,7 @@ class DataBaseBackupController extends Controller
         return redirect()->back()->with('success','Database Backup Deleted!');
     }
 
-    public function download($id)
+    public function download($companyCode, $id)
     {
         $data  =    DataBaseBackup::find($id);
         return response()->download($data->file_name);
@@ -57,10 +64,6 @@ class DataBaseBackupController extends Controller
         $backupFile = "mysqldump --user=$user --password='$pass' --host=$host $dbname > ".$directory.$fileName;
 
         exec($backupFile,$output);
-        echo 'backup done';
-        die;
- 
-        error_reporting(0);
 
         $conn = new mysqli($host, $user, $pass, $dbname);
         

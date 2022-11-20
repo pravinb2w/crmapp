@@ -15,6 +15,8 @@ class CreateCountyTable extends Migration
     {
         Schema::create('countries', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('company_id')->comment('from companysettings')->nullable();
+            $table->foreign('company_id')->references('id')->on('company_settings')->onDelete('no action');
             $table->string('country_name');
             $table->string('dial_code')->nullable();
             $table->string('country_code')->nullable();

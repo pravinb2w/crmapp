@@ -8,7 +8,7 @@
             <div class="col-12 text-center">
                 <img src="{{asset('assets/images/payments/razor.png')}}" alt="" for="razor">
             </div>
-            <form class="form-horizontal modal-body" id="payments-form" method="POST" action="{{ route('payments.initiate.request') }}" autocomplete="off">
+            <form class="form-horizontal modal-body" id="payments-form" method="POST" action="{{ route('payments.initiate.request', $companyCode) }}" autocomplete="off">
                 @csrf
                 
                 <div class="col-12">

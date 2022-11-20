@@ -11,7 +11,7 @@
                     <div class="page-title-right">
                         <ol class="breadcrumb m-0">
                             <li class="breadcrumb-item"><a href="javascript: void(0);">CRM</a></li>
-                            <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
+                            <li class="breadcrumb-item"><a href="{{ route('dashboard', $companyCode) }}">Dashboard</a></li>
                             <li class="breadcrumb-item active">Announcement</li>
                         </ol>
                     </div>
@@ -25,7 +25,7 @@
                 <h3 class="lead">Add new announcement</h3>
             </div>
             <div class="card-body">
-                <form action="{{ route("update.announcement", $data->id) }}" method="POST"> @csrf
+                <form action="{{ route("update.announcement", ['id' => $data->id, 'companyCode' => $companyCode]) }}" method="POST"> @csrf
                     <div class="form-group mb-3">
                         <label for="subject" class="mb-2">Subject *</label>
                         <input type="text" name="subject" value="{{ $data->subject }}" class="form-control" required>
@@ -55,7 +55,7 @@
                     <div class="row">
                         <div class="col-sm-4 mt-4">
                             <input type="submit" value="Submit" class="btn btn-primary">
-                            <a href="{{ route('announcement.index') }}" class="btn btn-light text-start"> Cancel </a>
+                            <a href="{{ route('announcement.index', $companyCode) }}" class="btn btn-light text-start"> Cancel </a>
                         </div>
                         
                     </div>

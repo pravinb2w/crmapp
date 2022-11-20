@@ -2,12 +2,14 @@
 
 namespace App\Models;
 
+use App\Scopes\CompanyScope;
+use App\Traits\ObservantTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class LandingPages extends Model
 {
-    use HasFactory;
+    use HasFactory,ObservantTrait;
     protected $fillable = [
         "page_type",
         "page_title",
@@ -25,8 +27,15 @@ class LandingPages extends Model
         'secondary_color',
         'is_default_landing_page',
         'meta_title',
-        'meta_description'
+        'meta_description',
+        'company_id'
     ];
+
+    protected static function booted()
+    {
+        static::addGlobalScope(new CompanyScope);
+    }
+    
     public function LandingPageSocialMedias()
     {
         return $this->hasMany(LandingPageSocialMedias::class, 'page_id', 'id');

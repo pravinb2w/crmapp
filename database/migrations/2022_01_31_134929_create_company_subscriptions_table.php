@@ -19,9 +19,10 @@ class CreateCompanySubscriptionsTable extends Migration
             $table->foreign('subscription_id')->references('id')->on('subscriptions')->onDelete('no action');
             $table->unsignedBigInteger('company_id')->comment('from company');
             $table->foreign('company_id')->references('id')->on('company_settings')->onDelete('no action');
-            $table->date('startAt');
-            $table->date('endAt');
-            $table->double('total_amount');
+            $table->enum('is_trail',['yes', 'no'])->nullable();
+            $table->date('startAt')->nullable();
+            $table->date('endAt')->nullable();
+            $table->double('total_amount')->nullable();
             $table->text('description')->nullable();
             $table->integer('status')->comment('0-inactive,1-active,2-expired,3-cancelled');
             $table->softDeletes();

@@ -22,9 +22,16 @@ use Session;
 
 class PaymentController extends Controller
 {
+    public $companyCode;
+
+    public function __construct(Request $request)
+    {
+        $this->companyCode = $request->segment(1);
+    }
+
     public function index(Request $request)
     {
-        $params = array('btn_name' => 'Payments', 'btn_fn_param' => '', 'btn_href' => route('payments.add'));
+        $params = array('btn_name' => 'Payments', 'btn_fn_param' => '', 'btn_href' => route('payments.add', $this->companyCode));
         return view('crm.payments.index', $params);
     }
 
@@ -35,7 +42,7 @@ class PaymentController extends Controller
             return response('Forbidden.', 403);
         }
 
-        $columns            = ['created_at', 'order_id', 'page', 'status', 'id'];
+        $columns            = ['created_at', 'order_id', 'customer_id', 'payment_mode', 'amount', 'payment_method', 'payment_status'];
 
         $limit              = $request->input('length');
         $start              = $request->input('start');
@@ -475,7 +482,7 @@ class PaymentController extends Controller
     {
         $payment_id = $request->payment_id;
         $payment_info = Payment::find($payment_id);
-        $company = CompanySettings::find(1);
+        $company = CompanySettings::find($payment_info->company_id);
 
         $route = $payment_info->generated_links;
 

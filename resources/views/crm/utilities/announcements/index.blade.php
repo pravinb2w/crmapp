@@ -10,7 +10,7 @@
                 <div class="page-title-right">
                     <ol class="breadcrumb m-0">
                         <li class="breadcrumb-item"><a href="javascript: void(0);">CRM</a></li>
-                        <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
+                        <li class="breadcrumb-item"><a href="{{ route('dashboard', $companyCode) }}">Dashboard</a></li>
                         <li class="breadcrumb-item active">Announcement</li>
                     </ol>
                 </div>
@@ -20,7 +20,7 @@
     </div>     
     <div class="card">
         <div class="card-header text-end bg-light">
-            <a href="{{ route("create.announcement") }}" class="btn btn-primary">New Announcement</a>
+            <a href="{{ route("create.announcement", $companyCode) }}" class="btn btn-primary">New Announcement</a>
         </div>
         <div class="card-body">
             <div class="table-responsive">
@@ -53,7 +53,7 @@
             "processing"    : true,
             "serverSide"    : true,
             "ajax"          : {
-                "url"       : "<?= route( 'announcement.list' ); ?>",
+                "url"       : "<?= route( 'announcement.list', $companyCode ); ?>",
                 "dataType"  : "json",
                 "type"      : "POST",
                 "data"      : { "_token" : "<?=csrf_token();?>" }
@@ -87,7 +87,7 @@
                 /* Read more about isConfirmed, isDenied below */
                 if (result.isConfirmed) {
                    
-                    var ajax_url = "{{ route('destroy.announcement') }}";
+                    var ajax_url = "{{ route('destroy.announcement', $companyCode) }}";
                     $.ajaxSetup({
                         headers: {
                             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -104,7 +104,7 @@
                                 
                                 Swal.fire('Deleted!', '', 'success');
                                 setTimeout(() => {
-                                    window.location.href = "{{ route('announcement.index') }}";
+                                    window.location.href = "{{ route('announcement.index', $companyCode) }}";
                                 }, 300);
 
                             }

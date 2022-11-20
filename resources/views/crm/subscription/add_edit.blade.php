@@ -4,8 +4,8 @@
         position: absolute;
     }
 </style>
-<div class="modal-dialog modal-lg modal-right">
-    <form  id="subscriptions-form" method="POST" action="{{ route('subscriptions.save') }}" autocomplete="off" class="modal-content h-100">
+<div class="modal-dialog modal-xl modal-right">
+    <form  id="subscriptions-form" method="POST" action="{{ route('subscriptions.save', $companyCode) }}" autocomplete="off" class="modal-content h-100">
         <div class="modal-header">
             <h4 class="modal-title" id="myLargeModalLabel">{{ $modal_title }}</h4>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -57,94 +57,126 @@
                 </div>
                 <hr class="my-3">
                 <div class="row m-0 ">
-                    <div class="col-sm-4 my-1">
-                        <label for="no_of_clients" class="col-form-label">Client <small class="text-muted"> (nos)  </small></label>
-                        <div class="">
-                            <input type="number" name="no_of_clients" class="form-control" id="no_of_clients" placeholder="0" value="{{ $info->no_of_clients ?? '' }}" >
-                        </div>
-                    </div>
-                    <div class="col-sm-4 my-1">
-                        <label for="no_of_employees" class="col-form-label">Employees <small class="text-muted"> (nos)  </small></label>
-                        <div class="">
-                            <input type="number" name="no_of_employees" class="form-control" id="no_of_employees" placeholder="0" value="{{ $info->no_of_employees ?? '' }}" >
-                        </div>
-                    </div>
-                    <div class="col-sm-4 my-1">
-                        <label for="no_of_leads" class="col-form-label">Leads <small class="text-muted"> (nos)  </small></label>
-                        <div class="">
-                            <input type="number" name="no_of_leads" class="form-control" id="no_of_leads" placeholder="0" value="{{ $info->no_of_leads ?? '' }}" >
-                        </div>
-                    </div>
-                    <div class="col-sm-4 my-1">
-                        <label for="no_of_deals" class="col-form-label">Deals <small class="text-muted"> (nos)  </small></label>
-                        <div class="">
-                            <input type="number" name="no_of_deals" class="form-control" id="no_of_deals" placeholder="0" value="{{ $info->no_of_deals ?? '' }}" >
-                        </div>
-                    </div>
-                    <div class="col-sm-4 my-1">
-                        <label for="no_of_pages" class="col-form-label">Pages <small class="text-muted"> (nos)  </small></label>
-                        <div class="">
-                            <input type="number" name="no_of_pages" class="form-control" id="no_of_pages" placeholder="0" value="{{ $info->no_of_pages ?? '' }}" >
-                        </div>
-                    </div>
-                    <div class="col-sm-4 my-1">
-                        <label for="no_of_email_templates" class="col-form-label">Email Template <small class="text-muted"> (nos)  </small></label>
-                        <div class="">
-                            <input type="number" name="no_of_email_templates" class="form-control" id="no_of_email_templates" placeholder="0" value="{{ $info->no_of_email_templates ?? '' }}" >
-                        </div>
+                    <div class="col-sm-12">
+                        @include('crm.subscription._count_fields')
                     </div>
                 </div>
                 <hr class="my-3">
                 <div class="row m-0 ">
-                    <div class="col-4 p-2">
+                    <div class="col-sm-12">
+                        <label for="">Payment Gateway <span class="text-danger">*</span></label>
+                        <div class="row">
+                            @php
+                                $payment_gateway = $info->payment_gateway ?? '';
+                                if( !empty( $payment_gateway ) ) {
+                                    $payment_gateway = explode(',', $payment_gateway );
+                                }
+                            @endphp
+                            <div class="col-sm-4">
+                                <label for="ccavenue">CCAvenue</label>
+                                <input type="checkbox" name="payment_gateway[]" @if( isset($payment_gateway) && !empty($payment_gateway) && in_array( 'ccavenue', $payment_gateway ) ) checked @endif value="ccavenue" id="ccavenue" class="mx-2 mt-2">
+                            </div>
+                            <div class="col-sm-4">
+                                <label for="razorpay">RazorPay</label>
+                                <input type="checkbox" name="payment_gateway[]" @if( isset($payment_gateway) && !empty($payment_gateway) && in_array( 'razorpay', $payment_gateway ) ) checked @endif value="razorpay" id="razorpay" class="mx-2 mt-2">
+                            </div>
+                            <div class="col-sm-4">
+                                <label for="payu">PayU</label>
+                                <input type="checkbox" name="payment_gateway[]" @if( isset($payment_gateway) && !empty($payment_gateway) && in_array( 'payu', $payment_gateway ) ) checked @endif value="payu" id="payu" class="mx-2 mt-2">
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+                <hr class="my-3">
+                <div class="row m-0 ">
+                    <div class="col-3 p-2">
                         <div class="d-flex justify-content-between align-items-center p-1 px-2 rounded border">
-                            <label for="role" class="col-form-label">Bulk Import </label>
-                            <input type="checkbox" name="bulk_import" id="bulk_import" @if( isset($info->bulk_import) && !empty($info->bulk_import) ) checked @endif data-switch="warning"/>
-                            <label for="bulk_import" data-on-label="Yes" data-off-label="No"></label>
+                            <label for="role" class="col-form-label">Announcements </label>
+                            <input type="checkbox" name="announcements" value="yes" id="announcements" @if( isset($info->announcements) && $info->announcements == 'yes' ) checked @endif data-switch="warning"/>
+                            <label for="announcements" data-on-label="Yes" data-off-label="No"></label>
                         </div>
                     </div>
-                    <div class="col-4 p-2">
+                    <div class="col-3 p-2">
                         <div class="d-flex justify-content-between align-items-center p-1 px-2 rounded border">
-                            <label for="role" class="col-form-label">Database Backup </label>
-                            <input type="checkbox" name="database_backup" id="database_backup"  @if( isset($info->database_backup) && !empty($info->database_backup)) checked @endif  data-switch="warning"/>
-                            <label for="database_backup" data-on-label="Yes" data-off-label="No"></label>
+                            <label for="role" class="col-form-label">Bulk Upload </label>
+                            <input type="checkbox" name="bulk_upload" value="yes" id="bulk_upload" @if( isset($info->bulk_upload) && $info->bulk_upload == 'yes' ) checked @endif data-switch="warning"/>
+                            <label for="bulk_upload" data-on-label="Yes" data-off-label="No"></label>
                         </div>
                     </div>
-                    <div class="col-4 p-2">
+                    
+                    <div class="col-3 p-2">
                         <div class="d-flex justify-content-between align-items-center p-1 px-2 rounded border">
-                            <label for="role" class="col-form-label"> Work Automation </label>
-                            <input type="checkbox" name="work_automation" id="work_automation"  @if( isset($info->work_automation) && !empty($info->work_automation) ) checked @endif  data-switch="warning"/>
+                            <label for="role" class="col-form-label"> WorkFlow Automation </label>
+                            <input type="checkbox" name="work_automation" value="yes" id="work_automation"  @if( isset($info->work_automation) && $info->work_automation == 'yes' ) checked @endif  data-switch="warning"/>
                             <label for="work_automation" data-on-label="Yes" data-off-label="No"></label>
                         </div>
                     </div>
-                    <div class="col-4 p-2">
+                    <div class="col-3 p-2">
                         <div class="d-flex justify-content-between align-items-center p-1 px-2 rounded border">
-                            <label for="role" class="col-form-label"> Telegram Bot </label>
-                            <input type="checkbox" name="telegram_bot" id="telegram_bot" @if( isset($info->telegram_bot) && !empty($info->telegram_bot) ) checked @endif  data-switch="warning"/>
-                            <label for="telegram_bot" data-on-label="Yes" data-off-label="No"></label>
+                            <label for="role" class="col-form-label"> Newsletter Subscription </label>
+                            <input type="checkbox" name="newletter_subscriptions" value="yes" id="newletter_subscriptions" @if( isset($info->newletter_subscriptions) && $info->newletter_subscriptions == 'yes' ) checked @endif  data-switch="warning"/>
+                            <label for="newletter_subscriptions" data-on-label="Yes" data-off-label="No"></label>
                         </div>
                     </div>
-                    <div class="col-4 p-2">
+                    <div class="col-3 p-2">
                         <div class="d-flex justify-content-between align-items-center p-1 px-2 rounded border">
-                            <label for="role" class="col-form-label">SMS Integration </label>
-                            <input type="checkbox" name="sms_integration" id="sms_integration" @if( isset($info->sms_integration) && ($info->sms_integration) ) checked @endif  data-switch="warning"/>
-                            <label for="sms_integration" data-on-label="Yes" data-off-label="No"></label>
+                            <label for="role" class="col-form-label"> Tasks </label>
+                            <input type="checkbox" name="tasks" id="tasks" value="yes" @if( isset($info->tasks) && $info->tasks == 'yes' ) checked @endif  data-switch="warning"/>
+                            <label for="tasks" data-on-label="Yes" data-off-label="No"></label>
                         </div>
                     </div>
-                    <div class="col-4 p-2">
+                    <div class="col-3 p-2">
                         <div class="d-flex justify-content-between align-items-center p-1 px-2 rounded border">
-                            <label for="role" class="col-form-label"> Payment Gateway </label>
-                            <input type="checkbox" name="payment_gateway" id="payment_gateway" @if( isset($info->payment_gateway) && ($info->payment_gateway))checked @endif  data-switch="warning"/>
-                            <label for="payment_gateway" data-on-label="Yes" data-off-label="No"></label>
+                            <label for="role" class="col-form-label"> Activities </label>
+                            <input type="checkbox" name="activities" id="activities" value="yes" @if( isset($info->activities) && $info->activities == 'yes' ) checked @endif  data-switch="warning"/>
+                            <label for="activities" data-on-label="Yes" data-off-label="No"></label>
                         </div>
                     </div>
-                    <div class="col-4 p-2">
+                    <div class="col-3 p-2">
                         <div class="d-flex justify-content-between align-items-center p-1 px-2 rounded border">
-                            <label for="role" class="col-form-label">Web Whatsapp </label>
-                            <input type="checkbox" name="business_whatsapp" id="business_whatsapp" @if( isset($info->business_whatsapp) && !empty($info->business_whatsapp) ) checked @endif  data-switch="warning"/>
-                            <label for="business_whatsapp" data-on-label="Yes" data-off-label="No"></label>
+                            <label for="role" class="col-form-label"> Payment Tracking </label>
+                            <input type="checkbox" name="payment_tracking" id="payment_tracking" value="yes" @if( isset($info->payment_tracking) && $info->payment_tracking == 'yes' )checked @endif  data-switch="warning"/>
+                            <label for="payment_tracking" data-on-label="Yes" data-off-label="No"></label>
                         </div>
                     </div>
+                    <div class="col-3 p-2">
+                        <div class="d-flex justify-content-between align-items-center p-1 px-2 rounded border">
+                            <label for="role" class="col-form-label"> Third Party Integration </label>
+                            <input type="checkbox" name="thirdparty_integrations" id="thirdparty_integrations" value="yes" @if( isset($info->thirdparty_integrations) && $info->thirdparty_integrations == 'yes' ) checked @endif  data-switch="warning"/>
+                            <label for="thirdparty_integrations" data-on-label="Yes" data-off-label="No"></label>
+                        </div>
+                    </div>
+                    <div class="col-3 p-2">
+                        <div class="d-flex justify-content-between align-items-center p-1 px-2 rounded border">
+                            <label for="role" class="col-form-label"> Technical Support </label>
+                            <input type="checkbox" name="technical_support" id="technical_support" value="yes" @if( isset($info->technical_support) && $info->technical_support == 'yes' ) checked @endif  data-switch="warning"/>
+                            <label for="technical_support" data-on-label="Yes" data-off-label="No"></label>
+                        </div>
+                    </div>
+                    <div class="col-3 p-2">
+                        <div class="d-flex justify-content-between align-items-center p-1 px-2 rounded border">
+                            <label for="role" class="col-form-label"> One Time Setup </label>
+                            <input type="checkbox" name="onetime_setup" id="onetime_setup" value="yes" @if( isset($info->onetime_setup) && $info->onetime_setup == 'yes' ) checked @endif  data-switch="warning"/>
+                            <label for="onetime_setup" data-on-label="Yes" data-off-label="No"></label>
+                        </div>
+                    </div>
+                    <div class="col-3 p-2">
+                        <div class="d-flex justify-content-between align-items-center p-1 px-2 rounded border">
+                            <label for="role" class="col-form-label"> Server Procurement </label>
+                            <input type="checkbox" name="server_procurement" id="server_procurement" value="yes" @if( isset($info->server_procurement) &&  $info->server_procurement == 'yes' ) checked @endif  data-switch="warning"/>
+                            <label for="server_procurement" data-on-label="Yes" data-off-label="No"></label>
+                        </div>
+                    </div>
+                    
+                    <div class="col-3 p-2">
+                        <div class="d-flex justify-content-between align-items-center p-1 px-2 rounded border">
+                            <label for="role" class="col-form-label"> Predefined Configurations </label>
+                            <input type="checkbox" name="predefined_configurations" id="predefined_configurations" value="yes"  @if( isset($info->predefined_configurations) && $info->predefined_configurations == 'yes' ) checked @endif  data-switch="warning"/>
+                            <label for="predefined_configurations" data-on-label="Yes" data-off-label="No"></label>
+                        </div>
+                    </div>
+                    
                 </div>
                 
                <div class="d-flex align-items-center m-0 mb-3 p-2">

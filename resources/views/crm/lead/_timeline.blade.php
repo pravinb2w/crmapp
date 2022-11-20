@@ -19,7 +19,7 @@
             }).then((result) => {
                 /* Read more about isConfirmed, isDenied below */
                 if (result.isConfirmed) {
-                    var ajax_url = "{{ route('leads.activity-delete') }}";
+                    var ajax_url = "{{ route('leads.activity-delete', $companyCode) }}";
                     $.ajaxSetup({
                         headers: {
                             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')

@@ -105,7 +105,7 @@
 
             var form = e.target || e.srcElement;
             const formData = $(form).serialize();
-            axios.post("{{ route('customer-login-check') }}", formData)            
+            axios.post("{{ route('customer-login-check', $companyCode) }}", formData)            
             .then( response => {
                 if (response.status == 200 ) {
                     this.formError = (response.data.status == 0) ? response.data.message : '';
@@ -133,7 +133,7 @@
             this.gotResponsePassword = true;
             var form = e.target || e.srcElement;
             const formData = $(form).serialize();
-            axios.post("{{ route('customer.password.link') }}", formData)            
+            axios.post("{{ route('customer.password.link', $companyCode) }}", formData)            
             .then( response => {
                 if (response.status == 200 ) {
                     let message = response.data.error;
@@ -164,7 +164,7 @@
             var form = e.target || e.srcElement;
             const formData = $(form).serialize();
 
-            axios.post("{{ route('customer.password.post') }}", formData)            
+            axios.post("{{ route('customer.password.post', $companyCode) }}", formData)            
             .then( response => {
                 if (response.status == 200 ) {
                     let message = response.data.error;
@@ -175,7 +175,7 @@
                     } else {
                         this.formSuccess = message.join(',');
                         setTimeout(() => {
-                            location.href="{{ route('customer-login') }}";
+                            location.href="{{ route('customer-login', $companyCode) }}";
                         }, 500);
                     }
                     
@@ -196,7 +196,7 @@
             this.formSuccess = '';
             const formData = $(form).serialize();
             
-            axios.post("{{ route('customer-login-otp') }}", formData)            
+            axios.post("{{ route('customer-login-otp', $companyCode) }}", formData)            
             .then( response => {
                 if (response.status == 200 ) {
                     if( response.data.status == 1 ) {
@@ -224,7 +224,7 @@
             this.formError = '';
             this.formSuccess = '';
             const formData = $(form).serialize();
-            axios.post("{{ route('customer-verity-otp') }}", formData)            
+            axios.post("{{ route('customer-verity-otp', $companyCode) }}", formData)            
             .then( response => {
                 if (response.status == 200 ) {
                     if( response.data.status == 1 ) {
@@ -232,7 +232,7 @@
                         this.formError = response.data.message;
                     } else {
                         this.formSuccess = response.data.message;
-                        location.href="{{ route('profile') }}";
+                        location.href="{{ route('profile', $companyCode) }}";
                     }
                     
                 }

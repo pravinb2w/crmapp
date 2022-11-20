@@ -10,7 +10,7 @@
                     <div class="page-title-right">
                         <ol class="breadcrumb m-0">
                             <li class="breadcrumb-item"><a href="javascript: void(0);">CRM</a></li>
-                            <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
+                            <li class="breadcrumb-item"><a href="{{ route('dashboard', $companyCode) }}">Dashboard</a></li>
                             <li class="breadcrumb-item active">Product</li>
                         </ol>
                     </div>
@@ -34,7 +34,6 @@
                                         <th>Product</th>
                                         <th>Product Code</th>
                                         <th>HSN No</th>
-                                        <th>Price</th>
                                         <th>Added By</th>
                                         <th>Status</th>
                                         <th style="width: 80px;">Action</th>
@@ -67,7 +66,7 @@
                 "processing": true,
                 "serverSide": true,
                 "ajax": {
-                    "url": "<?= route('products.list') ?>",
+                    "url": "<?= route('products.list', $companyCode) ?>",
                     "dataType": "json",
                     "type": "POST",
                     "data": {
@@ -82,9 +81,6 @@
                     },
                     {
                         "data": "hsn_no"
-                    },
-                    {
-                        "data": "price"
                     },
                     {
                         "data": "added"

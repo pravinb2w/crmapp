@@ -241,7 +241,7 @@
                 }
             });
             $.ajax({
-                url: "{{ route('get-closeweek-data') }}",
+                url: "{{ route('get-closeweek-data', $companyCode) }}",
                 method: 'POST',
                 data: {
                     close_week_type: close_week_type
@@ -269,7 +269,7 @@
                 }
             });
             $.ajax({
-                url: "{{ route('get-planned-data') }}",
+                url: "{{ route('get-planned-data', $companyCode) }}",
                 method: 'POST',
                 data: {
                     from_type: from_type
@@ -307,7 +307,7 @@
                         sortableOrder.push($li);
                         columnClass.push($class)
                     });
-                    $.post('{{ route('save.dashboard_position') }}', {
+                    $.post('{{ route('save.dashboard_position', $companyCode) }}', {
                         data: [sortableOrder, columnClass]
                     })
                 }
@@ -391,7 +391,7 @@
                 }
             });
             $.ajax({
-                url: "{{ route('get-dealProgress-data') }}",
+                url: "{{ route('get-dealProgress-data', $companyCode) }}",
                 method: 'POST',
                 data: {
                     deal_stages: deal_stages

@@ -1,5 +1,5 @@
 
-<form id="lead-activites-form"  method="POST" action="{{ route('leads.save-activity') }}" autocomplete="off">
+<form id="lead-activites-form"  method="POST" action="{{ route('leads.save-activity', $companyCode) }}" autocomplete="off">
     @csrf
     <input type="hidden" name="lead_id" value="{{ $id ?? '' }}">
     <label for="">Title</label>

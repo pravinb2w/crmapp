@@ -30,8 +30,8 @@
                                     <input type="hidden" name="id[]" value="{{ $item->id }}">
                                     <select name="payment_gateway[]" id="payment_gateway" class="form-control">
                                         <option value="">select</option>
-                                        @if( config('constant.payment_gateway') )
-                                            @foreach(config('constant.payment_gateway') as $gkey => $gvalue)
+                                        @if( $dynamic_gateways )
+                                            @foreach($dynamic_gateways as $gkey => $gvalue)
                                                 <option value="{{ $gkey }}" @if($item->gateway == $gkey) selected @endif>{{ $gvalue }}</option>
                                             @endforeach
                                         @endif
@@ -131,7 +131,7 @@
 
 </form> 
 @php
-    $gateway = config('constant.payment_gateway');
+    $gateway = $dynamic_gateways;
 @endphp
 
 <script>
@@ -226,7 +226,7 @@ $(document).on('click', '#removeprefRow', function () {
 
         $.ajax({
             type:'POST',
-            url: '{{ route("account.payment.save") }}',
+            url: '{{ route("account.payment.save", $companyCode) }}',
             data: formData,
             contentType: false,
             processData: false,

@@ -44,14 +44,23 @@ class KycController extends Controller
 
     public function kycSubmit(Request $request) 
     {
+        $deleteDocumentId = $request->deleteDocumentId;
 
-        $role_validator   = [
-            'document_id' => ['required', 'max:255'],
-        ];
+        if( !isset( $deleteDocumentId ) ){
+            $role_validator   = [
+                'document_id' => ['required', 'max:255'],
+            ];
+        } else {
+            $role_validator   = [
+                'deleteDocumentId' => ['required', 'max:255'],
+            ];
+        }
+        
         //Validate the product
         $validator                     = Validator::make($request->all(), $role_validator);
 
         if ($validator->passes()) {
+           
             $document_ids = $request->document_id;
             
             if( isset($document_ids ) && !empty( $document_ids ) ) {
@@ -59,12 +68,14 @@ class KycController extends Controller
                     $file = '';
                     $customerDocumentId = $request->customerDocumentId_.$item;
                     $image_input_name           = 'file_'.$item;
+
                     if ($request->hasFile($image_input_name)) {
+                        $hash = \Illuminate\Support\Str::random(40);
+                        $extension = strtolower($request->file($image_input_name)->getClientOriginalExtension());
+                    
                         $store_path             = session('client')->id.'_'.$item;
-                        $file                   = $request->file($image_input_name)->store('customer/kyc/'.$store_path, 'public');
-        
+                        $file                   = $request->file($image_input_name)->storeAs('customer/kyc/'.$store_path, $hash.'.'.$extension, 'public');
                     }
-                   
                     $ins = [];
                     $ins['customer_id']     = session('client')->id;
                     $ins['document_id']     = $item;
@@ -83,6 +94,12 @@ class KycController extends Controller
                     
                 }
             }
+
+            /**** if has delete id make detlete */
+            if( isset( $deleteDocumentId ) && !empty( $deleteDocumentId ) ) {
+                CustomerDocument::where('id', $deleteDocumentId)->delete();
+            }
+
             $kycDocuments = $this->customerRepository->getKycDocumentDetails();
             $success                = 'Kyc file Uploaded';
 

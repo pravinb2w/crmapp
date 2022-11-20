@@ -15,7 +15,7 @@
                 <div class="page-title-right">
                     <ol class="breadcrumb m-0">
                         <li class="breadcrumb-item"><a href="javascript: void(0);">CRM</a></li>
-                        <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
+                        <li class="breadcrumb-item"><a href="{{ route('dashboard', $companyCode) }}">Dashboard</a></li>
                         <li class="breadcrumb-item active">{{ $title }}</li>
                     </ol>
                 </div>
@@ -143,7 +143,7 @@
             "serverSide"    : true,
 
             "ajax"          : {
-                "url"       : "<?= route( 'reports.planned.list' ); ?>",
+                "url"       : "<?= route( 'reports.planned.list', $companyCode ); ?>",
                 "dataType"  : "json",
                 "type"      : "POST",
                 "data"      : { "_token" : "<?=csrf_token();?>", "date":date,"search":search, "task_type":task_type, "planned_done":planned_done }
@@ -174,7 +174,7 @@
             }
         });
         $.ajax({
-            url: "{{ route('reports.planned.download') }}",
+            url: "{{ route('reports.planned.download', $companyCode) }}",
             method:'POST',
             xhrFields: {
                 responseType: 'blob',
@@ -213,7 +213,7 @@
             }
         });
         $.ajax({
-            url: "{{ route('reports.planned_pdf.download') }}",
+            url: "{{ route('reports.planned_pdf.download', $companyCode) }}",
             method:'POST',
             data: {date:date,type:task_type,status:planned_done},
             xhrFields: {

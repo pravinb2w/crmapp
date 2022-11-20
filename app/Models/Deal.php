@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Scopes\CompanyScope;
+use App\Traits\ObservantTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -10,7 +12,7 @@ use OwenIt\Auditing\Contracts\Auditable;
 
 class Deal extends Model implements Auditable
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes, ObservantTrait;
     use \OwenIt\Auditing\Auditable;
 
     protected $fillable = [
@@ -33,6 +35,11 @@ class Deal extends Model implements Auditable
         'won_at',
         'loss_at',
     ];
+
+    protected static function booted()
+    {
+        static::addGlobalScope(new CompanyScope);
+    }
 
     public function scopeLatests(Builder $query)
     {

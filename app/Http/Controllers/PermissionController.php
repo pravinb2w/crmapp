@@ -90,8 +90,6 @@ class PermissionController extends Controller
         }
         $params = ['modal_title' => $modal_title, 'id' => $id ?? '', 'info' => $info ?? '', 'role' => $role];
         return view('crm.permission.add_edit', $params);
-        echo json_encode(['view' => $view]);
-        return true;
     }
 
     public function save(Request $request)
@@ -102,11 +100,11 @@ class PermissionController extends Controller
         $id = $request->id;
         if (isset($id) && !empty($id)) {
             $role_validator   = [
-                'role_id'      => ['required', 'string', 'max:255', 'unique:role_permissions,role_id,' . $id],
+                'role_id'      => ['required', 'string', 'max:255', 'unique:role_permissions,role_id,' . $id.',id,company_id,'.auth()->user()->company_id],
             ];
         } else {
             $role_validator   = [
-                'role_id'      => ['required', 'string', 'max:255', 'unique:role_permissions,role_id'],
+                'role_id'      => ['required', 'string', 'max:255', 'unique:role_permissions,role_id,null,id,company_id,'.auth()->user()->company_id],
             ];
         }
         //Validate the product

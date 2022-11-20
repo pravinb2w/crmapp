@@ -12,7 +12,7 @@ use PHPUnit\Framework\Constraint\Count;
 
 class CompanyController extends Controller
 {
-    public function index(Type $var = null)
+    public function index()
     {
         $params = array('btn_name' => 'Company', 'btn_fn_param' => 'company');
         return view('crm.company.index', $params);
@@ -68,6 +68,7 @@ class CompanyController extends Controller
                     <label class="form-check-label" for="customCheck2">&nbsp;</label>
                 </div>';
                 $nested_data[ 'site_name' ]         = $company->site_name;
+                $nested_data[ 'site_code' ]         = $company->site_code;
                 $nested_data[ 'status' ]            = $company_status;
                 $nested_data[ 'action' ]            = $action;
                 $data[]                             = $nested_data;
@@ -106,6 +107,7 @@ class CompanyController extends Controller
         
         $role_validator   = [
             'company_name'      => [ 'required', 'string', 'max:255'],
+            'company_code'      => [ 'required', 'string', 'max:255', 'unique:company_settings,site_code,'.$id],
         ];
         //Validate the product
         $validator                     = Validator::make( $request->all(), $role_validator );
@@ -114,16 +116,14 @@ class CompanyController extends Controller
 
             $ins['status'] = isset($request->status) ? 1 : 0;
             $ins['site_name'] = $request->company_name;
-            
+            $ins['site_code'] = $request->company_code;
+            $ins['added_by'] = Auth::id();
+
+            CompanySettings::updateOrCreate(['id' => $id], $ins);
+
             if( isset($id) && !empty($id) ) {
-                $sett = CompanySettings::find($id);
-                $sett->status = isset($request->status) ? 1 : 0;
-                $sett->site_name = $request->company_name;
-                $sett->update();
                 $success = 'Updated Company';
             } else {
-                $ins['added_by'] = Auth::id();
-                CompanySettings::create($ins);
                 $success = 'Added new company';
             }
             return response()->json(['error'=>[$success], 'status' => '0']);

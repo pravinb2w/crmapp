@@ -15,6 +15,13 @@ use CommonHelper;
 
 class ActivityController extends Controller
 {
+    public $companyCode;
+
+    public function __construct(Request $request)
+    {
+        $this->companyCode = $request->segment(1);
+    }
+
     public function index(Request $request)
     {
         $params = array('btn_name' => 'Activity', 'btn_fn_param' => 'activities');
@@ -140,7 +147,7 @@ class ActivityController extends Controller
             $info = Activity::find($id);
             $modal_title = 'Update Activity';
         }
-        $users = User::whereNotNull('role_id')->get();
+        $users = User::whereNotNull('role_id')->where('company_id', auth()->user()->company_id)->get();
         $customers = Customer::all();
         $params = [
             'modal_title' => $modal_title, 'id' => $id ?? '', 'info' => $info ?? '', 'users' => $users,
@@ -222,10 +229,10 @@ class ActivityController extends Controller
             }
 
             if ($request->lead_id) {
-                CommonHelper::send_lead_activity_notification($activity_id, $request->user_id, $id);
+                CommonHelper::send_lead_activity_notification($activity_id, $request->user_id, $id, $this->companyCode);
             }
             if ($request->deal_id) {
-                CommonHelper::send_deal_activity_notification($activity_id, $request->user_id, $id);
+                CommonHelper::send_deal_activity_notification($activity_id, $request->user_id, $id, $this->companyCode);
             }
 
             return response()->json(['error' => [$success], 'status' => '0']);
@@ -268,15 +275,16 @@ class ActivityController extends Controller
     public function mark_as_done(Request $request)
     {
         $id = $request->id;
+        
         $type = $request->type;
         $lead_id = '';
         $deal_id = '';
         if (isset($type) && !empty($type)) {
             $deal_id = $request->lead_id;
-            CommonHelper::send_deal_activity_done_notification($id, $deal_id);
+            CommonHelper::send_deal_activity_done_notification($id, $deal_id, $this->companyCode);
         } else {
             $lead_id = $request->lead_id;
-            CommonHelper::send_lead_activity_done_notification($id, $lead_id);
+            CommonHelper::send_lead_activity_done_notification($id, $lead_id, $this->companyCode);
         }
         if (!$request->lead_id) {
             $page_type = 'activities';
@@ -304,7 +312,7 @@ class ActivityController extends Controller
 
         $info = Activity::find($activity_id);
         $modal_title = 'Update Activity';
-        $users = User::whereNotNull('role_id')->get();
+        $users = User::whereNotNull('role_id')->where('company_id', auth()->user()->company_id)->get();
         $customers = Customer::all();
         $params = [
             'modal_title' => $modal_title, 'id' => $id ?? '', 'info' => $info ?? '', 'users' => $users,

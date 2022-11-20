@@ -15,6 +15,8 @@ class CreateDealDocumentsTable extends Migration
     {
         Schema::create('deal_documents', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('company_id')->comment('from companysettings')->nullable();
+            $table->foreign('company_id')->references('id')->on('company_settings')->onDelete('no action');
             $table->unsignedBigInteger('deal_id')->comment('from deals')->nullable();
             $table->foreign('deal_id')->references('id')->on('deals')->onDelete('no action');
             $table->text('document');

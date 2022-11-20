@@ -38,7 +38,7 @@
                 </div>
                 
 
-                <form action="{{ route('login.submit') }}" method="POST" >
+                <form action="{{ route('login.submit', ['companyCode' => $companyCode]) }}" method="POST" >
                     @csrf
                     <div class="mb-3">
                         <label for="emailaddress" class="form-label">Email address</label>
@@ -53,7 +53,7 @@
 
                     <div class="mb-3">
                         @if (Route::has('forget.password.get'))
-                            <a class="text-muted float-end" href="{{ route('forget.password.get') }}">
+                            <a class="text-muted float-end" href="{{ route('forget.password.get', ['companyCode' => $companyCode]) }}">
                                 <small> {{ __('Forgot Your Password?') }} </small>
                             </a>
                         @endif

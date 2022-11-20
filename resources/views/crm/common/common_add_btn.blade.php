@@ -1,17 +1,19 @@
 @php
-$path_name = str_replace(
-    '/',
-    '',
-    request()
-        ->route()
-        ->getAction()['prefix'],
-);
+// $path_name = str_replace(
+//     '/',
+//     '',
+//     request()
+//         ->route()
+//         ->getAction()['prefix'],
+// );
+$path_name = \Request::route()->getName();
 $path_name = empty($path_name) ? request()->route()->uri : $path_name;
+// echo $path_name;
 @endphp
 <div class="row mb-2">
-
-    @if (Auth::user()->hasAccess($path_name, 'is_edit'))
-        <div class="col-sm-5">
+    <div class="col-sm-5">
+    @if (Auth::user()->hasAccess($path_name, 'is_edit') && Auth::user()->hasLimit($path_name) )
+        
             @if( isset( $is_add_exits ) && $is_add_exits == 'no' ) 
             @else
                 @if (isset($btn_href) && !empty($btn_href))
@@ -22,13 +24,16 @@ $path_name = empty($path_name) ? request()->route()->uri : $path_name;
                 @endif
                 <i class="mdi mdi-plus-circle me-2"></i> Add {{ $btn_name }}</a>
             @endif
-        </div>
+        
     @endif
-    @if (Auth::user()->hasAccess($path_name, 'is_edit') &&
-        strtolower(str_replace(' ', '_', $btn_name)) != 'workflow_automation')
+</div>
+    @php
+        $not_in_export = array('workflow_automation', 'company')
+    @endphp
+    @if (Auth::user()->hasAccess($path_name, 'is_export') && !in_array(strtolower(str_replace(' ', '_', $btn_name)), $not_in_export ) )
         <div class="col-sm-7">
             <div class="text-sm-end">
-                <a href="{{ route('export.' . strtolower(str_replace(' ', '_', $btn_name))) }}"
+                <a href="{{ route('export.' . strtolower(str_replace(' ', '_', $btn_name)), $companyCode) }}"
                     class="btn btn-success btn-sm"> <i class="fa fa-download"></i> Excel </a>
             </div>
         </div><!-- end col-->

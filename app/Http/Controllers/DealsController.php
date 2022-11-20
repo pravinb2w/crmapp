@@ -29,10 +29,16 @@ use App\Mail\SubmitApproval;
 use App\Models\SendMail;
 use Mail;
 use DB;
-
+use Illuminate\Support\Facades\File;
 
 class DealsController extends Controller
 {
+    public $companyCode;
+
+    public function __construct(Request $request)
+    {
+        $this->companyCode = $request->segment(1);
+    }
     public function index(Request $request)
     {
         $params = array('btn_name' => 'Deals', 'btn_fn_param' => 'deals');
@@ -80,7 +86,7 @@ class DealsController extends Controller
                 }
                 $action = '';
                 if (Auth::user()->hasAccess('deals', 'is_view')) {
-                    $action .= '<a href="' . route('deals.view', ['id' => $deals->id]) . '" class="action-icon"> <i class="mdi mdi-eye"></i></a>';
+                    $action .= '<a href="' . route('deals.view', ['id' => $deals->id, 'companyCode' => $this->companyCode]) . '" class="action-icon"> <i class="mdi mdi-eye"></i></a>';
                 }
                 if ((Auth::user()->hasAccess('deals', 'is_edit') && $deals->assigned_to != null && $deals->assigned_to == Auth::id()) || superadmin()) {
                     $action .= '<a href="javascript:void(0);" class="action-icon" onclick="return get_add_modal(\'deals\', ' . $deals->id . ')"> <i class="mdi mdi-square-edit-outline"></i></a>';
@@ -111,7 +117,7 @@ class DealsController extends Controller
     {
         $id = $request->id;
         $info = Deal::find($id);
-        $users = User::whereNotNull('role_id')->get();
+        $users = User::whereNotNull('role_id')->where('company_id', auth()->user()->company_id)->get();
         $stage = DealStage::orderBy('order_by', 'asc')->get();
         $product_list = Product::all();
         $invoice_no = CommonHelper::get_invoice_code();
@@ -142,7 +148,7 @@ class DealsController extends Controller
         $lead_id = $request->lead_id;
         $modal_title = 'Add Deal';
         $stage = DealStage::orderBy('order_by', 'asc')->get();
-        $users = User::whereNotNull('role_id')->get();
+        $users = User::whereNotNull('role_id')->where('company_id', auth()->user()->company_id)->get();
         $list = Product::all();
 
         if (isset($lead_id) && !empty($lead_id)) {
@@ -222,14 +228,14 @@ class DealsController extends Controller
                 $success = 'Added new Deal';
             }
 
-            CommonHelper::send_deal_notification($id, $request->assigned_to, $request->id);
+            CommonHelper::send_deal_notification($id, $request->assigned_to, $request->id, $this->companyCode);
             if ($request->lead_id) {
                 $lead = Lead::find($request->lead_id);
                 $lead->status = 2;
                 $lead->updated_by = Auth::id();
                 $lead->update();
 
-                CommonHelper::send_deal_conversion_notification($request->lead_id);
+                CommonHelper::send_deal_conversion_notification($request->lead_id, $this->companyCode);
 
                 $deal_info = Deal::find($id);
 
@@ -464,7 +470,7 @@ class DealsController extends Controller
                 $success = 'Acitivity added successfully';
             }
 
-            CommonHelper::send_deal_activity_notification($activity_id, $deal_info->assigned_to, $id);
+            CommonHelper::send_deal_activity_notification($activity_id, $deal_info->assigned_to, $id, $this->companyCode);
 
             return response()->json(['error' => [$success], 'status' => '0', 'deal_id' => $deal_id, 'type' => 'planned']);
         }
@@ -497,7 +503,7 @@ class DealsController extends Controller
             $deal_info->current_stage_id = $stage_id;
             $deal_info->update();
 
-            CommonHelper::send_deal_stage_notification($deal_id, $stage_id);
+            CommonHelper::send_deal_stage_notification($deal_id, $stage_id, $this->companyCode);
 
             //condition 2 -> 
             //insert in pipeline
@@ -558,7 +564,7 @@ class DealsController extends Controller
         }
         $deal->status = $status;
         $deal->update();
-        CommonHelper::send_deal_winLoss_notification($id, $status);
+        CommonHelper::send_deal_winLoss_notification($id, $status, $this->companyCode);
 
 
         $stage = DealStage::orderBy('order_by', 'asc')->get();
@@ -664,6 +670,10 @@ class DealsController extends Controller
         if (!empty($pdf_template)) {
             $pdf = PDF::loadView('crm.invoice.templates.invoice_template_' . $pdf_template, $data);
             $path = public_path('storage/invoice');
+
+            if(!File::isDirectory($path)){
+                File::makeDirectory($path, 0777, true, true);
+            } 
             return $pdf->save($path . '/' . str_replace("/", "_", $info->invoice_no) . '.pdf');
         } else {
             $pdf = PDF::loadView('mypdf', $data);
@@ -702,8 +712,8 @@ class DealsController extends Controller
             'name' => $deal_info->customer->first_name,
             'invoice_no' => $info->invoice_no,
             // 'html' => view('crm.invoice._mail_invoice', ['info' => $info, 'company' => $company]),
-            'url_a' => route('approve-invoice', ['id' => $invoice_id]),
-            'url_b' => route('reject-invoice', ['id' => $invoice_id]),
+            'url_a' => route('approve-invoice', ['id' => $invoice_id, 'companyCode' => $this->companyCode]),
+            'url_b' => route('reject-invoice', ['id' => $invoice_id, 'companyCode' => $this->companyCode]),
         ];
 
         // $send_mail = new SubmitApproval($body);
@@ -743,7 +753,7 @@ class DealsController extends Controller
             $role = Note::find($activity_id);
             $role->delete();
         } else if (!empty($lead_type)) {
-            CommonHelper::send_deal_activity_delete_notification($activity_id, $deal_id);
+            CommonHelper::send_deal_activity_delete_notification($activity_id, $deal_id, $this->companyCode );
 
             $role = Activity::find($activity_id);
             $role->delete();
@@ -759,7 +769,7 @@ class DealsController extends Controller
         $info = Deal::with(['all_activity', 'notes'])->find($id);
         $invoice_no = CommonHelper::get_invoice_code();
 
-        $users = User::whereNotNull('role_id')->get();
+        $users = User::whereNotNull('role_id')->where('company_id', auth()->user()->company_id)->get();
         return view('crm.deals._' . $tab . '_form', ['id' => $id, 'info' => $info, 'users' => $users, 'invoice_no' => $invoice_no, 'country' => $country]);
     }
 

@@ -1,5 +1,5 @@
 <div class="modal-dialog modal-right" style="width: 500px">
-    <form  id="organizations-form" method="POST" action="{{ route('organizations.save') }}" autocomplete="off" class="modal-content h-100">
+    <form  id="organizations-form" method="POST" action="{{ route('organizations.save', $companyCode) }}" autocomplete="off" class="modal-content h-100">
         <div class="modal-header">
             <h4 class="modal-title" id="myLargeModalLabel">{{ $modal_title }}</h4>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -110,7 +110,7 @@
                                 $('#Mymodal').modal('hide');
                             },100);
                             if( from == 'dashboard' ) {
-                                window.location.href="{{ route('organizations') }}";
+                                window.location.href="{{ route('organizations', $companyCode) }}";
                             } else {
                                 ReloadDataTableModal('organizations-datatable');
                             }

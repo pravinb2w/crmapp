@@ -21,7 +21,7 @@ class RedirectIfAuthenticated
     {
         $guards = empty($guards) ? [null] : $guards;
         if (Auth::guard('web')->check()) {
-            return redirect('/dev/dashboard');
+            return redirect()->route('dashboard', $request->segment(1));
         }
        
         foreach ($guards as $guard) {

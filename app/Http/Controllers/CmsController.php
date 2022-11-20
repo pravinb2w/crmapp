@@ -16,8 +16,8 @@ class CmsController extends Controller
 {
     public function index()
     {
-
-        $params = array('btn_name' => 'CMS Pages', 'btn_fn_param' => '', 'btn_href' => route('pages.add'));
+        $companyCode = request()->segment(1);
+        $params = array('btn_name' => 'CMS Pages', 'btn_fn_param' => '', 'btn_href' => route('pages.add', $companyCode));
         $result = LandingPages::where('status', '=', 1)->get();
 
         return view('crm.cms.index', $params, compact('result'));
@@ -30,7 +30,7 @@ class CmsController extends Controller
         return view('crm.cms.add', $params);
     }
 
-    public function edit(Request $equest, $id = null)
+    public function edit(Request $equest, $companyCode = null, $id = null)
     {
         $params['id'] = $id;
         $params['pagetype'] = PageType::where('status', 1)->get();
@@ -52,7 +52,17 @@ class CmsController extends Controller
             if ($request->is_default_landing_page) {
                 LandingPages::query()->update(['is_default_landing_page' => 0]);
             }
-            $result = LandingPages::create([
+            // dd( $request->all() );
+            // if( $request->hasFile('page_logo')){
+            //     $page_logo = Input::file('page_logo');
+
+            // }
+            // $path = public_path('storage/invoice');
+
+            // if(!File::isDirectory($path)){
+            //     File::makeDirectory($path, 0777, true, true);
+            // } 
+            $ins = [
                 'page_title'    => $request->page_title,
                 'page_type'     => $request->page_type,
                 'page_logo'     => Image::make($request->file('page_logo'))->encode('data-url'),
@@ -67,10 +77,10 @@ class CmsController extends Controller
                 'about_content' => $request->about_content,
                 'primary_color' => $request->primary_color,
                 'secondary_color' => $request->secondary_color,
-                'meta_title' => $request->meta_title ?? null,
-                'meta_description' => $request->meta_description ?? null,
                 'is_default_landing_page' => $request->is_default_landing_page ?? 0
-            ]);
+            ];
+            // dd( $ins );
+            $result = LandingPages::create($ins);
 
 
             foreach ($request->media_type as $i => $media) {
@@ -100,7 +110,7 @@ class CmsController extends Controller
                         'sub_title' =>  $request->sub_banner_title[$i],
                         'image'     =>  Image::make($request->file('banner_image')[$i])->encode('data-url'),
                         'content'   =>  $request->banner_content[$i],
-                        'tags'   =>  $request->tags[$i],
+                        // 'tags'   =>  $request->tags[$i],
                     ];
                     $result->LandingPageBannerSliders()->create($slider_arr);
                 }
@@ -243,6 +253,6 @@ class CmsController extends Controller
             }
         }
 
-        return response()->json(['success' => "Landing page to be created successfully !"]);
+        return response()->json(['success' => "Landing page to be updated successfully !"]);
     }
 }

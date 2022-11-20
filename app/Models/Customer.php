@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Scopes\CompanyScope;
+use App\Traits\ObservantTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -12,7 +14,7 @@ use Illuminate\Notifications\Notifiable;
 
 class Customer extends Authenticatable implements Auditable
 {
-    use HasFactory;
+    use HasFactory, ObservantTrait;
     use \OwenIt\Auditing\Auditable;
     use Notifiable;
 
@@ -33,6 +35,11 @@ class Customer extends Authenticatable implements Auditable
         'password',
         'dial_code'
     ];
+
+    protected static function booted()
+    {
+        static::addGlobalScope(new CompanyScope);
+    }
 
     public function company()
     {

@@ -13,6 +13,13 @@ use Illuminate\Support\Facades\Http;
 
 class EmailTemplateController extends Controller
 {
+    public $companyCode;
+
+    public function __construct(Request $request)
+    {
+        $this->companyCode = $request->segment(1);
+    }
+
     public function index()
     {
         $data   = EmailTemplates::paginate(10);
@@ -45,13 +52,13 @@ class EmailTemplateController extends Controller
                 'content' => $request->content,
                 'created_by' => Auth()->user()->name,
             ]);
-            return redirect()->route('email.index')->with('success', 'Mail Created successfully!');
+            return redirect()->route('email.index', $this->companyCode)->with('success', 'Mail Created successfully!');
         } else {
             return back()->withErrors($validator);
         }
     }
 
-    public function edit($id)
+    public function edit($companyCode, $id)
     {
         $data   = EmailTemplates::findOrFail($id);
         // $response = Http::get('https://smshorizon.co.in/api/sendsms.php?user=stockphoenix&apikey=k5RWlTshSVTDa3rfETQ2&mobile=9551706025&message=Your Otp for Change Password -2025&senderid=STKPHX&type=txt&tid=1207161849508239572');
@@ -74,7 +81,6 @@ class EmailTemplateController extends Controller
 
         $email_type = config('constant.email_type');
 
-
         return view('crm.utilities.email_template.edit', compact('data', 'email_type'));
     }
 
@@ -96,15 +102,15 @@ class EmailTemplateController extends Controller
                 'content' => $request->content,
                 'created_by' => Auth()->user()->name,
             ]);
-            return redirect()->route('email.index')->with('success', 'Mail Updated successfully!');
+            return redirect()->route('email.index', $this->companyCode)->with('success', 'Mail Updated successfully!');
         } else {
             return back()->withErrors($validator);
         }
     }
 
-    public function delete($id)
+    public function delete($companyCode, $id)
     {
         EmailTemplates::find($id)->delete();
-        return redirect()->route('email.index')->with('success', 'Mail Deleted successfully!');
+        return redirect()->route('email.index', $this->companyCode)->with('success', 'Mail Deleted successfully!');
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\ObservantTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
@@ -9,11 +10,15 @@ use Auth;
 
 class Audit extends Model
 {
-    use HasFactory;
+    use HasFactory, ObservantTrait;
+    protected $fillable = [
+        "company_id"
+    ];
     protected $casts = [
         'old_values'   => 'array',
         'new_values'   => 'array',
         'auditable_id' => 'integer',
+        
     ];
     
     public function scopeLatests( Builder $query ) {

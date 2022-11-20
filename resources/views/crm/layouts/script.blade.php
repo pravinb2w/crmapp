@@ -102,7 +102,7 @@
                                 $('#error').addClass('alert alert-success');
                                 response.error.forEach(display_errors);
                                 if( page_url ) {
-                                    window.location.href = "{{ route('leads') }}";
+                                    window.location.href = "{{ route('leads', $companyCode) }}";
                                 } else {
                                     ReloadDataTableModal(page_type+'-datatable');
                                 }
@@ -160,212 +160,212 @@
 
     function set_add_url(page_type) {
         if(page_type=='roles') {
-            return ajax_url = '{{ route("roles.add") }}';
+            return ajax_url = '{{ route("roles.add", $companyCode) }}';
         } else if(page_type=='users') {
-            return ajax_url = '{{ route("users.add") }}';
+            return ajax_url = '{{ route("users.add", $companyCode) }}';
         } else if(page_type=='subscriptions') {
-            return ajax_url = '{{ route("subscriptions.add") }}';
+            return ajax_url = '{{ route("subscriptions.add", $companyCode) }}';
         } else if(page_type=='company-subscriptions') {
-            return ajax_url = '{{ route("company-subscriptions.add") }}';
+            return ajax_url = '{{ route("company-subscriptions.add", $companyCode) }}';
         } else if(page_type=='company') {
-            return ajax_url = '{{ route("company.add") }}';
+            return ajax_url = '{{ route("company.add", $companyCode) }}';
         } else if(page_type=='pagetype') {
             return ajax_url = '{{ route("pagetype.add") }}';
         } else if(page_type=='dealstages') {
-            return ajax_url = '{{ route("dealstages.add") }}';
+            return ajax_url = '{{ route("dealstages.add", $companyCode) }}';
         } else if(page_type=='leadstage') {
-            return ajax_url = '{{ route("leadstage.add") }}';
+            return ajax_url = '{{ route("leadstage.add", $companyCode) }}';
         } else if(page_type=='leadsource') {
-            return ajax_url = '{{ route("leadsource.add") }}';
+            return ajax_url = '{{ route("leadsource.add", $companyCode) }}';
         } else if(page_type=='country') {
-            return ajax_url = '{{ route("country.add") }}';
+            return ajax_url = '{{ route("country.add", $companyCode) }}';
         } else if(page_type=='customers') {
-            return ajax_url = '{{ route("customers.add") }}';
+            return ajax_url = '{{ route("customers.add", $companyCode) }}';
         } else if(page_type=='organizations') {
-            return ajax_url = '{{ route("organizations.add") }}';
+            return ajax_url = '{{ route("organizations.add", $companyCode) }}';
         } else if(page_type=='teams') {
             return ajax_url = '{{ route("teams.add") }}';
         } else if(page_type=='products') {
-            return ajax_url = '{{ route("products.add") }}';
+            return ajax_url = '{{ route("products.add", $companyCode) }}';
         } else if(page_type=='tasks') {
-            return ajax_url = '{{ route("tasks.add") }}';
+            return ajax_url = '{{ route("tasks.add", $companyCode) }}';
         } else if(page_type=='activities') {
-            return ajax_url = '{{ route("activities.add") }}';
+            return ajax_url = '{{ route("activities.add", $companyCode) }}';
         } else if(page_type=='leads') {
-            return ajax_url = '{{ route("leads.add") }}';
+            return ajax_url = '{{ route("leads.add",$companyCode) }}';
         } else if(page_type=='notes') {
-            return ajax_url = '{{ route("notes.add") }}';
+            return ajax_url = '{{ route("notes.add", $companyCode) }}';
         } else if(page_type=='permissions') {
-            return ajax_url = '{{ route("permissions.add") }}';
+            return ajax_url = '{{ route("permissions.add", $companyCode) }}';
         } else if(page_type=='deals') {
-            return ajax_url = '{{ route("deals.add") }}';
+            return ajax_url = '{{ route("deals.add", $companyCode) }}';
         } else if(page_type=='taxgroup') {
             return ajax_url = '{{ route("tax.add") }}';
         } else if(page_type=='automation') {
-            return ajax_url = '{{ route("automation.add") }}';
+            return ajax_url = '{{ route("automation.add", $companyCode) }}';
         } else if(page_type=='activity-status') {
-            return ajax_url = '{{ route("activity-status.add") }}';
+            return ajax_url = '{{ route("activity-status.add", $companyCode) }}';
         } else if(page_type=='task-status') {
-            return ajax_url = '{{ route("task-status.add") }}';
+            return ajax_url = '{{ route("task-status.add", $companyCode) }}';
         } else if(page_type=='document-types') {
-            return ajax_url = '{{ route("document_types.add") }}';
+            return ajax_url = '{{ route("document_types.add", $companyCode) }}';
         }
     }
 
     function set_view_url(page_type) {
         if(page_type=='roles') {
-            return ajax_url = '{{ route("roles.view") }}';
+            return ajax_url = '{{ route("roles.view", $companyCode) }}';
         } else if(page_type=='users') {
-            return ajax_url = '{{ route("users.view") }}';
+            return ajax_url = '{{ route("users.view", $companyCode) }}';
         } else if(page_type=='subscriptions') {
-            return ajax_url = '{{ route("subscriptions.view") }}';
+            return ajax_url = '{{ route("subscriptions.view", $companyCode ) }}';
         } else if(page_type=='company-subscriptions') {
-            return ajax_url = '{{ route("company-subscriptions.view") }}';
+            return ajax_url = '{{ route("company-subscriptions.view", $companyCode) }}';
         } else if(page_type=='company') {
-            return ajax_url = '{{ route("company.view") }}';
+            return ajax_url = '{{ route("company.view", $companyCode) }}';
         } else if(page_type=='pagetype') {
             return ajax_url = '{{ route("pagetype.view") }}';
         } else if(page_type=='dealstages') {
-            return ajax_url = '{{ route("dealstages.view") }}';
+            return ajax_url = '{{ route("dealstages.view", $companyCode) }}';
         } else if(page_type=='leadstage') {
-            return ajax_url = '{{ route("leadstage.view") }}';
+            return ajax_url = '{{ route("leadstage.view", $companyCode) }}';
         } else if(page_type=='leadsource') {
-            return ajax_url = '{{ route("leadsource.view") }}';
+            return ajax_url = '{{ route("leadsource.view", $companyCode) }}';
         } else if(page_type=='country') {
-            return ajax_url = '{{ route("country.view") }}';
+            return ajax_url = '{{ route("country.view", $companyCode) }}';
         } else if(page_type=='customers') {
-            return ajax_url = '{{ route("customers.view") }}';
+            return ajax_url = '{{ route("customers.view", $companyCode) }}';
         } else if(page_type=='organizations') {
-            return ajax_url = '{{ route("organizations.view") }}';
+            return ajax_url = '{{ route("organizations.view", $companyCode) }}';
         } else if(page_type=='teams') {
             return ajax_url = '{{ route("teams.view") }}';
         } else if(page_type=='products') {
-            return ajax_url = '{{ route("products.view") }}';
+            return ajax_url = '{{ route("products.view", $companyCode) }}';
         } else if(page_type=='tasks') {
-            return ajax_url = '{{ route("tasks.view") }}';
+            return ajax_url = '{{ route("tasks.view", $companyCode) }}';
         } else if(page_type=='activities') {
-            return ajax_url = '{{ route("activities.view") }}';
+            return ajax_url = '{{ route("activities.view", $companyCode) }}';
         } else if(page_type=='notes') {
-            return ajax_url = '{{ route("notes.view") }}';
+            return ajax_url = '{{ route("notes.view", $companyCode) }}';
         } else if(page_type=='permissions') {
-            return ajax_url = '{{ route("permissions.view") }}';
+            return ajax_url = '{{ route("permissions.view", $companyCode) }}';
         } else if(page_type=='taxgroup') {
             return ajax_url = '{{ route("tax.view") }}';
         } else if(page_type=='payments') {
-            return ajax_url = '{{ route("payments.view") }}';
+            return ajax_url = '{{ route("payments.view", $companyCode) }}';
         } else if(page_type=='automation') {
-            return ajax_url = '{{ route("automation.view") }}';
+            return ajax_url = '{{ route("automation.view", $companyCode) }}';
         } else if(page_type=='document-types') {
-            return ajax_url = '{{ route("document_types.view") }}';
+            return ajax_url = '{{ route("document_types.view", $companyCode) }}';
         }
     }
     function set_delete_url(page_type) {
         if(page_type=='roles') {
-            return ajax_url = '{{ route("roles.delete") }}';
+            return ajax_url = '{{ route("roles.delete", $companyCode) }}';
         } else if(page_type=='users') {
-            return ajax_url = '{{ route("users.delete") }}';
+            return ajax_url = '{{ route("users.delete", $companyCode) }}';
         } else if(page_type=='subscriptions') {
-            return ajax_url = '{{ route("subscriptions.delete") }}';
+            return ajax_url = '{{ route("subscriptions.delete", $companyCode ) }}';
         } else if(page_type=='company-subscriptions') {
-            return ajax_url = '{{ route("company-subscriptions.delete") }}';
+            return ajax_url = '{{ route("company-subscriptions.delete", $companyCode) }}';
         } else if(page_type=='company') {
-            return ajax_url = '{{ route("company.delete") }}';
+            return ajax_url = '{{ route("company.delete", $companyCode) }}';
         } else if(page_type=='pagetype') {
             return ajax_url = '{{ route("pagetype.delete") }}';
         } else if(page_type=='dealstages') {
-            return ajax_url = '{{ route("dealstages.delete") }}';
+            return ajax_url = '{{ route("dealstages.delete", $companyCode) }}';
         } else if(page_type=='leadstage') {
-            return ajax_url = '{{ route("leadstage.delete") }}';
+            return ajax_url = '{{ route("leadstage.delete", $companyCode) }}';
         } else if(page_type=='leadsource') {
-            return ajax_url = '{{ route("leadsource.delete") }}';
+            return ajax_url = '{{ route("leadsource.delete", $companyCode) }}';
         } else if(page_type=='country') {
-            return ajax_url = '{{ route("country.delete") }}';
+            return ajax_url = '{{ route("country.delete", $companyCode) }}';
         } else if(page_type=='organizations') {
-            return ajax_url = '{{ route("organizations.delete") }}';
+            return ajax_url = '{{ route("organizations.delete", $companyCode) }}';
         } else if(page_type=='teams') {
             return ajax_url = '{{ route("teams.delete") }}';
         } else if(page_type=='products') {
-            return ajax_url = '{{ route("products.delete") }}';
+            return ajax_url = '{{ route("products.delete", $companyCode) }}';
         } else if(page_type=='tasks') {
-            return ajax_url = '{{ route("tasks.delete") }}';
+            return ajax_url = '{{ route("tasks.delete", $companyCode) }}';
         } else if(page_type=='customers') {
-            return ajax_url = '{{ route("customers.delete") }}';
+            return ajax_url = '{{ route("customers.delete", $companyCode) }}';
         } else if(page_type=='activities') {
-            return ajax_url = '{{ route("activities.delete") }}';
+            return ajax_url = '{{ route("activities.delete", $companyCode) }}';
         } else if(page_type=='leads') {
-            return ajax_url = '{{ route("leads.delete") }}';
+            return ajax_url = '{{ route("leads.delete", $companyCode) }}';
         } else if(page_type=='notes') {
-            return ajax_url = '{{ route("notes.delete") }}';
+            return ajax_url = '{{ route("notes.delete", $companyCode) }}';
         } else if(page_type=='permissions') {
-            return ajax_url = '{{ route("permissions.delete") }}';
+            return ajax_url = '{{ route("permissions.delete", $companyCode) }}';
         } else if(page_type=='deals') {
-            return ajax_url = '{{ route("deals.delete") }}';
+            return ajax_url = '{{ route("deals.delete", $companyCode) }}';
         } else if(page_type=='taxgroup') {
             return ajax_url = '{{ route("tax.delete") }}';
         } else if(page_type=='payments') {
-            return ajax_url = '{{ route("payments.delete") }}';
+            return ajax_url = '{{ route("payments.delete", $companyCode) }}';
         } else if(page_type=='automation') {
-            return ajax_url = '{{ route("automation.delete") }}';
+            return ajax_url = '{{ route("automation.delete", $companyCode) }}';
         } else if(page_type=='activity-status') {
-            return ajax_url = '{{ route("activity-status.delete") }}';
+            return ajax_url = '{{ route("activity-status.delete", $companyCode) }}';
         } else if(page_type=='task-status') {
-            return ajax_url = '{{ route("task-status.delete") }}';
+            return ajax_url = '{{ route("task-status.delete", $companyCode) }}';
         } else if(page_type=='newsletter') {
-            return ajax_url = '{{ route("newsletter.delete") }}';
+            return ajax_url = '{{ route("newsletter.delete", $companyCode) }}';
         } else if(page_type=='document-types') {
-            return ajax_url = '{{ route("document_types.delete") }}';
+            return ajax_url = '{{ route("document_types.delete", $companyCode) }}';
         }
     }
 
     function set_status_url(page_type) {
         if(page_type=='roles') {
-            return ajax_url = '{{ route("roles.status") }}';
+            return ajax_url = '{{ route("roles.status", $companyCode) }}';
         } else if(page_type=='users') {
-            return ajax_url = '{{ route("users.status") }}';
+            return ajax_url = '{{ route("users.status", $companyCode) }}';
         } else if(page_type=='subscriptions') {
-            return ajax_url = '{{ route("subscriptions.status") }}';
+            return ajax_url = '{{ route("subscriptions.status", $companyCode) }}';
         } else if(page_type=='company-subscriptions') {
-            return ajax_url = '{{ route("company-subscriptions.status") }}';
+            return ajax_url = '{{ route("company-subscriptions.status", $companyCode) }}';
         } else if(page_type=='company') {
-            return ajax_url = '{{ route("company.status") }}';
+            return ajax_url = '{{ route("company.status", $companyCode) }}';
         } else if(page_type=='pagetype') {
             return ajax_url = '{{ route("pagetype.status") }}';
         } else if(page_type=='dealstages') {
-            return ajax_url = '{{ route("dealstages.status") }}';
+            return ajax_url = '{{ route("dealstages.status", $companyCode) }}';
         } else if(page_type=='leadstage') {
-            return ajax_url = '{{ route("leadstage.status") }}';
+            return ajax_url = '{{ route("leadstage.status", $companyCode) }}';
         } else if(page_type=='leadsource') {
-            return ajax_url = '{{ route("leadsource.status") }}';
+            return ajax_url = '{{ route("leadsource.status", $companyCode) }}';
         } else if(page_type=='country') {
-            return ajax_url = '{{ route("country.status") }}';
+            return ajax_url = '{{ route("country.status", $companyCode) }}';
         } else if(page_type=='organizations') {
-            return ajax_url = '{{ route("organizations.status") }}';
+            return ajax_url = '{{ route("organizations.status", $companyCode) }}';
         } else if(page_type=='teams') {
             return ajax_url = '{{ route("teams.status") }}';
         } else if(page_type=='products') {
-            return ajax_url = '{{ route("products.status") }}';
+            return ajax_url = '{{ route("products.status", $companyCode) }}';
         } else if(page_type=='tasks') {
-            return ajax_url = '{{ route("tasks.status") }}';
+            return ajax_url = '{{ route("tasks.status", $companyCode) }}';
         } else if(page_type=='customers') {
-            return ajax_url = '{{ route("customers.status") }}';
+            return ajax_url = '{{ route("customers.status", $companyCode) }}';
         } else if(page_type=='activities') {
-            return ajax_url = '{{ route("activities.status") }}';
+            return ajax_url = '{{ route("activities.status", $companyCode) }}';
         } else if(page_type=='leads') {
-            return ajax_url = '{{ route("leads.status") }}';
+            return ajax_url = '{{ route("leads.status", $companyCode) }}';
         } else if(page_type=='notes') {
-            return ajax_url = '{{ route("notes.status") }}';
+            return ajax_url = '{{ route("notes.status", $companyCode) }}';
         } else if(page_type=='deals') {
-            return ajax_url = '{{ route("deals.status") }}';
+            return ajax_url = '{{ route("deals.status", $companyCode) }}';
         } else if(page_type=='taxgroup') {
             return ajax_url = '{{ route("tax.status") }}';
         } else if(page_type=='automation') {
-            return ajax_url = '{{ route("automation.status") }}';
+            return ajax_url = '{{ route("automation.status", $companyCode) }}';
         } else if(page_type == 'activity-status' ) {
-            return ajax_url = '{{ route("activity-status.status") }}';
+            return ajax_url = '{{ route("activity-status.status", $companyCode) }}';
         } else if(page_type == 'task-status' ) {
-            return ajax_url = '{{ route("task-status.status") }}';
+            return ajax_url = '{{ route("task-status.status", $companyCode) }}';
         } else if(page_type == 'document-types' ) {
-            return ajax_url = '{{ route("document_types.status") }}';
+            return ajax_url = '{{ route("document_types.status", $companyCode) }}';
         }
     }
 
@@ -397,7 +397,7 @@ function org_auto_operand(id, query) {
         }
     });
     $.ajax({
-        url: "{{ route('autocomplete_org_save') }}",
+        url: "{{ route('autocomplete_org_save', $companyCode) }}",
         method:'POST',
         data: {query:query, id:id},
         success:function(response){
@@ -419,7 +419,7 @@ function cus_auto_operand(id, query, type = '') {
         }
     });
     $.ajax({
-        url: "{{ route('autocomplete_customer_save') }}",
+        url: "{{ route('autocomplete_customer_save', $companyCode) }}",
         method:'POST',
         data: {query:query, id:id, type:type},
         success:function(response){
@@ -443,7 +443,7 @@ function leade_deal_set(id, lead_type ) {
         }
     });
     $.ajax({
-        url: "{{ route('autocomplete_lead_deal_set') }}",
+        url: "{{ route('autocomplete_lead_deal_set', $companyCode) }}",
         method:'POST',
         data: {lead_type:lead_type, id:id},
         success:function(response){
@@ -479,7 +479,7 @@ function mark_as_done(id, lead_id='' , type = '') {
         }).then((result) => {
             /* Read more about isConfirmed, isDenied below */
             if (result.isConfirmed) {
-                var ajax_url = "{{ route('activities.mark_as_done') }}";
+                var ajax_url = "{{ route('activities.mark_as_done', $companyCode) }}";
                 $.ajaxSetup({
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -501,7 +501,8 @@ function mark_as_done(id, lead_id='' , type = '') {
                                     get_tab('history', response.lead_id);
                                 }
                                 if( response.deal_id ) {
-                                    get_tab('history', response.deal_id);
+                                    get_tab('activity', response.deal_id);
+                                    // get_tab('history', response.deal_id);
                                 }
                             }
                         }
@@ -520,7 +521,7 @@ function mark_as_done(id, lead_id='' , type = '') {
             }
         });
         $.ajax({
-            url: "{{ route('leads.refresh-timeline') }}",
+            url: "{{ route('leads.refresh-timeline', $companyCode) }}",
             method:'POST',
             data: {type:type, lead_id:lead_id},
             success:function(response){
@@ -544,7 +545,7 @@ function mark_as_done(id, lead_id='' , type = '') {
     }
 
     function open_deal_modal(lead_id='', id=''){
-        var ajax_url = "{{ route('deals.add') }}";
+        var ajax_url = "{{ route('deals.add', $companyCode) }}";
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -577,7 +578,7 @@ function mark_as_done(id, lead_id='' , type = '') {
             }).then((result) => {
             /* Read more about isConfirmed, isDenied below */
             if (result.isConfirmed) {
-                var ajax_url = "{{ route('leads.mark_as_done') }}";
+                var ajax_url = "{{ route('leads.mark_as_done', $companyCode) }}";
                 $.ajaxSetup({
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -610,7 +611,7 @@ function mark_as_done(id, lead_id='' , type = '') {
             }
         });
         $.ajax({
-            url: "{{ route('deals.refresh-timeline') }}",
+            url: "{{ route('deals.refresh-timeline', $companyCode) }}",
             method:'POST',
             data: {type:type, deal_id:deal_id, done_type:done_type},
             success:function(response){
@@ -629,7 +630,7 @@ function mark_as_done(id, lead_id='' , type = '') {
             }
         });
         $.ajax({
-            url: "{{ route('deals.save-notes') }}",
+            url: "{{ route('deals.save-notes', $companyCode) }}",
             type: 'POST',
             data: form_data,
             beforeSend: function() {
@@ -655,7 +656,7 @@ function mark_as_done(id, lead_id='' , type = '') {
             }
         });
         $.ajax({
-            url: "{{ route('deals.common.list') }}",
+            url: "{{ route('deals.common.list', $companyCode) }}",
             type: 'POST',
             data: {'deal_id':deal_id,'list_type':list_type},
             beforeSend: function() {
@@ -678,7 +679,7 @@ function mark_as_done(id, lead_id='' , type = '') {
             }
         });
         $.ajax({
-            url: "{{ route('deals.save-files') }}",
+            url: "{{ route('deals.save-files', $companyCode) }}",
             type: 'POST',
             data: formData,
             contentType: false,

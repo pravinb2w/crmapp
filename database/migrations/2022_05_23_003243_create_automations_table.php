@@ -15,6 +15,8 @@ class CreateAutomationsTable extends Migration
     {
         Schema::create('automations', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('company_id')->comment('from companysettings')->nullable();
+            $table->foreign('company_id')->references('id')->on('company_settings')->onDelete('no action');
             $table->string('activity_type');
             $table->string('activity_title')->nullable();
             $table->text('description')->nullable();

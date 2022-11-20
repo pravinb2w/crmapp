@@ -10,7 +10,7 @@ use App\Models\DealStage;
 
 class DealStageController extends Controller
 {
-    public function index(Type $var = null)
+    public function index()
     {
         $params = array('btn_name' => 'Deal Stage', 'btn_fn_param' => 'dealstages');
         return view('crm.dealstage.index', $params);
@@ -98,8 +98,6 @@ class DealStageController extends Controller
         }
         $params = ['modal_title' => $modal_title, 'id' => $id ?? '', 'info' => $info ?? ''];
         return view('crm.dealstage.add_edit', $params);
-        echo json_encode(['view' => $view]);
-        return true;
     }
 
     public function view(Request $request)
@@ -120,13 +118,13 @@ class DealStageController extends Controller
 
         if (isset($id) && !empty($id)) {
             $role_validator   = [
-                'stages'      => ['required', 'string', 'max:255'],
-                'order_by' => ['required', 'string']
+                'stages'      => ['required', 'string', 'max:255', 'unique:deal_stages,stages,'.$id.',id,company_id,'.auth()->user()->company_id],
+                'order_by' => ['required', 'string', 'unique:deal_stages,order_by,'.$id.',id,company_id,'.auth()->user()->company_id]
             ];
         } else {
             $role_validator   = [
-                'stages'      => ['required', 'string', 'max:255', 'unique:deal_stages,stages'],
-                'order_by' => ['required', 'string', 'unique:deal_stages,order_by']
+                'stages'      => ['required', 'string', 'max:255', 'unique:deal_stages,stages,null,id,company_id,'.auth()->user()->company_id],
+                'order_by' => ['required', 'string', 'unique:deal_stages,order_by,null,id,company_id,'.auth()->user()->company_id]
             ];
         }
         //Validate the product

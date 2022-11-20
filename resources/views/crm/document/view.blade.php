@@ -21,8 +21,8 @@
                     <div class="page-title-right">
                         <ol class="breadcrumb m-0">
                             <li class="breadcrumb-item"><a href="javascript: void(0);">CRM</a></li>
-                            <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
-                            <li class="breadcrumb-item"><a href="{{ route('customer_document_approval') }}">Customer Document Approval</a></li>
+                            <li class="breadcrumb-item"><a href="{{ route('dashboard', $companyCode) }}">Dashboard</a></li>
+                            <li class="breadcrumb-item"><a href="{{ route('customer_document_approval', $companyCode) }}">Customer Document Approval</a></li>
                             <li class="breadcrumb-item active">Customer Document View</li>
                         </ol>
                     </div>
@@ -144,7 +144,7 @@
                             }
                         });
                         $.ajax({
-                            url: "{{ route('customer_document_approval.change.status') }}",
+                            url: "{{ route('customer_document_approval.change.status', $companyCode) }}",
                             type: 'POST',
                             data: {
                                 status: status,
@@ -184,7 +184,7 @@
                             }
                         });
                         $.ajax({
-                            url: "{{ route('customer_document_approval.change.status') }}",
+                            url: "{{ route('customer_document_approval.change.status', $companyCode) }}",
                             type: 'POST',
                             data: {
                                 status: status,

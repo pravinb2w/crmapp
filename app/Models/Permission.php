@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Scopes\CompanyScope;
+use App\Traits\ObservantTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -9,7 +11,7 @@ use Illuminate\Database\Eloquent\Builder;
 
 class Permission extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes,ObservantTrait;
 
     protected $table = 'role_permissions';
     protected $fillable = [
@@ -19,6 +21,11 @@ class Permission extends Model
         'added_by',
         'updated_by',
     ];
+
+    protected static function booted()
+    {
+        static::addGlobalScope(new CompanyScope);
+    }
 
     public function scopeLatests( Builder $query ) {
         return $query->orderBy( static::CREATED_AT, 'desc' );

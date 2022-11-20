@@ -66,16 +66,16 @@ class ForgotPasswordController extends Controller
      *
      * @return response()
      */
-    public function showResetPasswordForm($token) { 
+    public function showResetPasswordForm($companyCode,$token) { 
         $check = DB::table('password_resets')
                             ->where([
                               'token' => $token
                             ])
                             ->first();
         if( isset( $check ) && !empty( $check ) ) {
-            return view('auth.forgetPasswordLink', ['token' => $token]);
+            return view('auth.forgetPasswordLink', ['token' => $token, 'companyCode' => $companyCode]);
         } else {
-            return redirect()->route('login')->with('error', 'Invalid token or expired.!');
+            return redirect()->route('login', $companyCode)->with('error', 'Invalid token or expired.!');
 
         }
     }
@@ -107,6 +107,6 @@ class ForgotPasswordController extends Controller
 
         DB::table('password_resets')->where(['token'=> $request->token])->delete();
 
-        return redirect()->route('login')->with('message', 'Your password has been changed!');
+        return redirect()->route('login', $request->companyCode)->with('message', 'Your password has been changed!');
     }
 }

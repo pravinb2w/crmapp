@@ -111,11 +111,11 @@ class DocumentTypeController extends Controller
 
         if (isset($id) && !empty($id)) {
             $role_validator   = [
-                'document_name'      => ['required', 'string', 'max:255', 'unique:kyc_document_types,document_name,' . $id],
+                'document_name'      => ['required', 'string', 'max:255', 'unique:kyc_document_types,document_name,' . $id.',id,company_id,'.auth()->user()->company_id],
             ];
         } else {
             $role_validator   = [
-                'document_name'      => ['required', 'string', 'max:255', 'unique:kyc_document_types,document_name'],
+                'document_name'      => ['required', 'string', 'max:255', 'unique:kyc_document_types,document_name,null,id,company_id,'.auth()->user()->company_id],
             ];
         }
         //Validate the product

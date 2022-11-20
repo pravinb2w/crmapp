@@ -94,7 +94,7 @@ form#activites-form>div>label>i {
                 <div class="page-title-right">
                     <ol class="breadcrumb m-0">
                         <li class="breadcrumb-item"><a href="javascript: void(0);">CRM</a></li>
-                        <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
+                        <li class="breadcrumb-item"><a href="{{ route('dashboard',$companyCode) }}">Dashboard</a></li>
                         <li class="breadcrumb-item active">Deals</li>
                     </ol>
                 </div>
@@ -118,12 +118,14 @@ form#activites-form>div>label>i {
                     <span>Notes</span>
                 </a>
             </li>
+            @if( hasPlanSettings('activities') )
             <li class="nav-item">
                 <a href="#Activity" data-bs-toggle="tab" data-id="activity" aria-expanded="true" class="nav-link rounded-0 deal-tab">
                     <i class="uil uil-user"></i>
                     <span >Activity</span>
                 </a>
             </li>
+            @endif
             
             <li class="nav-item">
                 <a href="#Files" data-bs-toggle="tab" aria-expanded="false" data-id="file" class="nav-link rounded-0 deal-tab">
@@ -189,7 +191,7 @@ form#activites-form>div>label>i {
            }).then((result) => {
                /* Read more about isConfirmed, isDenied below */
                if (result.isConfirmed) {
-                   var ajax_url = "{{ route('deals.finalize') }}";
+                   var ajax_url = "{{ route('deals.finalize', $companyCode) }}";
                    $.ajaxSetup({
                        headers: {
                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -226,7 +228,7 @@ form#activites-form>div>label>i {
                        }
                    });
         $.ajax({
-            url: "{{ route('invoices.add_items') }}",
+            url: "{{ route('invoices.add_items', $companyCode) }}",
             type: 'POST',
             data: {limit:limit, with_tax:with_tax},
             success: function(response) {
@@ -236,7 +238,7 @@ form#activites-form>div>label>i {
     }
 
     function get_product_tax(product_id, limit) {
-        var ajax_url = "{{ route('deals.get_product_tax') }}";
+        var ajax_url = "{{ route('deals.get_product_tax', $companyCode) }}";
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -332,7 +334,7 @@ form#activites-form>div>label>i {
            }).then((result) => {
                /* Read more about isConfirmed, isDenied below */
                if (result.isConfirmed) {
-                   var ajax_url = "{{ route('deals.unlink') }}";
+                   var ajax_url = "{{ route('deals.unlink', $companyCode) }}";
                    $.ajaxSetup({
                        headers: {
                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -369,7 +371,7 @@ form#activites-form>div>label>i {
            }).then((result) => {
                /* Read more about isConfirmed, isDenied below */
                if (result.isConfirmed) {
-                   var ajax_url = "{{ route('deals.submit-approve') }}";
+                   var ajax_url = "{{ route('deals.submit-approve', $companyCode) }}";
                    $.ajaxSetup({
                        headers: {
                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -404,7 +406,7 @@ form#activites-form>div>label>i {
     })
 
     function get_tab(tab, deal_id){
-        var ajax_url = "{{ route('deals.get_tab') }}";
+        var ajax_url = "{{ route('deals.get_tab', $companyCode) }}";
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')

@@ -34,7 +34,7 @@
                 <div class="page-title-right">
                     <ol class="breadcrumb m-0">
                         <li class="breadcrumb-item"><a href="javascript: void(0);">CRM</a></li>
-                        <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
+                        <li class="breadcrumb-item"><a href="{{ route('dashboard', $companyCode) }}">Dashboard</a></li>
                         <li class="breadcrumb-item active">Payments</li>
                     </ol>
                 </div>
@@ -47,7 +47,7 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-body">
-                    <form class="form-horizontal modal-body" id="payments-form" method="POST" action="{{ route('payments.save') }}" autocomplete="off">
+                    <form class="form-horizontal modal-body" id="payments-form" method="POST" action="{{ route('payments.save', $companyCode) }}" autocomplete="off">
                         @csrf
                         <div class="row">
                             <div class="col-3">
@@ -79,7 +79,7 @@
                         </div>
                         <div class="row">
                             <div class="col-12 text-end">
-                                <a href="{{ route('payments') }}" class="btn btn-dark"> Cancel</a>
+                                <a href="{{ route('payments', $companyCode) }}" class="btn btn-dark"> Cancel</a>
                                 <button type="submit" class="btn btn-info" id="save">Save</button>
                                 <button type="submit" class="btn btn-success" id="pay">Pay</button>
                             </div>
@@ -114,11 +114,11 @@ $("#payments-form").validate({
                     toastr.success('Success', response.error );
                     if( response.pay_gateway == 'razorpay' ) {
                         setTimeout(function(){
-                            window.location.href="{{ route('payments.initiate', ['payment_gateway' => 'razorpay']) }}";
+                            window.location.href="{{ route('payments.initiate', ['payment_gateway' => 'razorpay', 'companyCode' => $companyCode]) }}";
                         },100);
                     } else {
                         setTimeout(function(){
-                            window.location.href="{{ route('payments') }}";
+                            window.location.href="{{ route('payments', $companyCode) }}";
                         },100);
                     }
                     
@@ -145,7 +145,7 @@ $('#customer').keyup(function(){
                 }
             });
     $.ajax({
-            url: "{{ route('payments.autocomplete.customer') }}",
+            url: "{{ route('payments.autocomplete.customer', $companyCode) }}",
             method:'POST',
             data: {org:inputs},
             success:function(response){
@@ -166,7 +166,7 @@ function  get_payment_customer_typeahead(customer_id, first_name){
                 }
             });
     $.ajax({
-            url: "{{ route('payments.customer.deal_info') }}",
+            url: "{{ route('payments.customer.deal_info', $companyCode) }}",
             method:'POST',
             data: {customer_id:customer_id},
             success:function(response){
@@ -183,7 +183,7 @@ function get_deal_amount(invoice_id) {
                 }
             });
     $.ajax({
-            url: "{{ route('payments.customer.deal_amount') }}",
+            url: "{{ route('payments.customer.deal_amount', $companyCode) }}",
             method:'POST',
             data: {invoice_id:invoice_id},
             beforeSend:function(){
@@ -208,7 +208,7 @@ function get_payment_page(mode) {
                 }
             });
     $.ajax({
-        url: "{{ route('payments.get_page') }}",
+        url: "{{ route('payments.get_page', $companyCode) }}",
         method:'POST',
         data: {mode:mode},
         beforeSend:function(){

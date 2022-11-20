@@ -126,11 +126,11 @@ class LeadSourceController extends Controller
         $id = $request->id;
         if (isset($id) && !empty($id)) {
             $role_validator   = [
-                'source'      => ['required', 'string', 'max:255', 'unique:lead_sources,source,' . $id],
+                'source'      => ['required', 'string', 'max:255', 'unique:lead_sources,source,' . $id.',id,company_id,'.auth()->user()->company_id],
             ];
         } else {
             $role_validator   = [
-                'source'      => ['required', 'string', 'max:255', 'unique:lead_sources,source'],
+                'source'      => ['required', 'string', 'max:255', 'unique:lead_sources,source,null,id,company_id,'.auth()->user()->company_id],
             ];
         }
 

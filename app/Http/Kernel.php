@@ -68,6 +68,7 @@ class Kernel extends HttpKernel
         'SetViewVariable' => \App\Http\Middleware\SetViewVariable::class,
         'checkAccess' => \App\Http\Middleware\EnsureHasAccess::class,
         'checkLimit' => \App\Http\Middleware\EnsureHasAddLimit::class,
+        'checkCompany' => \App\Http\Middleware\CompanyExist::class,
         
     ];
 }

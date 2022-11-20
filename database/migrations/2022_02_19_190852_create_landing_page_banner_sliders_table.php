@@ -15,6 +15,8 @@ class CreateLandingPageBannerSlidersTable extends Migration
     {
         Schema::create('landing_page_banner_sliders', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('company_id')->comment('from companysettings')->nullable();
+            $table->foreign('company_id')->references('id')->on('company_settings')->onDelete('no action');
             $table->integer('page_id');
             $table->string('title');
             $table->string('sub_title');

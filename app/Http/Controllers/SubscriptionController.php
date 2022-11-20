@@ -55,10 +55,12 @@ class SubscriptionController extends Controller
         if ($list) {
             $i = 1;
             foreach ($list as $subscriptions) {
-                $subscriptions_status                         = '<div class="badge bg-danger"> Inactive </div>';
-                if ($subscriptions->status == '1') {
-                    $subscriptions_status                     = '<div class="badge bg-success"> Active </div>';
+
+                $subscriptions_status                         = '<div class="badge bg-danger" role="button" onclick="change_status(\'subscriptions\',' . $subscriptions->id . ', 1)"> Inactive </div>';
+                if ($subscriptions->status == 1) {
+                    $subscriptions_status                     = '<div class="badge bg-success" role="button" onclick="change_status(\'subscriptions\',' . $subscriptions->id . ', 0)"> Active </div>';
                 }
+
                 $action = '<a href="javascript:void(0);" class="action-icon" onclick="return get_subscription_view(' . $subscriptions->id . ')"> <i class="mdi mdi-eye"></i></a>
                 <a href="javascript:void(0);" class="action-icon" onclick="return get_add_modal(\'subscriptions\', ' . $subscriptions->id . ')"> <i class="mdi mdi-square-edit-outline"></i></a>
                 <a href="javascript:void(0);" class="action-icon" onclick="return common_soft_delete(\'subscriptions\', ' . $subscriptions->id . ')"> <i class="mdi mdi-delete"></i></a>';
@@ -126,53 +128,44 @@ class SubscriptionController extends Controller
         $validator                     = Validator::make($request->all(), $role_validator);
 
         if ($validator->passes()) {
+            if( $request->payment_gateway ) {
+                $payment_gateway = implode(',', $request->payment_gateway);
+            }
 
             if (isset($id) && !empty($id)) {
-
-                $sub = Subscription::find($id);
-                $sub->status = isset($request->status) ? 1 : 0;
-                $sub->subscription_name = $request->subscription_name;
-                $sub->subscription_period = $request->subscription_period . '-' . $request->duration;
-                $sub->no_of_clients =  $request->no_of_clients ?? null;
-                $sub->no_of_employees = $request->no_of_employees ?? null;
-                $sub->no_of_leads = $request->no_of_leads ?? null;
-                $sub->no_of_deals = $request->no_of_deals ?? null;
-                $sub->no_of_pages = $request->no_of_pages ?? null;
-                $sub->no_of_email_templates = $request->no_of_email_templates ?? null;
-                $sub->bulk_import = $request->bulk_import ?? null;
-                $sub->database_backup = $request->database_backup ?? null;
-                $sub->work_automation = $request->work_automation ?? null;
-                $sub->telegram_bot = $request->telegram_bot ?? null;
-                $sub->sms_integration = $request->sms_integration ?? null;
-                $sub->payment_gateway = $request->payment_gateway ?? null;
-                $sub->business_whatsapp = $request->business_whatsapp ?? null;
-                $sub->amount = $request->amount ?? null;
-                $sub->updated_by = Auth::id();
-                $sub->update();
-
                 $success = 'Updated subscriptions';
-            } else {
-                $ins['status'] = isset($request->status) ? 1 : 0;
-                $ins['subscription_name'] = $request->subscription_name;
-                $ins['subscription_period'] = $request->subscription_period . '-' . $request->duration;
-                $ins['no_of_clients'] = $request->no_of_clients ?? null;
-                $ins['no_of_employees'] = $request->no_of_employees ?? null;
-                $ins['no_of_leads'] = $request->no_of_leads ?? null;
-                $ins['no_of_deals'] = $request->no_of_deals ?? null;
-                $ins['no_of_pages'] = $request->no_of_pages ?? null;
-                $ins['no_of_email_templates'] = $request->no_of_email_templates ?? null;
-                $ins['bulk_import'] = $request->bulk_import ?? null;
-                $ins['database_backup'] = $request->database_backup ?? null;
-                $ins['work_automation'] = $request->work_automation ?? null;
-                $ins['telegram_bot'] = $request->telegram_bot ?? null;
-                $ins['sms_integration'] = $request->sms_integration ?? null;
-                $ins['payment_gateway'] = $request->payment_gateway ?? null;
-                $ins['business_whatsapp'] = $request->business_whatsapp ?? null;
-                $ins['amount'] = $request->amount;
-                $ins['added_by'] = Auth::id();
-                Subscription::create($ins);
-                $success = 'Added new subscription';
-            }
+            } 
+
+            $ins['status'] = isset($request->status) ? 1 : 0;
+            $ins['subscription_name'] = $request->subscription_name;
+            $ins['subscription_period'] = $request->subscription_period . '-' . $request->duration;
+            $ins['no_of_clients'] = $request->no_of_clients ?? null;
+            $ins['no_of_employees'] = $request->no_of_employees ?? null;
+            $ins['no_of_deal_stages'] = $request->no_of_deal_stages ?? null;
+            $ins['no_of_deals'] = $request->no_of_deals ?? null;
+            $ins['no_of_pages'] = $request->no_of_pages ?? null;
+            $ins['no_of_email_templates'] = $request->no_of_email_templates ?? null;
+            $ins['no_of_products'] = $request->no_of_products ?? null;
+            $ins['no_of_sms_templates'] = $request->no_of_sms_templates ?? null;
+            $ins['work_automation'] = $request->work_automation ?? 'no';
+            $ins['announcements'] = $request->announcements ?? 'no';
+            $ins['bulk_upload'] = $request->bulk_upload ?? 'no';
+            $ins['newletter_subscriptions'] = $request->newletter_subscriptions ?? 'no';
+            $ins['tasks'] = $request->tasks ?? 'no';
+            $ins['activities'] = $request->activities ?? 'no';
+            $ins['payment_tracking'] = $request->payment_tracking ?? 'no';
+            $ins['thirdparty_integrations'] = $request->thirdparty_integrations ?? 'no';
+            $ins['technical_support'] = $request->technical_support ?? 'no';
+            $ins['onetime_setup'] = $request->onetime_setup ?? 'no';
+            $ins['server_procurement'] = $request->server_procurement ?? 'no';
+            $ins['predefined_configurations'] = $request->predefined_configurations ?? 'no';
+            $ins['payment_gateway'] = $payment_gateway?? 'no';
+            $ins['server_space'] = $request->server_space ?? null;
+            $ins['amount'] = $request->amount;
+            $ins['added_by'] = Auth::id();
+            Subscription::updateOrCreate(['id' => $id],$ins);
+            $success = 'Added new subscription';
+            
             return response()->json(['error' => [$success], 'status' => '0']);
         }
         return response()->json(['error' => $validator->errors()->all(), 'status' => '1']);
@@ -185,5 +178,16 @@ class SubscriptionController extends Controller
         $role->delete();
         $delete_msg = 'Deleted successfully';
         return response()->json(['error' => [$delete_msg], 'status' => '0']);
+    }
+
+    public function change_status(Request $request)
+    {
+        $id = $request->id;
+        $status = $request->status;
+        $info = Subscription::find($id);
+        $info->status = $status;
+        $info->update();
+        $update_msg = 'Updated successfully';
+        return response()->json(['error' => [$update_msg], 'status' => '0']);
     }
 }

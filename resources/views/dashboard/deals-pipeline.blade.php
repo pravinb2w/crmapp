@@ -58,7 +58,7 @@
                                     </a>
                                     <div class="dropdown-menu dropdown-menu-end">
                                         <!-- item-->
-                                        <a href="{{ route('deals.view',['id' => $deal->id])}}" target="_blank" class="dropdown-item"><i class="mdi mdi-eye me-1"></i>View</a>
+                                        <a href="{{ route('deals.view',['id' => $deal->id, 'companyCode' => $companyCode])}}" target="_blank" class="dropdown-item"><i class="mdi mdi-eye me-1"></i>View</a>
                                         <!-- item-->
                                         {{-- <a href="javascript:void(0);" class="dropdown-item"><i class="mdi mdi-delete me-1"></i>Delete</a> --}}
                                         
@@ -173,7 +173,7 @@ document.addEventListener("drop", function( event ) {
                     }
                 });
                 $.ajax({
-                    url: "{{ route('deals.make_stage_completed_pipline') }}",
+                    url: "{{ route('deals.make_stage_completed_pipline', $companyCode) }}",
                     type: 'POST',
                     data: {stage:target_stage,deal_id:deal_id},
                     beforeSend: function() {

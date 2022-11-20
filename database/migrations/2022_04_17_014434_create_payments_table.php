@@ -15,6 +15,8 @@ class CreatePaymentsTable extends Migration
     {
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('company_id')->comment('from companysettings')->nullable();
+            $table->foreign('company_id')->references('id')->on('company_settings')->onDelete('no action');
             $table->string( 'payment_mode')->comment('online, offline');
             $table->unsignedBigInteger('customer_id')->comment('from customertable');
             $table->foreign('customer_id')->references('id')->on('customers')->onDelete('no action');

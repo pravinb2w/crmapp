@@ -1,5 +1,32 @@
 <?php
+$payFromMethod = planSettings('payment_gateway');
+$dynamic_gateways = [];
+if( isset( $payFromMethod ) && !empty( $payFromMethod ) ) {
+    $payFrom = explode( ',', $payFromMethod );
+    if( !empty( $payFrom ) ) {
+        foreach ($payFrom as $item) {
+            if( $item == 'payu') {
+                $field = 'payumoney';
+                $value = 'PayUmoney';
+            } else if($item == 'ccavenue') {
+                $field = 'ccavenue';
+                $value = 'CCAvenue';
+            } else if($item == 'razorpay') {
+                $field = 'razorpay';
+                $value = 'Razor Pay';
+            }
+            $dynamic_gateways[$field] = $value;
+        }
+    }
+} else {
+    $dynamic_gateways = [
+                            'razorpay' => 'Razor Pay',
+                            'ccavenue' => 'CCAvenue',
+                            'payumoney' => 'PayUmoney'
+                        ];
+}
 
+$dynamic_tasks = '';
 
 return [
     'role_menu' => [
@@ -46,11 +73,7 @@ return [
         'paid',
         'failed'
     ],
-    'payment_gateway' => [
-        'razorpay' => 'Razor Pay',
-        'ccavenue' => 'CCAvenue',
-        'payumoney' => 'PayUmoney',
-    ],
+    'payment_gateway' => $dynamic_gateways,
     'workflow_type' => [
         'New Customer Addition',
         'New Lead Addition',

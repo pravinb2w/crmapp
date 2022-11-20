@@ -9,7 +9,7 @@
                 <div class="col-12" id="error">
                 </div>
             </div>
-            <form class="form-horizontal modal-body" id="company-form" method="POST" action="{{ route('company.save') }}" autocomplete="off">
+            <form class="form-horizontal modal-body" id="company-form" method="POST" action="{{ route('company.save', $companyCode ) }}" autocomplete="off">
                 @csrf
                 <input type="hidden" name="id" value="{{ $id ?? '' }}">
                 
@@ -17,6 +17,12 @@
                     <label for="company_name" class="col-4 col-form-label">Company <span class="text-danger">*</span></label>
                     <div class="col-8">
                         <input type="text" name="company_name" id="company_name" class="form-control" value="{{ $info->site_name ?? '' }}" required>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <label for="company_code" class="col-4 col-form-label">Company Code <span class="text-danger">*</span></label>
+                    <div class="col-8">
+                        <input type="text" name="company_code" id="company_code" class="form-control" value="{{ $info->site_code ?? '' }}" required>
                     </div>
                 </div>
                 

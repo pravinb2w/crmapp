@@ -14,6 +14,6 @@ class VerifyCsrfToken extends Middleware
     protected $except = [
         "payu-money-payment-cancel", "payu-money-payment-success", 
         "ccavenue-handler", "ccavenue-cancel", "ccavenue-success",
-        "do/login"
+        "do/login", 'checkCompanyCode'
     ];
 }

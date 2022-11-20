@@ -15,6 +15,8 @@ class CreateLandingPageMetaDetails extends Migration
     {
         Schema::create('landing_page_meta_details', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('company_id')->comment('from companysettings')->nullable();
+            $table->foreign('company_id')->references('id')->on('company_settings')->onDelete('no action');
             $table->unsignedBigInteger('page_id')->comment('from landingpage');
             $table->foreign('page_id')->references('id')->on('landing_pages')->onDelete('no action');
             $table->string('name');

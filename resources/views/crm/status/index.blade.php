@@ -10,7 +10,7 @@
                     <div class="page-title-right">
                         <ol class="breadcrumb m-0">
                             <li class="breadcrumb-item"><a href="javascript: void(0);">CRM</a></li>
-                            <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
+                            <li class="breadcrumb-item"><a href="{{ route('dashboard', $companyCode) }}">Dashboard</a></li>
                             <li class="breadcrumb-item active">{{ $btn_name ?? '' }}</li>
                         </ol>
                     </div>
@@ -65,7 +65,7 @@
     <script>
         $(document).ready(function() {
             "use strict";
-            var nurl = "{{ route($btn_fn_param . '.list') }}";
+            var nurl = "{{ route($btn_fn_param . '.list', $companyCode) }}";
             const roletable = $('#{{ $btn_fn_param }}-datatable').DataTable({
 
                 "processing": true,

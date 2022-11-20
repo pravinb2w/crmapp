@@ -11,7 +11,7 @@
                 <div class="page-title-right">
                     <ol class="breadcrumb m-0">
                         <li class="breadcrumb-item"><a href="javascript: void(0);">CRM</a></li>
-                        <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
+                        <li class="breadcrumb-item"><a href="{{ route('dashboard', $companyCode) }}">Dashboard</a></li>
                         <li class="breadcrumb-item active">Invoice</li>
                     </ol>
                 </div>
@@ -63,7 +63,7 @@
             "processing"    : true,
             "serverSide"    : true,
             "ajax"          : {
-                "url"       : "<?= route( 'invoices.list' ); ?>",
+                "url"       : "<?= route( 'invoices.list', $companyCode ); ?>",
                 "dataType"  : "json",
                 "type"      : "POST",
                 "data"      : { "_token" : "<?=csrf_token();?>" }
@@ -87,7 +87,7 @@
     }
 
     function view_invoice(id) {
-        var ajax_url = "{{ route('invoices.view') }}";
+        var ajax_url = "{{ route('invoices.view', $companyCode) }}";
 
         $.ajaxSetup({
             headers: {

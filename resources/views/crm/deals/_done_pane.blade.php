@@ -166,7 +166,7 @@
                                             </a>
                                         @endif
                                         <a class="dropdown-item" href="#"  onclick="unlink_invoice('{{ $info->id }}','{{ $litem['id'] }}', 'done')">Unlink from Deal</a>
-                                        <a class="dropdown-item" href="{{ route('pdf', ['id' => $litem['id'] ]) }}">Download Pdf</a>
+                                        <a class="dropdown-item" href="{{ route('pdf', ['id' => $litem['id'], 'companyCode' => $companyCode ]) }}">Download Pdf</a>
                                     @elseif($litem['activity_type'] != 'Deal')
                                     <a class="dropdown-item" href="#"  onclick="change_activity_status('{{ $info->id }}','{{ $litem['id'] }}', 'done', '{{$litem['activity_type']}}')">Delete</a>
                                     @endif

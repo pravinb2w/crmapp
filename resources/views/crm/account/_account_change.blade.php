@@ -32,7 +32,7 @@
      $("#company_setting_form").validate({
             submitHandler:function(form) {
                 $.ajax({
-                    url: '{{ route("account.company.save") }}',
+                    url: '{{ route("account.company.save", $companyCode) }}',
                     type: 'POST',
                     data: $(form).serialize(),
                     beforeSend: function() {

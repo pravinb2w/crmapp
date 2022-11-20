@@ -115,9 +115,7 @@ class AutomationController extends Controller
     {
         $id = $request->id;
         $role_validator   = [
-            'activity_type'      => ['required', 'string', 'max:255', 'unique:automations,activity_type,' . $id],
-            // 'customer_template_id'      => ['required_with:is_mail_to_customer', 'max:255'],
-            // 'team_template_id'      => ['required_with:is_mail_to_team', 'max:255'],
+            'activity_type'      => ['required', 'string', 'max:255', 'unique:automations,activity_type,' . $id.',id,company_id,'.auth()->user()->company_id],
         ];
 
         //Validate the task

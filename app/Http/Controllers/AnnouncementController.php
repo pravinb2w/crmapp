@@ -13,6 +13,13 @@ class AnnouncementController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public $companyCode;
+
+    public function __construct(Request $request)
+    {
+        $this->companyCode = $request->segment(1);
+    }
+
     public function index()
     {
         $data   = Announcement::latest()->paginate(25);
@@ -26,7 +33,7 @@ class AnnouncementController extends Controller
             return response('Forbidden.', 403);
         }
 
-        $columns            = ['subject', 'page_title', 'status', 'id'];
+        $columns            = ['subject', 'page_id', 'message', 'id'];
 
         $limit              = $request->input('length');
         $start              = $request->input('start');
@@ -59,7 +66,7 @@ class AnnouncementController extends Controller
             foreach ($list as $announcement) {
 
                 $action = '
-                <a href="' . route('edit.announcement', [$announcement->id]) . '" class="action-icon" ><i class="mdi mdi-square-edit-outline"></i></a>
+                <a href="' . route('edit.announcement', ['id' => $announcement->id,'companyCode' => $this->companyCode]) . '" class="action-icon" ><i class="mdi mdi-square-edit-outline"></i></a>
                 <a href="javascript:void(0);" class="action-icon" onclick="return announce_delete(' . $announcement->id . ')"> <i class="mdi mdi-delete"></i></a>';
 
                 $nested_data['subject']             = $announcement->subject;
@@ -126,7 +133,7 @@ class AnnouncementController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($companyCode, $id)
     {
         $data = Announcement::findOrFail($id);
         $pages = LandingPages::where('status', 1)->get();
@@ -141,7 +148,7 @@ class AnnouncementController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $companyCode, $id)
     {
         $data = Announcement::findOrFail($id);
 

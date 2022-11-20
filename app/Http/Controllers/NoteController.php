@@ -103,7 +103,7 @@ class NoteController extends Controller
             $info = Note::find($id);
             $modal_title = 'Update Note';
         }
-        $users = User::whereNotNull('role_id')->get();
+        $users = User::whereNotNull('role_id')->where('company_id', auth()->user()->company_id)->get();
 
         $params = ['modal_title' => $modal_title, 'id' => $id ?? '', 'info' => $info ?? '', 'users' => $users, 'from' => $from];
         return view('crm.note.add_edit', $params);

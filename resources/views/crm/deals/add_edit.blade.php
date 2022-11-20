@@ -5,7 +5,7 @@
             overflow: auto;
         }
     </style>
-    <form id="deals-form" method="POST" action="{{ route('deals.save') }}" autocomplete="off" class="modal-content h-100">
+    <form id="deals-form" method="POST" action="{{ route('deals.save', $companyCode) }}" autocomplete="off" class="modal-content h-100">
         <div class="modal-header px-3" id="myLargeModalLabel">{{ $modal_title }}</h4>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div> 
@@ -142,7 +142,7 @@
                         }
                     });
             $.ajax({
-                    url: "{{ route('autocomplete_customer') }}",
+                    url: "{{ route('autocomplete_customer', $companyCode) }}",
                     method:'POST',
                     data: {org:inputs, 'type':'lead'},
                     success:function(response){
@@ -160,7 +160,7 @@
                         }
                     });
             $.ajax({
-                    url: "{{ route('autocomplete_org') }}",
+                    url: "{{ route('autocomplete_org', $companyCode) }}",
                     method:'POST',
                     data: {org:inputs},
                     success:function(response){
@@ -193,13 +193,13 @@
 
                             setTimeout(function(){
                                 if(response.lead_id) {
-                                    window.location.href = "{{ route('deals') }}";
+                                    window.location.href = "{{ route('deals', $companyCode) }}";
                                 } else {
                                     $('#Mymodal').modal('hide');
                                 }
                             },100);
                             if( from == 'dashboard' ) {
-                                window.location.href="{{ route('deals') }}";
+                                window.location.href="{{ route('deals', $companyCode) }}";
                             } else{
                                 ReloadDataTableModal('deals-datatable');
                             }
@@ -238,7 +238,7 @@
             var limit = $('#limit').val();
             limit = parseInt( limit );
             $.ajax({
-                url: "{{ route('deals.product-list')}}",
+                url: "{{ route('deals.product-list', $companyCode)}}",
                 type: 'POST',
                 data: {limit:limit},
                 beforeSend: function() {

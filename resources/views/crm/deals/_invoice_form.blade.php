@@ -1,5 +1,5 @@
 
-<form id="invoice-form"  method="POST" action="{{ route('deals.save-invoice') }}" autocomplete="off">
+<form id="invoice-form"  method="POST" action="{{ route('deals.save-invoice', $companyCode) }}" autocomplete="off">
     @csrf
     <input type="hidden" name="deal_id" value="{{ $id ?? '' }}">
     <div class="row">
@@ -131,7 +131,7 @@
     });
 
     $('#change_pdf_template').click(function(){
-        var ajax_url = "{{ route('invoice.pdf.change') }}";
+        var ajax_url = "{{ route('invoice.pdf.change', $companyCode) }}";
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')

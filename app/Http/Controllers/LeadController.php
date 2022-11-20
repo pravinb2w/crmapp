@@ -20,6 +20,13 @@ use CommonHelper;
 
 class LeadController extends Controller
 {
+
+    public $companyCode;
+
+    public function __construct(Request $request)
+    {
+        $this->companyCode = $request->segment(1);
+    }
     public function index(Request $request)
     {
         $params = array('btn_name' => 'Lead', 'btn_fn_param' => 'leads');
@@ -72,7 +79,7 @@ class LeadController extends Controller
                 }
                 $action = '';
                 if (Auth::user()->hasAccess('leads', 'is_view')) {
-                    $action .= '<a href="' . route('leads.view', ['id' => $leads->id]) . '" class="action-icon"> <i class="mdi mdi-eye"></i></a>';
+                    $action .= '<a href="' . route('leads.view', ['id' => $leads->id, 'companyCode' => $this->companyCode]) . '" class="action-icon"> <i class="mdi mdi-eye"></i></a>';
                 }
                 if ($leads->status != 2) {
                     if ((Auth::user()->hasAccess('leads', 'is_edit') && $leads->assigned_to != null && $leads->assigned_to == Auth::id()) || superadmin()) {
@@ -102,7 +109,7 @@ class LeadController extends Controller
         ]);
     }
 
-    public function view(Request $request, $id = '')
+    public function view(Request $request, $companyCode = '', $id = '')
     {
         $users = User::whereNotNull('role_id')->get();
         $info = Lead::with(['planned_activity', 'done_activity'])->find($id);
@@ -115,7 +122,7 @@ class LeadController extends Controller
         $tab = $request->tab;
         $id = $request->lead_id;
         $info = Lead::with(['all_activity', 'notes'])->find($id);
-        $users = User::whereNotNull('role_id')->get();
+        $users = User::whereNotNull('role_id')->where('company_id', auth()->user()->id)->get();
         return view('crm.lead._' . $tab . '_form', ['id' => $id, 'info' => $info, 'users' => $users]);
     }
 
@@ -180,7 +187,7 @@ class LeadController extends Controller
     public function activity_save(Request $request)
     {
         $id = $request->id;
-
+       
         $role_validator   = [
             'activity_title'      => ['required', 'string', 'max:255'],
             'activity_type'      => ['required', 'string', 'max:255'],
@@ -240,7 +247,7 @@ class LeadController extends Controller
                 $activity_id = Activity::create($ins)->id;
                 $success = 'Acitivity added successfully';
             }
-            CommonHelper::send_lead_activity_notification($activity_id, $lead_info->assigned_to, $id);
+            CommonHelper::send_lead_activity_notification($activity_id, $lead_info->assigned_to, $id, $this->companyCode);
             return response()->json(['error' => [$success], 'status' => '0', 'lead_id' => $lead_id, 'type' => 'planned']);
         }
         return response()->json(['error' => $validator->errors()->all(), 'status' => '1']);
@@ -261,6 +268,7 @@ class LeadController extends Controller
         $lead_id = $request->lead_id;
         $activity_id = $request->activity_id;
         $lead_type = $request->lead_type;
+        
         if ($lead_type == 'files') {
             $file = DealDocument::find($activity_id);
             $file->delete();
@@ -271,7 +279,7 @@ class LeadController extends Controller
             $role = Note::find($activity_id);
             $role->delete();
         } else if (!empty($lead_type)) {
-            CommonHelper::send_lead_activity_delete_notification($activity_id, $lead_id);
+            CommonHelper::send_lead_activity_delete_notification($activity_id, $lead_id, $this->companyCode);
             $role = Activity::find($activity_id);
             $role->delete();
         }
@@ -330,7 +338,7 @@ class LeadController extends Controller
         $leadsource = LeadSource::all();
         $leadtype = LeadType::all();
         if (Auth::user()->hasAccess('leads', 'is_assign') || empty(Auth::user()->role_id)) {
-            $users = User::where('status', 1)->whereNotNull('role_id')->get();
+            $users = User::where('status', 1)->whereNotNull('role_id')->where('company_id', auth()->user()->id)->get();
         } else if (!empty(Auth::user()->role_id)) {
             $users = User::where('status', 1)->where('id', Auth::id())->get();
         }
@@ -345,13 +353,13 @@ class LeadController extends Controller
             'leadtype' => $leadtype ?? '', 'users' => $users, 'from' => $from
         ];
         return view('crm.lead.add_edit', $params);
-        echo json_encode(['view' => $view]);
-        return true;
+        
     }
 
     public function save(Request $request)
     {
         $id = $request->id;
+     
 
         $role_validator   = [
             'customer_id'      => ['required', 'string', 'max:255'],
@@ -414,7 +422,7 @@ class LeadController extends Controller
                 $lead_id = Lead::create($ins)->id;
                 $success = 'Added new Lead';
             }
-            CommonHelper::send_lead_notification($lead_id, $assigned_to, '', $id);
+            CommonHelper::send_lead_notification($lead_id, $assigned_to, '', $id, $this->companyCode);
 
             return response()->json(['error' => [$success], 'status' => '0']);
         }

@@ -15,6 +15,8 @@ class CreateCustomerDocumentsTable extends Migration
     {
         Schema::create('customer_documents', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('company_id')->comment('from companysettings')->nullable();
+            $table->foreign('company_id')->references('id')->on('company_settings')->onDelete('no action');
             $table->unsignedBigInteger('customer_id')->comment('from customers')->nullable();
             $table->foreign('customer_id')->references('id')->on('customers')->onDelete('cascade');
             $table->unsignedBigInteger('document_id')->comment('from kyc_document_types')->nullable();

@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Scopes\CompanyScope;
+use App\Traits\ObservantTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -9,7 +11,7 @@ use Illuminate\Database\Eloquent\Builder;
 
 class DealProduct extends Model
 {
-    use HasFactory;
+    use HasFactory, ObservantTrait;
     protected $fillable = [
         'deal_id',
         'product_id',
@@ -21,6 +23,11 @@ class DealProduct extends Model
         'unit',
         'status'
     ];
+
+    protected static function booted()
+    {
+        static::addGlobalScope(new CompanyScope);
+    }
 
     public function deal()
     {

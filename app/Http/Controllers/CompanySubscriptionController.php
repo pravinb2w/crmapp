@@ -13,7 +13,7 @@ use CommonHelper;
 
 class CompanySubscriptionController extends Controller
 {
-    public function index(Type $var = null)
+    public function index()
     {
         $params = array('btn_name' => 'Company Subscriptions', 'btn_fn_param' => 'company-subscriptions');
         return view('crm.company_subscription.index', $params);
@@ -59,10 +59,12 @@ class CompanySubscriptionController extends Controller
         if ($list) {
             $i = 1;
             foreach ($list as $subscriptions) {
-                $subscriptions_status                         = '<div class="badge bg-danger"> Inactive </div>';
-                if ($subscriptions->status == '1') {
-                    $subscriptions_status                     = '<div class="badge bg-success"> Active </div>';
+
+                $subscriptions_status                         = '<div class="badge bg-danger" role="button" onclick="change_status(\'company-subscriptions\','.$subscriptions->id.', 1)"> Inactive </div>';
+                if( $subscriptions->status == 1 ) {
+                    $subscriptions_status                     = '<div class="badge bg-success" role="button" onclick="change_status(\'company-subscriptions\','.$subscriptions->id.', 0)"> Active </div>';
                 }
+
                 $action = '
                 <a href="javascript:void(0);" class="action-icon" onclick="return view_modal(\'company-subscriptions\', ' . $subscriptions->id . ')"> <i class="mdi mdi-eye"></i></a>
                 <a href="javascript:void(0);" class="action-icon" onclick="return get_add_modal(\'company-subscriptions\', ' . $subscriptions->id . ')"> <i class="mdi mdi-square-edit-outline"></i></a>
@@ -94,7 +96,7 @@ class CompanySubscriptionController extends Controller
         }
         $id = $request->id;
         $modal_title = 'Add Company Subscriptions';
-        $company = CompanySettings::whereNull('created_at')->get();
+        $company = CompanySettings::get();
         $subscriptions = Subscription::all();
         if (isset($id) && !empty($id)) {
             $info = CompanySubscription::find($id);
@@ -214,5 +216,16 @@ class CompanySubscriptionController extends Controller
         CompanySettings::whereId($company_id)->update($upd);
         $delete_msg = 'Deleted successfully';
         return response()->json(['error' => [$delete_msg], 'status' => '0']);
+    }
+
+    public function change_status(Request $request)
+    {
+        $id = $request->id;
+        $status = $request->status;
+        $role = CompanySubscription::find($id);
+        $role->status = $status;
+        $role->update();
+        $update_msg = 'Updated successfully';
+        return response()->json(['error'=>[$update_msg], 'status' => '0']);
     }
 }
