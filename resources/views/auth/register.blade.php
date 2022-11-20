@@ -22,7 +22,7 @@
             <div class="card">
                 <div class="card-body">
 
-                    <h4 class="header-title mb-3">Register to start your free trail</h4>
+                    <h4 class="header-title mb-3">Register to start your free trial</h4>
 
                     <form id="registerForm">
                         <div id="progressbarwizard">
