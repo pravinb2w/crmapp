@@ -182,116 +182,122 @@ class DealsController extends Controller
 
         if ($validator->passes()) {
 
-            $ins['status'] = isset($request->status) ? 1 : 0;
-            $ins['deal_title'] = $request->title;
-            $ins['customer_id'] = $request->customer_id;
-            $ins['current_stage_id'] = $request->deal_stage;
-            $ins['deal_value'] = $request->deal_value;
-            $ins['lead_id'] = $request->lead_id ?? null;
-            $ins['product_total'] = $request->total_cost ?? null;
-            $ins['expected_completed_date'] = date('Y-m-d', strtotime($request->expected_date));
-            if ($request->assigned_to) {
-                $ins['assinged_by'] = Auth::id();
-                $ins['assigned_to'] = $request->assigned_to;
-            }
-            if ($request->organization_id) {
-                $cus = Customer::find($request->customer_id);
-                $cus->organization_id = $request->organization_id;
-                $cus->update();
-            }
-            //get data for pipelines
-            //insert in deal_piepines table
-            $deal_stage = $request->deal_stage;
-            $deal_stage_info = DealStage::find($deal_stage);
-            $all_stages = DealStage::where('order_by', '<=', $deal_stage_info->order_by)->orderBy('order_by', 'asc')->get();
+            if(hasDailyLimit('lead')) {
 
-            if (isset($id) && !empty($id)) {
-                $deal = Deal::find($id);
-                $deal->deal_title = $request->title;
-                $deal->customer_id = $request->customer_id;
-                $deal->current_stage_id = $request->deal_stage;
-                $deal->deal_value = $request->deal_value;
-                $deal->lead_id = $request->lead_id ?? null;
-                $deal->product_total = $request->total_cost ?? null;
-                $deal->expected_completed_date = date('Y-m-d', strtotime($request->expected_date));
+                $ins['status'] = isset($request->status) ? 1 : 0;
+                $ins['deal_title'] = $request->title;
+                $ins['customer_id'] = $request->customer_id;
+                $ins['current_stage_id'] = $request->deal_stage;
+                $ins['deal_value'] = $request->deal_value;
+                $ins['lead_id'] = $request->lead_id ?? null;
+                $ins['product_total'] = $request->total_cost ?? null;
+                $ins['expected_completed_date'] = date('Y-m-d', strtotime($request->expected_date));
                 if ($request->assigned_to) {
-                    $deal->assinged_by = Auth::id();
-                    $deal->assigned_to = $request->assigned_to;
+                    $ins['assinged_by'] = Auth::id();
+                    $ins['assigned_to'] = $request->assigned_to;
                 }
-                $deal->status = isset($request->status) ? 1 : 0;
-                $deal->update();
-
-                $success = 'Updated Deal';
-            } else {
-                $ins['added_by'] = Auth::id();
-                $id = Deal::create($ins)->id;
-                $success = 'Added new Deal';
-            }
-
-            CommonHelper::send_deal_notification($id, $request->assigned_to, $request->id, $this->companyCode);
-            if ($request->lead_id) {
-                $lead = Lead::find($request->lead_id);
-                $lead->status = 2;
-                $lead->updated_by = Auth::id();
-                $lead->update();
-
-                CommonHelper::send_deal_conversion_notification($request->lead_id, $this->companyCode);
-
-                $deal_info = Deal::find($id);
-
-                //send conversion email to customer
-                MailEntryHelper::dealConversion($request->lead_id, $deal_info->customer->email);
-                // end send mail conversion
-            }
-
-            DealProduct::where('deal_id', $id)->forceDelete();
-            DealPipline::where('deal_id', $id)->forceDelete();
-            //insert in product tables
-            $limit = $request->limit;
-            for ($i = 0; $i < $limit; $i++) {
-                $inspro = [];
-                $item_field = 'item_' . $i;
-                $amount_field = 'amount_' . $i;
-                $quantity_field = 'quantity_' . $i;
-                $price_field = 'price_' . $i;
-
-                if ($request->$item_field) {
-                    $inspro['product_id'] = $request->$item_field;
+                if ($request->organization_id) {
+                    $cus = Customer::find($request->customer_id);
+                    $cus->organization_id = $request->organization_id;
+                    $cus->update();
                 }
-                if ($request->$price_field) {
-                    $inspro['price'] = $request->$price_field;
-                }
-                if ($request->$quantity_field) {
-                    $inspro['quantity'] = $request->$quantity_field;
-                }
-                if ($request->$amount_field) {
-                    $inspro['amount'] = $request->$amount_field;
-                }
-                $inspro['deal_id'] = $id;
-                if ($inspro['product_id'] && $inspro['price']) {
-                    DealProduct::create($inspro);
-                }
-            }
-            //insert in pipeline
-            if (isset($all_stages) && !empty($all_stages)) {
-                foreach ($all_stages as $key => $value) {
-                    $status                 = 'completed';
-                    $completed_at           = date('Y-m-d H:i:s');
-                    if ($value->id == $deal_stage) {
-                        $status             = 'pending';
-                        $completed_at       = null;
+                //get data for pipelines
+                //insert in deal_piepines table
+                $deal_stage = $request->deal_stage;
+                $deal_stage_info = DealStage::find($deal_stage);
+                $all_stages = DealStage::where('order_by', '<=', $deal_stage_info->order_by)->orderBy('order_by', 'asc')->get();
+
+                if (isset($id) && !empty($id)) {
+                    $deal = Deal::find($id);
+                    $deal->deal_title = $request->title;
+                    $deal->customer_id = $request->customer_id;
+                    $deal->current_stage_id = $request->deal_stage;
+                    $deal->deal_value = $request->deal_value;
+                    $deal->lead_id = $request->lead_id ?? null;
+                    $deal->product_total = $request->total_cost ?? null;
+                    $deal->expected_completed_date = date('Y-m-d', strtotime($request->expected_date));
+                    if ($request->assigned_to) {
+                        $deal->assinged_by = Auth::id();
+                        $deal->assigned_to = $request->assigned_to;
                     }
-                    $sins                   = [];
-                    $sins['deal_id']        = $id;
-                    $sins['stage_id']       = $value->id;
-                    $sins['status']         = $status;
-                    $sins['completed_at']   = $completed_at;
-                    $sins['added_by']       = Auth::id();
-                    DealPipline::create($sins);
-                }
-            }
+                    $deal->status = isset($request->status) ? 1 : 0;
+                    $deal->update();
 
-            return response()->json(['error' => [$success], 'status' => '0', 'lead_id' => $request->lead_id ?? '']);
+                    $success = 'Updated Deal';
+                } else {
+                    $ins['added_by'] = Auth::id();
+                    $id = Deal::create($ins)->id;
+                    $success = 'Added new Deal';
+                }
+
+                CommonHelper::send_deal_notification($id, $request->assigned_to, $request->id, $this->companyCode);
+                if ($request->lead_id) {
+                    $lead = Lead::find($request->lead_id);
+                    $lead->status = 2;
+                    $lead->updated_by = Auth::id();
+                    $lead->update();
+
+                    CommonHelper::send_deal_conversion_notification($request->lead_id, $this->companyCode);
+
+                    $deal_info = Deal::find($id);
+
+                    //send conversion email to customer
+                    MailEntryHelper::dealConversion($request->lead_id, $deal_info->customer->email);
+                    // end send mail conversion
+                }
+
+                DealProduct::where('deal_id', $id)->forceDelete();
+                DealPipline::where('deal_id', $id)->forceDelete();
+                //insert in product tables
+                $limit = $request->limit;
+                for ($i = 0; $i < $limit; $i++) {
+                    $inspro = [];
+                    $item_field = 'item_' . $i;
+                    $amount_field = 'amount_' . $i;
+                    $quantity_field = 'quantity_' . $i;
+                    $price_field = 'price_' . $i;
+
+                    if ($request->$item_field) {
+                        $inspro['product_id'] = $request->$item_field;
+                    }
+                    if ($request->$price_field) {
+                        $inspro['price'] = $request->$price_field;
+                    }
+                    if ($request->$quantity_field) {
+                        $inspro['quantity'] = $request->$quantity_field;
+                    }
+                    if ($request->$amount_field) {
+                        $inspro['amount'] = $request->$amount_field;
+                    }
+                    $inspro['deal_id'] = $id;
+                    if ($inspro['product_id'] && $inspro['price']) {
+                        DealProduct::create($inspro);
+                    }
+                }
+                //insert in pipeline
+                if (isset($all_stages) && !empty($all_stages)) {
+                    foreach ($all_stages as $key => $value) {
+                        $status                 = 'completed';
+                        $completed_at           = date('Y-m-d H:i:s');
+                        if ($value->id == $deal_stage) {
+                            $status             = 'pending';
+                            $completed_at       = null;
+                        }
+                        $sins                   = [];
+                        $sins['deal_id']        = $id;
+                        $sins['stage_id']       = $value->id;
+                        $sins['status']         = $status;
+                        $sins['completed_at']   = $completed_at;
+                        $sins['added_by']       = Auth::id();
+                        DealPipline::create($sins);
+                    }
+                }
+
+                return response()->json(['error' => [$success], 'status' => '0', 'lead_id' => $request->lead_id ?? '']);
+            } else {
+                return response()->json(['error' => ['You have reached daily limits.'], 'status' => '1']);
+
+            }
         }
         return response()->json(['error' => $validator->errors()->all(), 'status' => '1']);
     }

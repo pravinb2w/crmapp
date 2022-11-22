@@ -374,55 +374,62 @@ class LeadController extends Controller
 
         if ($validator->passes()) {
 
-            $ins['status'] = isset($request->status) ? 1 : 0;
-            $ins['lead_subject'] = $request->title;
-            $ins['customer_id'] = $request->customer_id;
-            $ins['lead_type_id'] = $request->lead_type;
-            $ins['lead_source_id'] = $request->lead_source;
-            $ins['lead_value'] = $request->lead_value;
-            if ($request->assigned_to) {
-                $assigned_to = $request->assigned_to;
-                $ins['assinged_by'] = Auth::id();
-                $ins['assigned_to'] = $request->assigned_to;
-            } else {
-                $assigned_to = CommonHelper::getLeadAssigner();
-                $ins['assigned_to'] = $request->assigned_to;
-                $ins['assinged_by'] = Auth::id();
-            }
-            if ($request->organization_id) {
-                $cus = Customer::find($request->customer_id);
-                $cus->organization_id = $request->organization_id;
-                $cus->update();
-            }
-            if (isset($id) && !empty($id)) {
-                $lead = Lead::find($id);
-                $lead->status = isset($request->status) ? 1 : 0;
-                $lead->lead_subject = $request->title;
-                $lead->customer_id = $request->customer_id;
-                $lead->lead_type_id = $request->lead_type;
-                $lead->lead_source_id = $request->lead_source;
-                $lead->lead_value = $request->lead_value;
+            if(hasDailyLimit('lead')) {
+
+                $ins['status'] = isset($request->status) ? 1 : 0;
+                $ins['lead_subject'] = $request->title;
+                $ins['customer_id'] = $request->customer_id;
+                $ins['lead_type_id'] = $request->lead_type;
+                $ins['lead_source_id'] = $request->lead_source;
+                $ins['lead_value'] = $request->lead_value;
                 if ($request->assigned_to) {
-                    $lead->assinged_by = Auth::id();
-                    $lead->assigned_to = $request->assigned_to;
+                    $assigned_to = $request->assigned_to;
+                    $ins['assinged_by'] = Auth::id();
+                    $ins['assigned_to'] = $request->assigned_to;
+                } else {
+                    $assigned_to = CommonHelper::getLeadAssigner();
+                    $ins['assigned_to'] = $request->assigned_to;
+                    $ins['assinged_by'] = Auth::id();
                 }
-                $lead->update();
-                $lead_id = $id;
-                $success = 'Updated Lead';
-            } else {
-                if ($request->assigned_to) {
-                    $assigned_info = User::find($request->assigned_to);
-                    $limit = $assigned_info->lead_limit ?? 1;
-                    $check_limit = Lead::whereDate('created_at', '=', date('Y-m-d'))->where('assigned_to', $request->assigned_to)->count();
-                    if ($check_limit >= $limit) {
-                        return response()->json(['error' => ['Lead Limit per day reached maximum'], 'status' => '1']);
+                if ($request->organization_id) {
+                    $cus = Customer::find($request->customer_id);
+                    $cus->organization_id = $request->organization_id;
+                    $cus->update();
+                }
+                if (isset($id) && !empty($id)) {
+                    $lead = Lead::find($id);
+                    $lead->status = isset($request->status) ? 1 : 0;
+                    $lead->lead_subject = $request->title;
+                    $lead->customer_id = $request->customer_id;
+                    $lead->lead_type_id = $request->lead_type;
+                    $lead->lead_source_id = $request->lead_source;
+                    $lead->lead_value = $request->lead_value;
+                    if ($request->assigned_to) {
+                        $lead->assinged_by = Auth::id();
+                        $lead->assigned_to = $request->assigned_to;
                     }
+                    $lead->update();
+                    $lead_id = $id;
+                    $success = 'Updated Lead';
+                } else {
+                    if ($request->assigned_to) {
+                        $assigned_info = User::find($request->assigned_to);
+                        $limit = $assigned_info->lead_limit ?? 1;
+                        $check_limit = Lead::whereDate('created_at', '=', date('Y-m-d'))->where('assigned_to', $request->assigned_to)->count();
+                        if ($check_limit >= $limit) {
+                            return response()->json(['error' => ['Lead Limit per day reached maximum'], 'status' => '1']);
+                        }
+                    }
+                    $ins['added_by'] = Auth::id();
+                    $lead_id = Lead::create($ins)->id;
+                    $success = 'Added new Lead';
                 }
-                $ins['added_by'] = Auth::id();
-                $lead_id = Lead::create($ins)->id;
-                $success = 'Added new Lead';
+                CommonHelper::send_lead_notification($lead_id, $assigned_to, '', $id, $this->companyCode);
+            } else {
+                $success = 'You have reached daily limit.';
+                return response()->json(['error' => [$success], 'status' => '1']);
+                
             }
-            CommonHelper::send_lead_notification($lead_id, $assigned_to, '', $id, $this->companyCode);
 
             return response()->json(['error' => [$success], 'status' => '0']);
         }

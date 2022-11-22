@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Http;
 use App\Models\SmsIntegration;
 use App\Models\CompanySettings;
 use App\Models\Automation;
+use App\Models\Deal;
+use App\Models\Lead;
 use App\Models\Subscription;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -193,3 +195,30 @@ function planSettings($field)
 //     ORDER BY (data_length + index_length) DESC');
 //     return $sizesInfo;
 // }
+
+function hasDailyLimit($type)  {
+    if( $type == 'lead') {
+        if( !empty( auth()->user()->role_id ) ) {
+            $count = Lead::whereDate('created_at', date('Y-m-d'))->where('added_by', auth()->user()->id )->count();
+            if( $count >= auth()->user()->lead_limit ) {
+                return false;
+            } else {
+                return true;
+            }
+        } else {
+            return true;
+        }
+        
+    } else if($type == 'deal') {
+        if( !empty( auth()->user()->role_id ) ) {
+            $count = Deal::whereDate('created_at', date('Y-m-d'))->where('added_by', auth()->user()->id )->count();
+            if( $count >= auth()->user()->deal_limit ) {
+                return false;
+            } else {
+                return true;
+            }
+        } else {
+            return true;
+        }
+    }
+}

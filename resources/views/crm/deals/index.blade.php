@@ -23,7 +23,11 @@
             <div class="col-lg-12">
                 <div class="card">
                     <div class="card-body">
+                        @if( hasDailyLimit('deal'))
                         @include('crm.common.common_add_btn')
+                        @else
+                        <div class="text-danger">You have reached daily limit.You cannot add deals.</div>
+                        @endif
                         <div class="table-responsive">
                             <table class="table table-centered w-100 dt-responsive nowrap" id="deals-datatable">
                                 <thead class="table-primary">

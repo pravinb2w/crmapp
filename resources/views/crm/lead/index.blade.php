@@ -25,8 +25,11 @@
                 <div class="card">
                     <div class="card-body">
                         {{-- <h4 class="header-title">Personal Preferences</h4> --}}
+                        @if( hasDailyLimit('lead'))
                         @include('crm.common.common_add_btn')
-
+                        @else
+                        <div class="text-danger">You have reached daily limit.You cannot add leads.</div>
+                        @endif
                         <div class="table-responsive">
                             <table class="table table-centered w-100 dt-responsive nowrap" id="leads-datatable">
                                 <thead class="table-primary">
