@@ -23,7 +23,7 @@ class CmsController extends Controller
         return view('crm.cms.index', $params, compact('result'));
     }
 
-    public function add(Request $request, $id = '')
+    public function add(Request $request, $companyCode = '', $id = '')
     {
         $params['id'] = $id;
         $params['pagetype'] = PageType::where('status', 1)->get();
@@ -38,7 +38,7 @@ class CmsController extends Controller
         return view('crm.cms.edit', $params, compact('result'));
     }
 
-    public function save(Request $request, $type = null)
+    public function save(Request $request, $companyCode = null, $type = null)
     {
 
         $page_validator = [
@@ -140,7 +140,7 @@ class CmsController extends Controller
         }
         return response()->json(['error' => $validator->errors()->all(), 'status' => '1']);
     }
-    public function update(Request $request, $id)
+    public function update(Request $request, $companyCode, $id)
     {
         
         if ($request->is_default_landing_page) {
@@ -155,7 +155,6 @@ class CmsController extends Controller
         if ($request->file('about_image')) {
             $about_image = Image::make($request->file('about_image'))->encode('data-url');
         }
-
 
         $update->update([
             'page_title'        => $request->page_title,
