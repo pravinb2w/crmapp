@@ -26,20 +26,6 @@ class AccountController extends Controller
 
     public function index(Request $request)
     {
-        // dd( env('DB_DATABASE') );
-        // $fileSize = getDatabaseSize();
-        // dd( $fileSize );
-        // $file_size = 0;
-        // $filepath   = storage_path('app/public');
-        // foreach( File::allFiles($filepath) as $file)
-        // {
-        //     dump( $file );
-        //     $file_size += $file->getSize();
-        // }
-        // $mb_size = number_format($file_size / 1048576,2);
-        // dd( $mb_size );
-
-        
         $type = $request->segment(3);
         $url = 'change';
         if (empty($type)) {

@@ -33,22 +33,22 @@ class CompanyController extends Controller
         $search             = $request->input( 'search.value' );
         $approve_status     = $request->input( 'approve_status' );
        
-        $total_list         = CompanySettings::whereNotNull('created_at')->count();
+        $total_list         = CompanySettings::count();
         // DB::enableQueryLog();
         if( $order != 'id') {
-            $list               = CompanySettings::whereNotNull('created_at')->orderBy($order, $dir)
+            $list               = CompanySettings::orderBy($order, $dir)
                                 ->search( $search )
                                 ->get();
         } else {
-            $list               = CompanySettings::skip($start)->take($limit)->whereNotNull('created_at')->Latests()
+            $list               = CompanySettings::skip($start)->take($limit)->Latests()
                                 ->search( $search )
                                 ->get();
         }
         // $query = DB::getQueryLog();
         if( empty( $request->input( 'search.value' ) ) ) {
-            $total_filtered = CompanySettings::whereNotNull('created_at')->count();
+            $total_filtered = CompanySettings::count();
         } else {
-            $total_filtered = CompanySettings::whereNotNull('created_at')->search( $search )
+            $total_filtered = CompanySettings::search( $search )
                                 ->count();
         }
         

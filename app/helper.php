@@ -10,6 +10,7 @@ use App\Models\Lead;
 use App\Models\Subscription;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Session;
 
 function superadmin()
@@ -67,7 +68,7 @@ function capi($type, $field) {
 
 function automation($activity_type, $field)
 {
-    if (csettings('workflow_automation')) {
+    if (csettings('workflow_automation') && hasPlanSettings('work_automation')) {
 
         //check activity type is exist yes or no
         $info = Automation::where('activity_type', $activity_type)->first();
@@ -98,60 +99,65 @@ function hasPlanSettings($field)
 
 function sendSMS($mobile_no, $type, $params)
 {
-    $sms = SmsIntegration::where('sms_type', $type)->first();
+    if( planSettings('thirdparty_integration')){
+        $sms = SmsIntegration::where('sms_type', $type)->first();
     
-    if (isset($sms) && !empty($sms)) {
-        $templateMessage = $sms->template;
-        $templateMessage = str_replace("{", "", addslashes($templateMessage));
-        $templateMessage = str_replace("}", "", $templateMessage);
-        extract($params);
-        eval("\$templateMessage = \"$templateMessage\";");
-        $http_query = "https://smshorizon.co.in/api/sendsms.php?user=$sms->user_name&apikey=$sms->api_key&mobile=$mobile_no&message=$templateMessage&senderid=$sms->sender_id&type=$sms->type&tid=$sms->template_id";
-        $response = Http::get($http_query);
-        return $response;
+        if (isset($sms) && !empty($sms)) {
+            $templateMessage = $sms->template;
+            $templateMessage = str_replace("{", "", addslashes($templateMessage));
+            $templateMessage = str_replace("}", "", $templateMessage);
+            extract($params);
+            eval("\$templateMessage = \"$templateMessage\";");
+            $http_query = "https://smshorizon.co.in/api/sendsms.php?user=$sms->user_name&apikey=$sms->api_key&mobile=$mobile_no&message=$templateMessage&senderid=$sms->sender_id&type=$sms->type&tid=$sms->template_id";
+            $response = Http::get($http_query);
+            return $response;
+        }
     }
+    
 }
 
 function sendWhatsappApi($mobile_no, $type, $params, $from, $media_url = '', $filename = '') {
-    $mobile_no = '91'.$mobile_no;
-    $access_token = capi('whatsapp', 'access_token');
-    $instance_id = capi('whatsapp', 'instance_id');
-    if( $from == 'sms' ) {
-        $sms = SmsIntegration::where('sms_type', $type)->first();
-        if( isset( $sms ) && !empty( $sms ) ) {
-            $message = $sms->template;
-            $message = str_replace("{", "", addslashes($message));
-            $message = str_replace("}", "", $message);
-            extract($params);
-            eval("\$message = \"$message\";");
+    if( planSettings('thirdparty_integration')){
+        $mobile_no = '91'.$mobile_no;
+        $access_token = capi('whatsapp', 'access_token');
+        $instance_id = capi('whatsapp', 'instance_id');
+        if( $from == 'sms' ) {
+            $sms = SmsIntegration::where('sms_type', $type)->first();
+            if( isset( $sms ) && !empty( $sms ) ) {
+                $message = $sms->template;
+                $message = str_replace("{", "", addslashes($message));
+                $message = str_replace("}", "", $message);
+                extract($params);
+                eval("\$message = \"$message\";");
+            }
+            
+        } else if( $from == 'email' ) {
+            $message = $params;
+        } else if( $from == 'media' ) {
+            $message = $params;
         }
-        
-    } else if( $from == 'email' ) {
-        $message = $params;
-    } else if( $from == 'media' ) {
-        $message = $params;
-    }
-   
-    $api_type = 'text';
-    if( $access_token && $instance_id ) {
+    
+        $api_type = 'text';
+        if( $access_token && $instance_id ) {
 
-        if( $from != 'media') {
-            $http_query = "http://wase.co.in/api/send.php?number=$mobile_no&type=$api_type&message=$message&instance_id=$instance_id&access_token=$access_token";
-            Log::info($http_query);
-            $response = Http::get($http_query);
-            Log::info($response);
+            if( $from != 'media') {
+                $http_query = "http://wase.co.in/api/send.php?number=$mobile_no&type=$api_type&message=$message&instance_id=$instance_id&access_token=$access_token";
+                Log::info($http_query);
+                $response = Http::get($http_query);
+                Log::info($response);
 
-        } else {
-            $http_query = "http://wase.co.in/api/send.php?number=$mobile_no&type=text&message=$message&instance_id=$instance_id&access_token=$access_token";
-            Log::info($http_query);
-            $response = Http::get($http_query);
-            $http_query = "http://wase.co.in/api/send.php?number=$mobile_no&type=media&message=$message&media_url=$media_url&filename=$filename&instance_id=$instance_id&access_token=$access_token";
-            Log::info($http_query);
-            $response = Http::get($http_query);
-            Log::info($response);
+            } else {
+                $http_query = "http://wase.co.in/api/send.php?number=$mobile_no&type=text&message=$message&instance_id=$instance_id&access_token=$access_token";
+                Log::info($http_query);
+                $response = Http::get($http_query);
+                $http_query = "http://wase.co.in/api/send.php?number=$mobile_no&type=media&message=$message&media_url=$media_url&filename=$filename&instance_id=$instance_id&access_token=$access_token";
+                Log::info($http_query);
+                $response = Http::get($http_query);
+                Log::info($response);
+            }
+            
+            return true;
         }
-        
-        return true;
     }
    
 }
@@ -161,7 +167,7 @@ function getCompanyCode($code) {
     $prefix = 'PX';
     $company_code = $prefix.'-'.$code.$date;
 
-    $info = \DB::table('company_settings')->where('site_code', $company_code )->first();
+    $info = DB::table('company_settings')->where('site_code', $company_code )->first();
     $is_exist = false;
     if( isset( $info ) && !empty( $info ) ) {
         $is_exist = true;
@@ -186,15 +192,7 @@ function planSettings($field)
    
 }
 
-// function getDatabaseSize() {
-//     // dd( $_SERVER );
-//     $sizesInfo = DB::select('SELECT table_name AS "Table",
-//     sum(ROUND(((data_length + index_length) / 1024 / 1024), 2)) AS "Size (MB)"
-//     FROM information_schema.TABLES
-//     WHERE table_schema = "laravelauth"
-//     ORDER BY (data_length + index_length) DESC');
-//     return $sizesInfo;
-// }
+
 
 function hasDailyLimit($type)  {
     if( $type == 'lead') {
@@ -221,4 +219,31 @@ function hasDailyLimit($type)  {
             return true;
         }
     }
+}
+
+function getDatabaseSize() {
+    // dd( $_SERVER );
+    $sizesInfo = DB::select('SELECT table_name AS "Table",
+    sum(ROUND(((data_length + index_length) / 1024 / 1024), 2)) AS "size_mb"
+    FROM information_schema.TABLES
+    WHERE table_schema = "'.env('DB_DATABASE').'"
+    ORDER BY (data_length + index_length) DESC');
+    return $sizesInfo;
+}
+
+function checkServerSpace() {
+
+    $fileSize = getDatabaseSize();
+    $databaseSize = $fileSize[0]->size_mb ?? 0;
+    $file_size = 0;
+    $filepath   = storage_path('app/public');
+    foreach( File::allFiles($filepath) as $file)
+    {
+        // dump( $file );
+        $file_size += $file->getSize();
+    }
+    $mb_size = number_format($file_size / 1048576,2);
+    $totalSize = $mb_size + $databaseSize;
+    return $totalSize;
+
 }
