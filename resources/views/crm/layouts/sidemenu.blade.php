@@ -1,5 +1,13 @@
 <div class="leftside-menu">
-    
+    <style>
+        .help-box {
+            border-radius: 5px;
+            padding: 10px;
+            margin: 65px 25px 25px;
+            position: relative;
+            background-color: rgb(181 55 55 / 49%);
+        }
+    </style>
     <!-- LOGO -->
     <a href="{{ route('dashboard', $companyCode) }}" class="logo text-center logo-light">
         <span class="logo-lg">
@@ -307,6 +315,14 @@
 
         </ul>
         <!-- End Sidebar -->
+        <div class="help-box text-white text-center">
+            {{-- <a href="javascript: void(0);" class="float-end close-btn text-white">
+                <i class="mdi mdi-close"></i>
+            </a> --}}
+            <h5 class="mt-3">Server Space</h5>
+            <p class="mb-3">Upgrade plan to get access to unlimited Storage</p>
+            <a href="javascript: void(0);" class="btn btn-secondary btn-sm">{{ number_format( checkServerSpace() / 1024 , 4) }} GB / {{ planSettings('server_space') }} GB</a>
+        </div>
         <div class="clearfix"></div>
 
     </div>

@@ -162,6 +162,7 @@ function sendWhatsappApi($mobile_no, $type, $params, $from, $media_url = '', $fi
    
 }
 
+
 function getCompanyCode($code) {
     $date = date('Yi');
     $prefix = 'PX';
