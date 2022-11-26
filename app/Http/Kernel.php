@@ -69,6 +69,7 @@ class Kernel extends HttpKernel
         'checkAccess' => \App\Http\Middleware\EnsureHasAccess::class,
         'checkLimit' => \App\Http\Middleware\EnsureHasAddLimit::class,
         'checkCompany' => \App\Http\Middleware\CompanyExist::class,
+        'checkStorage' => \App\Http\Middleware\CheckServerStorage::class,
         
     ];
 }
