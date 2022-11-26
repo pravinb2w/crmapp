@@ -3,7 +3,7 @@
         .help-box {
             border-radius: 5px;
             padding: 10px;
-            margin: 65px 25px 25px;
+            margin: 65px 20px 25px;
             position: relative;
             background-color: rgb(181 55 55 / 49%);
         }
