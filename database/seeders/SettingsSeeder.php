@@ -21,7 +21,7 @@ class SettingsSeeder extends Seeder
             'is_owner' => 1,
             'lead_access' => 'visibileall', 
             'deal_access' => 'visibileall', 
-            'workflow_automation' => 1
+            'workflow_automation' => 1,
         ]);
     }
 }
