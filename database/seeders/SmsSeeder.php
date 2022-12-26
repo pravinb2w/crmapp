@@ -64,6 +64,7 @@ class SmsSeeder extends Seeder
 
         DB::table('automations')->insert([
             [
+                'company_id' => 1,
                 'activity_type' => 'New Deal Addition',
                 'activity_title' => NULL,
                 'description' => NULL,
@@ -78,6 +79,7 @@ class SmsSeeder extends Seeder
                 'added_by' => 1
             ],
             [
+                'company_id' => 1,
                 'activity_type' => 'Activity on all Leads',
                 'activity_title' => NULL,
                 'description' => NULL,
@@ -92,6 +94,7 @@ class SmsSeeder extends Seeder
                 'added_by' => 1
             ],
             [
+                'company_id' => 1,
                 'activity_type' => 'New Lead Addition',
                 'activity_title' => NULL,
                 'description' => NULL,
@@ -106,6 +109,7 @@ class SmsSeeder extends Seeder
                 'added_by' => 1
             ],
             [
+                'company_id' => 1,
                 'activity_type' => 'Conversion from Lead to Deal',
                 'activity_title' => NULL,
                 'description' => NULL,
@@ -120,6 +124,7 @@ class SmsSeeder extends Seeder
                 'added_by' => 1
             ],
             [
+                'company_id' => 1,
                 'activity_type' => 'Activity on all Deals',
                 'activity_title' => NULL,
                 'description' => NULL,
@@ -134,6 +139,7 @@ class SmsSeeder extends Seeder
                 'added_by' => 1
             ],
             [
+                'company_id' => 1,
                 'activity_type' => 'Deal stage changed',
                 'activity_title' => NULL,
                 'description' => NULL,
@@ -148,6 +154,7 @@ class SmsSeeder extends Seeder
                 'added_by' => 1
             ],
             [
+                'company_id' => 1,
                 'activity_type' => 'Deal won/lose',
                 'activity_title' => NULL,
                 'description' => NULL,
@@ -162,6 +169,7 @@ class SmsSeeder extends Seeder
                 'added_by' => 1
             ],
             [
+                'company_id' => 1,
                 'activity_type' => 'Invoice Creation',
                 'activity_title' => NULL,
                 'description' => NULL,
@@ -176,6 +184,7 @@ class SmsSeeder extends Seeder
                 'added_by' => 1
             ],
             [
+                'company_id' => 1,
                 'activity_type' => 'Thanks mail for the payment received',
                 'activity_title' => NULL,
                 'description' => NULL,
@@ -190,6 +199,7 @@ class SmsSeeder extends Seeder
                 'added_by' => 1
             ],
             [
+                'company_id' => 1,
                 'activity_type' => 'New Customer Addition',
                 'activity_title' => NULL,
                 'description' => NULL,
@@ -204,6 +214,7 @@ class SmsSeeder extends Seeder
                 'added_by' => 1
             ],
             [
+                'company_id' => 1,
                 'activity_type' => 'New Organization Addition',
                 'activity_title' => NULL,
                 'description' => NULL,
