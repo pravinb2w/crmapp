@@ -22,6 +22,12 @@ class SettingsSeeder extends Seeder
             'lead_access' => 'visibileall', 
             'deal_access' => 'visibileall', 
             'workflow_automation' => 1,
+            'mailer' => 'smtp',
+            'smtp_host' => 'smtp.gmail.com',
+            'smtp_port' => '587',
+            'smtp_user' => 'phoenixtechnologies2022@gmail.com',
+            'smtp_password' => 'opheheeakfcfieux',
+            'mail_encryption' => 'tls',
         ]);
     }
 }

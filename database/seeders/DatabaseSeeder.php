@@ -27,6 +27,8 @@ class DatabaseSeeder extends Seeder
             PaymentSeeder::class,
             SubscriptionSeeder::class,
             SmsSeeder::class,
+            CountrySeeder::class,
+            StatusSeeder::class
         ]);
     }
 }

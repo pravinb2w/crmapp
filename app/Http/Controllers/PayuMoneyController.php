@@ -17,12 +17,13 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 
-
 /**
  * Class PayuMoneyController
  */
+
 class PayuMoneyController extends \InfyOm\Payu\PayuMoneyController
 {
+    
     const TEST_URL = 'https://sandboxsecure.payu.in';
     const PRODUCTION_URL = 'https://secure.payu.in';
 
@@ -311,7 +312,7 @@ class PayuMoneyController extends \InfyOm\Payu\PayuMoneyController
                 ) {
                     $formError = 1;
                 } else {
-                    //                $posted['productinfo'] = json_encode(json_decode('[{"name":"tutionfee","description":"","value":"500","isRequired":"false"},{"name":"developmentfee","description":"monthly tution fee","value":"1500","isRequired":"false"}]'));
+                    //$posted['productinfo'] = json_encode(json_decode('[{"name":"tutionfee","description":"","value":"500","isRequired":"false"},{"name":"developmentfee","description":"monthly tution fee","value":"1500","isRequired":"false"}]'));
                     $hashVarsSeq = explode('|', $hashSequence);
                     $hash_string = '';
                     foreach ($hashVarsSeq as $hash_var) {
