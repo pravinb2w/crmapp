@@ -28,7 +28,9 @@ class DatabaseSeeder extends Seeder
             SubscriptionSeeder::class,
             SmsSeeder::class,
             CountrySeeder::class,
-            StatusSeeder::class
+            StatusSeeder::class,
+            EmailTemplateSeeder::class,
+            AutomationSeeder::class
         ]);
     }
 }
