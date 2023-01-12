@@ -64,7 +64,7 @@ function capi($type, $field) {
     } else  {
         return false;
     }
-}
+} 
 
 function automation($activity_type, $field)
 {

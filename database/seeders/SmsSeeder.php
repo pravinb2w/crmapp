@@ -49,12 +49,14 @@ class SmsSeeder extends Seeder
 
         DB::table('api_data')->insert([
             [
+                'company_id' => 1,
                 'type' => 'whatsapp',
                 'field' => 'access_token',
                 'field_value' => 'c1894f0cf0eb156a75cd686b7c8a92d1',
                 'status' => 1
             ],
             [
+                'company_id' => 1,
                 'type' => 'whatsapp',
                 'field' => 'instance_id',
                 'field_value' => '62FC86AA43296',
