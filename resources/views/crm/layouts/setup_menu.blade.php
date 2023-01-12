@@ -24,13 +24,13 @@
         {{-- <a href="{{ route('pagetype') }}" class="list-group-item list-group-item-action {{ Request::segment(3) == 'pagetype' ? 'active' : '' }}">
             Page Type</a> --}}
         <a href="{{ route('subscriptions', $companyCode ) }}" class="list-group-item list-group-item-action {{ Request::segment(3) == 'subscriptions' ? 'active' : '' }}">
-            Subcriptions
+            Subscriptions
             </a>
         <a href="{{ route('company', $companyCode) }}" class="list-group-item list-group-item-action {{ Request::segment(3) == 'company' ? 'active' : '' }}">
             Company
         </a>
         <a href="{{ route('company-subscriptions', $companyCode) }}" class="list-group-item list-group-item-action {{ Request::segment(3) == 'company-subscriptions' ? 'active' : '' }}">
-            Company Subcriptions
+            Company Subscriptions
             </a>
     @endif
         
